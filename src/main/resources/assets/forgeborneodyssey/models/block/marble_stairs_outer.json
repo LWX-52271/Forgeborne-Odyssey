@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "forgeborneodyssey:block/marble_block",
+    "top": "forgeborneodyssey:block/marble_block",
+    "side": "forgeborneodyssey:block/marble_block"
+  }
+}

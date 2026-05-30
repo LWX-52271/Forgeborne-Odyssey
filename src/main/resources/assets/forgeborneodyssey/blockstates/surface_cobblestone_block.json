@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "forgeborneodyssey:block/surface_cobblestone_block"
+    },
+    "facing=south": {
+      "model": "forgeborneodyssey:block/surface_cobblestone_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "forgeborneodyssey:block/surface_cobblestone_block",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "forgeborneodyssey:block/surface_cobblestone_block",
+      "y": 90
+    }
+  }
+}

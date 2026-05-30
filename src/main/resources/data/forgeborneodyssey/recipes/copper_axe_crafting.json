@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A ",
+    "S "
+  ],
+  "key": {
+    "A": {
+      "item": "forgeborneodyssey:copper_axe"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:wrought_copper_axe",
+    "count": 1
+  }
+}

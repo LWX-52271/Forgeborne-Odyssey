@@ -1,0 +1,38 @@
+{
+  "parent": "forgeborneodyssey:root",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:surface_cobblestone_block"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.stone_age.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.stone_age.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_surface_cobblestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:surface_cobblestone_block"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_surface_cobblestone"
+    ]
+  ]
+}

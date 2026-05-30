@@ -1,0 +1,40 @@
+{
+  "parent": "forgeborneodyssey:sparks_fly",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:copper_pin_chestplate"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.love_of_beauty.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.love_of_beauty.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "wear_pin_armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:copper_pin_chestplate",
+              "forgeborneodyssey:silver_pin_chestplate",
+              "forgeborneodyssey:gold_pin_chestplate"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "wear_pin_armor"
+    ]
+  ]
+}

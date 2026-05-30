@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "forgeborneodyssey:shale_wall",
+    "forgeborneodyssey:sandstone_wall",
+    "forgeborneodyssey:limestone_wall",
+    "forgeborneodyssey:marble_wall",
+    "forgeborneodyssey:quartzite_wall",
+    "forgeborneodyssey:gabbro_wall",
+    "forgeborneodyssey:quartz_vein_wall",
+    "forgeborneodyssey:sericitized_rock_wall",
+    "forgeborneodyssey:chlorite_rock_wall"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A ",
+    "S "
+  ],
+  "key": {
+    "A": {
+      "item": "forgeborneodyssey:gold_axe"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:wrought_gold_axe",
+    "count": 1
+  }
+}

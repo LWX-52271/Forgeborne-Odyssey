@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "forgeborneodyssey:item/primitive_silver_knife"
+  }
+}

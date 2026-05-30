@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:quartz_vein_block"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:quartz_vein_wall",
+    "count": 6
+  }
+}

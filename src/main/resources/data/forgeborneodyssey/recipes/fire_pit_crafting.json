@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "C C",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "forgeborneodyssey:surface_cobblestone_block"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:fire_pit_block",
+    "count": 1
+  }
+}

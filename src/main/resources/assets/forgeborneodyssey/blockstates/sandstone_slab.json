@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/sandstone_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/sandstone_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/sandstone_block"
+    }
+  }
+}

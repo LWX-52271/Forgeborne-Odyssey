@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/gabbro_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/gabbro_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/gabbro_block"
+    }
+  }
+}

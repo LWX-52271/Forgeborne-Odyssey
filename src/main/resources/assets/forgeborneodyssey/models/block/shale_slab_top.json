@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "forgeborneodyssey:block/shale_block",
+    "top": "forgeborneodyssey:block/shale_block",
+    "side": "forgeborneodyssey:block/shale_block"
+  }
+}

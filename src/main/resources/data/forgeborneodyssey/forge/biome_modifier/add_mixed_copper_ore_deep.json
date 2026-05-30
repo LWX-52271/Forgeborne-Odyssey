@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "forgeborneodyssey:mixed_copper_ore_deep_placed",
+  "step": "underground_ores"
+}

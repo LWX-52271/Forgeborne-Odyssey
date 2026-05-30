@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "forgeborneodyssey:block/gabbro_block",
+    "top": "forgeborneodyssey:block/gabbro_block",
+    "side": "forgeborneodyssey:block/gabbro_block"
+  }
+}

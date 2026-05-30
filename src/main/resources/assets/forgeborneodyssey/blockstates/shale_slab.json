@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/shale_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/shale_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/shale_block"
+    }
+  }
+}

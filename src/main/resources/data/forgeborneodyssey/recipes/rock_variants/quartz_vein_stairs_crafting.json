@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:quartz_vein_block"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:quartz_vein_stairs",
+    "count": 8
+  }
+}

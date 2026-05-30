@@ -1,0 +1,40 @@
+{
+  "parent": "forgeborneodyssey:weapons_and_armor",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:wrought_copper_sword"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.cold_forge_master.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.cold_forge_master.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "craft_wrought_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:wrought_copper_sword",
+              "forgeborneodyssey:wrought_silver_sword",
+              "forgeborneodyssey:wrought_gold_sword"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "craft_wrought_sword"
+    ]
+  ]
+}

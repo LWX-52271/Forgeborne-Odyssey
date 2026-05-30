@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "forgeborneodyssey:block/sandstone_block",
+    "top": "forgeborneodyssey:block/sandstone_block",
+    "side": "forgeborneodyssey:block/sandstone_block"
+  }
+}

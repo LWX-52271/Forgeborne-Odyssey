@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "forgeborneodyssey:block/chlorite_rock_block",
+    "top": "forgeborneodyssey:block/chlorite_rock_block",
+    "side": "forgeborneodyssey:block/chlorite_rock_block"
+  }
+}

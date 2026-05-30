@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "forgeborneodyssey:natural_gold_block",
+    "forgeborneodyssey:natural_silver_block",
+    "forgeborneodyssey:natural_copper_block"
+  ]
+}

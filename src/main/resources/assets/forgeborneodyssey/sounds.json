@@ -1,0 +1,157 @@
+{
+  "anvil.hit": {
+    "subtitle": "sounds.forgeborneodyssey.anvil.hit",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:anvil_hit_1",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      {
+        "name": "forgeborneodyssey:anvil_hit_2",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      {
+        "name": "forgeborneodyssey:anvil_hit_3",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "anvil.stretch_start": {
+    "subtitle": "sounds.forgeborneodyssey.anvil.stretch_start",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:anvil_stretch_start",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "anvil.stretch_complete": {
+    "subtitle": "sounds.forgeborneodyssey.anvil.stretch_complete",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:anvil_stretch_complete",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "forging.milestone_10": {
+    "subtitle": "sounds.forgeborneodyssey.forging.milestone_10",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:forging_milestone_10",
+        "volume": 0.8,
+        "pitch": 1.2
+      }
+    ]
+  },
+  "forging.milestone_50": {
+    "subtitle": "sounds.forgeborneodyssey.forging.milestone_50",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:forging_milestone_50",
+        "volume": 0.9,
+        "pitch": 1.1
+      }
+    ]
+  },
+  "forging.milestone_90": {
+    "subtitle": "sounds.forgeborneodyssey.forging.milestone_90",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:forging_milestone_90",
+        "volume": 1.0,
+        "pitch": 1.3
+      }
+    ]
+  },
+  "hammer.stone_light": {
+    "subtitle": "sounds.forgeborneodyssey.hammer.stone_light",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:hammer_stone_light_1",
+        "volume": 1.0,
+        "pitch": 0.9
+      },
+      {
+        "name": "forgeborneodyssey:hammer_stone_light_2",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "hammer.stone_heavy": {
+    "subtitle": "sounds.forgeborneodyssey.hammer.stone_heavy",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:hammer_stone_heavy_1",
+        "volume": 1.0,
+        "pitch": 0.8
+      },
+      {
+        "name": "forgeborneodyssey:hammer_stone_heavy_2",
+        "volume": 1.0,
+        "pitch": 0.85
+      }
+    ]
+  },
+  "rock.pick_hit": {
+    "subtitle": "sounds.forgeborneodyssey.rock.pick_hit",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:rock_pick_hit_1",
+        "volume": 1.0,
+        "pitch": 1.0
+      },
+      {
+        "name": "forgeborneodyssey:rock_pick_hit_2",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "rock.crack_1": {
+    "subtitle": "sounds.forgeborneodyssey.rock.crack",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:rock_crack_1",
+        "volume": 0.8,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "rock.crack_2": {
+    "subtitle": "sounds.forgeborneodyssey.rock.crack",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:rock_crack_2",
+        "volume": 0.8,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "rock.crack_3": {
+    "subtitle": "sounds.forgeborneodyssey.rock.crack",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:rock_crack_3",
+        "volume": 0.8,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "rock.break": {
+    "subtitle": "sounds.forgeborneodyssey.rock.break",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:rock_break",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
+  }
+}

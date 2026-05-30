@@ -1,0 +1,7 @@
+// 1.20.1	2026-01-18T15:20:49.1303911	Tags for minecraft:block mod id forgeborneodyssey
+da2d1b4f0ae6d13152e8d7501953450dbcfea72b data/forgeborneodyssey/tags/blocks/ores/deepslate.json
+8b90701257443c05b14055b917da5d37726dc5f2 data/forgeborneodyssey/tags/blocks/ores/overworld.json
+27316ad0233aa8cd30d5bafff0a7d04dffc871c8 data/forge/tags/blocks/ores.json
+27316ad0233aa8cd30d5bafff0a7d04dffc871c8 data/minecraft/tags/blocks/mineable/pickaxe.json
+da2d1b4f0ae6d13152e8d7501953450dbcfea72b data/minecraft/tags/blocks/needs_iron_tool.json
+8b90701257443c05b14055b917da5d37726dc5f2 data/minecraft/tags/blocks/needs_stone_tool.json

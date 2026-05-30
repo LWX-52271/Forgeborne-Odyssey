@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "forgeborneodyssey:item/wooden_clamp"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "forgeborneodyssey:item/wooden_clamp_using"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    " S ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:polished_granite"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:polished_granite_anvil",
+    "count": 1
+  }
+}

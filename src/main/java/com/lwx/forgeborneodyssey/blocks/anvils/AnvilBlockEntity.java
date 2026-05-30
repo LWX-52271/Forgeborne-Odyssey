@@ -1,0 +1,885 @@
+package com.lwx.forgeborneodyssey.blocks.anvils;
+
+import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
+
+/**
+ * 石砧方块实体——极简实现，仅存储一个物品并保证客户端同步
+ */
+public class AnvilBlockEntity extends BlockEntity {
+
+    private ItemStack storedItem = ItemStack.EMPTY;
+    private int ambientSoundCooldown = 0; // 环境音效冷却计时器
+    
+    // 锻造相关数据
+    private int hitCount = 0; // 锻打次数计数器
+    
+    // 雕刻相关数据
+    private int carveCount = 0; // 雕刻次数计数器
+    
+    // 渲染拉伸效果相关数据（客户端）
+    private float stretchFactor = 0.0f; // 拉伸因子，随每次敲击累积
+
+    public AnvilBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlocks.ANVIL_BLOCK_ENTITY.get(), pos, state);
+        // 初始化环境音效冷却时间为随机值，避免所有石砧同时播放音效
+        this.ambientSoundCooldown = level != null ? level.random.nextInt(100) : 0;
+    }
+
+    public ItemStack getStoredItem() {
+        return storedItem;
+    }
+
+    /**
+     * 检查是否可以放置该物品
+     * 允许放置所有与锻打有关的金属物品：
+     * - 胚料：金坯料、银坯料、铜坯料、软化铜坯料
+     * - 软化金属条：软化铜条
+     * - 金属片：金片、银片、铜片
+     * - 金属弯片：金弯片、银弯片、铜弯片
+     * - 金属槽片：金槽片、银槽片、铜槽片
+     * - 金属斧头：金斧头、银斧头、铜斧头
+     * - 金属刀刃：金剑刃、银剑刃、铜剑刃
+     * - 金属刀：原始金刀、原始银刀、原始铜刀
+     * - 金属针：金针、银针、铜针
+     * - 其他金属制品：金珠、银珠、铜珠、金条、银条、铜环、铜钩
+     * - 饰针胸甲：金饰针胸甲、银饰针胸甲、铜饰针胸甲
+     * - 打制武器：打制铜剑、打制银剑、打制金剑
+     * - 打制工具：打制铜斧、打制银斧、打制金斧
+     * - 铜鱼竿
+     * 
+     * 注意：金属碎片（copper/silver/gold fragment）不允许放置在石砧上，因为它们无法再次锻造
+     */
+    public boolean canPlaceItem(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+        
+        // 允许放置所有与锻打有关的金属物品
+        return stack.is(ModItems.GOLD_BILLET.get()) ||
+               stack.is(ModItems.SILVER_BILLET.get()) ||
+               stack.is(ModItems.COPPER_BILLET.get()) ||
+               stack.is(ModItems.SOFT_COPPER_BILLET.get()) ||
+               stack.is(ModItems.SOFT_COPPER_STRIP.get()) ||
+               stack.is(ModItems.GOLD_SHEET.get()) ||
+               stack.is(ModItems.SILVER_SHEET.get()) ||
+               stack.is(ModItems.COPPER_SHEET.get()) ||
+               stack.is(ModItems.GOLD_CURVE.get()) ||
+               stack.is(ModItems.SILVER_CURVE.get()) ||
+               stack.is(ModItems.COPPER_CURVE.get()) ||
+               stack.is(ModItems.GOLD_SLOT.get()) ||
+               stack.is(ModItems.SILVER_SLOT.get()) ||
+               stack.is(ModItems.COPPER_SLOT.get()) ||
+               stack.is(ModItems.GOLD_AXE.get()) ||
+               stack.is(ModItems.SILVER_AXE.get()) ||
+               stack.is(ModItems.COPPER_AXE.get()) ||
+               stack.is(ModItems.GOLD_SWORD_BLADE.get()) ||
+               stack.is(ModItems.SILVER_SWORD_BLADE.get()) ||
+               stack.is(ModItems.COPPER_SWORD_BLADE.get()) ||
+               stack.is(ModItems.GOLD_KNIFE.get()) ||
+               stack.is(ModItems.SILVER_KNIFE.get()) ||
+               stack.is(ModItems.COPPER_KNIFE.get()) ||
+               stack.is(ModItems.GOLD_PIN.get()) ||
+               stack.is(ModItems.SILVER_PIN.get()) ||
+               stack.is(ModItems.COPPER_PIN.get()) ||
+               stack.is(ModItems.GOLD_BEAD.get()) ||
+               stack.is(ModItems.SILVER_BEAD.get()) ||
+               stack.is(ModItems.COPPER_BEAD.get()) ||
+               stack.is(ModItems.GOLD_BAR.get()) ||
+               stack.is(ModItems.SILVER_BAR.get()) ||
+               stack.is(ModItems.COPPER_RING.get()) ||
+               stack.is(ModItems.COPPER_HOOK.get()) ||
+               stack.is(ModItems.GOLD_PIN_CHESTPLATE.get()) ||
+               stack.is(ModItems.SILVER_PIN_CHESTPLATE.get()) ||
+               stack.is(ModItems.COPPER_PIN_CHESTPLATE.get()) ||
+               stack.is(ModItems.WROUGHT_COPPER_SWORD.get()) ||
+               stack.is(ModItems.WROUGHT_SILVER_SWORD.get()) ||
+               stack.is(ModItems.WROUGHT_GOLD_SWORD.get()) ||
+               stack.is(ModItems.WROUGHT_COPPER_AXE.get()) ||
+               stack.is(ModItems.WROUGHT_SILVER_AXE.get()) ||
+               stack.is(ModItems.WROUGHT_GOLD_AXE.get()) ||
+               stack.is(ModItems.COPPER_FISHING_ROD.get());
+    }
+
+    public void setStoredItem(ItemStack stack) {
+        // 检查是否为相同类型的物品，如果是则保留进度
+        boolean isSameType = !this.storedItem.isEmpty() && 
+                            !stack.isEmpty() &&
+                            this.storedItem.getItem() == stack.getItem();
+        
+        this.storedItem = stack;
+        
+        // 只有放置不同类型物品时才重置计数器和拉伸因子
+        if (!isSameType) {
+            this.hitCount = 0; // 重置敲击计数
+            this.carveCount = 0; // 重置雕刻计数
+            this.stretchFactor = 0.0f; // 重置拉伸因子
+        }
+        
+        setChanged();
+        // 立即通知世界更新，不区分服务端客户端
+        if (level != null) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+    
+    /**
+     * 处理锻造敲击
+     */
+    public void handleForgingHit(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
+        if (level == null || level.isClientSide) return;
+        if (storedItem.isEmpty()) return;
+        
+        // 检查是否为可锻打的物品（金属胚料、软化胚料、金属弯片或金属槽片）
+        boolean canForge = storedItem.is(ModItems.COPPER_BILLET.get()) ||
+                          storedItem.is(ModItems.SILVER_BILLET.get()) ||
+                          storedItem.is(ModItems.GOLD_BILLET.get()) ||
+                          storedItem.is(ModItems.SOFT_COPPER_BILLET.get()) ||
+                          storedItem.is(ModItems.COPPER_CURVE.get()) ||
+                          storedItem.is(ModItems.SILVER_CURVE.get()) ||
+                          storedItem.is(ModItems.GOLD_CURVE.get()) ||
+                          storedItem.is(ModItems.COPPER_SLOT.get()) ||
+                          storedItem.is(ModItems.SILVER_SLOT.get()) ||
+                          storedItem.is(ModItems.GOLD_SLOT.get());
+        
+        if (!canForge) {
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.cannot_forging_this_item"),
+                true
+            );
+            return;
+        }
+        
+        // 检查金属坯料的重量，只有≥50g的才能被锻造
+        if (storedItem.is(ModItems.COPPER_BILLET.get()) ||
+            storedItem.is(ModItems.SILVER_BILLET.get()) ||
+            storedItem.is(ModItems.GOLD_BILLET.get())) {
+            net.minecraft.nbt.CompoundTag tag = storedItem.getTag();
+            if (tag != null && tag.contains("Weight")) {
+                double weight = tag.getDouble("Weight");
+                if (weight < 50.0) {
+                    player.displayClientMessage(
+                        net.minecraft.network.chat.Component.literal("§c该坯料重量不足50g，无法进行锻造！"),
+                        true
+                    );
+                    return;
+                }
+            }
+        }
+        
+        // 根据锤子类型消耗不同的饱食度
+        float exhaustionAmount = 0.8f; // 默认值
+        if (hammer.is(ModItems.HANDLE_STONE_HAMMER.get())) {
+            exhaustionAmount = 0.6f; // 带柄石锤更高效，消耗较少
+        } else if (hammer.is(ModItems.COBBLESTONE_HAMMER.get())) {
+            exhaustionAmount = 1.0f; // 圆石锤效率较低，消耗较多
+        }
+        player.causeFoodExhaustion(exhaustionAmount);
+        
+        // 每次敲击增加计数
+        this.hitCount++;
+        
+        // 每次敲击增加拉伸因子，最多累积到1.5
+        this.stretchFactor = Math.min(this.stretchFactor + 0.15f, 1.5f);
+        
+        // 播放敲击音效和粒子效果
+        com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
+            net.minecraftforge.network.PacketDistributor.NEAR.with(
+                net.minecraftforge.network.PacketDistributor.TargetPoint.p(
+                    worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(),
+                    32.0, level.dimension()
+                )
+            ),
+            new com.lwx.forgeborneodyssey.network.ForgingSparkPacket(worldPosition, offsetX, offsetZ)
+        );
+        
+        // 检查是否为金属弯片的锻造（6次转换为金属斧头）
+        boolean isCurveForging = storedItem.is(ModItems.COPPER_CURVE.get()) ||
+                                storedItem.is(ModItems.SILVER_CURVE.get()) ||
+                                storedItem.is(ModItems.GOLD_CURVE.get());
+        
+        // 检查是否为金属槽片的锻造（7次转换为金属刀刃）
+        boolean isSlotForging = storedItem.is(ModItems.COPPER_SLOT.get()) ||
+                               storedItem.is(ModItems.SILVER_SLOT.get()) ||
+                               storedItem.is(ModItems.GOLD_SLOT.get());
+        
+        if (isCurveForging && this.hitCount >= 6) {
+            // 转换为对应的金属斧头
+            convertToMetalAxe(player);
+        } else if (isSlotForging && this.hitCount >= 7) {
+            // 转换为对应的金属刀刃
+            convertToMetalBlade(player);
+        } else if (!isCurveForging && !isSlotForging && this.hitCount >= 8) {
+            // 胚料转换为金属片（8次）- 有1%的几率锻造失败
+            if (level.random.nextInt(100) < 1) {
+                // 锻造失败，掉落金属碎片
+                handleForgingFailure(player);
+            } else {
+                // 锻造成功
+                convertToMetalSheet(player);
+            }
+        } else {
+            setChanged();
+            // 同步数据到客户端
+            if (level != null) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+            // 显示进度提示
+            int maxHits;
+            if (isCurveForging) {
+                maxHits = 6;
+            } else if (isSlotForging) {
+                maxHits = 7;
+            } else {
+                maxHits = 8;
+            }
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.forging_progress", this.hitCount, maxHits),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 处理用斧头弯曲金属片或制作槽片
+     */
+    public void handleAxeBend(ServerPlayer player, ItemStack axe) {
+        if (level == null || level.isClientSide) return;
+        if (storedItem.isEmpty()) return;
+        
+        ItemStack resultItem = ItemStack.EMPTY;
+        boolean isSlotOperation = false;
+        boolean isRingOperation = false;
+        boolean isHookOperation = false;
+        boolean isPinOperation = false;
+        
+        // 根据金属片类型转换为对应的弯片
+        if (storedItem.is(ModItems.COPPER_SHEET.get())) {
+            resultItem = new ItemStack(ModItems.COPPER_CURVE.get());
+        } else if (storedItem.is(ModItems.SILVER_SHEET.get())) {
+            resultItem = new ItemStack(ModItems.SILVER_CURVE.get());
+        } else if (storedItem.is(ModItems.GOLD_SHEET.get())) {
+            resultItem = new ItemStack(ModItems.GOLD_CURVE.get());
+        }
+        // 根据金属弯片类型转换为对应的槽片
+        else if (storedItem.is(ModItems.COPPER_CURVE.get())) {
+            resultItem = new ItemStack(ModItems.COPPER_SLOT.get());
+            isSlotOperation = true;
+        } else if (storedItem.is(ModItems.SILVER_CURVE.get())) {
+            resultItem = new ItemStack(ModItems.SILVER_SLOT.get());
+            isSlotOperation = true;
+        } else if (storedItem.is(ModItems.GOLD_CURVE.get())) {
+            resultItem = new ItemStack(ModItems.GOLD_SLOT.get());
+            isSlotOperation = true;
+        }
+        // 根据铜槽片类型转换为铜环
+        else if (storedItem.is(ModItems.COPPER_SLOT.get())) {
+            resultItem = new ItemStack(ModItems.COPPER_RING.get());
+            isRingOperation = true;
+        }
+        // 根据铜环类型转换为铜钩
+        else if (storedItem.is(ModItems.COPPER_RING.get())) {
+            resultItem = new ItemStack(ModItems.COPPER_HOOK.get());
+            isHookOperation = true;
+        }
+        // 根据铜钩类型转换为铜针
+        else if (storedItem.is(ModItems.COPPER_HOOK.get())) {
+            resultItem = new ItemStack(ModItems.COPPER_PIN.get());
+            isPinOperation = true;
+        }
+        // 根据银槽片类型转换为银针
+        else if (storedItem.is(ModItems.SILVER_SLOT.get())) {
+            resultItem = new ItemStack(ModItems.SILVER_PIN.get());
+            isPinOperation = true;
+        }
+        // 根据金槽片类型转换为金针
+        else if (storedItem.is(ModItems.GOLD_SLOT.get())) {
+            resultItem = new ItemStack(ModItems.GOLD_PIN.get());
+            isPinOperation = true;
+        }
+        
+        if (!resultItem.isEmpty()) {
+            // 继承原物品的质量和纯度属性
+            inheritQualityAndPurity(storedItem, resultItem);
+            
+            // 替换石砧上的物品
+            this.storedItem = resultItem;
+            this.hitCount = 0;
+            this.carveCount = 0;
+            this.stretchFactor = 0.0f;
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            
+            // 播放音效（槽片、环、钩和针使用不同音调）
+            float pitch;
+            if (isPinOperation) {
+                pitch = 2.2f;
+            } else if (isHookOperation) {
+                pitch = 2.0f;
+            } else if (isRingOperation) {
+                pitch = 1.8f;
+            } else if (isSlotOperation) {
+                pitch = 1.5f;
+            } else {
+                pitch = 1.2f;
+            }
+            level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.ANVIL_PLACE,
+                net.minecraft.sounds.SoundSource.BLOCKS, 0.6f, pitch);
+            
+            // 发送粒子效果数据包
+            com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
+                net.minecraftforge.network.PacketDistributor.NEAR.with(
+                    net.minecraftforge.network.PacketDistributor.TargetPoint.p(
+                        worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(),
+                        32.0, level.dimension()
+                    )
+                ),
+                new com.lwx.forgeborneodyssey.network.ForgingSparkPacket(worldPosition, 0.0f, 0.0f)
+            );
+            
+            // 显示完成消息
+            String messageKey;
+            if (isPinOperation) {
+                messageKey = "message.forgeborneodyssey.anvil.hook_or_slot_made_to_pin";
+            } else if (isHookOperation) {
+                messageKey = "message.forgeborneodyssey.anvil.ring_made_to_hook";
+            } else if (isRingOperation) {
+                messageKey = "message.forgeborneodyssey.anvil.slot_made_to_ring";
+            } else if (isSlotOperation) {
+                messageKey = "message.forgeborneodyssey.anvil.curve_made_to_slot";
+            } else {
+                messageKey = "message.forgeborneodyssey.anvil.sheet_bent_to_curve";
+            }
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable(messageKey),
+                true
+            );
+        } else {
+            // 不是可处理的物品
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.cannot_process_this_item"),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 处理用凿子雕刻金属针为饰针或金属槽片为金属刀
+     */
+    public void handleChiselCarve(ServerPlayer player, ItemStack chisel) {
+        if (level == null || level.isClientSide) return;
+        if (storedItem.isEmpty()) return;
+        
+        // 检查是否为金属针
+        boolean isMetalPin = storedItem.is(ModItems.COPPER_PIN.get()) ||
+                            storedItem.is(ModItems.SILVER_PIN.get()) ||
+                            storedItem.is(ModItems.GOLD_PIN.get());
+        
+        // 检查是否为金属槽片
+        boolean isMetalSlot = storedItem.is(ModItems.COPPER_SLOT.get()) ||
+                             storedItem.is(ModItems.SILVER_SLOT.get()) ||
+                             storedItem.is(ModItems.GOLD_SLOT.get());
+        
+        if (!isMetalPin && !isMetalSlot) {
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.cannot_carve_this_item"),
+                true
+            );
+            return;
+        }
+        
+        // 每次雕刻增加计数
+        this.carveCount++;
+        
+        // 播放雕刻音效和粒子效果
+        com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
+            net.minecraftforge.network.PacketDistributor.NEAR.with(
+                net.minecraftforge.network.PacketDistributor.TargetPoint.p(
+                    worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(),
+                    32.0, level.dimension()
+                )
+            ),
+            new com.lwx.forgeborneodyssey.network.ForgingSparkPacket(worldPosition, 0.0f, 0.0f)
+        );
+        
+        // 金属针需要10次雕刻转换为饰针胸甲，金属槽片需要6次雕刻转换为金属刀
+        int requiredCount = isMetalPin ? 10 : 6;
+        
+        if (this.carveCount >= requiredCount) {
+            if (isMetalPin) {
+                // 转换为对应的饰针胸甲
+                convertToPinArmor(player);
+            } else {
+                // 转换为对应的金属刀
+                convertSlotToKnife(player);
+            }
+        } else {
+            setChanged();
+            // 同步数据到客户端
+            if (level != null) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+            // 显示进度提示
+            String messageKey = isMetalPin ? "message.forgeborneodyssey.anvil.carving_progress" : "message.forgeborneodyssey.anvil.slot_to_knife_progress";
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable(messageKey, this.carveCount, requiredCount),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 将金属针转换为对应的饰针胸甲
+     */
+    private void convertToPinArmor(ServerPlayer player) {
+        if (level == null || storedItem.isEmpty()) return;
+        
+        ItemStack pinArmorItem = ItemStack.EMPTY;
+        
+        // 根据金属针类型转换为对应的饰针胸甲
+        if (storedItem.is(ModItems.COPPER_PIN.get())) {
+            pinArmorItem = new ItemStack(ModItems.COPPER_PIN_CHESTPLATE.get());
+        } else if (storedItem.is(ModItems.SILVER_PIN.get())) {
+            pinArmorItem = new ItemStack(ModItems.SILVER_PIN_CHESTPLATE.get());
+        } else if (storedItem.is(ModItems.GOLD_PIN.get())) {
+            pinArmorItem = new ItemStack(ModItems.GOLD_PIN_CHESTPLATE.get());
+        }
+        
+        if (!pinArmorItem.isEmpty()) {
+            // 继承原物品的质量和纯度属性
+            inheritQualityAndPurity(storedItem, pinArmorItem);
+            
+            // 替换石砧上的物品为饰针胸甲
+            this.storedItem = pinArmorItem;
+            this.hitCount = 0; // 重置敲击计数
+            this.carveCount = 0; // 重置雕刻计数
+            this.stretchFactor = 0.0f; // 重置拉伸因子
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            
+            // 播放完成音效
+            level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.ANVIL_PLACE,
+                net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 2.5f);
+            
+            // 发送粒子效果数据包
+            com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
+                net.minecraftforge.network.PacketDistributor.NEAR.with(
+                    net.minecraftforge.network.PacketDistributor.TargetPoint.p(
+                        worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(),
+                        32.0, level.dimension()
+                    )
+                ),
+                new com.lwx.forgeborneodyssey.network.ForgingSparkPacket(worldPosition, 0.0f, 0.0f)
+            );
+            
+            // 显示完成消息
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.pin_to_armor_complete"),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 获取当前拉伸因子（0-1之间）
+     */
+    public float getStretchFactor() {
+        return stretchFactor;
+    }
+    
+    /**
+     * 获取当前锻打次数
+     */
+    public int getHitCount() {
+        return hitCount;
+    }
+    
+    /**
+     * 将金属弯片转换为对应的金属斧头
+     */
+    private void convertToMetalAxe(ServerPlayer player) {
+        if (level == null || storedItem.isEmpty()) return;
+        
+        ItemStack axeItem = ItemStack.EMPTY;
+        
+        // 根据弯片类型转换为对应的金属斧头
+        if (storedItem.is(ModItems.COPPER_CURVE.get())) {
+            axeItem = new ItemStack(ModItems.COPPER_AXE.get());
+        } else if (storedItem.is(ModItems.SILVER_CURVE.get())) {
+            axeItem = new ItemStack(ModItems.SILVER_AXE.get());
+        } else if (storedItem.is(ModItems.GOLD_CURVE.get())) {
+            axeItem = new ItemStack(ModItems.GOLD_AXE.get());
+        }
+        
+        if (!axeItem.isEmpty()) {
+            // 继承原物品的质量和纯度属性
+            inheritQualityAndPurity(storedItem, axeItem);
+            
+            // 替换石砧上的物品为金属斧头
+            this.storedItem = axeItem;
+            this.hitCount = 0; // 重置敲击计数
+            this.stretchFactor = 0.0f; // 重置拉伸因子
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            
+            // 显示完成消息
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.curve_to_axe_complete"),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 将金属槽片转换为对应的金属刀
+     */
+    private void convertSlotToKnife(ServerPlayer player) {
+        if (level == null || storedItem.isEmpty()) return;
+        
+        ItemStack knifeItem = ItemStack.EMPTY;
+        
+        // 根据槽片类型转换为对应的金属刀
+        if (storedItem.is(ModItems.COPPER_SLOT.get())) {
+            knifeItem = new ItemStack(ModItems.COPPER_KNIFE.get());
+        } else if (storedItem.is(ModItems.SILVER_SLOT.get())) {
+            knifeItem = new ItemStack(ModItems.SILVER_KNIFE.get());
+        } else if (storedItem.is(ModItems.GOLD_SLOT.get())) {
+            knifeItem = new ItemStack(ModItems.GOLD_KNIFE.get());
+        }
+        
+        if (!knifeItem.isEmpty()) {
+            // 继承原物品的质量和纯度属性
+            inheritQualityAndPurity(storedItem, knifeItem);
+            
+            // 替换石砧上的物品为金属刀
+            this.storedItem = knifeItem;
+            this.hitCount = 0; // 重置敲击计数
+            this.carveCount = 0; // 重置雕刻计数
+            this.stretchFactor = 0.0f; // 重置拉伸因子
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            
+            // 播放完成音效
+            level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.ANVIL_PLACE,
+                net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 2.0f);
+            
+            // 发送粒子效果数据包
+            com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
+                net.minecraftforge.network.PacketDistributor.NEAR.with(
+                    net.minecraftforge.network.PacketDistributor.TargetPoint.p(
+                        worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(),
+                        32.0, level.dimension()
+                    )
+                ),
+                new com.lwx.forgeborneodyssey.network.ForgingSparkPacket(worldPosition, 0.0f, 0.0f)
+            );
+            
+            // 显示完成消息
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.slot_to_knife_complete"),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 将金属槽片转换为对应的金属刀刃
+     */
+    private void convertToMetalBlade(ServerPlayer player) {
+        if (level == null || storedItem.isEmpty()) return;
+        
+        ItemStack bladeItem = ItemStack.EMPTY;
+        
+        // 根据槽片类型转换为对应的金属刀刃
+        if (storedItem.is(ModItems.COPPER_SLOT.get())) {
+            bladeItem = new ItemStack(ModItems.COPPER_SWORD_BLADE.get());
+        } else if (storedItem.is(ModItems.SILVER_SLOT.get())) {
+            bladeItem = new ItemStack(ModItems.SILVER_SWORD_BLADE.get());
+        } else if (storedItem.is(ModItems.GOLD_SLOT.get())) {
+            bladeItem = new ItemStack(ModItems.GOLD_SWORD_BLADE.get());
+        }
+        
+        if (!bladeItem.isEmpty()) {
+            // 继承原物品的质量和纯度属性
+            inheritQualityAndPurity(storedItem, bladeItem);
+            
+            // 替换石砧上的物品为金属刀刃
+            this.storedItem = bladeItem;
+            this.hitCount = 0; // 重置敲击计数
+            this.stretchFactor = 0.0f; // 重置拉伸因子
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            
+            // 显示完成消息
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.slot_to_blade_complete"),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 将胚料转换为对应的金属片
+     */
+    private void convertToMetalSheet(ServerPlayer player) {
+        if (level == null || storedItem.isEmpty()) return;
+        
+        ItemStack sheetItem = ItemStack.EMPTY;
+        
+        // 根据胚料类型转换为对应的金属片
+        if (storedItem.is(ModItems.COPPER_BILLET.get())) {
+            sheetItem = new ItemStack(ModItems.COPPER_SHEET.get());
+        } else if (storedItem.is(ModItems.SILVER_BILLET.get())) {
+            sheetItem = new ItemStack(ModItems.SILVER_SHEET.get());
+        } else if (storedItem.is(ModItems.GOLD_BILLET.get())) {
+            sheetItem = new ItemStack(ModItems.GOLD_SHEET.get());
+        } else if (storedItem.is(ModItems.SOFT_COPPER_BILLET.get())) {
+            // 软化铜坯料也转换为红铜片
+            sheetItem = new ItemStack(ModItems.COPPER_SHEET.get());
+        }
+        
+        if (!sheetItem.isEmpty()) {
+            // 继承原物品的质量和纯度属性，锻打后重量为原来的95%~98%
+            inheritQualityAndPurity(storedItem, sheetItem, true);
+            
+            // 替换石砧上的物品为金属片
+            this.storedItem = sheetItem;
+            this.hitCount = 0; // 重置敲击计数
+            this.stretchFactor = 0.0f; // 重置拉伸因子
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            
+            // 显示完成消息
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.sheet_complete"),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 处理锻造失败，掉落金属碎片
+     */
+    private void handleForgingFailure(ServerPlayer player) {
+        if (level == null || storedItem.isEmpty()) return;
+        
+        // 获取原物品的重量
+        double originalWeight = 0;
+        if (storedItem.hasTag() && storedItem.getTag().contains("Weight")) {
+            originalWeight = storedItem.getTag().getDouble("Weight");
+        }
+        
+        // 计算碎片重量范围（原重量的40%~50%）
+        double minFragmentWeight = originalWeight * 0.4;
+        double maxFragmentWeight = originalWeight * 0.5;
+        
+        // 随机生成1~2个碎片
+        int fragmentCount = level.random.nextInt(2) + 1;
+        
+        // 根据原物品类型确定碎片类型
+        ItemStack fragmentItem = ItemStack.EMPTY;
+        if (storedItem.is(ModItems.COPPER_BILLET.get()) || storedItem.is(ModItems.SOFT_COPPER_BILLET.get())) {
+            fragmentItem = new ItemStack(ModItems.COPPER_FRAGMENT.get());
+        } else if (storedItem.is(ModItems.SILVER_BILLET.get())) {
+            fragmentItem = new ItemStack(ModItems.SILVER_FRAGMENT.get());
+        } else if (storedItem.is(ModItems.GOLD_BILLET.get())) {
+            fragmentItem = new ItemStack(ModItems.GOLD_FRAGMENT.get());
+        }
+        
+        if (!fragmentItem.isEmpty()) {
+            // 为每个碎片设置重量和质量
+            for (int i = 0; i < fragmentCount; i++) {
+                ItemStack fragment = fragmentItem.copy();
+                
+                // 随机分配重量（在40%~50%范围内平均分配）
+                double fragmentWeight = (minFragmentWeight + level.random.nextDouble() * (maxFragmentWeight - minFragmentWeight)) / fragmentCount;
+                
+                // 设置碎片的NBT标签
+                net.minecraft.nbt.CompoundTag tag = fragment.getOrCreateTag();
+                tag.putDouble("Weight", fragmentWeight);
+                
+                // 根据重量设置重量等级
+                com.lwx.forgeborneodyssey.items.fragments.AbstractMetalFragmentItem fragmentItemObj = 
+                    (com.lwx.forgeborneodyssey.items.fragments.AbstractMetalFragmentItem) fragment.getItem();
+                
+                // 设置随机重量等级（基于重量比例）
+                double weightRatio = fragmentWeight / (originalWeight / fragmentCount);
+                com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem.Quality quality;
+                if (weightRatio < 0.85) {
+                    quality = com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem.Quality.LOW;
+                } else if (weightRatio > 1.15) {
+                    quality = com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem.Quality.HIGH;
+                } else {
+                    quality = com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem.Quality.MEDIUM;
+                }
+                tag.putString("Quality", quality.getName());
+                
+                // 继承纯度（稍微降低）
+                if (storedItem.hasTag() && storedItem.getTag().contains("Purity")) {
+                    float originalPurity = storedItem.getTag().getFloat("Purity");
+                    float fragmentPurity = Math.max(50.0f, originalPurity - level.random.nextFloat() * 10.0f);
+                    tag.putFloat("Purity", fragmentPurity);
+                }
+                
+                // 在石砧位置生成物品实体
+                net.minecraft.world.entity.item.ItemEntity itemEntity = 
+                    new net.minecraft.world.entity.item.ItemEntity(
+                        level,
+                        worldPosition.getX() + 0.5D + (level.random.nextDouble() - 0.5) * 0.5,
+                        worldPosition.getY() + 1.0D,
+                        worldPosition.getZ() + 0.5D + (level.random.nextDouble() - 0.5) * 0.5,
+                        fragment
+                    );
+                itemEntity.setDefaultPickUpDelay();
+                level.addFreshEntity(itemEntity);
+            }
+            
+            // 清空石砧上的物品
+            this.storedItem = ItemStack.EMPTY;
+            this.hitCount = 0;
+            this.stretchFactor = 0.0f;
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            
+            // 播放失败音效
+            level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.STONE_BREAK,
+                net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 0.8f);
+            
+            // 显示失败消息
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.forging_failed", fragmentCount),
+                true
+            );
+        }
+    }
+
+    /**
+     * 处理环境音效（仅客户端）
+     * 定期播放轻微的石砧环境音效，增强沉浸感
+     */
+    public void tickAmbientSounds() {
+        if (level == null) return;
+
+        // 仅在客户端播放环境音效
+        if (!level.isClientSide) return;
+
+        // 减少冷却计时器
+        if (ambientSoundCooldown > 0) {
+            ambientSoundCooldown--;
+            return;
+        }
+
+        // 只有当石砧上有物品时才播放环境音效
+        if (!storedItem.isEmpty()) {
+            // 每 200-400 ticks (10-20 秒) 播放一次轻微的金属锻造声
+            if (level.random.nextInt(200) == 0) {
+                // 使用铁砧环境音效，更符合锻造场景
+                level.playLocalSound(worldPosition, net.minecraft.sounds.SoundEvents.ANVIL_STEP,
+                    net.minecraft.sounds.SoundSource.BLOCKS, 0.05f, 0.6f + level.random.nextFloat() * 0.4f, false);
+
+                // 重置冷却时间（200-400 ticks）
+                ambientSoundCooldown = 200 + level.random.nextInt(200);
+            }
+        }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        if (!storedItem.isEmpty()) {
+            tag.put("Item", storedItem.save(new CompoundTag()));
+        }
+        tag.putInt("HitCount", hitCount);
+        tag.putInt("CarveCount", carveCount);
+        tag.putFloat("StretchFactor", stretchFactor);
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        storedItem = tag.contains("Item") ? ItemStack.of(tag.getCompound("Item")) : ItemStack.EMPTY;
+        hitCount = tag.getInt("HitCount");
+        carveCount = tag.getInt("CarveCount");
+        stretchFactor = tag.getFloat("StretchFactor");
+    }
+
+    @Nullable
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag == null) {
+            tag = new CompoundTag();
+        }
+        load(tag);
+        if (level != null && level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+    
+    /**
+     * 从源物品继承质量、纯度和重量属性到目标物品
+     * @param sourceItem 源物品
+     * @param targetItem 目标物品
+     */
+    private void inheritQualityAndPurity(ItemStack sourceItem, ItemStack targetItem) {
+        inheritQualityAndPurity(sourceItem, targetItem, false);
+    }
+    
+    /**
+     * 从源物品继承质量、纯度和重量属性到目标物品
+     * @param sourceItem 源物品
+     * @param targetItem 目标物品
+     * @param isForging 是否为锻打操作（锻打会损失2%~5%的质量）
+     */
+    private void inheritQualityAndPurity(ItemStack sourceItem, ItemStack targetItem, boolean isForging) {
+        if (sourceItem.isEmpty() || targetItem.isEmpty()) return;
+        
+        // 复制 NBT 标签以保留质量、纯度和重量
+        if (sourceItem.hasTag()) {
+            CompoundTag sourceTag = sourceItem.getTag();
+            CompoundTag targetTag = targetItem.getOrCreateTag();
+            
+            // 复制质量属性
+            if (sourceTag.contains("Quality")) {
+                targetTag.putString("Quality", sourceTag.getString("Quality"));
+            }
+            
+            // 复制纯度属性
+            if (sourceTag.contains("Purity")) {
+                targetTag.putFloat("Purity", sourceTag.getFloat("Purity"));
+            }
+            
+            // 复制重量属性，如果是锻打则减少2%~5%
+            if (sourceTag.contains("Weight")) {
+                double originalWeight = sourceTag.getDouble("Weight");
+                if (isForging && level != null) {
+                    // 锻打后重量为原来的95%~98%
+                    double weightRatio = 0.95 + level.random.nextDouble() * 0.03;
+                    targetTag.putDouble("Weight", originalWeight * weightRatio);
+                } else {
+                    targetTag.putDouble("Weight", originalWeight);
+                }
+            }
+        }
+    }
+}

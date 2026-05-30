@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "forgeborneodyssey:item/wrought_silver_sword"
+  }
+}

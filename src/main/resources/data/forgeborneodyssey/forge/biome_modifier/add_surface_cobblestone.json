@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "forgeborneodyssey:surface_cobblestone_placed",
+  "step": "surface_structures"
+}

@@ -1,0 +1,26 @@
+{
+  "type": "forgeborneodyssey:forging",
+  "input": {
+    "item": "forgeborneodyssey:copper_billet"
+  },
+  "results": [
+    {
+      "item": {
+        "item": "forgeborneodyssey:primitive_copper_knife"
+      },
+      "progressRequired": 100
+    },
+    {
+      "item": {
+        "item": "forgeborneodyssey:wrought_copper_axe"
+      },
+      "progressRequired": 90
+    },
+    {
+      "item": {
+        "item": "forgeborneodyssey:copper_bead"
+      },
+      "progressRequired": 60
+    }
+  ]
+}

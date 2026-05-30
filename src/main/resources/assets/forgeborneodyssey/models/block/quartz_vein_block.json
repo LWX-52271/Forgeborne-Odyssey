@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "forgeborneodyssey:block/quartz_vein_block"
+  }
+}

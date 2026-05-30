@@ -1,0 +1,32 @@
+{
+  "type": "forgeborneodyssey:forging",
+  "input": {
+    "item": "forgeborneodyssey:gold_billet"
+  },
+  "results": [
+    {
+      "item": {
+        "item": "forgeborneodyssey:primitive_gold_knife"
+      },
+      "progressRequired": 100
+    },
+    {
+      "item": {
+        "item": "forgeborneodyssey:wrought_gold_axe"
+      },
+      "progressRequired": 90
+    },
+    {
+      "item": {
+        "item": "forgeborneodyssey:gold_bead"
+      },
+      "progressRequired": 60
+    },
+    {
+      "item": {
+        "item": "forgeborneodyssey:gold_bar"
+      },
+      "progressRequired": 50
+    }
+  ]
+}

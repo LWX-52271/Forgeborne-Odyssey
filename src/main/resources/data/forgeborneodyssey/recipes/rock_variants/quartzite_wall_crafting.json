@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:quartzite_block"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:quartzite_wall",
+    "count": 6
+  }
+}

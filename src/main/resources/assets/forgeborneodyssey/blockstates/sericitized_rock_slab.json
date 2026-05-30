@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/sericitized_rock_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/sericitized_rock_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/sericitized_rock_block"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+// 1.20.1	2026-01-02T23:56:46.656427	Tags for minecraft:item mod id forgeborneodyssey
+51658ef5d63447a4e463872b83e3e9706cf3d738 data/forgeborneodyssey/tags/items/ingots/brass.json
+85aa11478f8b260a82c7aaa1b82b945f4caed644 data/forgeborneodyssey/tags/items/ingots/bronze.json
+ec059b38e70cf6118bbcfd86105cf2f0a1d6584b data/forgeborneodyssey/tags/items/ingots/chromium.json
+3545fe7b69575d9a5856492eb6a7ac15efabad95 data/forgeborneodyssey/tags/items/ingots/copper.json
+aedf0a199dae43722a8462dd0836b5013c1c5c67 data/forgeborneodyssey/tags/items/ingots/lead.json
+f1e094eb24105f4bc1ffa50815dcf8ceccc9b5df data/forgeborneodyssey/tags/items/ingots/nickel.json
+a6f44a08095f67b6ffc43b536eb48ab06b8f2f05 data/forgeborneodyssey/tags/items/ingots/steel.json
+3d1db0c09326261f7daf4b06b68c75457bcc9955 data/forgeborneodyssey/tags/items/ingots/tin.json
+c6a9bbb82df6c846c6c46157f9219070f97b76a1 data/forgeborneodyssey/tags/items/ingots/zinc.json
+b789e22008566c3c5a633753c732a80414784b2a data/forge/tags/items/ingots.json
+d222c4ad11f8ccc3c53adb63f277b30626556378 data/forge/tags/items/raw_materials.json

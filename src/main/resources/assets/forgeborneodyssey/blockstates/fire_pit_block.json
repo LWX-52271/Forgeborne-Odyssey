@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "facing=north,lit=false,signal_fire=false,waterlogged=false,has_bottle_0=false": {
+      "model": "forgeborneodyssey:block/fire_pit_empty"
+    },
+    "facing=south,lit=false,signal_fire=false,waterlogged=false,has_bottle_0=false": {
+      "model": "forgeborneodyssey:block/fire_pit_empty",
+      "y": 180
+    },
+    "facing=east,lit=false,signal_fire=false,waterlogged=false,has_bottle_0=false": {
+      "model": "forgeborneodyssey:block/fire_pit_empty",
+      "y": 270
+    },
+    "facing=west,lit=false,signal_fire=false,waterlogged=false,has_bottle_0=false": {
+      "model": "forgeborneodyssey:block/fire_pit_empty",
+      "y": 90
+    },
+    "facing=north,lit=false,signal_fire=false,waterlogged=false,has_bottle_0=true": {
+      "model": "forgeborneodyssey:block/fire_pit_unlit"
+    },
+    "facing=south,lit=false,signal_fire=false,waterlogged=false,has_bottle_0=true": {
+      "model": "forgeborneodyssey:block/fire_pit_unlit",
+      "y": 180
+    },
+    "facing=east,lit=false,signal_fire=false,waterlogged=false,has_bottle_0=true": {
+      "model": "forgeborneodyssey:block/fire_pit_unlit",
+      "y": 270
+    },
+    "facing=west,lit=false,signal_fire=false,waterlogged=false,has_bottle_0=true": {
+      "model": "forgeborneodyssey:block/fire_pit_unlit",
+      "y": 90
+    },
+    "facing=north,lit=true,signal_fire=false,waterlogged=false,has_bottle_0=true": {
+      "model": "forgeborneodyssey:block/fire_pit_lit"
+    },
+    "facing=south,lit=true,signal_fire=false,waterlogged=false,has_bottle_0=true": {
+      "model": "forgeborneodyssey:block/fire_pit_lit",
+      "y": 180
+    },
+    "facing=east,lit=true,signal_fire=false,waterlogged=false,has_bottle_0=true": {
+      "model": "forgeborneodyssey:block/fire_pit_lit",
+      "y": 270
+    },
+    "facing=west,lit=true,signal_fire=false,waterlogged=false,has_bottle_0=true": {
+      "model": "forgeborneodyssey:block/fire_pit_lit",
+      "y": 90
+    }
+  }
+}

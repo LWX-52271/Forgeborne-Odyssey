@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  #",
+    " #X",
+    "#RH"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "item": "minecraft:string"
+    },
+    "R": {
+      "item": "forgeborneodyssey:copper_ring"
+    },
+    "H": {
+      "item": "forgeborneodyssey:copper_hook"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:copper_fishing_rod",
+    "count": 1
+  }
+}

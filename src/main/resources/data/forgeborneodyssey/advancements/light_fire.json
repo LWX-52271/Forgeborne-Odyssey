@@ -1,0 +1,45 @@
+{
+  "parent": "forgeborneodyssey:stone_age",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:fire_pit_block"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.light_fire.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.light_fire.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "light_fire_pit": {
+      "trigger": "minecraft:item_used_on_block",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "forgeborneodyssey:fire_pit_block"
+                ],
+                "state": {
+                  "lit": "true"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "light_fire_pit"
+    ]
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "forgeborneodyssey:copper_sheet",
+    "forgeborneodyssey:silver_sheet",
+    "forgeborneodyssey:gold_sheet"
+  ]
+}

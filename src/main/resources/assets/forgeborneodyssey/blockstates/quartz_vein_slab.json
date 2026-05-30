@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/quartz_vein_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/quartz_vein_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/quartz_vein_block"
+    }
+  }
+}

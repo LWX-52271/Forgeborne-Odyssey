@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:marble_block"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:marble_stairs",
+    "count": 8
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "type": "forgeborneodyssey:forging",
+  "input": {
+    "item": "forgeborneodyssey:silver_billet"
+  },
+  "results": [
+    {
+      "item": {
+        "item": "forgeborneodyssey:primitive_silver_knife"
+      },
+      "progressRequired": 100
+    },
+    {
+      "item": {
+        "item": "forgeborneodyssey:wrought_silver_axe"
+      },
+      "progressRequired": 90
+    },
+    {
+      "item": {
+        "item": "forgeborneodyssey:silver_bead"
+      },
+      "progressRequired": 60
+    },
+    {
+      "item": {
+        "item": "forgeborneodyssey:silver_bar"
+      },
+      "progressRequired": 50
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C ",
+    "S "
+  ],
+  "key": {
+    "C": {
+      "item": "forgeborneodyssey:surface_cobblestone_block"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:stone_chisel",
+    "count": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:sericitized_rock_block"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:sericitized_rock_stairs",
+    "count": 8
+  }
+}

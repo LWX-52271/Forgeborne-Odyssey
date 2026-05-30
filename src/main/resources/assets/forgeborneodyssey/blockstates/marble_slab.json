@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/marble_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/marble_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/marble_block"
+    }
+  }
+}

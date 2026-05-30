@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:fire_pit_block"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.root.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "forgeborneodyssey:textures/block/azurite_ore.png"
+  },
+  "criteria": {
+    "always": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

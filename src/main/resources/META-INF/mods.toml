@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+logoFile="logo.png"
+credits="Inspired by real metallurgy processes and classic tech mods"
+displayURL="https://github.com/lwx/forgeborne-odyssey"
+updateJSONURL="https://raw.githubusercontent.com/lwx/forgeborne-odyssey/updates/update.json"
+
+[[mods]]
+modId="forgeborneodyssey"
+version="${mod_version}"
+displayName="Forgeborne Odyssey"
+authors="${mod_authors}"
+description="A comprehensive metallurgy and technology mod for Minecraft, simulating real industrial processes from the Bronze Age to the Nuclear Age."
+displayTest="MATCH_VERSION"
+
+[[dependencies.forgeborneodyssey]]
+modId="forge"
+mandatory=true
+versionRange="[47.2.0,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.forgeborneodyssey]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1]"
+ordering="NONE"
+side="BOTH"
+

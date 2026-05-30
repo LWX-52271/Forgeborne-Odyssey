@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    " S ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:limestone_block"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:limestone_anvil",
+    "count": 1
+  }
+}

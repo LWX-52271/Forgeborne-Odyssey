@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "forgeborneodyssey:block/polished_limestone_anvil"
+    },
+    "facing=south": {
+      "model": "forgeborneodyssey:block/polished_limestone_anvil",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "forgeborneodyssey:block/polished_limestone_anvil",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "forgeborneodyssey:block/polished_limestone_anvil",
+      "y": 90
+    }
+  }
+}

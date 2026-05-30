@@ -1,0 +1,36 @@
+{
+  "parent": "forgeborneodyssey:sparks_fly",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:primitive_copper_knife"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.weapons_and_armor.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.weapons_and_armor.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "craft_weapon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "tag": "forgeborneodyssey:metal_weapons"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "craft_weapon"
+    ]
+  ]
+}
