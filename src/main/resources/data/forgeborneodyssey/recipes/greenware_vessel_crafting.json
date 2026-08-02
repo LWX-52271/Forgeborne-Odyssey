@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "CCC",
+    " C "
+  ],
+  "key": {
+    "C": {
+      "item": "forgeborneodyssey:mixed_clay"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:greenware_vessel",
+    "count": 1
+  }
+}

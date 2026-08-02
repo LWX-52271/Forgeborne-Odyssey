@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "smoke_hole=0": {
+      "model": "forgeborneodyssey:block/kiln_lid_open"
+    },
+    "smoke_hole=1": {
+      "model": "forgeborneodyssey:block/kiln_lid_half"
+    },
+    "smoke_hole=2": {
+      "model": "forgeborneodyssey:block/kiln_lid_closed"
+    }
+  }
+}

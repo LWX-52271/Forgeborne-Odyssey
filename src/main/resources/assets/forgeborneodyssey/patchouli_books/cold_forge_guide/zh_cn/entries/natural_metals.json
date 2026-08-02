@@ -1,0 +1,38 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "寻找自然金属",
+  "icon": "forgeborneodyssey:natural_copper_block",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "第二章：寻找自然金属",
+      "text": "§7【资源探索】$(br2)冶锻纪行中的金属以自然金属块的形式生成于世界中。你需要探索不同的生物群系来寻找这些珍贵的资源。每种金属都有独特的生成高度和识别特征。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:natural_copper_block",
+      "text": "§c【自然铜】最常见$(br2)生成位置：山地或河流附近 Y=65-180$(br)识别特征：石质地面或黏土坑旁边$(br2)铜是最基础的锻造金属，建议优先寻找。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:natural_silver_block",
+      "text": "§b【自然银】比较稀有$(br2)生成位置：高海拔山区 Y=80-200$(br)识别特征：安山岩或花岗岩地表$(br2)银的锻造性能优良，适合制作精密饰品。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:natural_gold_block",
+      "text": "§a【自然金】非常稀有$(br2)生成位置：河滩或沙滩 Y=55-75$(br)识别特征：沙子、砂岩或砾石地表$(br2)金是最珍贵的金属，适合制作高端饰品和装饰。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "快速查找命令",
+      "text": "§b快速查找命令：$(br)$(li)/forgeodyssey find nearest_copper$(br)$(li)/forgeodyssey find nearest_silver$(br)$(li)/forgeodyssey find nearest_gold$(br2)使用这些命令可以快速定位最近的自然金属块，节省探索时间。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "识别技巧",
+      "text": "自然金属块与普通方块外观差异明显：$(br)$(li)铜——红褐色斑块$(br)$(li)银——银白色光泽$(br)$(li)金——金黄色闪光$(br2)注意：自然金属块的硬度较高，需要用石锤或更好的工具才能敲碎获取。"
+    }
+  ],
+  "sortnum": 1
+}

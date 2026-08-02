@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:raw_clay"
+    },
+    {
+      "item": "forgeborneodyssey:temper_grog"
+    },
+    {
+      "item": "forgeborneodyssey:grass_fiber"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:mixed_clay",
+    "count": 1
+  }
+}

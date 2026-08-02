@@ -1,0 +1,63 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Loading & Sealing",
+  "icon": "forgeborneodyssey:greenware_crucible",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Step 2: Loading Greenware",
+      "text": "When the kiln enters Stage 1, right-click the top of the pit kiln with greenware to load it. Up to 4 greenware items can be loaded.$(br2)To remove loaded items, right-click the top with an empty hand (non-Shift mode). Removes the last item placed."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Greenware Types",
+      "text": "Four types of greenware can be loaded:$(br2)$(li)§bCrucible Greenware§r → §bGray Crucible§r$(br)$(li)§6Mold Greenware§r → §6Red Mold§r$(br)$(li)§7Brick Greenware§r → §7Fired Brick§r$(br)$(li)§8Vessel Greenware§r → §8Black Ceramic Pad§r$(br2)Each requires different firing conditions. Failure produces kiln waste shards."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_crucible_crafting",
+      "text": "Crafting recipe for crucible greenware. Requires drying mixed clay on a drying rack first."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_mold_crafting",
+      "text": "Crafting recipe for mold greenware."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_brick_crafting",
+      "text": "Crafting recipe for brick greenware."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_vessel_crafting",
+      "text": "Crafting recipe for vessel greenware."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Adding Fuel & Sealing",
+      "text": "After loading, right-click the fire mouth with fuel to add it. Supported fuel types:$(br2)$(li)§6Firewood§r: fuel value 4 (1800 ticks/90 seconds each)$(br)$(li)§eStraw Bale§r: fuel value 1$(br)$(li)§8Rice Husk Char§r: fuel value 6 (best fuel)$(br)$(li)§7Charcoal Block§r: fuel value 1$(br2)After adding fuel, right-click the top with a kiln lid to seal. The kiln enters Stage 2."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:kiln_lid_crafting",
+      "text": "Crafting recipe for the kiln lid. Sealing the kiln enters the heating stage."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:firewood_crafting",
+      "text": "Crafting recipe for firewood."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:straw_bale_crafting",
+      "text": "Crafting recipe for straw bale. Low fuel value but simple to make."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:rice_husk_char",
+      "text": "§8Rice Husk Char§r is the best fuel for pit kiln firing, with a fuel value of 6 and the longest burn time. Obtained by smelting rice husk in a furnace."
+    }
+  ],
+  "sortnum": 1
+}

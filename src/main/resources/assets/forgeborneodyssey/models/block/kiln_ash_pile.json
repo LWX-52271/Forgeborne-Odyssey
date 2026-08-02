@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "forgeborneodyssey:block/kiln_ash_pile"
+  }
+}

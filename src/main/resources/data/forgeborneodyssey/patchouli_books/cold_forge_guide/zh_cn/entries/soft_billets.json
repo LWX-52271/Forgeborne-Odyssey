@@ -1,0 +1,43 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "制备软化坯料",
+  "icon": "forgeborneodyssey:copper_billet",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "第三章：制备软化坯料",
+      "text": "§7【第一步：合成坯料】$(br2)获取自然金属块后，需要将其与水桶在合成台中合成坯料。坯料是锻造的基础原料。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:copper_billet_crafting",
+      "text": "§b铜坯料合成配方$(br2)自然铜块 + 水桶 = 铜坯料$(br)银和金的坯料合成方式相同。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:fire_pit_crafting",
+      "text": "§b火台合成配方$(br2)火台是加热坯料的设施，用8个地表圆石围成环形合成。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "§7【第二步：火台加热软化】",
+      "text": "将合成好的坯料放入火台加热，使其软化以便锻造。$(br2)操作步骤：$(br)$(li)1. 放置火台方块并添加燃料（如硬木柴）$(br)$(li)2. 右键点击火台将其点燃$(br)$(li)3. 将坯料放入火台开始加热$(br)$(li)4. 等待片刻获得软化坯料"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:firewood_crafting",
+      "text": "§b硬木柴——火台的基础燃料。由任意原木合成。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:wooden_clamp",
+      "text": "§c⚠ 警告：高温物品必须用§b木钳§r取！$(br2)空手取物会被烫伤并着火。木钳可以安全地取走加热后的物品。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:soft_copper_billet",
+      "text": "§b软化铜坯料$(br2)在火台中加热后获得，颜色变深，质地变软，可立即在石砧上锻造。注意：软化铜坯料在背包中1.5分钟后会自动冷却变回普通坯料。"
+    }
+  ],
+  "sortnum": 2
+}

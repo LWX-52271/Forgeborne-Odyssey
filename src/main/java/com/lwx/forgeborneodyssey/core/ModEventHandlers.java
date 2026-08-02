@@ -1,7 +1,10 @@
 package com.lwx.forgeborneodyssey.core;
 
+import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
+import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -10,16 +13,25 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.TallGrassBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 模组事件处理器
@@ -37,7 +49,9 @@ public class ModEventHandlers {
     
     // 定期清理计数器（每10分钟清理一次无效条目）
     private static int cleanupCounter = 0;
-    private static final int CLEANUP_INTERVAL = 12000; // 10分钟 = 12000 ticks
+    private static final int CLEANUP_INTERVAL = 12000;
+
+    private static final Set<BlockPos> furnacesWithPad = new HashSet<>();
     
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent event) {
@@ -88,7 +102,43 @@ public class ModEventHandlers {
             }
         }
     }
-    
+
+    /**
+     * 追踪放置的熔炉是否在渗碳黑陶垫之上
+     */
+    @SubscribeEvent
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
+        if (event.getLevel().isClientSide()) return;
+
+        BlockState placed = event.getPlacedBlock();
+        BlockPos pos = event.getPos();
+        BlockPos belowPos = pos.below();
+
+        if (placed.getBlock() instanceof net.minecraft.world.level.block.AbstractFurnaceBlock) {
+            BlockState below = event.getLevel().getBlockState(belowPos);
+            if (below.is(com.lwx.forgeborneodyssey.core.registration.ModBlocks.BLACK_CERAMIC_PAD.get())) {
+                furnacesWithPad.add(pos);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+        if (event.getLevel().isClientSide()) return;
+
+        BlockState broken = event.getState();
+        BlockPos pos = event.getPos();
+
+        if (broken.getBlock() instanceof net.minecraft.world.level.block.AbstractFurnaceBlock) {
+            furnacesWithPad.remove(pos);
+        }
+
+        if (broken.is(com.lwx.forgeborneodyssey.core.registration.ModBlocks.BLACK_CERAMIC_PAD.get())) {
+            BlockPos abovePos = pos.above();
+            furnacesWithPad.remove(abovePos);
+        }
+    }
+
     /**
      * 定期清理无效的计时器条目
      * 防止因异常情况导致的内存泄漏
@@ -268,6 +318,140 @@ public class ModEventHandlers {
         itemInWaterTimer.remove(event.getEntity());
     }
     
+    /**
+     * 自定义燃料燃烧时间
+     * 硬木柴: 1800 tick, 干草捆: 800 tick, 稻壳炭: 2400 tick, 炭化结块: 600 tick
+     */
+    @SubscribeEvent
+    public static void onFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
+        ItemStack stack = event.getItemStack();
+        int burnTime = 0;
+
+        if (stack.is(ModItems.FIREWOOD.get())) {
+            burnTime = 1800;
+        } else if (stack.is(ModItems.STRAW_BALE.get())) {
+            burnTime = 800;
+        } else if (stack.is(ModItems.RICE_HUSK_CHAR.get())) {
+            burnTime = 2400;
+        } else if (stack.is(ModItems.CHARCOAL_CLUMP.get())) {
+            burnTime = 600;
+        }
+
+        if (burnTime > 0) {
+            if (!furnacesWithPad.isEmpty()) {
+                burnTime = (int)(burnTime * 1.2F);
+            }
+            event.setBurnTime(burnTime);
+        }
+    }
+
+    /**
+     * 右键成熟小麦时 30% 几率额外掉落稻壳
+     */
+    @SubscribeEvent
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getLevel().isClientSide()) return;
+
+        Player player = event.getEntity();
+        BlockPos pos = event.getHitVec().getBlockPos();
+        BlockState state = event.getLevel().getBlockState(pos);
+        ItemStack held = player.getItemInHand(event.getHand());
+
+        if (held.is(ModItems.FLINT_SHOVEL.get()) && isDirtLike(state)) {
+            // 窑坑方向背向玩家（开口朝向玩家面前）
+            Direction playerFacing = player.getDirection().getOpposite();
+            BlockState kilnState = ModBlocks.PIT_KILN.get().defaultBlockState()
+                    .setValue(PitKilnBlock.FACING, playerFacing);
+            event.getLevel().setBlock(pos, kilnState, 3);
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+            event.getLevel().playSound(null, pos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (held.is(ModItems.FLINT_SHOVEL.get()) && isSandLike(state)) {
+            int count = 1 + event.getLevel().getRandom().nextInt(2);
+            ItemStack clay = new ItemStack(ModItems.RAW_CLAY.get(), count);
+            if (!player.getInventory().add(clay)) {
+                player.drop(clay, false);
+            }
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+            event.getLevel().playSound(null, pos, SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (held.is(ModItems.FLINT_KNIFE.get()) && isGrassLike(state)) {
+            int count = 1 + event.getLevel().getRandom().nextInt(2);
+            ItemStack fiber = new ItemStack(ModItems.GRASS_FIBER.get(), count);
+            if (!player.getInventory().add(fiber)) {
+                player.drop(fiber, false);
+            }
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+            event.getLevel().playSound(null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+            event.getLevel().setBlock(pos, state, 3);
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (held.is(ModItems.STONE_HAMMER.get()) && isStoneLike(state)) {
+            int count = 1 + event.getLevel().getRandom().nextInt(2);
+            ItemStack grog = new ItemStack(ModItems.TEMPER_GROG.get(), count);
+            if (!player.getInventory().add(grog)) {
+                player.drop(grog, false);
+            }
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+            event.getLevel().playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.6F, 1.2F);
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)) {
+            if (event.getLevel().getRandom().nextFloat() < 0.30F) {
+                ItemStack riceHusk = new ItemStack(ModItems.RICE_HUSK.get());
+                if (!player.getInventory().add(riceHusk)) {
+                    player.drop(riceHusk, false);
+                }
+            }
+        }
+    }
+
+    private static boolean isDirtLike(BlockState state) {
+        return state.is(Blocks.DIRT) ||
+                state.is(Blocks.GRASS_BLOCK) ||
+                state.is(Blocks.COARSE_DIRT) ||
+                state.is(Blocks.PODZOL) ||
+                state.is(Blocks.MYCELIUM) ||
+                state.is(Blocks.ROOTED_DIRT);
+    }
+
+    private static boolean isSandLike(BlockState state) {
+        return state.is(Blocks.SAND) ||
+                state.is(Blocks.RED_SAND) ||
+                state.is(Blocks.GRAVEL);
+    }
+
+    private static boolean isGrassLike(BlockState state) {
+        return state.is(Blocks.GRASS) ||
+                state.is(Blocks.TALL_GRASS) ||
+                state.is(Blocks.FERN) ||
+                state.is(Blocks.LARGE_FERN);
+    }
+
+    private static boolean isStoneLike(BlockState state) {
+        return state.is(Blocks.STONE) ||
+                state.is(Blocks.COBBLESTONE) ||
+                state.is(Blocks.COBBLED_DEEPSLATE) ||
+                state.is(Blocks.SMOOTH_BASALT) ||
+                state.is(Blocks.TUFF) ||
+                state.is(Blocks.CALCITE) ||
+                state.is(Blocks.DRIPSTONE_BLOCK);
+    }
+
     /**
      * 更新软化铜坯料在背包中的冷却时间
      * 1.5分钟（1800 ticks）后冷却成铜胚料

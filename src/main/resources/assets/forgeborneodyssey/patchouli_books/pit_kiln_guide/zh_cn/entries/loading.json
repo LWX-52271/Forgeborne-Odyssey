@@ -1,0 +1,63 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "装填与封顶",
+  "icon": "forgeborneodyssey:greenware_crucible",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "第二步：装填生坯",
+      "text": "窑炉进入Stage 1后，手持生坯右击窑坑顶部即可放入。最多可放入4个生坯。$(br2)要取出已放入的生坯，空手右击窑顶即可（非Shift模式）。每次取出最后一个放入的生坯。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "生坯类型",
+      "text": "可放入窑炉的生坯共有四种：$(br2)$(li)§b坩埚生坯§r→烧制成功获得§b灰陶坩埚§r$(br)$(li)§6陶范生坯§r→烧制成功获得§6红陶范§r$(br)$(li)§7耐火砖生坯§r→烧制成功获得§7烧制砖§r$(br)$(li)§8陶器生坯§r→烧制成功获得§8渗碳黑陶垫§r$(br2)每种生坯需要不同的烧制条件，失败则产出窑渣碎片。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_crucible_crafting",
+      "text": "坩埚生坯的合成配方。需要先在干燥架上晾干混合黏土。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_mold_crafting",
+      "text": "陶范生坯的合成配方。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_brick_crafting",
+      "text": "耐火砖生坯的合成配方。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_vessel_crafting",
+      "text": "陶器生坯的合成配方。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "添加燃料与封顶",
+      "text": "生坯放好后，在火门处右击添加燃料。支持的燃料类型：$(br2)$(li)§6木柴§r：燃料值4（每根燃烧1800tick/90秒）$(br)$(li)§e稻草捆§r：燃料值1$(br)$(li)§8稻壳炭§r：燃料值6（最佳燃料）$(br)$(li)§7木炭块§r：燃料值1$(br2)添加燃料后，手持窑顶盖右击窑顶封顶，窑炉进入Stage 2。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:kiln_lid_crafting",
+      "text": "窑顶盖的合成配方。封顶后窑炉进入升温阶段。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:firewood_crafting",
+      "text": "木柴的合成配方。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:straw_bale_crafting",
+      "text": "稻草捆的合成配方。燃料值较低但制作简单。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:rice_husk_char",
+      "text": "§8稻壳炭§r是烧制竖穴窑的最佳燃料，燃料值高达6，燃烧时间最长。通过熔炉烧制稻壳获得。"
+    }
+  ],
+  "sortnum": 1
+}

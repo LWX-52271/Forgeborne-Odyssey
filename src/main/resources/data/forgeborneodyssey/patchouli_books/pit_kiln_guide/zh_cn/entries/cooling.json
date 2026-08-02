@@ -1,0 +1,28 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "冷却与收集",
+  "icon": "forgeborneodyssey:plant_ash",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "冷却阶段（Stage 4）",
+      "text": "燃料耗尽且温度降至50℃以下后，窑炉自动进入Stage 4冷却阶段。$(br2)冷却阶段特征：$(br)$(li)温度持续下降，降温速率×1.0（正常速度）$(br)$(li)冷却计时器开始累计$(br)$(li)窑顶冒出蒸汽/云雾粒子$(br)$(li)需要冷却1200tick（60秒）$(br2)冷却完成（温度<50℃ + 冷却>1200tick）后，窑炉进入Stage 5出窑阶段。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "出窑收集（Stage 5）",
+      "text": "进入Stage 5后，窑顶盖自动移除，窑炉准备出窑。$(br2)Shift+空手右击窑炉即可取出所有成品：$(br)$(li)每个槽位根据生坯类型和烧制条件产出对应成品$(br)$(li)额外产出2-4个草木灰$(br)$(li)窑炉方块变为灰烬堆方块$(br2)出窑后如需再次使用，需重新放置窑坑方块。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "注意事项",
+      "text": "$(li)§c雨天烧制会爆炸！§r高温阶段（Stage 3）检测到窑顶上方有雨，窑炉会立即爆炸，摧毁所有内容物，产出2-4个窑渣碎片。$(br2)$(li)§c冷却前不要打开窑盖！§r冷却阶段（Stage 4）中如果强行拆除窑炉，成品可能损坏。$(br2)$(li)§a草木灰用途§r：出窑产出的草木灰可作为肥料使用。$(br2)$(li)§a窑渣碎片用途§r：烧制失败的副产品，可回收再利用。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "快速参考",
+      "text": "完整烧制流程：$(br2)$(li)放置窑坑 → 围泥土墙$(br)$(li)放火门 → 安装窑箅 → Stage 1$(br)$(li)放生坯 → 添燃料 → 封顶 → Stage 2$(br)$(li)点火（弓钻右击火门）$(br)$(li)升温至100℃ → Stage 3$(br)$(li)控制气氛（火门+通风口）$(br)$(li)燃料耗尽降温 → Stage 4$(br)$(li)冷却60秒 → Stage 5$(br)$(li)Shift+空手右击出窑"
+    }
+  ],
+  "sortnum": 5
+}

@@ -1,0 +1,38 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Ignition & Firing",
+  "icon": "forgeborneodyssey:fire_drill",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Step 3: Ignition & Firing",
+      "text": "After sealing, the kiln enters Stage 2 heating phase. Now you need to ignite:$(br2)$(li)Ensure the fire mouth is open (default state)$(br)$(li)Right-click the fire mouth with a fire drill$(br)$(li)Each use consumes 5 durability$(br2)If the fire mouth is blocked with dirt, Shift+right-click with empty hand to clear it."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:fire_drill_crafting",
+      "text": "Crafting recipe for the fire drill. Essential for ignition and wilderness fire starting."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Heating Phase (Stage 2)",
+      "text": "After ignition, the kiln begins heating. Phase characteristics:$(br2)$(li)Temperature rises gradually from room temp (20℃)$(br)$(li)Black smoke particles emit from fire mouth and vents$(br)$(li)Heating occurs every 10 ticks (0.5 seconds)$(br)$(li)Rise rate depends on grate efficiency, vent state, and insulation$(br2)Heating formula:$(br)$(o)Rise = 1.0 × Grate Efficiency × Vent Coeff × Insulation Coeff"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Heating Speed Breakdown",
+      "text": "Factors affecting heating speed:$(br2)$(li)§6Grate§r: Yes=100%, No=30%$(br)$(li)§6Vents§r: Fully closed×1.2, other×0.8$(br)$(li)§6Insulation§r: 4 sides×1.0, 3×0.75, 2×0.5, 1×0.3, 0×0.15$(br2)Optimal combo (grate+fully closed vents+4-sided insulation): Fastest heat, up to 1200℃.$(br2)Auto-enters Stage 3 when temperature exceeds 100℃."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "High-Temp Firing (Stage 3)",
+      "text": "Entering Stage 3, formal firing begins:$(br2)$(li)Continue consuming fuel to maintain temperature$(br)$(li)Oxygen content recalculated every 10 ticks$(br)$(li)High-temp timer accumulates above 900℃$(br)$(li)30% chance of ash particles on fuel consumption$(br)$(li)Flame particles emit from fire mouth and vents$(br2)$(c)§c⚠ Rain causes explosion!§r$(br)The kiln immediately explodes and destroys all contents if rain is detected above the kiln during Stage 3."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Fuel Depletion",
+      "text": "When fuel depletes and temperature drops below 50℃, the kiln auto-enters Stage 4 cooling.$(br2)During Stage 2 depletion: Temperature drops slowly (×0.3 rate) until flame dies at room temperature.$(br2)During Stage 3 depletion: Temperature drops at ×0.5 rate, entering cooling below 50℃."
+    }
+  ],
+  "sortnum": 2
+}

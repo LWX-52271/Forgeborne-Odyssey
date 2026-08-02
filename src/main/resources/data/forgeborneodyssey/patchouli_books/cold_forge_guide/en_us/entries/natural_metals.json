@@ -1,0 +1,38 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Natural Metals",
+  "icon": "forgeborneodyssey:natural_copper_block",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Chapter 2: Find Natural Metals",
+      "text": "§7[Resource Exploration]$(br2)Metals in Forgeborne Odyssey generate as natural metal blocks in the world. You need to explore different biomes to find these valuable resources. Each metal has unique spawn heights and identifying features."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:natural_copper_block",
+      "text": "§c[Natural Copper] Most Common$(br2)Spawn: Mountains or Rivers Y=65-180$(br)Look for: Rocky ground or near clay pits$(br2)Copper is the most basic forging metal. Prioritize finding it first."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:natural_silver_block",
+      "text": "§b[Natural Silver] Quite Rare$(br2)Spawn: High Altitude Mountains Y=80-200$(br)Look for: Andesite or Granite surface$(br2)Silver has excellent forging properties, ideal for precision decorations."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:natural_gold_block",
+      "text": "§a[Natural Gold] Very Rare$(br2)Spawn: River Banks or Beaches Y=55-75$(br)Look for: Sand, Sandstone or Gravel surface$(br2)Gold is the most precious metal, perfect for high-end decorations."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Quick Find Commands",
+      "text": "§bQuick find commands:$(br)$(li)/forgeodyssey find nearest_copper$(br)$(li)/forgeodyssey find nearest_silver$(br)$(li)/forgeodyssey find nearest_gold$(br2)Use these commands to quickly locate the nearest natural metal block."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Identification Tips",
+      "text": "Natural metal blocks have distinct appearances:$(br)$(li)Copper - Reddish-brown patches$(br)$(li)Silver - Silvery luster$(br)$(li)Gold - Golden shimmer$(br2)Note: Natural metal blocks are hard and require a stone hammer or better tool to break."
+    }
+  ],
+  "sortnum": 1
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "C C",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "forgeborneodyssey:raw_clay"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:kiln_lid",
+    "count": 1
+  }
+}

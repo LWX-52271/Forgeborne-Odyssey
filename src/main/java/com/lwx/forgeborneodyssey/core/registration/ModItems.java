@@ -22,6 +22,11 @@ import com.lwx.forgeborneodyssey.items.armor.CopperPinArmorItem;
 import com.lwx.forgeborneodyssey.items.softmetalbillets.SoftCopperBilletItem;
 import com.lwx.forgeborneodyssey.items.softmetalstrips.SoftCopperStripItem;
 import com.lwx.forgeborneodyssey.items.tools.CobblestoneHammerItem;
+import com.lwx.forgeborneodyssey.items.tools.FlintShovelItem;
+import com.lwx.forgeborneodyssey.items.tools.StoneHammerItem;
+import com.lwx.forgeborneodyssey.items.tools.FlintKnifeItem;
+import com.lwx.forgeborneodyssey.items.tools.FlintSickleItem;
+import com.lwx.forgeborneodyssey.items.tools.FireDrillItem;
 import com.lwx.forgeborneodyssey.items.tools.HandleStoneHammerItem;
 import com.lwx.forgeborneodyssey.items.tools.StoneChiselItem;
 import com.lwx.forgeborneodyssey.items.tools.WoodenTongsItem;
@@ -43,6 +48,7 @@ import com.lwx.forgeborneodyssey.items.metalhooks.CopperHookItem;
 import com.lwx.forgeborneodyssey.items.fragments.CopperFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.SilverFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.GoldFragmentItem;
+import com.lwx.forgeborneodyssey.items.GrayCrucibleItem;
 import com.lwx.forgeborneodyssey.items.GravelItem;
 import com.lwx.forgeborneodyssey.items.FirePitItem;
 import com.lwx.forgeborneodyssey.items.AshItem;
@@ -50,6 +56,7 @@ import com.lwx.forgeborneodyssey.items.CopperSheetItem;
 import com.lwx.forgeborneodyssey.items.SilverSheetItem;
 import com.lwx.forgeborneodyssey.items.GoldSheetItem;
 import com.lwx.forgeborneodyssey.items.ForgeborneGuideBookItem;
+// import com.lwx.forgeborneodyssey.items.PitKilnGuideBookItem; // 暂由Patchouli自动生成
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -157,6 +164,11 @@ public class ModItems {
 
     // 工具物品
     public static final RegistryObject<Item> COBBLESTONE_HAMMER = ITEMS.register("cobblestone_hammer", CobblestoneHammerItem::new);
+    public static final RegistryObject<Item> FLINT_SHOVEL = ITEMS.register("flint_shovel", FlintShovelItem::new);
+    public static final RegistryObject<Item> STONE_HAMMER = ITEMS.register("stone_hammer", StoneHammerItem::new);
+    public static final RegistryObject<Item> FLINT_KNIFE = ITEMS.register("flint_knife", FlintKnifeItem::new);
+    public static final RegistryObject<Item> FLINT_SICKLE = ITEMS.register("flint_sickle", FlintSickleItem::new);
+    public static final RegistryObject<Item> FIRE_DRILL = ITEMS.register("fire_drill", FireDrillItem::new);
     public static final RegistryObject<Item> HANDLE_STONE_HAMMER = ITEMS.register("handle_stone_hammer", HandleStoneHammerItem::new);
     public static final RegistryObject<Item> STONE_CHISEL = ITEMS.register("stone_chisel", StoneChiselItem::new);
     public static final RegistryObject<Item> WOODEN_CLAMP = ITEMS.register("wooden_clamp", WoodenTongsItem::new);
@@ -181,6 +193,24 @@ public class ModItems {
 
     // 火塘物品
     public static final RegistryObject<Item> FIRE_PIT_ITEM = ITEMS.register("fire_pit_block", () -> new FirePitItem(ModBlocks.FIRE_PIT_BLOCK.get()));
+
+    // 竖穴窑物品
+    public static final RegistryObject<Item> PIT_KILN_ITEM = ITEMS.register("pit_kiln", () -> new BlockItem(ModBlocks.PIT_KILN.get(), new Item.Properties()));
+
+    // 火门物品
+    public static final RegistryObject<Item> FIRE_MOUTH_ITEM = ITEMS.register("fire_mouth", () -> new BlockItem(ModBlocks.FIRE_MOUTH.get(), new Item.Properties()));
+
+    // 窑顶盖物品
+    public static final RegistryObject<Item> KILN_LID_ITEM = ITEMS.register("kiln_lid", () -> new BlockItem(ModBlocks.KILN_LID.get(), new Item.Properties()));
+
+    // 窑箅物品
+    public static final RegistryObject<Item> GRATE_BLOCK_ITEM = ITEMS.register("grate_block", () -> new BlockItem(ModBlocks.GRATE_BLOCK.get(), new Item.Properties()));
+
+    // 灰烬堆物品
+    public static final RegistryObject<Item> KILN_ASH_PILE_ITEM = ITEMS.register("kiln_ash_pile", () -> new BlockItem(ModBlocks.KILN_ASH_PILE.get(), new Item.Properties()));
+
+    // 晾坯架物品
+    public static final RegistryObject<Item> DRYING_RACK_ITEM = ITEMS.register("drying_rack", () -> new BlockItem(ModBlocks.DRYING_RACK.get(), new Item.Properties()));
 
     // 饰针胸甲物品（可装备形式）
     public static final RegistryObject<Item> GOLD_PIN_CHESTPLATE = ITEMS.register("gold_pin_chestplate", GoldPinArmorItem::new);
@@ -247,6 +277,38 @@ public class ModItems {
 
     // 冶锻入门手册
     public static final RegistryObject<Item> FORGEBORNE_GUIDE_BOOK = ITEMS.register("forgeborne_guide_book", ForgeborneGuideBookItem::new);
+
+    // 竖穴升焰窑使用指南 - 由Patchouli根据book.json的creative_tab自动生成，无需手动注册
+    // public static final RegistryObject<Item> PIT_KILN_GUIDE_BOOK = ITEMS.register("pit_kiln_guide_book", PitKilnGuideBookItem::new);
+
+    // 第三类：基础原材料（陶器系统）
+    public static final RegistryObject<Item> RAW_CLAY = ITEMS.register("raw_clay", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> TEMPER_GROG = ITEMS.register("temper_grog", () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> GRASS_FIBER = ITEMS.register("grass_fiber", () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> RICE_HUSK = ITEMS.register("rice_husk", () -> new Item(new Item.Properties().stacksTo(64)));
+
+    // 第四类：加工半成品（陶器系统）
+    public static final RegistryObject<Item> MIXED_CLAY = ITEMS.register("mixed_clay", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> GREENWARE_CRUCIBLE = ITEMS.register("greenware_crucible", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> GREENWARE_MOLD = ITEMS.register("greenware_mold", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> GREENWARE_BRICK = ITEMS.register("greenware_brick", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> GREENWARE_VESSEL = ITEMS.register("greenware_vessel", () -> new Item(new Item.Properties().stacksTo(16)));
+
+    // 第五类：燃料与气氛控制物（陶器系统）
+    public static final RegistryObject<Item> FIREWOOD = ITEMS.register("firewood", () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> STRAW_BALE = ITEMS.register("straw_bale", () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> RICE_HUSK_CHAR = ITEMS.register("rice_husk_char", () -> new Item(new Item.Properties().stacksTo(64)));
+
+    // 第六类：最终成品（陶器系统）
+    public static final RegistryObject<Item> GRAY_CRUCIBLE = ITEMS.register("gray_crucible", GrayCrucibleItem::new);
+    public static final RegistryObject<Item> RED_MOLD = ITEMS.register("red_mold", () -> new Item(new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> BLACK_CERAMIC_PAD = ITEMS.register("black_ceramic_pad", () -> new BlockItem(ModBlocks.BLACK_CERAMIC_PAD.get(), new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> FIRED_BRICK = ITEMS.register("fired_brick", () -> new Item(new Item.Properties().stacksTo(64)));
+
+    // 第七类：副产物与失败品（陶器系统）
+    public static final RegistryObject<Item> KILN_WASTE_SHARD = ITEMS.register("kiln_waste_shard", () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> PLANT_ASH = ITEMS.register("plant_ash", () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> CHARCOAL_CLUMP = ITEMS.register("charcoal_clump", () -> new Item(new Item.Properties().stacksTo(64)));
 
     /**
      * 初始化金属物品容器（在所有物品注册完成后调用）

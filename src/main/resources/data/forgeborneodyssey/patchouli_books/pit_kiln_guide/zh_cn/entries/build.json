@@ -1,0 +1,73 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "建造窑体",
+  "icon": "forgeborneodyssey:pit_kiln",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "第一步：建造窑体",
+      "text": "首先需要将窑坑方块放置在地面上，然后用泥土方块围成3×2×2的U形结构。$(br2)窑坑的开口方向由你放置时的朝向决定——开口将朝向你的对面。$(br2)U形结构包括：左右两侧壁（各2高）、后壁（2高）、前上沿以及前左柱和前右柱。前方留空作为火门位置。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "竖穴升焰窑 U 形结构",
+      "multiblock": {
+        "mapping": {
+          "D": "minecraft:dirt",
+          "P": "forgeborneodyssey:pit_kiln",
+          "0": "minecraft:air"
+        },
+        "pattern": [["DDD", "DPD", "D0D"]]
+      },
+      "text": "U 形泥土墙结构示意图（第一层）。中央为窑坑，四周为泥土方块。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "保温等级",
+      "text": "窑坑周围泥土方块的数量直接影响保温效果和最高温度：$(br2)$(li)4面泥土：§a优§r——最高1200℃$(br)$(li)3面泥土：§e良§r——最高1000℃$(br)$(li)2面泥土：§6差§r——最高800℃$(br)$(li)1面泥土：§c劣§r——最高550℃$(br)$(li)0面泥土：§4极差§r——最高350℃$(br2)保温越好，升温越快，最高温度也越高。建议至少保证3面泥土。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "泥土方块类型",
+      "text": "以下方块被视为有效的保温材料：$(br)$(li)泥土$(br)$(li)草方块$(br)$(li)砂土$(br)$(li)缠根泥土$(br)$(li)灰化土$(br)$(li)菌丝$(br)$(li)泥巴$(br)$(li)压实泥巴$(br)$(li)泥巴红树根"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:fire_mouth_crafting",
+      "text": "火门是窑炉的燃料入口和点火口。右击窑坑开口处放置火门，确保火门朝向正确。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "窑炉第二层结构",
+      "multiblock": {
+        "mapping": {
+          "D": "minecraft:dirt",
+          "0": "minecraft:air"
+        },
+        "pattern": [["DDD", "D0D", "DDD"]]
+      },
+      "text": "第二层（顶部）：封闭的泥土围墙，窑坑顶部留空用于安装窑箅。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "安装窑箅",
+      "text": "火门放置完毕后，手持窑箅右击窑坑顶部。窑箅安装在窑坑顶部，可大幅提高燃烧效率。$(br2)有窑箅时燃烧效率为100%，无窑箅时仅为30%——这意味着同样的燃料，有窑箅能多烧3倍以上时间。$(br2)安装窑箅后，窑炉进入Stage 1，可以开始装填生坯。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:grate_block_crafting",
+      "text": "窑箅的制作配方。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "晾坯架",
+      "text": "生坯需要先在晾坯架上晾干才能使用。将混合黏土放在晾坯架上，等待其晾干成为生坯。$(br2)晾坯架也可用于晾干其他物品。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:drying_rack_crafting",
+      "text": "晾坯架的制作配方。"
+    }
+  ],
+  "sortnum": 0
+}

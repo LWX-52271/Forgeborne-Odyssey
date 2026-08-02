@@ -194,7 +194,7 @@ public class GuideBookScreen extends Screen {
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter6.ash").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter6.building").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter6.shift_tip").getString());
-        
+
         allLines = linesList.toArray(new String[0]);
         totalPages = (int) Math.ceil((double) allLines.length / LINES_PER_PAGE);
     }

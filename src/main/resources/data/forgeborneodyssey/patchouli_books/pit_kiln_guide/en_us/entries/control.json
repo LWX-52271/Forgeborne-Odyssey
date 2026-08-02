@@ -1,0 +1,38 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Atmosphere Control",
+  "icon": "forgeborneodyssey:pit_kiln",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Step 4: Atmosphere & Temperature Control",
+      "text": "During Stage 3 firing, you can control the kiln atmosphere through two key operations:$(br2)$(li)§6Vents§r: Right-click the kiln top with empty hand to toggle (open → half-closed → fully closed → open)$(br)$(li)§6Fire Mouth§r: Shift+right-click with empty hand to open/close; right-click with dirt to seal$(br2)These operations directly affect oxygen content changes and determine the final product type."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Oxygen Calculation",
+      "text": "Oxygen content updates every 10 ticks. The change is determined by both fire mouth and vents:$(br2)$(li)Fire mouth open: +1$(br)$(li)Fire mouth sealed: -1$(br)$(li)Vents fully open: +1$(br)$(li)Vents half-closed: +0.5$(br)$(li)Vents fully closed: -2$(br2)Oxygen range: -100 (completely anoxic) to +100 (completely oxic)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Oxidizing Atmosphere",
+      "text": "§aOxidizing Atmosphere (oxygen-rich firing)§r$(br2)Condition: Fire mouth open + vents fully open$(br)Oxygen change: +2/10 ticks (rapid increase)$(br2)Applicable products:$(br)$(li)§6Red Mold§r: Requires oxygen > 30$(br2)Under oxidizing atmosphere, flames are orange-yellow, with flame particles from vents and fire mouth."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Reducing Atmosphere",
+      "text": "§cReducing Atmosphere (oxygen-depleted firing)§r$(br2)Condition: Fire mouth sealed + vents fully closed$(br)Oxygen change: -3/10 ticks (rapid decrease)$(br2)Applicable products:$(br)$(li)§bGray Crucible§r: Requires oxygen < -30$(br)$(li)§8Black Ceramic Pad§r: Requires oxygen < -50$(br2)Under reducing atmosphere, flames take on a soul-fire blue color."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mixed Atmosphere",
+      "text": "By combining different fire mouth and vent states, you can obtain intermediate oxygen levels:$(br2)$(li)Fire mouth open + vents half-closed: +1.5/10 ticks$(br)$(li)Fire mouth sealed + vents half-closed: -0.5/10 ticks$(br)$(li)Fire mouth sealed + vents fully open: 0/10 ticks (balanced)$(br)$(li)Fire mouth open + vents fully closed: -1/10 ticks$(br2)Adjust flexibly for precise oxygen control."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Checking Kiln Status",
+      "text": "Shift+right-click the kiln with empty hand to view detailed status:$(br2)$(li)Current stage and temperature (including peak)$(br)$(li)Remaining fuel amount$(br)$(li)Current oxygen content and trend (↑/↓)$(br)$(li)High-temp timer accumulation$(br)$(li)Fire mouth state (open/sealed)$(br)$(li)Vent state (open/half-closed/closed)$(br)$(li)Insulation grade and heating efficiency$(br)$(li)Max reachable temperature$(br)$(li)Cooling progress (Stage 4)"
+    }
+  ],
+  "sortnum": 3
+}

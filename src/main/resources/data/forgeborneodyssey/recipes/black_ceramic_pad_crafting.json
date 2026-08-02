@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "BFB",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "forgeborneodyssey:rice_husk_char"
+    },
+    "B": {
+      "item": "forgeborneodyssey:fired_brick"
+    },
+    "F": {
+      "item": "minecraft:flint"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:black_ceramic_pad",
+    "count": 2
+  }
+}

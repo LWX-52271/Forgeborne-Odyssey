@@ -1,0 +1,37 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Overview",
+  "icon": "forgeborneodyssey:pit_kiln",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "§bPit Kiln§r is the core facility for ancient pottery firing. It uses a dirt-walled pit structure, burning fuel through the fire mouth to produce high temperatures, combined with vents to control the kiln atmosphere, transforming greenware into different ceramic products.$(br2)This guide will walk you step by step through the construction and firing process of the pit kiln."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Firing Principles",
+      "text": "The pit kiln operates in five stages:$(br)$(li)§6Stage 0§r: Basic structure - Place pit kiln block$(br)$(li)§6Stage 1§r: Install grate, load greenware$(br)$(li)§6Stage 2§r: Seal and heat - Temperature rises from room temp to 100℃$(br)$(li)§6Stage 3§r: High-temp firing - Formal firing stage$(br)$(li)§6Stage 4§r: Cooling - Natural cooling to room temp$(br)$(li)§6Stage 5§r: Collection - Remove finished products"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Key Concepts",
+      "text": "$(li)§bTemperature§r: Determined by fuel, grate efficiency, and insulation grade, max 1200℃$(br)$(li)§bOxygen Content§r: Range -100 to +100, controlled by fire mouth and vents$(br)$(li)§bOxidizing Atmosphere§r: High oxygen, suitable for redware$(br)$(li)§bReducing Atmosphere§r: Low oxygen, suitable for gray ware and black ware$(br)$(li)§bInsulation Grade§r: Determined by surrounding dirt blocks (0-4 sides)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Required Materials",
+      "text": "Building a complete pit kiln requires the following materials:$(br2)$(li)Dirt blocks ×8 (for kiln body)$(br)$(li)Fire mouth block ×1$(br)$(li)Grate block ×1$(br)$(li)Kiln lid ×1$(br)$(li)Fire drill ×1 (ignition tool)$(br)$(li)Fuel (firewood, straw, rice husk char, etc.)$(br)$(li)Greenware items (crucible greenware, mold greenware, etc.)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:gray_crucible",
+      "text": "§bGray Crucible§r is one of the key successful products. Fired in a reducing atmosphere, it has high temperature resistance and is the basic tool for metal smelting."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:red_mold",
+      "text": "§6Red Mold§r is fired in an oxidizing atmosphere, used for casting metal ingots and tools."
+    }
+  ],
+  "sortnum": -1
+}

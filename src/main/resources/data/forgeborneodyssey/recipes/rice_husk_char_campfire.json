@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "forgeborneodyssey:rice_husk"
+  },
+  "result": "forgeborneodyssey:rice_husk_char",
+  "experience": 0.15,
+  "cookingtime": 600
+}

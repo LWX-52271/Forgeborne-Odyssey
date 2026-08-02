@@ -1,0 +1,62 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "冷锻成型工艺",
+  "icon": "forgeborneodyssey:copper_sheet",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "第四章：冷锻成型工艺",
+      "text": "§7【冷锻核心流程】$(br2)冷锻是在常温下通过锤击使金属变形的工艺。整个过程分为三个主要阶段：拉伸成金属片、加工成型、雕刻成品。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "§7【第一步：拉伸坯料成金属片】",
+      "text": "将软化坯料放在石砧上，用锤子左键敲击8次，坯料会被延展成金属片。$(br2)操作：手持锤子，对准石砧上的软化坯料，连续左键锻打。进度条显示锻打进度。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_sheet",
+      "text": "§b铜片$(br2)由铜坯料在石砧上锻打8次而成，是进一步加工的中间产品。银片和金片同理。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "§7【第二步：加工金属片】",
+      "text": "金属片需要经过两步加工才能变成可雕刻的形态：$(br2)$(li)金属片 → §6弯片§r：手持斧头右键点击石砧上的金属片1次$(br)$(li)弯片 → §6槽片§r：手持斧头右键点击石砧上的弯片1次$(br2)弯片用于制作斧头类产品，槽片用于制作刀、剑、环、钩等。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_curve",
+      "text": "§c铜弯片——由铜片加工而成，用于制作斧头或进一步加工成铜槽片。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_slot",
+      "text": "§c铜槽片——由铜弯片加工而成，是制作刀、剑、环、钩等的基础。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "§7【第三步：雕刻最终成品】",
+      "text": "使用石凿在石砧上雕刻金属坯料，完成最终产品：$(br2)$(li)槽片 + 石凿左键6次 → §6原始刀$(br)$(li)弯片 + 石凿左键8次 → §6斧头$(br)$(li)槽片 + 石凿左键7次 → §6剑刃"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "操作方法总结",
+      "text": "§a操作方法：$(br2)$(li)手持锤子左键锻打——拉伸坯料、锻造金属片$(br)$(li)手持斧头右键加工——金属片→弯片→槽片$(br)$(li)手持石凿左键雕刻——槽片→刀/剑，弯片→斧头"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "石砧工作台布局",
+      "multiblock": {
+        "mapping": {
+          "G": "forgeborneodyssey:granite_anvil",
+          "C": "forgeborneodyssey:natural_copper_block",
+          "S": "forgeborneodyssey:natural_silver_block",
+          "0": "minecraft:air"
+        },
+        "pattern": [["C0S", "0G0", "S0C"]]
+      },
+      "text": "工作台布局示意图：中心为石砧，四周为原料金属块。"
+    }
+  ],
+  "sortnum": 3
+}

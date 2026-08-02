@@ -1,0 +1,62 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Cold Forging Process",
+  "icon": "forgeborneodyssey:copper_sheet",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Chapter 4: Cold Forging Process",
+      "text": "§7[Cold Forging Core Flow]$(br2)Cold forging is the process of shaping metal by hammering at room temperature. The process has three main stages: stretching into sheet, processing into shape, and carving final products."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "§7[Step 1: Stretch Billet to Sheet]",
+      "text": "Place softened billet on anvil and left-click with hammer 8 times. The billet will be stretched into a metal sheet.$(br2)Action: Hold hammer, aim at softened billet on anvil, left-click repeatedly. Progress bar shows forging progress."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_sheet",
+      "text": "§bCopper Sheet$(br2)Forged from copper billet by 8 strikes on the anvil. An intermediate product for further processing. Silver and gold sheets follow the same process."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "§7[Step 2: Process the Sheet]",
+      "text": "Metal sheets need two processing steps to become carveable:$(br2)$(li)Sheet → §6Curve§r: Right-click sheet on anvil with axe 1 time$(br)$(li)Curve → §6Slot§r: Right-click curve on anvil with axe 1 time$(br2)Curves are for making axes, slots are for making knives, swords, rings, hooks."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_curve",
+      "text": "§cCopper Curve - Processed from copper sheet, used for making axes or further processing into copper slots."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_slot",
+      "text": "§cCopper Slot - Processed from copper curve, the base for making knives, swords, rings, hooks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "§7[Step 3: Carve Final Product]",
+      "text": "Use stone chisel to carve the metal on the anvil into final products:$(br2)$(li)Slot + Chisel Left-click 6 times → §6Primitive Knife$(br)$(li)Curve + Chisel Left-click 8 times → §6Axe Head$(br)$(li)Slot + Chisel Left-click 7 times → §6Sword Blade"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Controls Summary",
+      "text": "§aHow to operate:$(br2)$(li)Left-click with hammer to forge - stretch billet, forge sheet$(br)$(li)Right-click with axe to process - sheet→curve→slot$(br)$(li)Left-click with chisel to carve - slot→knife/sword, curve→axe"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Anvil Workstation Layout",
+      "multiblock": {
+        "mapping": {
+          "G": "forgeborneodyssey:granite_anvil",
+          "C": "forgeborneodyssey:natural_copper_block",
+          "S": "forgeborneodyssey:natural_silver_block",
+          "0": "minecraft:air"
+        },
+        "pattern": [["C0S", "0G0", "S0C"]]
+      },
+      "text": "Workstation layout: anvil in the center, surrounded by raw metal blocks."
+    }
+  ],
+  "sortnum": 3
+}

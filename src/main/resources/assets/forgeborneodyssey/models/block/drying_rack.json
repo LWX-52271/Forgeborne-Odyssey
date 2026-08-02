@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "forgeborneodyssey:block/drying_rack"
+  }
+}
