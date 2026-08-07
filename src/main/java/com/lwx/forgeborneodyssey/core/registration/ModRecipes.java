@@ -2,6 +2,7 @@ package com.lwx.forgeborneodyssey.core.registration;
 
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.recipe.ForgingRecipe;
+import com.lwx.forgeborneodyssey.recipe.ToolShapedRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,6 +36,19 @@ public class ModRecipes {
     // 锻造配方序列化器
     public static final RegistryObject<RecipeSerializer<ForgingRecipe>> FORGING_RECIPE_SERIALIZER = 
         RECIPE_SERIALIZERS.register("forging", ForgingRecipe.Serializer::new);
+    
+    // 工具不消耗的有序合成配方类型
+    public static final RegistryObject<RecipeType<ToolShapedRecipe>> TOOL_SHAPED_RECIPE_TYPE = 
+        RECIPE_TYPES.register("tool_shaped", () -> new RecipeType<ToolShapedRecipe>() {
+            @Override
+            public String toString() {
+                return "tool_shaped";
+            }
+        });
+    
+    // 工具不消耗的有序合成配方序列化器
+    public static final RegistryObject<RecipeSerializer<ToolShapedRecipe>> TOOL_SHAPED_RECIPE_SERIALIZER = 
+        RECIPE_SERIALIZERS.register("tool_shaped", ToolShapedRecipe.Serializer::new);
     
     /**
      * 注册到事件总线

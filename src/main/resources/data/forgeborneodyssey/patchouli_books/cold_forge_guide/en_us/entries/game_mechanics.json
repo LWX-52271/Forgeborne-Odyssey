@@ -6,12 +6,12 @@
     {
       "type": "patchouli:text",
       "title": "Chapter 6: Important Game Mechanics",
-      "text": "§7[Quality System]$(br2)Forged metal products have three quality levels that affect attributes:$(br2)$(li)§8Rough Quality§7: Attack -0.5$(br)$(li)§aNormal Quality§7: Standard attributes (normal range)$(br)$(li)§6Fine Quality§7: Attack +0.5$(br2)Quality is determined by the billet, randomly generated during crafting."
+      "text": "§7[Weight Tier System]$(br2)Forged metal products have three weight tiers that affect weight and attributes:$(br2)$(li)§8Light Tier§7 (Smaller): Weight ~75% of normal, lower damage$(br)$(li)§aMedium Tier§7 (Normal): Standard size, normal attributes$(br)$(li)§6Heavy Tier§7 (Larger): Weight ~125% of normal, higher damage$(br2)Weight tier is determined by the billet, randomly generated during crafting. Damage is based on weight: +0.1 damage per 100g, up to +2.0 max."
     },
     {
       "type": "patchouli:text",
       "title": "§7[Cooling Mechanism]",
-      "text": "Softened billets have three cooling methods:$(br2)$(li)§6Water Cooling§r: Place softened billet in water to instantly cool it back to hard billet$(br)$(li)§6Auto Cooling§r: Softened copper billet auto-cools after 1.5 minutes in inventory$(br)$(li)§6Natural Cooling§r: Softened billet placed on ground gradually cools$(br2)Cooled billets lose their softened state and need re-heating for forging."
+      "text": "Softened billet cooling methods:$(br2)$(li)§6Water Cooling§r: Place softened billet in water to instantly cool it back to hard billet$(br)$(li)§6Inventory Cooling§r: Softened copper billet auto-cools after 1.5 minutes in inventory$(br2)Cooled billets lose their softened state and need re-heating for forging. Note: Only softened copper billets have a cooling mechanism."
     },
     {
       "type": "patchouli:text",
@@ -21,12 +21,12 @@
     {
       "type": "patchouli:text",
       "title": "§7[Forging Safety Tips]",
-      "text": "$(li)§bHeat Protection§r: Use wooden clamp for hot items to avoid burns$(br)$(li)§bWork Hardening§r: Over-hammering causes metal to crack and break$(br)$(li)§bMaterial Match§r: Use the correct metal type's softened strip for carving$(br)$(li)§bDurability§r: Hammers and chisels wear out with use, keep spares"
+      "text": "$(li)§bHeat Protection§r: Use wooden clamp for hot items to avoid burns$(br)$(li)§bMaterial Match§r: Use the correct metal type's softened strip for carving$(br)$(li)§bDurability§r: Hammers and chisels wear out with use, keep spares"
     },
     {
       "type": "patchouli:text",
       "title": "§7[Advanced Tips]",
-      "text": "$(li)§bBatch Preparation§r: Heat multiple billets at once for efficiency$(br)$(li)§bQuality Selection§r: Re-craft billets until you get fine quality$(br)$(li)§bQuick Find§r: Use /forgeodyssey find commands to locate resources$(br)$(li)§bTime Management§r: Watch for softened billet cooling time, forge promptly"
+      "text": "$(li)§bBatch Preparation§r: Heat multiple billets at once for efficiency$(br)$(li)§bWeight Selection§r: Re-craft billets until you get heavy tier$(br)$(li)§bQuick Find§r: Use /forgeodyssey find commands to locate resources$(br)$(li)§bTime Management§r: Watch for softened copper billet cooling time, forge promptly"
     }
   ],
   "sortnum": 5

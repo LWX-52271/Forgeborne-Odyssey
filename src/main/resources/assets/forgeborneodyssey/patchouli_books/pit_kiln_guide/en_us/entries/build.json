@@ -51,7 +51,7 @@
     {
       "type": "patchouli:text",
       "title": "Installing the Grate",
-      "text": "After placing the fire mouth, right-click the top of the pit kiln with a grate. The grate dramatically improves combustion efficiency.$(br2)With grate: 100% efficiency. Without: only 30% — meaning 3x less fuel efficiency.$(br2)Once installed, the kiln enters Stage 1 and is ready for loading."
+      "text": "After placing the fire mouth, right-click the top of the pit kiln with a grate. The grate dramatically improves combustion efficiency.$(br2)With grate: 100% efficiency. Without: only 30% — meaning 3x less fuel efficiency.$(br2)§cImportant: No items (greenware or fuel) can be placed into the kiln without the grate installed.$(br2)Once installed, the kiln enters Stage 1 and is ready for loading."
     },
     {
       "type": "patchouli:crafting",
@@ -61,7 +61,7 @@
     {
       "type": "patchouli:text",
       "title": "Drying Rack",
-      "text": "Greenware items must be dried on a drying rack before use. Place mixed clay on the rack and wait for it to dry into greenware.$(br2)The drying rack can also dry other items."
+      "text": "Greenware items must be dried on a drying rack before use. Right-click the drying rack with any of the three greenware types (crucible, mold, brick) to place them. Wait for them to dry, then load them into the kiln.$(br2)The drying rack can also dry other items (wet sponge, kelp, leaves, etc.)."
     },
     {
       "type": "patchouli:crafting",

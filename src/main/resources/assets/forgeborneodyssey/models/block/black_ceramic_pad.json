@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "forgeborneodyssey:block/black_ceramic_pad"
-  }
-}

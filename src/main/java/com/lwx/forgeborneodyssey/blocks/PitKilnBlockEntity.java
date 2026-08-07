@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -150,16 +151,20 @@ public class PitKilnBlockEntity extends BlockEntity {
     public boolean isGreenware(ItemStack stack) {
         return stack.is(ModItems.GREENWARE_CRUCIBLE.get()) ||
                 stack.is(ModItems.GREENWARE_MOLD.get()) ||
-                stack.is(ModItems.GREENWARE_BRICK.get()) ||
-                stack.is(ModItems.GREENWARE_VESSEL.get());
+                stack.is(ModItems.GREENWARE_BRICK.get());
     }
 
-    public ItemStack getResultForSlot(ItemStack greenware) {
+    public ItemStack getResultForSlot(ItemStack greenware, RandomSource random) {
         int oxy = oxygenAccumulator;
         float temp = peakTemperature;
 
+        boolean isDried = greenware.hasTag() && greenware.getTag().getBoolean("Dried");
+
         if (greenware.is(ModItems.GREENWARE_CRUCIBLE.get())) {
             if (oxy < -30 && temp > 900) {
+                if (!isDried && random.nextFloat() > 0.15F) {
+                    return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
+                }
                 return new ItemStack(ModItems.GRAY_CRUCIBLE.get());
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
@@ -167,20 +172,19 @@ public class PitKilnBlockEntity extends BlockEntity {
 
         if (greenware.is(ModItems.GREENWARE_MOLD.get())) {
             if (oxy > 30 && temp > 850) {
+                if (!isDried && random.nextFloat() > 0.15F) {
+                    return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
+                }
                 return new ItemStack(ModItems.RED_MOLD.get());
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
         }
 
-        if (greenware.is(ModItems.GREENWARE_VESSEL.get())) {
-            if (oxy < -50 && temp > 950) {
-                return new ItemStack(ModItems.BLACK_CERAMIC_PAD.get());
-            }
-            return new ItemStack(ModItems.RED_MOLD.get());
-        }
-
         if (greenware.is(ModItems.GREENWARE_BRICK.get())) {
             if (temp > 1000 && highTempTicks > 300) {
+                if (!isDried && random.nextFloat() > 0.15F) {
+                    return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 4);
+                }
                 return new ItemStack(ModItems.FIRED_BRICK.get(), 2);
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 4);
@@ -250,7 +254,7 @@ public class PitKilnBlockEntity extends BlockEntity {
         }
         // ========== Stage 3: 高温/还原期 ==========
         if (stage == 3) {
-            if (level.isRainingAt(pos.above())) {
+            if (level.isRainingAt(pos.above(2))) {
                 explodeKiln(level, pos, entity);
                 return;
             }
@@ -327,11 +331,22 @@ public class PitKilnBlockEntity extends BlockEntity {
             }
 
             if (entity.temperature < 50 && entity.coolDownTicks > COOL_DOWN_REQUIRED) {
-                level.setBlock(pos, state.setValue(PitKilnBlock.STAGE, 5), 3);
-                // 移除窑顶盖，露出窑坑顶部供出窑操作
+                for (int i = 0; i < 4; i++) {
+                    ItemStack greenware = entity.inventory.getStackInSlot(i);
+                    if (!greenware.isEmpty()) {
+                        ItemStack result = entity.getResultForSlot(greenware, level.getRandom());
+                        Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result);
+                        entity.inventory.setStackInSlot(i, ItemStack.EMPTY);
+                    }
+                }
+                ItemStack ash = new ItemStack(ModItems.PLANT_ASH.get(), 2 + level.getRandom().nextInt(3));
+                Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, ash);
                 if (level.getBlockState(pos.above()).is(ModBlocks.KILN_LID.get())) {
                     level.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), 3);
                 }
+                level.setBlock(pos, ModBlocks.KILN_ASH_PILE.get().defaultBlockState()
+                        .setValue(PitKilnBlock.FACING, state.getValue(PitKilnBlock.FACING)), 3);
+                level.playSound(null, pos, SoundEvents.GRAVEL_BREAK, SoundSource.BLOCKS, 1.0F, 0.8F);
             }
             entity.setChanged();
             return;

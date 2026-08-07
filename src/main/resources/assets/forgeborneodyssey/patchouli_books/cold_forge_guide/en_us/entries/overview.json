@@ -10,7 +10,7 @@
     {
       "type": "patchouli:text",
       "title": "Game Flow Overview",
-      "text": "$(li)§6Chapter 1§r: Craft Stone Tools - Create your basic tools$(br)$(li)§6Chapter 2§r: Find Natural Metals - Explore the world for resources$(br)$(li)§6Chapter 3§r: Prepare Soft Billets - Craft billets and heat them$(br)$(li)§6Chapter 4§r: Cold Forging Process - Forge on the anvil$(br)$(li)§6Chapter 5§r: Advanced Crafting - Weapons, tools, and accessories$(br)$(li)§6Chapter 6§r: Important Mechanics - Quality, cooling, and more"
+      "text": "$(li)§6Chapter 1§r: Craft Stone Tools - Create your basic tools$(br)$(li)§6Chapter 2§r: Find Natural Metals - Explore the world for resources$(br)$(li)§6Chapter 3§r: Prepare Soft Billets - Craft billets and heat them$(br)$(li)§6Chapter 4§r: Cold Forging Process - Forge on the anvil$(br)$(li)§6Chapter 5§r: Advanced Crafting - Weapons, tools, and accessories$(br)$(li)§6Chapter 6§r: Important Mechanics - Weight tiers, cooling, and more"
     },
     {
       "type": "patchouli:text",

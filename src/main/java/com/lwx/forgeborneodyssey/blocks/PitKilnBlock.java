@@ -19,7 +19,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -200,14 +199,47 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
         if (level.isClientSide) {
             // 客户端只对有效交互返回 SUCCESS
             boolean valid = false;
-            if (stage == 0 && !hasGrate && isTop && held.is(ModItems.GRATE_BLOCK_ITEM.get())) valid = true;
+            if (stage == 0 && !hasGrate) {
+                // Stage 0: 只允许安装窑箅，其他物品一律阻止
+                if (isTop && held.is(ModItems.GRATE_BLOCK_ITEM.get())) valid = true;
+                return valid ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+            }
+            if (stage >= 2 && stage <= 4 && held.is(Items.WATER_BUCKET)) valid = true;
             if (stage == 1 && hasGrate && isTop && kiln.isGreenware(held)) valid = true;
             if (stage == 1 && isTop && held.isEmpty() && !player.isShiftKeyDown() && kiln.getGreenwareCount() > 0) valid = true;
             if (stage == 1 && isTop && held.is(ModItems.KILN_LID_ITEM.get())) valid = true;
             if (stage == 3 && isTop && held.isEmpty() && !player.isShiftKeyDown()) valid = true;
             if ((stage >= 2 && stage <= 4) && player.isShiftKeyDown() && held.isEmpty()) valid = true;
-            if (stage == 5 && player.isShiftKeyDown() && held.isEmpty()) valid = true;
             return valid ? InteractionResult.SUCCESS : InteractionResult.PASS;
+        }
+
+        // ========== 浇水冷却（优先级高于放置水方块） ==========
+        if (stage >= 2 && stage <= 4 && kiln.ignited && held.is(Items.WATER_BUCKET)) {
+            if (stage < 4) {
+                level.setBlock(pos, state.setValue(STAGE, 4), 3);
+            }
+            kiln.coolDownTicks = Math.max(kiln.coolDownTicks, PitKilnBlockEntity.COOL_DOWN_REQUIRED - 200);
+            kiln.temperature = Math.max(PitKilnBlockEntity.ROOM_TEMPERATURE, kiln.temperature - 300);
+            if (!player.isCreative()) {
+                held.shrink(1);
+                ItemStack emptyBucket = new ItemStack(Items.BUCKET);
+                if (!player.getInventory().add(emptyBucket)) {
+                    player.drop(emptyBucket, false);
+                }
+            }
+            level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.8F, 1.2F);
+            player.displayClientMessage(Component.literal("已浇水冷却，窑炉正在降温"), true);
+            return InteractionResult.SUCCESS;
+        }
+
+        // ========== Stage 0 (无窑箅): 只允许放置窑箅 ==========
+        if (stage == 0 && !hasGrate) {
+            if (isTop && held.is(ModItems.GRATE_BLOCK_ITEM.get())) {
+                // 允许安装窑箅，继续执行下方逻辑
+            } else {
+                return InteractionResult.FAIL;
+            }
         }
 
         // ========== Stage 0: 安装窑箅 → Stage 1 ==========
@@ -221,9 +253,17 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
 
         // ========== Stage 1: 装填陶坯 ==========
         if (stage == 1 && hasGrate && isTop && kiln.isGreenware(held)) {
-            int slot = kiln.getEmptySlot();
-            if (slot >= 0) {
+            int slot = getHitSlot(hit.getLocation().x - pos.getX(), hit.getLocation().z - pos.getZ());
+            if (kiln.inventory.getStackInSlot(slot).isEmpty()) {
                 kiln.inventory.setStackInSlot(slot, held.split(1));
+                level.playSound(null, pos, SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 0.8F, 1.0F);
+                player.displayClientMessage(Component.literal("已放入生坯 (" + kiln.getGreenwareCount() + "/4)"), true);
+                return InteractionResult.SUCCESS;
+            }
+            // 目标槽已有物品，尝试其他空槽
+            int fallback = kiln.getEmptySlot();
+            if (fallback >= 0) {
+                kiln.inventory.setStackInSlot(fallback, held.split(1));
                 level.playSound(null, pos, SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 0.8F, 1.0F);
                 player.displayClientMessage(Component.literal("已放入生坯 (" + kiln.getGreenwareCount() + "/4)"), true);
                 return InteractionResult.SUCCESS;
@@ -234,15 +274,13 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
 
         // ========== Stage 1: 取出陶坯 ==========
         if (stage == 1 && isTop && held.isEmpty() && !player.isShiftKeyDown() && kiln.getGreenwareCount() > 0) {
-            int slot = kiln.getLastFilledSlot();
-            if (slot >= 0) {
-                ItemStack removed = kiln.inventory.extractItem(slot, 1, false);
-                if (!removed.isEmpty()) {
-                    Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, removed);
-                    level.playSound(null, pos, SoundEvents.GRAVEL_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
-                    player.displayClientMessage(Component.literal("已取出，剩余 " + kiln.getGreenwareCount() + "/4"), true);
-                    return InteractionResult.SUCCESS;
-                }
+            int slot = getHitSlot(hit.getLocation().x - pos.getX(), hit.getLocation().z - pos.getZ());
+            ItemStack removed = kiln.inventory.extractItem(slot, 1, false);
+            if (!removed.isEmpty()) {
+                Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, removed);
+                level.playSound(null, pos, SoundEvents.GRAVEL_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+                player.displayClientMessage(Component.literal("已取出，剩余 " + kiln.getGreenwareCount() + "/4"), true);
+                return InteractionResult.SUCCESS;
             }
         }
 
@@ -324,54 +362,55 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
                     "火门: " + fmDesc + " | 排烟孔: " + ventDesc + " | 隔热: " + insulation + "/4 " + insulationDesc + " | 升温: ×" + String.format("%.0f", insulationFactor * 100) + "% | 最高: " + String.format("%.0f", effectiveMax) + "℃"), false);
             if (stage == 4) {
                 player.displayClientMessage(Component.literal(
-                        "§e冷却进度: " + kiln.coolDownTicks + "/" + PitKilnBlockEntity.COOL_DOWN_REQUIRED + "tick §7(完成后可出窑)"), false);
+                        "§e冷却进度: " + kiln.coolDownTicks + "/" + PitKilnBlockEntity.COOL_DOWN_REQUIRED + "tick §7(冷却完成自动出窑)"), false);
             }
-            return InteractionResult.SUCCESS;
-        }
-
-        // ========== Stage 5: 出窑取成品 ==========
-        if (stage == 5 && player.isShiftKeyDown() && held.isEmpty()) {
-            for (int i = 0; i < 4; i++) {
-                ItemStack greenware = kiln.inventory.getStackInSlot(i);
-                if (!greenware.isEmpty()) {
-                    ItemStack result = kiln.getResultForSlot(greenware);
-                    Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result);
-                    kiln.inventory.setStackInSlot(i, ItemStack.EMPTY);
-                }
-            }
-            ItemStack ash = new ItemStack(ModItems.PLANT_ASH.get(), 2 + level.getRandom().nextInt(3));
-            Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, ash);
-            level.setBlock(pos, ModBlocks.KILN_ASH_PILE.get().defaultBlockState(), 3);
-            if (level.getBlockState(pos.above()).is(ModBlocks.KILN_LID.get())) {
-                level.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), 3);
-            }
-            level.playSound(null, pos, SoundEvents.GRAVEL_BREAK, SoundSource.BLOCKS, 1.0F, 0.8F);
-            player.displayClientMessage(Component.literal("已开窑"), true);
             return InteractionResult.SUCCESS;
         }
 
         return InteractionResult.PASS;
     }
 
+    /**
+     * 根据点击位置计算槽位索引（与渲染器 GREENWARE_POSITIONS 布局一致）
+     */
+    private static int getHitSlot(double hitX, double hitZ) {
+        boolean right = hitX >= 0.5D;
+        boolean back = hitZ >= 0.5D;
+        if (right && back) return 3;
+        if (right) return 1;
+        if (back) return 2;
+        return 0;
+    }
+
     @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        if (state.getValue(STAGE) <= 1) {
-            return Collections.singletonList(new ItemStack(Items.DIRT, 2));
-        }
-        return super.getDrops(state, builder);
+        return Collections.singletonList(new ItemStack(Items.DIRT, 2));
     }
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!isMoving && !newState.is(this)) {
-            Direction facing = state.getValue(FACING);
-            BlockPos fireMouthPos = pos.relative(facing);
-            if (level.getBlockState(fireMouthPos).is(ModBlocks.FIRE_MOUTH.get())) {
-                level.destroyBlock(fireMouthPos, true);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof PitKilnBlockEntity kiln) {
+                for (int i = 0; i < 4; i++) {
+                    ItemStack stack = kiln.inventory.getStackInSlot(i);
+                    if (!stack.isEmpty()) {
+                        Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
+                        kiln.inventory.setStackInSlot(i, ItemStack.EMPTY);
+                    }
+                }
             }
-            BlockPos lidPos = pos.above();
-            if (level.getBlockState(lidPos).is(ModBlocks.KILN_LID.get())) {
-                level.destroyBlock(lidPos, true);
+            int stage = state.getValue(STAGE);
+            if (stage >= 2) {
+                Direction facing = state.getValue(FACING);
+                BlockPos fireMouthPos = pos.relative(facing);
+                if (level.getBlockState(fireMouthPos).is(ModBlocks.FIRE_MOUTH.get())) {
+                    level.destroyBlock(fireMouthPos, false);
+                }
+                BlockPos lidPos = pos.above();
+                if (level.getBlockState(lidPos).is(ModBlocks.KILN_LID.get())) {
+                    level.destroyBlock(lidPos, false);
+                }
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

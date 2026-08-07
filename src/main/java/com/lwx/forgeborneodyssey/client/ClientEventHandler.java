@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.client;
 
 import com.lwx.forgeborneodyssey.client.render.AnvilRenderer;
+import com.lwx.forgeborneodyssey.client.render.DryingRackRenderer;
 import com.lwx.forgeborneodyssey.client.render.FirePitRenderer;
 import com.lwx.forgeborneodyssey.client.render.KilnLidRenderer;
 import com.lwx.forgeborneodyssey.client.render.PitKilnRenderer;
@@ -37,6 +38,7 @@ public class ClientEventHandler {
             BlockEntityRenderers.register(ModBlocks.PIT_KILN_BLOCK_ENTITY.get(), PitKilnRenderer::new);
             BlockEntityRenderers.register(ModBlocks.KILN_LID_BLOCK_ENTITY.get(), KilnLidRenderer::new);
             BlockEntityRenderers.register(ModBlocks.STRESS_BLOCK_ENTITY.get(), StressBlockRenderer::new);
+            BlockEntityRenderers.register(ModBlocks.DRYING_RACK_BLOCK_ENTITY.get(), DryingRackRenderer::new);
             
             // 注册菜单屏幕
             MenuScreens.register(ModMenuTypes.ANVIL_METAL_SELECTION_MENU.get(), AnvilMetalSelectionScreen::new);

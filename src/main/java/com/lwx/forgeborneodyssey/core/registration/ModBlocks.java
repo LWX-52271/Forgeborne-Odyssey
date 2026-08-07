@@ -311,14 +311,6 @@ public class ModBlocks {
     // 晾坯架
     public static final RegistryObject<Block> DRYING_RACK = BLOCKS.register("drying_rack", DryingRackBlock::new);
 
-    // 渗碳黑陶垫
-    public static final RegistryObject<Block> BLACK_CERAMIC_PAD = BLOCKS.register("black_ceramic_pad",
-            () -> new Block(Block.Properties.of()
-                    .mapColor(MapColor.TERRACOTTA_BLACK)
-                    .strength(1.5F, 6.0F)
-                    .sound(SoundType.STONE)
-                    .requiresCorrectToolForDrops()));
-
     // 火门
     public static final RegistryObject<Block> FIRE_MOUTH = BLOCKS.register("fire_mouth", FireMouthBlock::new);
 

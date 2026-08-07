@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Reducing Atmosphere",
-      "text": "§cReducing Atmosphere (oxygen-depleted firing)§r$(br2)Condition: Fire mouth sealed + vents fully closed$(br)Oxygen change: -3/10 ticks (rapid decrease)$(br2)Applicable products:$(br)$(li)§bGray Crucible§r: Requires oxygen < -30$(br)$(li)§8Black Ceramic Pad§r: Requires oxygen < -50$(br2)Under reducing atmosphere, flames take on a soul-fire blue color."
+      "text": "§cReducing Atmosphere (oxygen-depleted firing)§r$(br2)Condition: Fire mouth sealed + vents fully closed$(br)Oxygen change: -3/10 ticks (rapid decrease)$(br2)Applicable products:$(br)$(li)§bGray Crucible§r: Requires oxygen < -30$(br2)Under reducing atmosphere, flames take on a soul-fire blue color."
     },
     {
       "type": "patchouli:text",

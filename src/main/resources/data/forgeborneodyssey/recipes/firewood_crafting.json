@@ -1,15 +1,19 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "forgeborneodyssey:tool_shaped",
   "pattern": [
     "L  ",
-    "   ",
+    "K  ",
     "   "
   ],
   "key": {
     "L": {
       "tag": "minecraft:logs"
+    },
+    "K": {
+      "item": "forgeborneodyssey:flint_knife"
     }
   },
+  "tool": "K",
   "result": {
     "item": "forgeborneodyssey:firewood",
     "count": 3

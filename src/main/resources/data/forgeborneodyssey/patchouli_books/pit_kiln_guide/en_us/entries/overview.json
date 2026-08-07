@@ -10,7 +10,7 @@
     {
       "type": "patchouli:text",
       "title": "Firing Principles",
-      "text": "The pit kiln operates in five stages:$(br)$(li)§6Stage 0§r: Basic structure - Place pit kiln block$(br)$(li)§6Stage 1§r: Install grate, load greenware$(br)$(li)§6Stage 2§r: Seal and heat - Temperature rises from room temp to 100℃$(br)$(li)§6Stage 3§r: High-temp firing - Formal firing stage$(br)$(li)§6Stage 4§r: Cooling - Natural cooling to room temp$(br)$(li)§6Stage 5§r: Collection - Remove finished products"
+      "text": "The pit kiln operates in five stages:$(br)$(li)§6Stage 0§r: Basic structure - Place pit kiln block, §cno items can be placed without grate$(br)$(li)§6Stage 1§r: Install grate, load greenware$(br)$(li)§6Stage 2§r: Seal and heat - Temperature rises from room temp to 100℃$(br)$(li)§6Stage 3§r: High-temp firing - Formal firing stage$(br)$(li)§6Stage 4§r: Cooling - Natural cooling, products and ash automatically drop when complete"
     },
     {
       "type": "patchouli:text",

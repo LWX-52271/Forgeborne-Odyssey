@@ -25,10 +25,17 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.List;
 
 public class KilnLidBlock extends Block implements EntityBlock {
     public static final IntegerProperty SMOKE_HOLE = IntegerProperty.create("smoke_hole", 0, 2);
@@ -78,17 +85,17 @@ public class KilnLidBlock extends Block implements EntityBlock {
 
         BlockPos below = pos.below();
         BlockState belowState = level.getBlockState(below);
-        boolean isStage3 = belowState.is(ModBlocks.PIT_KILN.get()) && belowState.getValue(PitKilnBlock.STAGE) == 3;
+        boolean canWaterCool = belowState.is(ModBlocks.PIT_KILN.get()) && belowState.getValue(PitKilnBlock.STAGE) >= 2 && belowState.getValue(PitKilnBlock.STAGE) <= 4;
 
         if (level.isClientSide) {
             // 客户端只对有效交互返回 SUCCESS
             if (held.isEmpty()) return InteractionResult.SUCCESS;
-            if (held.is(Items.WATER_BUCKET) && isStage3) return InteractionResult.SUCCESS;
+            if (held.is(Items.WATER_BUCKET) && canWaterCool) return InteractionResult.SUCCESS;
             return InteractionResult.PASS;
         }
 
         // ========== 泼水加速冷却 ==========
-        if (held.is(Items.WATER_BUCKET) && isStage3) {
+        if (held.is(Items.WATER_BUCKET) && canWaterCool) {
             PitKilnBlockEntity kiln = level.getBlockEntity(below) instanceof PitKilnBlockEntity k ? k : null;
             if (kiln == null) return InteractionResult.PASS;
 
@@ -205,17 +212,35 @@ public class KilnLidBlock extends Block implements EntityBlock {
     }
 
     @Override
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+        Level level = builder.getLevel();
+        if (level == null) return super.getDrops(state, builder);
+
+        LootParams params = builder.create(LootContextParamSets.BLOCK);
+        Vec3 origin = params.getParamOrNull(LootContextParams.ORIGIN);
+        if (origin == null) return super.getDrops(state, builder);
+
+        BlockPos pos = new BlockPos((int) origin.x, (int) origin.y, (int) origin.z);
+        BlockState belowState = level.getBlockState(pos.below());
+
+        if (belowState.is(ModBlocks.PIT_KILN.get()) && belowState.getValue(PitKilnBlock.STAGE) >= 2) {
+            return Collections.singletonList(new ItemStack(Items.DIRT, 2));
+        }
+        return super.getDrops(state, builder);
+    }
+
+    @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!isMoving && !newState.is(this)) {
             BlockPos kilnPos = pos.below();
             BlockState kilnState = level.getBlockState(kilnPos);
-            if (kilnState.is(ModBlocks.PIT_KILN.get())) {
+            if (kilnState.is(ModBlocks.PIT_KILN.get()) && kilnState.getValue(PitKilnBlock.STAGE) >= 2) {
                 Direction kilnFacing = kilnState.getValue(PitKilnBlock.FACING);
                 BlockPos fireMouthPos = kilnPos.relative(kilnFacing);
                 if (level.getBlockState(fireMouthPos).is(ModBlocks.FIRE_MOUTH.get())) {
-                    level.destroyBlock(fireMouthPos, true);
+                    level.destroyBlock(fireMouthPos, false);
                 }
-                level.destroyBlock(kilnPos, true);
+                level.destroyBlock(kilnPos, false);
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

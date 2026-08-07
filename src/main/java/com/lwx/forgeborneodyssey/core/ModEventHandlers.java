@@ -24,14 +24,11 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
-import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 模组事件处理器
@@ -51,7 +48,7 @@ public class ModEventHandlers {
     private static int cleanupCounter = 0;
     private static final int CLEANUP_INTERVAL = 12000;
 
-    private static final Set<BlockPos> furnacesWithPad = new HashSet<>();
+    
     
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent event) {
@@ -100,42 +97,6 @@ public class ModEventHandlers {
                 // 如果不在水中，重置计时器
                 itemInWaterTimer.remove(itemEntity);
             }
-        }
-    }
-
-    /**
-     * 追踪放置的熔炉是否在渗碳黑陶垫之上
-     */
-    @SubscribeEvent
-    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
-        if (event.getLevel().isClientSide()) return;
-
-        BlockState placed = event.getPlacedBlock();
-        BlockPos pos = event.getPos();
-        BlockPos belowPos = pos.below();
-
-        if (placed.getBlock() instanceof net.minecraft.world.level.block.AbstractFurnaceBlock) {
-            BlockState below = event.getLevel().getBlockState(belowPos);
-            if (below.is(com.lwx.forgeborneodyssey.core.registration.ModBlocks.BLACK_CERAMIC_PAD.get())) {
-                furnacesWithPad.add(pos);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        if (event.getLevel().isClientSide()) return;
-
-        BlockState broken = event.getState();
-        BlockPos pos = event.getPos();
-
-        if (broken.getBlock() instanceof net.minecraft.world.level.block.AbstractFurnaceBlock) {
-            furnacesWithPad.remove(pos);
-        }
-
-        if (broken.is(com.lwx.forgeborneodyssey.core.registration.ModBlocks.BLACK_CERAMIC_PAD.get())) {
-            BlockPos abovePos = pos.above();
-            furnacesWithPad.remove(abovePos);
         }
     }
 
@@ -338,9 +299,6 @@ public class ModEventHandlers {
         }
 
         if (burnTime > 0) {
-            if (!furnacesWithPad.isEmpty()) {
-                burnTime = (int)(burnTime * 1.2F);
-            }
             event.setBurnTime(burnTime);
         }
     }

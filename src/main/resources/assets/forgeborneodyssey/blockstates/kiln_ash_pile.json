@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "forgeborneodyssey:block/kiln_ash_pile" }
+    "facing=north": { "model": "forgeborneodyssey:block/kiln_ash_pile" },
+    "facing=south": { "model": "forgeborneodyssey:block/kiln_ash_pile", "y": 180 },
+    "facing=west": { "model": "forgeborneodyssey:block/kiln_ash_pile", "y": 270 },
+    "facing=east": { "model": "forgeborneodyssey:block/kiln_ash_pile", "y": 90 }
   }
 }

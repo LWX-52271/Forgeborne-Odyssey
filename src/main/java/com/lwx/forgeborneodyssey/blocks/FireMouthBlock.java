@@ -27,18 +27,25 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import java.util.Collections;
+import java.util.List;
 
 public class FireMouthBlock extends HorizontalDirectionalBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
-    protected static final VoxelShape SHAPE_NORTH = Block.box(3, 0, 0, 13, 9, 3);
-    protected static final VoxelShape SHAPE_SOUTH = Block.box(3, 0, 13, 13, 9, 16);
-    protected static final VoxelShape SHAPE_EAST = Block.box(13, 0, 3, 16, 9, 13);
-    protected static final VoxelShape SHAPE_WEST = Block.box(0, 0, 3, 3, 9, 13);
+    protected static final VoxelShape SHAPE_NORTH = Block.box(3, 0, 13, 13, 9, 16);
+    protected static final VoxelShape SHAPE_SOUTH = Block.box(3, 0, 0, 13, 9, 3);
+    protected static final VoxelShape SHAPE_EAST = Block.box(0, 0, 3, 3, 9, 13);
+    protected static final VoxelShape SHAPE_WEST = Block.box(13, 0, 3, 16, 9, 13);
 
     public FireMouthBlock() {
         super(Properties.of()
@@ -60,27 +67,16 @@ public class FireMouthBlock extends HorizontalDirectionalBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Level level = context.getLevel();
-        BlockPos pos = context.getClickedPos();
+        BlockPos clickedPos = context.getClickedPos();
         Direction playerFacing = context.getHorizontalDirection();
         
-        // 检查玩家点击的面背后是否有窑坑
-        for (Direction dir : Direction.Plane.HORIZONTAL) {
-            BlockPos neighborPos = pos.relative(dir);
-            BlockState neighborState = level.getBlockState(neighborPos);
-            
-            // 如果背后有窑坑，火门方向应指向窑坑
-            if (neighborState.is(ModBlocks.PIT_KILN.get())) {
-                // 窑坑的 FACING 方向是开口方向，火门应放在开口处
-                Direction kilnFacing = neighborState.getValue(PitKilnBlock.FACING);
-                if (kilnFacing == dir.getOpposite()) {
-                    // 火门 FACING 指向窑坑（即窑坑的背面方向）
-                    return this.defaultBlockState().setValue(FACING, dir);
-                }
-            }
+        BlockState clickedState = level.getBlockState(clickedPos);
+        if (clickedState.is(ModBlocks.PIT_KILN.get())) {
+            Direction kilnFacing = clickedState.getValue(PitKilnBlock.FACING);
+            return this.defaultBlockState().setValue(FACING, kilnFacing);
         }
         
-        // 默认行为：火门 FACING 指向玩家放置时的反方向
-        return this.defaultBlockState().setValue(FACING, playerFacing.getOpposite());
+        return this.defaultBlockState().setValue(FACING, playerFacing);
     }
 
     @Override
@@ -109,12 +105,27 @@ public class FireMouthBlock extends HorizontalDirectionalBlock {
         ItemStack held = player.getItemInHand(hand);
         boolean isOpen = state.getValue(OPEN);
 
-        // 查找火门后方的窑坑
+        // 查找火门后方的窑坑（遍历水平方向找匹配的窑坑）
         Direction facing = state.getValue(FACING);
-        BlockPos kilnPos = pos.relative(facing);
-        BlockState kilnState = level.getBlockState(kilnPos);
-        PitKilnBlockEntity kiln = level.getBlockEntity(kilnPos) instanceof PitKilnBlockEntity k ? k : null;
-        boolean hasKiln = kilnState.is(ModBlocks.PIT_KILN.get()) && kiln != null;
+        PitKilnBlockEntity kiln = null;
+        BlockState kilnState = null;
+        BlockPos kilnPos = null;
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
+            BlockPos candidatePos = pos.relative(dir);
+            BlockState candidateState = level.getBlockState(candidatePos);
+            if (candidateState.is(ModBlocks.PIT_KILN.get())) {
+                Direction kilnFacing = candidateState.getValue(PitKilnBlock.FACING);
+                if (dir == kilnFacing.getOpposite()) {
+                    if (level.getBlockEntity(candidatePos) instanceof PitKilnBlockEntity k) {
+                        kiln = k;
+                        kilnState = candidateState;
+                        kilnPos = candidatePos;
+                        break;
+                    }
+                }
+            }
+        }
+        boolean hasKiln = kiln != null;
 
         if (level.isClientSide) {
             // 客户端只判断是否应该消费事件
@@ -122,6 +133,7 @@ public class FireMouthBlock extends HorizontalDirectionalBlock {
             if (!isOpen && player.isShiftKeyDown() && held.isEmpty()) return InteractionResult.SUCCESS;
             if (isOpen && hasKiln && isFuel(held)) return InteractionResult.SUCCESS;
             if (isOpen && hasKiln && held.is(ModItems.FIRE_DRILL.get())) return InteractionResult.SUCCESS;
+            if (isOpen && hasKiln && player.isShiftKeyDown() && held.isEmpty() && kiln.fuelStack > 0 && kiln.fuelStack >= getFuelValue(kiln.fuelItem)) return InteractionResult.SUCCESS;
             return InteractionResult.PASS;
         }
 
@@ -165,6 +177,29 @@ public class FireMouthBlock extends HorizontalDirectionalBlock {
             return InteractionResult.SUCCESS;
         }
 
+        // 火门开启 + Shift+空手 → 取出燃料
+        if (isOpen && hasKiln && player.isShiftKeyDown() && held.isEmpty() && kiln.fuelStack > 0) {
+            int fuelValue = getFuelValue(kiln.fuelItem);
+            if (kiln.fuelStack < fuelValue) {
+                player.displayClientMessage(Component.literal("燃料不足，无法取出整份"), true);
+                return InteractionResult.SUCCESS;
+            }
+            ItemStack fuelCopy = kiln.fuelItem.copy();
+            kiln.fuelStack -= fuelValue;
+            if (kiln.fuelStack <= 0) {
+                kiln.fuelItem = ItemStack.EMPTY;
+                kiln.fuelBurnTicks = 0;
+            }
+            kiln.setChanged();
+            level.sendBlockUpdated(kilnPos, kilnState, kilnState, 3);
+            if (!player.getInventory().add(fuelCopy)) {
+                player.drop(fuelCopy, false);
+            }
+            level.playSound(null, pos, SoundEvents.WOOD_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+            player.displayClientMessage(Component.literal("已取出燃料，剩余 " + kiln.fuelStack), true);
+            return InteractionResult.SUCCESS;
+        }
+
         // 火门开启 + 后方有窑坑 → 点火
         if (isOpen && hasKiln && held.is(ModItems.FIRE_DRILL.get())) {
             int stage = kilnState.getValue(PitKilnBlock.STAGE);
@@ -177,6 +212,8 @@ public class FireMouthBlock extends HorizontalDirectionalBlock {
                 return InteractionResult.SUCCESS;
             }
             kiln.ignited = true;
+            kiln.setChanged();
+            level.sendBlockUpdated(kilnPos, kilnState, kilnState, 3);
             held.hurtAndBreak(5, player, p -> p.broadcastBreakEvent(hand));
             level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 0.5F);
             // 点火瞬间火花粒子
@@ -213,17 +250,43 @@ public class FireMouthBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+        Level level = builder.getLevel();
+        if (level == null) return super.getDrops(state, builder);
+
+        LootParams params = builder.create(LootContextParamSets.BLOCK);
+        Vec3 origin = params.getParamOrNull(LootContextParams.ORIGIN);
+        if (origin == null) return super.getDrops(state, builder);
+
+        BlockPos pos = new BlockPos((int) origin.x, (int) origin.y, (int) origin.z);
+
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
+            BlockPos candidatePos = pos.relative(dir);
+            BlockState candidateState = level.getBlockState(candidatePos);
+            if (candidateState.is(ModBlocks.PIT_KILN.get()) && candidateState.getValue(PitKilnBlock.STAGE) >= 2) {
+                return Collections.singletonList(new ItemStack(Items.DIRT, 2));
+            }
+        }
+        return super.getDrops(state, builder);
+    }
+
+    @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!isMoving && !newState.is(this)) {
-            Direction facing = state.getValue(FACING);
-            BlockPos kilnPos = pos.relative(facing);
-            BlockState kilnState = level.getBlockState(kilnPos);
-            if (kilnState.is(ModBlocks.PIT_KILN.get())) {
-                BlockPos lidPos = kilnPos.above();
-                if (level.getBlockState(lidPos).is(ModBlocks.KILN_LID.get())) {
-                    level.destroyBlock(lidPos, true);
+            for (Direction dir : Direction.Plane.HORIZONTAL) {
+                BlockPos candidatePos = pos.relative(dir);
+                BlockState candidateState = level.getBlockState(candidatePos);
+                if (candidateState.is(ModBlocks.PIT_KILN.get()) && candidateState.getValue(PitKilnBlock.STAGE) >= 2) {
+                    Direction kilnFacing = candidateState.getValue(PitKilnBlock.FACING);
+                    if (dir == kilnFacing.getOpposite()) {
+                        BlockPos lidPos = candidatePos.above();
+                        if (level.getBlockState(lidPos).is(ModBlocks.KILN_LID.get())) {
+                            level.destroyBlock(lidPos, false);
+                        }
+                        level.destroyBlock(candidatePos, false);
+                        break;
+                    }
                 }
-                level.destroyBlock(kilnPos, true);
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

@@ -110,7 +110,7 @@ public class PitKilnRenderer implements BlockEntityRenderer<PitKilnBlockEntity> 
             int visibleLayers = Math.min(blockEntity.fuelStack, 5);
             for (int i = 0; i < visibleLayers; i++) {
                 poseStack.pushPose();
-                poseStack.translate(0.5, 0.0 + i * 0.12, 0.5);
+                poseStack.translate(0.5, 0.0 + i * 0.02, 0.5);
                 poseStack.scale(0.5F, 0.5F, 0.5F);
                 poseStack.mulPose(new Quaternionf(new AxisAngle4f(
                         (float) Math.toRadians(90), 1, 0, 0)));

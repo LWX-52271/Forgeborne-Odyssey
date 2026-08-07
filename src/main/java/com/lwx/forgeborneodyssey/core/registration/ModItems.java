@@ -50,6 +50,7 @@ import com.lwx.forgeborneodyssey.items.fragments.SilverFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.GoldFragmentItem;
 import com.lwx.forgeborneodyssey.items.GrayCrucibleItem;
 import com.lwx.forgeborneodyssey.items.GravelItem;
+import com.lwx.forgeborneodyssey.items.FireMouthItem;
 import com.lwx.forgeborneodyssey.items.FirePitItem;
 import com.lwx.forgeborneodyssey.items.AshItem;
 import com.lwx.forgeborneodyssey.items.CopperSheetItem;
@@ -198,7 +199,7 @@ public class ModItems {
     public static final RegistryObject<Item> PIT_KILN_ITEM = ITEMS.register("pit_kiln", () -> new BlockItem(ModBlocks.PIT_KILN.get(), new Item.Properties()));
 
     // 火门物品
-    public static final RegistryObject<Item> FIRE_MOUTH_ITEM = ITEMS.register("fire_mouth", () -> new BlockItem(ModBlocks.FIRE_MOUTH.get(), new Item.Properties()));
+    public static final RegistryObject<Item> FIRE_MOUTH_ITEM = ITEMS.register("fire_mouth", () -> new FireMouthItem(ModBlocks.FIRE_MOUTH.get()));
 
     // 窑顶盖物品
     public static final RegistryObject<Item> KILN_LID_ITEM = ITEMS.register("kiln_lid", () -> new BlockItem(ModBlocks.KILN_LID.get(), new Item.Properties()));
@@ -292,8 +293,6 @@ public class ModItems {
     public static final RegistryObject<Item> GREENWARE_CRUCIBLE = ITEMS.register("greenware_crucible", () -> new Item(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> GREENWARE_MOLD = ITEMS.register("greenware_mold", () -> new Item(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> GREENWARE_BRICK = ITEMS.register("greenware_brick", () -> new Item(new Item.Properties().stacksTo(16)));
-    public static final RegistryObject<Item> GREENWARE_VESSEL = ITEMS.register("greenware_vessel", () -> new Item(new Item.Properties().stacksTo(16)));
-
     // 第五类：燃料与气氛控制物（陶器系统）
     public static final RegistryObject<Item> FIREWOOD = ITEMS.register("firewood", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> STRAW_BALE = ITEMS.register("straw_bale", () -> new Item(new Item.Properties().stacksTo(64)));
@@ -302,7 +301,6 @@ public class ModItems {
     // 第六类：最终成品（陶器系统）
     public static final RegistryObject<Item> GRAY_CRUCIBLE = ITEMS.register("gray_crucible", GrayCrucibleItem::new);
     public static final RegistryObject<Item> RED_MOLD = ITEMS.register("red_mold", () -> new Item(new Item.Properties().stacksTo(16)));
-    public static final RegistryObject<Item> BLACK_CERAMIC_PAD = ITEMS.register("black_ceramic_pad", () -> new BlockItem(ModBlocks.BLACK_CERAMIC_PAD.get(), new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> FIRED_BRICK = ITEMS.register("fired_brick", () -> new Item(new Item.Properties().stacksTo(64)));
 
     // 第七类：副产物与失败品（陶器系统）

@@ -6,17 +6,17 @@
     {
       "type": "patchouli:text",
       "title": "Step 2: Loading Greenware",
-      "text": "When the kiln enters Stage 1, right-click the top of the pit kiln with greenware to load it. Up to 4 greenware items can be loaded.$(br2)To remove loaded items, right-click the top with an empty hand (non-Shift mode). Removes the last item placed."
+      "text": "When the kiln enters Stage 1, right-click the top of the pit kiln with greenware to load it. Up to 4 greenware items can be loaded.$(br2)§cNote: No items can be placed without the grate installed! You must install the grate first (Stage 0 → Stage 1) before loading.$(br2)Greenware items are placed/retrieved by the §dclick position§0: the kiln top is divided into §dfront-left, front-right, back-left, back-right§0 four slots. Click the corresponding position to operate. When the target slot is occupied, it automatically fills the remaining empty slots.$(br2)To remove loaded items, right-click the top at the slot location with an empty hand (non-Shift mode)."
     },
     {
       "type": "patchouli:text",
       "title": "Greenware Types",
-      "text": "Four types of greenware can be loaded:$(br2)$(li)§bCrucible Greenware§r → §bGray Crucible§r$(br)$(li)§6Mold Greenware§r → §6Red Mold§r$(br)$(li)§7Brick Greenware§r → §7Fired Brick§r$(br)$(li)§8Vessel Greenware§r → §8Black Ceramic Pad§r$(br2)Each requires different firing conditions. Failure produces kiln waste shards."
+      "text": "Three types of greenware can be loaded:$(br)$(li)§bCrucible Greenware§r → §bGray Crucible§r$(br)$(li)§6Mold Greenware§r → §6Red Mold§r$(br)$(li)§7Brick Greenware§r → §7Fired Brick§r$(br)Each requires different firing conditions. Failure produces kiln waste shards."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:greenware_crucible_crafting",
-      "text": "Crafting recipe for crucible greenware. Requires drying mixed clay on a drying rack first."
+      "text": "Crafting recipe for crucible greenware. Requires drying on a drying rack before use."
     },
     {
       "type": "patchouli:crafting",
@@ -27,11 +27,6 @@
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:greenware_brick_crafting",
       "text": "Crafting recipe for brick greenware."
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "forgeborneodyssey:greenware_vessel_crafting",
-      "text": "Crafting recipe for vessel greenware."
     },
     {
       "type": "patchouli:text",

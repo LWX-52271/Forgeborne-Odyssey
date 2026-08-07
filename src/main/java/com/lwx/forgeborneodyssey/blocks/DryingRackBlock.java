@@ -1,6 +1,5 @@
 package com.lwx.forgeborneodyssey.blocks;
 
-import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -66,14 +65,21 @@ public class DryingRackBlock extends BaseEntityBlock {
 
         ItemStack held = player.getItemInHand(hand);
 
-        if (held.is(ModItems.MIXED_CLAY.get()) && !rack.hasItem()) {
+        double hitX = hit.getLocation().x - pos.getX();
+        double hitZ = hit.getLocation().z - pos.getZ();
+        int slot = getHitSlot(hitX, hitZ);
+
+        if (!held.isEmpty() && DryingRackBlockEntity.isDryingItem(held)) {
+            if (rack.insertSlot(slot, held)) {
+                return InteractionResult.CONSUME;
+            }
             if (rack.insertItem(held)) {
                 return InteractionResult.CONSUME;
             }
         }
 
-        if (held.isEmpty() && rack.hasItem()) {
-            ItemStack extracted = rack.extractItem();
+        if (held.isEmpty()) {
+            ItemStack extracted = rack.extractSlot(slot);
             if (!extracted.isEmpty()) {
                 player.setItemInHand(hand, extracted);
                 return InteractionResult.CONSUME;
@@ -81,6 +87,15 @@ public class DryingRackBlock extends BaseEntityBlock {
         }
 
         return InteractionResult.PASS;
+    }
+
+    private static int getHitSlot(double hitX, double hitZ) {
+        boolean right = hitX >= 0.5D;
+        boolean bottom = hitZ >= 0.5D;
+        if (right && bottom) return 3;
+        if (right) return 1;
+        if (bottom) return 2;
+        return 0;
     }
 
     @Override

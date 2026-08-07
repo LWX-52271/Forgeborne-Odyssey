@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Making Rings and Hooks",
-      "text": "From copper slot, use axe right-click to craft rings and hooks:$(br2)$(li)Copper Slot + Axe Right-click 1 time → §6Copper Ring$(br)$(li)Copper Ring + Axe Right-click 1 time → §6Copper Hook$(br)$(li)Copper Hook + Axe Right-click 1 time → §6Copper Pin$(br2)Silver and gold slots follow the same process for their respective rings, hooks, and pins."
+      "text": "From copper slot, use axe right-click to craft rings, hooks and pins:$(br2)$(li)Copper Slot + Axe Right-click 1 time → §6Copper Ring$(br)$(li)Copper Ring + Axe Right-click 1 time → §6Copper Hook$(br)$(li)Copper Hook + Axe Right-click 1 time → §6Copper Pin$(br2)Silver and gold slots convert directly to their respective pins - there are no intermediate ring or hook steps."
     },
     {
       "type": "patchouli:spotlight",

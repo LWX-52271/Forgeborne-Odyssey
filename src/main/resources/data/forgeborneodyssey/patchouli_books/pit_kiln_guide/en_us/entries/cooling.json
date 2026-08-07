@@ -6,22 +6,22 @@
     {
       "type": "patchouli:text",
       "title": "Cooling Phase (Stage 4)",
-      "text": "When fuel depletes and temperature drops below 50℃, the kiln auto-enters Stage 4 cooling.$(br2)Cooling characteristics:$(br)$(li)Temperature continuously drops, cooling rate ×1.0 (normal)$(br)$(li)Cooling timer starts accumulating$(br)$(li)Steam/cloud particles emit from kiln top$(br)$(li)Requires 1200 ticks (60 seconds) of cooling$(br2)After cooling completes (temp<50℃ + cooling>1200tick), the kiln enters Stage 5."
+      "text": "When fuel depletes and temperature drops below 50℃, the kiln auto-enters Stage 4 cooling.$(br2)Cooling characteristics:$(br)$(li)Temperature continuously drops, cooling rate ×1.0 (normal)$(br)$(li)Cooling timer starts accumulating$(br)$(li)Steam/cloud particles emit from kiln top$(br)$(li)Requires 1200 ticks (60 seconds) of cooling$(br2)After cooling completes, products and plant ash will automatically drop, and the kiln becomes an ash pile block."
     },
     {
       "type": "patchouli:text",
-      "title": "Collection (Stage 5)",
-      "text": "Entering Stage 5, the kiln lid auto-removes and the kiln is ready for harvest.$(br2)Shift+right-click the kiln with empty hand to collect all products:$(br)$(li)Each slot produces corresponding item based on greenware type and firing conditions$(br)$(li)Extra 2-4 plant ash dropped$(br)$(li)Kiln block becomes ash pile block$(br2)To reuse after collection, place a new pit kiln block."
+      "title": "Cooling Complete",
+      "text": "When cooling finishes, the following happens automatically:$(br2)$(li)Each slot produces and drops the corresponding fired product based on conditions$(br)$(li)Extra 2-4 plant ash drops$(br)$(li)Kiln lid auto-removes$(br)$(li)Kiln block becomes ash pile block$(br2)To reuse, place a new pit kiln block."
     },
     {
       "type": "patchouli:text",
       "title": "Important Notes",
-      "text": "$(li)§cRain explosion!§r During Stage 3, if rain is detected above the kiln, it immediately explodes, destroying all contents and producing 2-4 kiln waste shards.$(br2)$(li)§cDon't open before cooling!§r During Stage 4, forcibly dismantling the kiln may damage products.$(br2)$(li)§aPlant Ash Usage§r: Ash from firing can be used as fertilizer.$(br2)$(li)§aKiln Waste Shard Usage§r: Byproduct of failed firing, can be recycled."
+      "text": "$(li)§cRain explosion!§r During Stage 3, if rain is detected above the kiln, it immediately explodes — destroying the kiln lid and contents, while dropping §d2-5§0 kiln waste shards as remnants.$(br2)$(li)§aPlant Ash Usage§r: Ash from firing can be used as fertilizer.$(br2)$(li)§aKiln Waste Shard Usage§r: Byproduct of failed firing, can be recycled."
     },
     {
       "type": "patchouli:text",
       "title": "Quick Reference",
-      "text": "Complete firing process:$(br2)$(li)Place pit kiln → surround with dirt$(br)$(li)Place fire mouth → install grate → Stage 1$(br)$(li)Load greenware → add fuel → seal → Stage 2$(br)$(li)Ignite (fire drill right-click)$(br)$(li)Heat to 100℃ → Stage 3$(br)$(li)Control atmosphere (fire mouth + vents)$(br)$(li)Fuel depletes and cools → Stage 4$(br)$(li)Cool 60 seconds → Stage 5$(br)$(li)Shift+right-click empty hand to collect"
+      "text": "Complete firing process:$(br2)$(li)Place pit kiln → surround with dirt$(br)$(li)Place fire mouth → install grate → Stage 1$(br)$(li)Load greenware → add fuel → seal → Stage 2$(br)$(li)Ignite (fire drill right-click)$(br)$(li)Heat to 100℃ → Stage 3$(br)$(li)Control atmosphere (fire mouth + vents)$(br)$(li)Fuel depletes and cools → Stage 4$(br)$(li)Cool 60 seconds → products and ash pile drop automatically"
     }
   ],
   "sortnum": 5
