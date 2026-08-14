@@ -1,0 +1,43 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Advanced Crafting",
+  "icon": "forgeborneodyssey:copper_sword_blade",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Chapter 5: Advanced Crafting",
+      "text": "§7[Continue from Copper Slot]$(br2)After mastering the basic cold forging, you can make more complex products. Starting from copper slot, you can craft various items."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Making Rings and Hooks",
+      "text": "From copper slot, use axe right-click to craft rings, hooks and pins:$(br2)$(li)Copper Slot + Axe Right-click 1 time → §6Copper Ring$(br)$(li)Copper Ring + Axe Right-click 1 time → §6Copper Hook$(br)$(li)Copper Hook + Axe Right-click 1 time → §6Copper Pin$(br2)Silver and gold slots convert directly to their respective pins - there are no intermediate ring or hook steps."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_ring",
+      "text": "§cCopper Ring - Processed from copper slot, used for rings and fishing rods."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_hook",
+      "text": "§cCopper Hook - Processed from copper ring, used for hanging or decoration."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "§7[Final Products You Can Make]",
+      "text": "$(li)§cWeapons: Primitive copper knife, wrought copper sword (needs assembly)$(br)$(li)§cTools: Wrought copper axe (forged from curve)$(br)$(li)§cArmor: Pin chestplate (decorative)$(br)$(li)§cAccessories: Rings, hooks, beads, bars and more$(br)$(li)§cFunctional: Copper fishing rod and more"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_fishing_rod",
+      "text": "§aCopper Fishing Rod - Copper Ring + Copper Hook + String + Stick. Craft the ring and hook first, then assemble at the crafting table."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Product Values",
+      "text": "Different metal products have different values:$(br)$(li)Copper - Basic equipment, practical and reliable$(br)$(li)Silver - Excellent performance, strong decorative value$(br)$(li)Gold - Extremely precious, premium decoration$(br2)Additionally, pin chestplates can be worn as chest accessories."
+    }
+  ],
+  "sortnum": 4
+}

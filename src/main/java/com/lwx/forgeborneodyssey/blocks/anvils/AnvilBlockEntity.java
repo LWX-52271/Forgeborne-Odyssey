@@ -3,6 +3,7 @@ package com.lwx.forgeborneodyssey.blocks.anvils;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -169,7 +170,7 @@ public class AnvilBlockEntity extends BlockEntity {
                 double weight = tag.getDouble("Weight");
                 if (weight < 50.0) {
                     player.displayClientMessage(
-                        net.minecraft.network.chat.Component.literal("§c该坯料重量不足50g，无法进行锻造！"),
+                        Component.translatable("message.forgeborneodyssey.anvil.weight_too_low"),
                         true
                     );
                     return;
@@ -827,12 +828,8 @@ public class AnvilBlockEntity extends BlockEntity {
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         CompoundTag tag = pkt.getTag();
-        if (tag == null) {
-            tag = new CompoundTag();
-        }
-        load(tag);
-        if (level != null && level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        if (tag != null) {
+            load(tag);
         }
     }
     

@@ -7,15 +7,6 @@
       {
         "target": {
           "predicate_type": "minecraft:tag_match",
-          "tag": "minecraft:base_stone_overworld"
-        },
-        "state": {
-          "Name": "forgeborneodyssey:torbernite_ore"
-        }
-      },
-      {
-        "target": {
-          "predicate_type": "minecraft:tag_match",
           "tag": "minecraft:deepslate_ore_replaceables"
         },
         "state": {

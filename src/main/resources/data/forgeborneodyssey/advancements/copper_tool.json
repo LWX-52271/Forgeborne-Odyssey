@@ -1,0 +1,38 @@
+{
+  "parent": "forgeborneodyssey:sparks_fly",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:wrought_copper_axe"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.copper_tool.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.copper_tool.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_copper_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:wrought_copper_axe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_copper_axe"
+    ]
+  ]
+}

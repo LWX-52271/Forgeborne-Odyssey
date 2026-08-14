@@ -1,0 +1,40 @@
+{
+  "parent": "forgeborneodyssey:stone_age",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:stone_hammer"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.stone_hammer.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.stone_hammer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_stone_hammer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:cobblestone_hammer",
+              "forgeborneodyssey:stone_hammer",
+              "forgeborneodyssey:handle_stone_hammer"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_stone_hammer"
+    ]
+  ]
+}

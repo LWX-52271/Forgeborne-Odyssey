@@ -1,0 +1,38 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "石器工具",
+  "icon": "forgeborneodyssey:cobblestone_hammer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "打造最初的工具",
+      "text": "§0在冶锻纪行中，你的第一批工具将由圆石制成。地表圆石是最基础的原料，在地表随处可见。$(br)寻找地表圆石，用它来制作锤子和石凿，开启你的冶锻之旅。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
+      "text": "§b圆石锤§r——攻击力3，耐久32。这是你最早的锻打工具，用于在石砧上敲击金属坯料。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
+      "text": "§b带柄石锤§r——攻击力4，耐久64。装上木柄后更耐用，是主要的锻造工具。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:stone_chisel_crafting",
+      "text": "§b石凿§r——攻击力2，用于精细雕刻。金属成品需要用石凿雕刻才能完成。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "燧石工具",
+      "text": "除了圆石工具，你还可以用燧石制作更锋利的工具：$(br)$(li)燧石刀——基础武器$(br)$(li)燧石铲——挖掘工具$(br)$(li)石镰刀——收割作物"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "提示",
+      "text": "§a提示：先用圆石制作石锤和石凿！$(br2)锤子是锻造的核心工具，石凿是雕刻成品的关键。建议先制作足够数量的锤子和石凿，再开始寻找金属。"
+    }
+  ],
+  "sortnum": 0
+}

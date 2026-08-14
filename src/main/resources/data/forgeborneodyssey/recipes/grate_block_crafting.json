@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "AAA",
+    "   "
+  ],
+  "key": {
+    "C": {
+      "item": "forgeborneodyssey:temper_grog"
+    },
+    "A": {
+      "item": "forgeborneodyssey:raw_clay"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:grate_block",
+    "count": 1
+  }
+}

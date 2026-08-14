@@ -1,8 +1,14 @@
 package com.lwx.forgeborneodyssey.events;
 
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
+import com.lwx.forgeborneodyssey.items.GrassFiberItem;
+import com.lwx.forgeborneodyssey.items.RawClayItem;
+import com.lwx.forgeborneodyssey.items.TemperGrogItem;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -27,13 +33,41 @@ public class CraftingEventListener {
         ItemStack stack = event.getStack();
         if (!stack.isEmpty() && stack.getItem() instanceof AbstractMetalBilletItem) {
             AbstractMetalBilletItem billet = (AbstractMetalBilletItem) stack.getItem();
-            // 如果没有重量标签，设置为中（正常大小）
             if (!stack.hasTag() || !stack.getTag().contains("Quality")) {
                 billet.setQuality(stack, AbstractMetalBilletItem.Quality.MEDIUM);
             }
-            // 如果没有纯度标签，设置默认纯度
             if (!stack.hasTag() || !stack.getTag().contains("Purity")) {
                 billet.setRandomPurity(stack, net.minecraft.util.RandomSource.create());
+            }
+        }
+
+        if (!stack.isEmpty() && stack.getItem() instanceof RawClayItem) {
+            spawnPickupParticles(event, stack);
+        }
+
+        if (!stack.isEmpty() && stack.getItem() instanceof GrassFiberItem) {
+            spawnPickupParticles(event, stack);
+        }
+
+        if (!stack.isEmpty() && stack.getItem() instanceof TemperGrogItem) {
+            spawnPickupParticles(event, stack);
+        }
+    }
+
+    private static void spawnPickupParticles(PlayerEvent.ItemPickupEvent event, ItemStack stack) {
+        Player player = event.getEntity();
+        if (player.level() instanceof ServerLevel serverLevel) {
+            ItemStack displayStack = new ItemStack(stack.getItem());
+            for (int i = 0; i < 6; i++) {
+                double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.4;
+                double offsetY = serverLevel.random.nextDouble() * 0.4;
+                double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.4;
+                serverLevel.sendParticles(
+                    new ItemParticleOption(ParticleTypes.ITEM, displayStack),
+                    player.getX() + offsetX,
+                    player.getY() + 0.5 + offsetY,
+                    player.getZ() + offsetZ,
+                    1, 0.0, 0.0, 0.0, 0.0);
             }
         }
     }

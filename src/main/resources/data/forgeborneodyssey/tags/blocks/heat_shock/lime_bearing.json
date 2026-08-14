@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "forgeborneodyssey:limestone_block",
+    "forgeborneodyssey:polished_limestone_block",
+    "minecraft:calcite"
+  ]
+}

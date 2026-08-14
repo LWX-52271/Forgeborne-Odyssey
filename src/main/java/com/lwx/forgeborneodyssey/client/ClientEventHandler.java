@@ -1,7 +1,10 @@
 package com.lwx.forgeborneodyssey.client;
 
 import com.lwx.forgeborneodyssey.client.render.AnvilRenderer;
+import com.lwx.forgeborneodyssey.client.render.DryingRackRenderer;
 import com.lwx.forgeborneodyssey.client.render.FirePitRenderer;
+import com.lwx.forgeborneodyssey.client.render.KilnLidRenderer;
+import com.lwx.forgeborneodyssey.client.render.PitKilnRenderer;
 import com.lwx.forgeborneodyssey.client.renderer.StressBlockRenderer;
 
 import com.lwx.forgeborneodyssey.client.screen.AnvilMetalSelectionScreen;
@@ -32,7 +35,10 @@ public class ClientEventHandler {
         event.enqueueWork(() -> {
             BlockEntityRenderers.register(ModBlocks.ANVIL_BLOCK_ENTITY.get(), AnvilRenderer::new);
             BlockEntityRenderers.register(ModBlocks.FIRE_PIT_BLOCK_ENTITY.get(), FirePitRenderer::new);
+            BlockEntityRenderers.register(ModBlocks.PIT_KILN_BLOCK_ENTITY.get(), PitKilnRenderer::new);
+            BlockEntityRenderers.register(ModBlocks.KILN_LID_BLOCK_ENTITY.get(), KilnLidRenderer::new);
             BlockEntityRenderers.register(ModBlocks.STRESS_BLOCK_ENTITY.get(), StressBlockRenderer::new);
+            BlockEntityRenderers.register(ModBlocks.DRYING_RACK_BLOCK_ENTITY.get(), DryingRackRenderer::new);
             
             // 注册菜单屏幕
             MenuScreens.register(ModMenuTypes.ANVIL_METAL_SELECTION_MENU.get(), AnvilMetalSelectionScreen::new);

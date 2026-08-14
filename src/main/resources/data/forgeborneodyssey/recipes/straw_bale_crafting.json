@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WWW",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "forgeborneodyssey:grass_fiber"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:straw_bale",
+    "count": 1
+  }
+}

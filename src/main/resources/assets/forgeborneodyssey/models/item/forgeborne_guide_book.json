@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "forgeborneodyssey:item/forgeborne_guide_book"
-  }
+  "parent": "patchouli:item/book_blue"
 }

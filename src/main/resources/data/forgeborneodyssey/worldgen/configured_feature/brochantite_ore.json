@@ -12,15 +12,6 @@
         "state": {
           "Name": "forgeborneodyssey:brochantite_ore"
         }
-      },
-      {
-        "target": {
-          "predicate_type": "minecraft:tag_match",
-          "tag": "minecraft:mineable_with_shovel"
-        },
-        "state": {
-          "Name": "forgeborneodyssey:brochantite_ore"
-        }
       }
     ]
   }

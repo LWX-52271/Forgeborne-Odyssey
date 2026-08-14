@@ -1,0 +1,24 @@
+{
+  "type": "forgeborneodyssey:tool_shaped",
+  "pattern": [
+    "K  ",
+    "L  ",
+    "   "
+  ],
+  "key": {
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "K": [
+      {"item": "forgeborneodyssey:flint_knife"},
+      {"item": "forgeborneodyssey:primitive_copper_knife"},
+      {"item": "forgeborneodyssey:primitive_silver_knife"},
+      {"item": "forgeborneodyssey:primitive_gold_knife"}
+    ]
+  },
+  "tool": "K",
+  "result": {
+    "item": "forgeborneodyssey:firewood",
+    "count": 4
+  }
+}

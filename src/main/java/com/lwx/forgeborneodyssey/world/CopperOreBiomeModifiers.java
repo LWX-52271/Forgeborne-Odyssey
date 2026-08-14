@@ -67,6 +67,9 @@ public class CopperOreBiomeModifiers {
     // 钒铜矿生物群系修饰器
     public static final ResourceKey<BiomeModifier> ADD_CUPROVANADITE_ORE = createKey("add_cuprovanadite_ore");
 
+    // 硅孔雀石生物群系修饰器
+    public static final ResourceKey<BiomeModifier> ADD_CHRYSOCOLLA_ORE = createKey("add_chrysocolla_ore");
+
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
         var placedFeaturesRegistry = context.lookup(Registries.PLACED_FEATURE);
         var biomesRegistry = context.lookup(Registries.BIOME);
@@ -184,6 +187,12 @@ public class CopperOreBiomeModifiers {
         context.register(ADD_CUPROVANADITE_ORE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                 overworldBiomes,
                 HolderSet.direct(placedFeaturesRegistry.getOrThrow(CopperOrePlacedFeatures.CUPROVANADITE_ORE_PLACED_KEY)),
+                GenerationStep.Decoration.UNDERGROUND_ORES));
+
+        // 硅孔雀石 - 全主世界
+        context.register(ADD_CHRYSOCOLLA_ORE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+                overworldBiomes,
+                HolderSet.direct(placedFeaturesRegistry.getOrThrow(CopperOrePlacedFeatures.CHRYSOCOLLA_ORE_PLACED_KEY)),
                 GenerationStep.Decoration.UNDERGROUND_ORES));
     }
 

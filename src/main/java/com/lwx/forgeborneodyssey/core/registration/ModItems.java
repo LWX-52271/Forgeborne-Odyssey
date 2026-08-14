@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.core.registration;
 
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
+import com.lwx.forgeborneodyssey.items.*;
 import com.lwx.forgeborneodyssey.items.metalbillets.GoldBilletItem;
 import com.lwx.forgeborneodyssey.items.metalbillets.SilverBilletItem;
 import com.lwx.forgeborneodyssey.items.metalbillets.CopperBilletItem;
@@ -22,6 +23,11 @@ import com.lwx.forgeborneodyssey.items.armor.CopperPinArmorItem;
 import com.lwx.forgeborneodyssey.items.softmetalbillets.SoftCopperBilletItem;
 import com.lwx.forgeborneodyssey.items.softmetalstrips.SoftCopperStripItem;
 import com.lwx.forgeborneodyssey.items.tools.CobblestoneHammerItem;
+import com.lwx.forgeborneodyssey.items.tools.FlintShovelItem;
+import com.lwx.forgeborneodyssey.items.tools.StoneHammerItem;
+import com.lwx.forgeborneodyssey.items.tools.FlintKnifeItem;
+import com.lwx.forgeborneodyssey.items.tools.FlintSickleItem;
+import com.lwx.forgeborneodyssey.items.tools.FireDrillItem;
 import com.lwx.forgeborneodyssey.items.tools.HandleStoneHammerItem;
 import com.lwx.forgeborneodyssey.items.tools.StoneChiselItem;
 import com.lwx.forgeborneodyssey.items.tools.WoodenTongsItem;
@@ -43,13 +49,7 @@ import com.lwx.forgeborneodyssey.items.metalhooks.CopperHookItem;
 import com.lwx.forgeborneodyssey.items.fragments.CopperFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.SilverFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.GoldFragmentItem;
-import com.lwx.forgeborneodyssey.items.GravelItem;
-import com.lwx.forgeborneodyssey.items.FirePitItem;
-import com.lwx.forgeborneodyssey.items.AshItem;
-import com.lwx.forgeborneodyssey.items.CopperSheetItem;
-import com.lwx.forgeborneodyssey.items.SilverSheetItem;
-import com.lwx.forgeborneodyssey.items.GoldSheetItem;
-import com.lwx.forgeborneodyssey.items.ForgeborneGuideBookItem;
+// import com.lwx.forgeborneodyssey.items.PitKilnGuideBookItem; // 暂由Patchouli自动生成
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -157,6 +157,11 @@ public class ModItems {
 
     // 工具物品
     public static final RegistryObject<Item> COBBLESTONE_HAMMER = ITEMS.register("cobblestone_hammer", CobblestoneHammerItem::new);
+    public static final RegistryObject<Item> FLINT_SHOVEL = ITEMS.register("flint_shovel", FlintShovelItem::new);
+    public static final RegistryObject<Item> STONE_HAMMER = ITEMS.register("stone_hammer", StoneHammerItem::new);
+    public static final RegistryObject<Item> FLINT_KNIFE = ITEMS.register("flint_knife", FlintKnifeItem::new);
+    public static final RegistryObject<Item> FLINT_SICKLE = ITEMS.register("flint_sickle", FlintSickleItem::new);
+    public static final RegistryObject<Item> FIRE_DRILL = ITEMS.register("fire_drill", FireDrillItem::new);
     public static final RegistryObject<Item> HANDLE_STONE_HAMMER = ITEMS.register("handle_stone_hammer", HandleStoneHammerItem::new);
     public static final RegistryObject<Item> STONE_CHISEL = ITEMS.register("stone_chisel", StoneChiselItem::new);
     public static final RegistryObject<Item> WOODEN_CLAMP = ITEMS.register("wooden_clamp", WoodenTongsItem::new);
@@ -181,6 +186,27 @@ public class ModItems {
 
     // 火塘物品
     public static final RegistryObject<Item> FIRE_PIT_ITEM = ITEMS.register("fire_pit_block", () -> new FirePitItem(ModBlocks.FIRE_PIT_BLOCK.get()));
+
+    // 竖穴窑物品
+    public static final RegistryObject<Item> PIT_KILN_ITEM = ITEMS.register("pit_kiln", () -> new BlockItem(ModBlocks.PIT_KILN.get(), new Item.Properties()));
+
+    // 火门物品
+    public static final RegistryObject<Item> FIRE_MOUTH_ITEM = ITEMS.register("fire_mouth", () -> new FireMouthItem(ModBlocks.FIRE_MOUTH.get()));
+
+    // 窑顶盖物品
+    public static final RegistryObject<Item> KILN_LID_ITEM = ITEMS.register("kiln_lid", () -> new BlockItem(ModBlocks.KILN_LID.get(), new Item.Properties()));
+
+    // 窑箅物品
+    public static final RegistryObject<Item> GRATE_BLOCK_ITEM = ITEMS.register("grate_block", () -> new BlockItem(ModBlocks.GRATE_BLOCK.get(), new Item.Properties()));
+
+    // 铜草花物品
+    public static final RegistryObject<Item> COPPER_GRASS_FLOWER_ITEM = createBlockItem("copper_grass_flower", ModBlocks.COPPER_GRASS_FLOWER);
+
+    // 灰烬堆物品
+    public static final RegistryObject<Item> KILN_ASH_PILE_ITEM = ITEMS.register("kiln_ash_pile", () -> new BlockItem(ModBlocks.KILN_ASH_PILE.get(), new Item.Properties()));
+
+    // 晾坯架物品
+    public static final RegistryObject<Item> DRYING_RACK_ITEM = ITEMS.register("drying_rack", () -> new BlockItem(ModBlocks.DRYING_RACK.get(), new Item.Properties()));
 
     // 饰针胸甲物品（可装备形式）
     public static final RegistryObject<Item> GOLD_PIN_CHESTPLATE = ITEMS.register("gold_pin_chestplate", GoldPinArmorItem::new);
@@ -247,6 +273,51 @@ public class ModItems {
 
     // 冶锻入门手册
     public static final RegistryObject<Item> FORGEBORNE_GUIDE_BOOK = ITEMS.register("forgeborne_guide_book", ForgeborneGuideBookItem::new);
+
+    // 火裂采矿术指南
+    public static final RegistryObject<Item> FIRE_CRACK_MINING_GUIDE = ITEMS.register("fire_crack_mining_guide", FireCrackMiningGuideBookItem::new);
+
+    // 竖穴升焰窑使用指南
+    public static final RegistryObject<Item> PIT_KILN_GUIDE_BOOK = ITEMS.register("pit_kiln_guide_book", PitKilnGuideBookItem::new);
+
+    // 第三类：基础原材料（陶器系统）
+    public static final RegistryObject<Item> RAW_CLAY = ITEMS.register("raw_clay", RawClayItem::new);
+    public static final RegistryObject<Item> TEMPER_GROG = ITEMS.register("temper_grog", TemperGrogItem::new);
+    public static final RegistryObject<Item> GRASS_FIBER = ITEMS.register("grass_fiber", GrassFiberItem::new);
+    public static final RegistryObject<Item> RICE_HUSK = ITEMS.register("rice_husk",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.rice_husk.tooltip"));
+
+    // 第四类：加工半成品（陶器系统）
+    public static final RegistryObject<Item> MIXED_CLAY = ITEMS.register("mixed_clay",
+        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.mixed_clay.tooltip"));
+    public static final RegistryObject<Item> GREENWARE_CRUCIBLE = ITEMS.register("greenware_crucible",
+        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_crucible.tooltip"));
+    public static final RegistryObject<Item> GREENWARE_MOLD = ITEMS.register("greenware_mold",
+        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_mold.tooltip"));
+    public static final RegistryObject<Item> GREENWARE_BRICK = ITEMS.register("greenware_brick",
+        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_brick.tooltip"));
+    // 第五类：燃料与气氛控制物（陶器系统）
+    public static final RegistryObject<Item> FIREWOOD = ITEMS.register("firewood",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.firewood.tooltip"));
+    public static final RegistryObject<Item> STRAW_BALE = ITEMS.register("straw_bale",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.straw_bale.tooltip"));
+    public static final RegistryObject<Item> RICE_HUSK_CHAR = ITEMS.register("rice_husk_char",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.rice_husk_char.tooltip"));
+
+    // 第六类：最终成品（陶器系统）
+    public static final RegistryObject<Item> GRAY_CRUCIBLE = ITEMS.register("gray_crucible", GrayCrucibleItem::new);
+    public static final RegistryObject<Item> RED_MOLD = ITEMS.register("red_mold",
+        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.red_mold.tooltip"));
+    public static final RegistryObject<Item> FIRED_BRICK = ITEMS.register("fired_brick",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.fired_brick.tooltip"));
+
+    // 第七类：副产物与失败品（陶器系统）
+    public static final RegistryObject<Item> KILN_WASTE_SHARD = ITEMS.register("kiln_waste_shard",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.kiln_waste_shard.tooltip"));
+    public static final RegistryObject<Item> PLANT_ASH = ITEMS.register("plant_ash",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.plant_ash.tooltip"));
+    public static final RegistryObject<Item> CHARCOAL_CLUMP = ITEMS.register("charcoal_clump",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.charcoal_clump.tooltip"));
 
     /**
      * 初始化金属物品容器（在所有物品注册完成后调用）

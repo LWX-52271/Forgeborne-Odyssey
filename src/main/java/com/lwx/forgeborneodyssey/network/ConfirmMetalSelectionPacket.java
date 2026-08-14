@@ -13,6 +13,8 @@ import java.util.function.Supplier;
  */
 public class ConfirmMetalSelectionPacket {
     
+    private static final double MAX_DISTANCE_SQ = 64.0;
+    
     private final BlockPos pos;
     
     public ConfirmMetalSelectionPacket(BlockPos pos) {
@@ -32,9 +34,12 @@ public class ConfirmMetalSelectionPacket {
         context.enqueueWork(() -> {
             var player = context.getSender();
             if (player != null) {
+                // 验证玩家是否在石砧的交互范围内
+                if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > MAX_DISTANCE_SQ) {
+                    return;
+                }
                 var level = player.level();
                 if (level.getBlockEntity(pos) instanceof AnvilBlockEntity anvilBE) {
-                    // 关闭 GUI（不再需要确认选择逻辑）
                     player.closeContainer();
                 }
             }

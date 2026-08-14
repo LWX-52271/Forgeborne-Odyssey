@@ -1,7 +1,11 @@
 package com.lwx.forgeborneodyssey.core;
 
+import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
+import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -10,11 +14,18 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.TallGrassBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -35,9 +46,16 @@ public class ModEventHandlers {
     // 记录玩家背包中软化铜坯料的冷却时间
     private static final Map<Player, Map<Integer, Integer>> softCopperCooldownMap = new HashMap<>();
     
+    // 记录方块被工具采集的次数（每个方块最多采集N次后销毁）
+    private static final Map<BlockPos, Integer> blockUsageCount = new HashMap<>();
+    private static final int MAX_USAGE = 3;
+    private static final int STONE_MAX_USAGE = 6;
+    
     // 定期清理计数器（每10分钟清理一次无效条目）
     private static int cleanupCounter = 0;
-    private static final int CLEANUP_INTERVAL = 12000; // 10分钟 = 12000 ticks
+    private static final int CLEANUP_INTERVAL = 12000;
+
+    
     
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent event) {
@@ -88,7 +106,7 @@ public class ModEventHandlers {
             }
         }
     }
-    
+
     /**
      * 定期清理无效的计时器条目
      * 防止因异常情况导致的内存泄漏
@@ -104,6 +122,12 @@ public class ModEventHandlers {
         softCopperCooldownMap.entrySet().removeIf(entry -> {
             Player player = entry.getKey();
             return player.level() == null || player.level().isClientSide;
+        });
+
+        // 清理已不存在的方块的采集计数
+        blockUsageCount.entrySet().removeIf(entry -> {
+            BlockPos pos = entry.getKey();
+            return !level.isLoaded(pos) || level.getBlockState(pos).isAir();
         });
     }
     
@@ -268,6 +292,200 @@ public class ModEventHandlers {
         itemInWaterTimer.remove(event.getEntity());
     }
     
+    /**
+     * 自定义燃料燃烧时间
+     * 硬木柴: 1800 tick, 干草捆: 800 tick, 稻壳炭: 2400 tick, 炭化结块: 600 tick
+     */
+    @SubscribeEvent
+    public static void onFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
+        ItemStack stack = event.getItemStack();
+        int burnTime = 0;
+
+        if (stack.is(ModItems.FIREWOOD.get())) {
+            burnTime = 1800;
+        } else if (stack.is(ModItems.STRAW_BALE.get())) {
+            burnTime = 800;
+        } else if (stack.is(ModItems.RICE_HUSK_CHAR.get())) {
+            burnTime = 2400;
+        } else if (stack.is(ModItems.CHARCOAL_CLUMP.get())) {
+            burnTime = 600;
+        }
+
+        if (burnTime > 0) {
+            event.setBurnTime(burnTime);
+        }
+    }
+
+    /**
+     * 右键成熟小麦时 30% 几率额外掉落稻壳
+     */
+    @SubscribeEvent
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getLevel().isClientSide()) return;
+
+        Player player = event.getEntity();
+        BlockPos pos = event.getHitVec().getBlockPos();
+        BlockState state = event.getLevel().getBlockState(pos);
+        ItemStack held = player.getItemInHand(event.getHand());
+
+        if (held.is(ModItems.FLINT_SHOVEL.get()) && isDirtLike(state)) {
+            // 窑坑方向背向玩家（开口朝向玩家面前）
+            Direction playerFacing = player.getDirection().getOpposite();
+            BlockState kilnState = ModBlocks.PIT_KILN.get().defaultBlockState()
+                    .setValue(PitKilnBlock.FACING, playerFacing);
+            event.getLevel().setBlock(pos, kilnState, 3);
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+            event.getLevel().playSound(null, pos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (held.is(ModItems.FLINT_SHOVEL.get()) && isSandLike(state)) {
+            int count = 1 + event.getLevel().getRandom().nextInt(2);
+            ItemStack clay = new ItemStack(ModItems.RAW_CLAY.get(), count);
+            if (!player.getInventory().add(clay)) {
+                player.drop(clay, false);
+            }
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+            event.getLevel().playSound(null, pos, SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+            useBlock(event.getLevel(), pos, MAX_USAGE);
+
+            if (event.getLevel() instanceof ServerLevel serverLevel) {
+                ItemStack displayStack = new ItemStack(ModItems.RAW_CLAY.get());
+                for (int i = 0; i < 8; i++) {
+                    double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    double offsetY = serverLevel.random.nextDouble() * 0.5;
+                    double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    serverLevel.sendParticles(
+                        new ItemParticleOption(ParticleTypes.ITEM, displayStack),
+                        pos.getX() + 0.5 + offsetX,
+                        pos.getY() + 0.5 + offsetY,
+                        pos.getZ() + 0.5 + offsetZ,
+                        1, 0.0, 0.0, 0.0, 0.0);
+                }
+            }
+
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (held.is(ModItems.FLINT_KNIFE.get()) && isGrassLike(state)) {
+            int count = 1 + event.getLevel().getRandom().nextInt(2);
+            ItemStack fiber = new ItemStack(ModItems.GRASS_FIBER.get(), count);
+            if (!player.getInventory().add(fiber)) {
+                player.drop(fiber, false);
+            }
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+            event.getLevel().playSound(null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+            useBlock(event.getLevel(), pos, MAX_USAGE);
+
+            if (event.getLevel() instanceof ServerLevel serverLevel) {
+                ItemStack displayStack = new ItemStack(ModItems.GRASS_FIBER.get());
+                for (int i = 0; i < 8; i++) {
+                    double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    double offsetY = serverLevel.random.nextDouble() * 0.5;
+                    double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    serverLevel.sendParticles(
+                        new ItemParticleOption(ParticleTypes.ITEM, displayStack),
+                        pos.getX() + 0.5 + offsetX,
+                        pos.getY() + 0.5 + offsetY,
+                        pos.getZ() + 0.5 + offsetZ,
+                        1, 0.0, 0.0, 0.0, 0.0);
+                }
+            }
+
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (held.is(ModItems.STONE_HAMMER.get()) && isStoneLike(state)) {
+            int count = 1 + event.getLevel().getRandom().nextInt(2);
+            ItemStack grog = new ItemStack(ModItems.TEMPER_GROG.get(), count);
+            if (!player.getInventory().add(grog)) {
+                player.drop(grog, false);
+            }
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+            event.getLevel().playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.6F, 1.2F);
+            useBlock(event.getLevel(), pos, STONE_MAX_USAGE);
+
+            if (event.getLevel() instanceof ServerLevel serverLevel) {
+                ItemStack displayStack = new ItemStack(ModItems.TEMPER_GROG.get());
+                for (int i = 0; i < 8; i++) {
+                    double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    double offsetY = serverLevel.random.nextDouble() * 0.5;
+                    double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    serverLevel.sendParticles(
+                        new ItemParticleOption(ParticleTypes.ITEM, displayStack),
+                        pos.getX() + 0.5 + offsetX,
+                        pos.getY() + 0.5 + offsetY,
+                        pos.getZ() + 0.5 + offsetZ,
+                        1, 0.0, 0.0, 0.0, 0.0);
+                }
+            }
+
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)) {
+            if (event.getLevel().getRandom().nextFloat() < 0.30F) {
+                ItemStack riceHusk = new ItemStack(ModItems.RICE_HUSK.get());
+                if (!player.getInventory().add(riceHusk)) {
+                    player.drop(riceHusk, false);
+                }
+            }
+        }
+    }
+
+    private static boolean isDirtLike(BlockState state) {
+        return state.is(Blocks.DIRT) ||
+                state.is(Blocks.GRASS_BLOCK) ||
+                state.is(Blocks.COARSE_DIRT) ||
+                state.is(Blocks.PODZOL) ||
+                state.is(Blocks.MYCELIUM) ||
+                state.is(Blocks.ROOTED_DIRT);
+    }
+
+    private static boolean isSandLike(BlockState state) {
+        return state.is(Blocks.SAND) ||
+                state.is(Blocks.RED_SAND) ||
+                state.is(Blocks.GRAVEL);
+    }
+
+    private static boolean isGrassLike(BlockState state) {
+        return state.is(Blocks.GRASS) ||
+                state.is(Blocks.TALL_GRASS) ||
+                state.is(Blocks.FERN) ||
+                state.is(Blocks.LARGE_FERN);
+    }
+
+    private static boolean isStoneLike(BlockState state) {
+        return state.is(Blocks.STONE) ||
+                state.is(Blocks.COBBLESTONE) ||
+                state.is(Blocks.COBBLED_DEEPSLATE) ||
+                state.is(Blocks.SMOOTH_BASALT) ||
+                state.is(Blocks.TUFF) ||
+                state.is(Blocks.CALCITE) ||
+                state.is(Blocks.DRIPSTONE_BLOCK);
+    }
+
+    /**
+     * 记录方块使用次数，达到最大次数后销毁，防止无限刷取
+     */
+    private static void useBlock(Level level, BlockPos pos, int maxUsage) {
+        int count = blockUsageCount.getOrDefault(pos, 0) + 1;
+        if (count >= maxUsage) {
+            blockUsageCount.remove(pos);
+            level.destroyBlock(pos, false);
+        } else {
+            blockUsageCount.put(pos, count);
+        }
+    }
+
     /**
      * 更新软化铜坯料在背包中的冷却时间
      * 1.5分钟（1800 ticks）后冷却成铜胚料

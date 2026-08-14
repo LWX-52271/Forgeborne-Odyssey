@@ -35,8 +35,10 @@ public class MiningActionPacket {
     
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
+        if (context.getDirection().getReceptionSide().isServer()) {
+            return false;
+        }
         context.enqueueWork(() -> {
-            // 在客户端播放挖掘动画
             Level level = net.minecraft.client.Minecraft.getInstance().level;
             if (level != null) {
                 Player player = level.getPlayerByUUID(playerUUID);

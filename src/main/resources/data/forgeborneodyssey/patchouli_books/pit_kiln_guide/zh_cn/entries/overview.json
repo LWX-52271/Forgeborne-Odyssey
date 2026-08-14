@@ -1,0 +1,37 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "概述",
+  "icon": "forgeborneodyssey:pit_kiln",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "§6§l竖穴升焰窑§r$(br2)§0竖穴升焰窑是烧制陶器的核心设施。用泥土围成竖穴，通过火门燃烧燃料产生高温，配合通风口控制窑内气流，将生坯烧制成不同质地的陶瓷制品。$(br2)本手册将带你从零开始，一步步掌握竖穴升焰窑的§d建造与烧制工艺§r。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "烧制流程",
+      "text": "§0竖穴升焰窑的整个烧制过程分为五个阶段：$(br2)$(li)§d搭建窑体§r —— 放置窑坑，用泥土围成U形结构$(br)$(li)§d安装窑箅并装填§r —— 安装窑箅，将生坯放入窑内$(br)$(li)§d封顶升温§r —— 添加燃料、盖上窑顶盖，点火升温$(br)$(li)§d高温烧制§r —— 温度超过100℃后进入正式烧制$(br)$(li)§d冷却出窑§r —— 燃料耗尽降温后，冷却完成自动掉落产物"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "关键概念",
+      "text": "$(li)§b§l温度§r §0由燃料、窑箅效率、保温等级共同决定，§d最高可达1200℃$(br)$(li)§b§l氧含量§r §0由火门和通风口状态共同决定$(br)$(li)§a§l氧化气氛§r §0氧含量高，适合烧制§6红陶$(br)$(li)§c§l还原气氛§r §0氧含量低，适合烧制§b灰陶§0、§8黑陶$(br)$(li)§b§l保温等级§r §0由窑坑周围泥土方块数量决定（§d0~4面§0）"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "所需材料",
+      "text": "§0建造一套完整的竖穴升焰窑需要准备：$(br2)$(li)§d泥土方块§0 ×8 —— 围成窑体$(br)$(li)§d火门方块§0 ×1$(br)$(li)§d窑箅方块§0 ×1$(br)$(li)§d窑顶盖§0 ×1$(br)$(li)§d弓钻§0 ×1 —— 点火工具$(br)$(li)§d燃料§0若干 —— 木柴、稻草、稻壳炭等$(br)$(li)§d生坯§0若干 —— 坩埚生坯、陶范生坯等"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:gray_crucible",
+      "text": "§b§l灰陶坩埚§r$(br2)§0烧制成功的关键产物之一。在§c还原气氛§0下烧制而成，具有耐高温特性，是冶炼金属的基础工具。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:red_mold",
+      "text": "§6§l红陶范§r$(br2)§0在§a氧化气氛§0下烧制而成，用于铸造金属锭和工具。"
+    }
+  ],
+  "sortnum": -1
+}

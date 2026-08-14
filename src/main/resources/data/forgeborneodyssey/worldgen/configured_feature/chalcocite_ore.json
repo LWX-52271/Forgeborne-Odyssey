@@ -7,7 +7,7 @@
       {
         "target": {
           "predicate_type": "minecraft:tag_match",
-          "tag": "minecraft:deepslate_ore_replaceables"
+          "tag": "minecraft:stone_ore_replaceables"
         },
         "state": {
           "Name": "forgeborneodyssey:chalcocite_ore"
@@ -16,7 +16,7 @@
       {
         "target": {
           "predicate_type": "minecraft:tag_match",
-          "tag": "minecraft:base_stone_overworld"
+          "tag": "minecraft:deepslate_ore_replaceables"
         },
         "state": {
           "Name": "forgeborneodyssey:chalcocite_ore"

@@ -1,0 +1,21 @@
+{
+  "type": "forgeborneodyssey:tool_shaped",
+  "pattern": [
+    "SK"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:kiln_waste_shard"
+    },
+    "K": [
+      {"item": "forgeborneodyssey:cobblestone_hammer"},
+      {"item": "forgeborneodyssey:stone_hammer"},
+      {"item": "forgeborneodyssey:handle_stone_hammer"}
+    ]
+  },
+  "tool": "K",
+  "result": {
+    "item": "forgeborneodyssey:temper_grog",
+    "count": 2
+  }
+}

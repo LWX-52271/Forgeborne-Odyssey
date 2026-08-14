@@ -1,0 +1,6 @@
+{
+  "name": "火裂采矿",
+  "description": "利用火焰与水的热胀冷缩效应开采岩石",
+  "icon": "minecraft:flint_and_steel",
+  "sortnum": 0
+}

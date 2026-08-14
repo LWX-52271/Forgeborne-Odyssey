@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 79111a65e2a6713e5fbdadbfd4f87b18b410be4e
 # Compiled class file
 *.class
 
@@ -23,6 +26,7 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+<<<<<<< HEAD
 =======
 # eclipse
 bin
@@ -50,3 +54,5 @@ run
 # Files from Forge MDK
 forge*changelog.txt
 >>>>>>> 66b600a (Initial commit)
+=======
+>>>>>>> 79111a65e2a6713e5fbdadbfd4f87b18b410be4e

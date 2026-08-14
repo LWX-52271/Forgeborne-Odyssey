@@ -46,8 +46,10 @@ public class SyncMetalSelectionDataPacket {
     
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
+        if (context.getDirection().getReceptionSide().isServer()) {
+            return false;
+        }
         context.enqueueWork(() -> {
-            // 在客户端处理
             if (net.minecraft.client.Minecraft.getInstance().player != null &&
                 net.minecraft.client.Minecraft.getInstance().player.containerMenu instanceof AnvilMetalSelectionMenu) {
                 

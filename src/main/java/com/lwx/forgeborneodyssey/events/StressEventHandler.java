@@ -11,41 +11,38 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/**
+ * 应力事件处理器
+ * 注：onBlockBreak 中的应力增加逻辑已被 RockMiningHandler 和 FireCrackMiningHandler 覆盖，
+ * 因 RockMiningHandler.onBreakBlock 会取消应力追踪方块的 BreakEvent，此事件不会被触发。
+ * 保留此处理器作为非应力追踪方块破坏时的辅助应力增加备用路径。
+ */
 @Mod.EventBusSubscriber
 public class StressEventHandler {
-    
+
     /**
-     * 当方块被挖掘时增加应力值
+     * 当方块被挖掘时增加应力值（仅对非应力追踪方块生效）
+     * 应力追踪方块的破坏由 RockMiningHandler 拦截处理
      */
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         LevelAccessor levelAccessor = event.getLevel();
         BlockPos pos = event.getPos();
-        
-        // 只有在Level实例中才能操作BlockEntity
+
         if (levelAccessor instanceof Level level) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            
-            // 检查是否是自定义的应力方块
+
             if (blockEntity instanceof StressBlock.StressBlockEntity stressBlockEntity) {
-                // 每次挖掘增加1.0的应力值
                 StressHelper.addStress(level, pos, 1.0f);
-                
-                // 可以在这里添加更多逻辑，比如当应力值达到阈值时触发特殊效果
                 float currentStress = StressHelper.getStress(level, pos);
                 if (currentStress >= 10.0f) {
-                    // 当应力值达到10时，可以触发特殊效果
-                    // 例如：产生粒子效果、播放声音、或者改变方块状态等
+                    // 应力达到阈值，可在此触发特殊效果
                 }
-            } 
-            // 检查是否是原版岩石或矿物
-            else if (VanillaBlockStressManager.isVanillaRockOrOre(level.getBlockState(pos).getBlock())) {
-                // 为原版方块增加应力值
+            } else if (VanillaBlockStressManager.isVanillaRockOrOre(level.getBlockState(pos).getBlock())) {
                 VanillaBlockStressManager.addStress(level, pos, 1.0f);
-                
                 float currentStress = VanillaBlockStressManager.getStress(level, pos);
                 if (currentStress >= 10.0f) {
-                    // 当应力值达到10时，可以触发特殊效果
+                    // 应力达到阈值，可在此触发特殊效果
                 }
             }
         }

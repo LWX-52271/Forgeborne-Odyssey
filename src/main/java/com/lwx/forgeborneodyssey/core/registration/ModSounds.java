@@ -59,6 +59,18 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> ROCK_BREAK = SOUND_EVENTS.register("rock.break",
         () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "rock.break")));
 
+    // 火裂采矿 - 蒸汽嘶嘶声
+    public static final RegistryObject<SoundEvent> ROCK_SIZZLE = SOUND_EVENTS.register("rock.sizzle",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "rock.sizzle")));
+
+    // 火裂采矿 - 热裂崩碎声
+    public static final RegistryObject<SoundEvent> ROCK_THERMAL_CRACK = SOUND_EVENTS.register("rock.thermal_crack",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "rock.thermal_crack")));
+
+    // 火裂采矿 - 蒸汽嘶嘶声（水击）
+    public static final RegistryObject<SoundEvent> ROCK_STEAM = SOUND_EVENTS.register("rock.steam",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "rock.steam")));
+
     /**
      * 注册音效到事件总线
      */

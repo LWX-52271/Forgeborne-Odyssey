@@ -1,0 +1,73 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Building the Kiln",
+  "icon": "forgeborneodyssey:pit_kiln",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Step 1: Building the Kiln",
+      "text": "First, place the pit kiln block on the ground, then surround it with dirt blocks in a 3×2×2 U-shape structure.$(br2)The pit kiln's opening faces the direction opposite to where you placed it.$(br2)The U-shape consists of: left and right walls (2 high each), back wall (2 high), front top edge, and front left/right pillars. The front is left open for the fire mouth."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Pit Kiln U-Shape Structure",
+      "multiblock": {
+        "mapping": {
+          "D": "minecraft:dirt",
+          "P": "forgeborneodyssey:pit_kiln",
+          "0": "minecraft:air"
+        },
+        "pattern": [["DDD", "DPD", "D0D"]]
+      },
+      "text": "U-shaped dirt wall structure (first layer). Pit kiln in the center, surrounded by dirt blocks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Insulation Grade",
+      "text": "The number of dirt blocks surrounding the pit kiln directly affects insulation and maximum temperature:$(br2)$(li)4 sides dirt: §aExcellent§r — Max 1200℃$(br)$(li)3 sides dirt: §eGood§r — Max 1000℃$(br)$(li)2 sides dirt: §6Fair§r — Max 800℃$(br)$(li)1 side dirt: §cPoor§r — Max 550℃$(br)$(li)0 sides dirt: §4Very Poor§r — Max 350℃$(br2)Better insulation means faster heating and higher max temperature. Aim for at least 3 sides."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Valid Insulation Blocks",
+      "text": "The following blocks count as valid insulation:$(br)$(li)Dirt$(br)$(li)Grass Block$(br)$(li)Coarse Dirt$(br)$(li)Rooted Dirt$(br)$(li)Podzol$(br)$(li)Mycelium$(br)$(li)Mud$(br)$(li)Packed Mud$(br)$(li)Mud with Mangrove Roots"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:fire_mouth_crafting",
+      "text": "The fire mouth is the fuel entry and ignition point of the kiln. Right-click the opening to place it, ensuring correct orientation."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Kiln Second Layer",
+      "multiblock": {
+        "mapping": {
+          "D": "minecraft:dirt",
+          "0": "minecraft:air"
+        },
+        "pattern": [["DDD", "D0D", "DDD"]]
+      },
+      "text": "Second layer (top): enclosed dirt wall, with the kiln top left open for grate installation."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Installing the Grate",
+      "text": "After placing the fire mouth, right-click the top of the pit kiln with a grate. The grate dramatically improves combustion efficiency.$(br2)With grate: 100% efficiency. Without: only 30% — meaning 3x less fuel efficiency.$(br2)§cImportant: No items (greenware or fuel) can be placed into the kiln without the grate installed.$(br2)Once installed, the kiln enters Stage 1 and is ready for loading."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:grate_block_crafting",
+      "text": "Crafting recipe for the grate."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Drying Rack",
+      "text": "Greenware items must be dried on a drying rack before use. Right-click the drying rack with any of the three greenware types (crucible, mold, brick) to place them. Wait for them to dry, then load them into the kiln.$(br2)The drying rack can also dry other items (wet sponge, kelp, leaves, etc.)."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:drying_rack_crafting",
+      "text": "Crafting recipe for the drying rack."
+    }
+  ],
+  "sortnum": 0
+}

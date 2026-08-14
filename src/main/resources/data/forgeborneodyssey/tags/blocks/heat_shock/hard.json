@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:granite",
+    "minecraft:diorite",
+    "minecraft:andesite",
+    "minecraft:deepslate",
+    "minecraft:cobbled_deepslate",
+    "forgeborneodyssey:gabbro_block",
+    "forgeborneodyssey:quartzite_block",
+    "forgeborneodyssey:marble_block",
+    "forgeborneodyssey:quartz_vein_block"
+  ]
+}

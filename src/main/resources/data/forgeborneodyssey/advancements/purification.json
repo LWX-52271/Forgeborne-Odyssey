@@ -1,0 +1,40 @@
+{
+  "parent": "forgeborneodyssey:gold_digger",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:copper_billet"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.purification.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.purification.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_metal_billet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:copper_billet",
+              "forgeborneodyssey:silver_billet",
+              "forgeborneodyssey:gold_billet"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_metal_billet"
+    ]
+  ]
+}

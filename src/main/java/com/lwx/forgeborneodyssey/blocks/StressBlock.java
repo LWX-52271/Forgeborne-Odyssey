@@ -79,8 +79,14 @@ public class StressBlock extends Block implements EntityBlock {
          * 裂纹阶段只增不减，保持显示直到下一级
          */
         private void updateCrackStage() {
-            // 计算当前应力对应的裂纹阶段：应力值 / 6，最大为9
-            int calculatedStage = Math.min((int)(stress / 6.0f), 9);
+            Block block = getBlockState().getBlock();
+            float maxStress = com.lwx.forgeborneodyssey.api.ForgeborneAPI.getMaxStress(block);
+            int calculatedStage;
+            if (maxStress > 0) {
+                calculatedStage = Math.min((int)((stress / maxStress) * 10), 9);
+            } else {
+                calculatedStage = 0;
+            }
             
             // 只有当计算的阶段大于缓存阶段时才更新（只增不减）
             if (calculatedStage > lastDamageStage) {
@@ -119,6 +125,7 @@ public class StressBlock extends Block implements EntityBlock {
         protected void saveAdditional(CompoundTag tag) {
             super.saveAdditional(tag);
             tag.putFloat(STRESS_TAG, stress);
+            tag.putInt("lastDamageStage", lastDamageStage);
         }
         
         @Override
@@ -126,10 +133,10 @@ public class StressBlock extends Block implements EntityBlock {
             super.load(tag);
             if (tag.contains(STRESS_TAG)) {
                 stress = tag.getFloat(STRESS_TAG);
-                // 加载后更新裂纹阶段
-                if (level != null && level.isClientSide) {
-                    updateCrackStage();
-                }
+            }
+            lastDamageStage = tag.getInt("lastDamageStage");
+            if (level != null && level.isClientSide) {
+                updateCrackStage();
             }
         }
         

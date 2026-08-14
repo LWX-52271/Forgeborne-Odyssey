@@ -1,7 +1,9 @@
 package com.lwx.forgeborneodyssey.core.registration;
 
+import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -13,6 +15,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -53,11 +57,54 @@ public class ModCommands {
                         .executes(context -> findNearestNaturalMetal((CommandContext<CommandSourceStack>) context, ModBlocks.NATURAL_GOLD_BLOCK.get()))
                     )
                 )
+                .then(literal("coppergrass")
+                    .then(literal("set")
+                        .then(argument("age", IntegerArgumentType.integer(0, 4))
+                            .executes(ModCommands::setCopperGrassAge)
+                        )
+                    )
+                )
         );
     }
     
     private static int testCommand(CommandContext<CommandSourceStack> context) {
-        context.getSource().sendSuccess(() -> Component.literal("Forgeborne Odyssey 模组已加载!"), false);
+        context.getSource().sendSuccess(() -> Component.translatable("command.forgeborneodyssey.test.loaded"), false);
+        return 1;
+    }
+
+    private static int setCopperGrassAge(CommandContext<CommandSourceStack> context) {
+        CommandSourceStack source = context.getSource();
+        ServerPlayer player = source.getPlayer();
+
+        if (player == null) {
+            source.sendFailure(Component.translatable("command.forgeborneodyssey.player_only"));
+            return 0;
+        }
+
+        int age = IntegerArgumentType.getInteger(context, "age");
+        ServerLevel level = player.serverLevel();
+
+        HitResult hit = player.pick(10.0D, 0.0F, false);
+        if (hit.getType() != HitResult.Type.BLOCK) {
+            source.sendFailure(Component.translatable("command.forgeborneodyssey.copper_grass.target"));
+            return 0;
+        }
+
+        BlockHitResult blockHit = (BlockHitResult) hit;
+        BlockPos pos = blockHit.getBlockPos();
+        BlockState state = level.getBlockState(pos);
+
+        if (!(state.getBlock() instanceof CopperGrassFlowerBlock)) {
+            source.sendFailure(Component.translatable("command.forgeborneodyssey.copper_grass.not_target"));
+            return 0;
+        }
+
+        String[] ageNames = {"幼苗期", "幼苗期", "成熟期", "盛花期", "枯萎态"};
+        level.setBlock(pos, state.setValue(CopperGrassFlowerBlock.AGE, age)
+                .setValue(CopperGrassFlowerBlock.FROZEN, true), 3);
+
+        source.sendSuccess(() -> Component.literal(
+                "§a已将铜草花设为 §e" + ageNames[age] + "§a（已冻结，不再自然变化）"), true);
         return 1;
     }
     
@@ -69,7 +116,7 @@ public class ModCommands {
         ServerPlayer player = source.getPlayer();
         
         if (player == null) {
-            source.sendFailure(Component.literal("§c只能由玩家执行此命令"));
+            source.sendFailure(Component.translatable("command.forgeborneodyssey.player_only"));
             return 0;
         }
         
@@ -83,14 +130,21 @@ public class ModCommands {
         if (blockEntity instanceof com.lwx.forgeborneodyssey.blocks.StressBlock.StressBlockEntity stressBlockEntity) {
             stressBlockEntity.setStress(stressValue);
             
-            // 计算裂纹阶段
-            int crackStage = Math.min((int)(stressValue / 6.0f), 9);
+            // 计算裂纹阶段：基于当前应力值占该方块最大应力值的百分比
+            Block block = level.getBlockState(targetPos).getBlock();
+            float maxStress = com.lwx.forgeborneodyssey.api.ForgeborneAPI.getMaxStress(block);
+            int crackStage;
+            if (maxStress > 0) {
+                crackStage = Math.min((int)((stressValue / maxStress) * 10), 9);
+            } else {
+                crackStage = 0;
+            }
             
             source.sendSuccess(() -> Component.literal(
                 String.format("§a✓ 已设置应力值为 §e%.1f§a，裂纹阶段：§b%d", stressValue, crackStage)
             ), false);
         } else {
-            source.sendFailure(Component.literal("§c目标方块不是应力方块！请站在应力方块上执行命令。"));
+            source.sendFailure(Component.translatable("command.forgeborneodyssey.stress.not_stress_block"));
         }
         
         return 1;
@@ -101,7 +155,7 @@ public class ModCommands {
         ServerPlayer player = source.getPlayer();
         
         if (player == null) {
-            source.sendFailure(Component.literal("只能由玩家执行此命令"));
+            source.sendFailure(Component.translatable("command.forgeborneodyssey.player_only"));
             return 0;
         }
         
@@ -112,7 +166,7 @@ public class ModCommands {
         BlockPos generatePos = playerPos.above();
         level.setBlock(generatePos, ModBlocks.SURFACE_COBBLESTONE_BLOCK.get().defaultBlockState(), 2);
         
-        source.sendSuccess(() -> Component.literal("已在位置 " + generatePos + " 生成地表圆石"), false);
+        source.sendSuccess(() -> Component.translatable("command.forgeborneodyssey.surface_cobblestone.generated", generatePos), false);
         return 1;
     }
     
@@ -121,7 +175,7 @@ public class ModCommands {
         ServerPlayer player = source.getPlayer();
         
         if (player == null) {
-            source.sendFailure(Component.literal("§c只能由玩家执行此命令"));
+            source.sendFailure(Component.translatable("command.forgeborneodyssey.player_only"));
             return 0;
         }
         
@@ -136,15 +190,15 @@ public class ModCommands {
         if (targetBlock == ModBlocks.NATURAL_GOLD_BLOCK.get()) {
             minHeight = 55;
             maxHeight = 75;
-            source.sendSuccess(() -> Component.literal("§e开始搜索自然金块...\n§7搜索范围：128 格，高度：Y=55~75\n§7目标群系：河流、沙滩"), true);
+            source.sendSuccess(() -> Component.translatable("command.forgeborneodyssey.search.natural_gold"), true);
         } else if (targetBlock == ModBlocks.NATURAL_SILVER_BLOCK.get()) {
             minHeight = 80;
             maxHeight = 200;
-            source.sendSuccess(() -> Component.literal("§f开始搜索自然银块...\n§7搜索范围：128 格，高度：Y=80~200\n§7目标群系：高山"), true);
+            source.sendSuccess(() -> Component.translatable("command.forgeborneodyssey.search.natural_silver"), true);
         } else if (targetBlock == ModBlocks.NATURAL_COPPER_BLOCK.get()) {
             minHeight = 65;
             maxHeight = 180;
-            source.sendSuccess(() -> Component.literal("§c开始搜索自然铜块...\n§7搜索范围：128 格，高度：Y=65~180\n§7目标群系：山地、平原、黏土坑周边"), true);
+            source.sendSuccess(() -> Component.translatable("command.forgeborneodyssey.search.natural_copper"), true);
         }
         
         // 查找最近的自然金属块（优化版：分层螺旋搜索）
@@ -174,11 +228,11 @@ public class ModCommands {
             
             // 提供生成提示
             if (targetBlock == ModBlocks.NATURAL_GOLD_BLOCK.get()) {
-                source.sendSuccess(() -> Component.literal("§e建议：\n§7- 前往河流或沙滩生物群系\n§7- 在海平面附近寻找 (Y=55~75)\n§7- 注意沙子/砂岩/砾石地表"), false);
+                source.sendSuccess(() -> Component.translatable("command.forgeborneodyssey.search.hint_gold"), false);
             } else if (targetBlock == ModBlocks.NATURAL_SILVER_BLOCK.get()) {
-                source.sendSuccess(() -> Component.literal("§f建议：\n§7- 前往高海拔山区\n§7- 寻找 Y=80 以上的区域\n§7- 注意安山岩/花岗岩/石头地表"), false);
+                source.sendSuccess(() -> Component.translatable("command.forgeborneodyssey.search.hint_silver"), false);
             } else if (targetBlock == ModBlocks.NATURAL_COPPER_BLOCK.get()) {
-                source.sendSuccess(() -> Component.literal("§c建议：\n§7- 前往山地或平原生物群系\n§7- 寻找 Y=65~180 的区域\n§7- 注意石质地表或黏土坑周边"), false);
+                source.sendSuccess(() -> Component.translatable("command.forgeborneodyssey.search.hint_copper"), false);
             }
         }
         

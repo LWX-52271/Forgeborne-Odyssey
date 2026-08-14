@@ -1,0 +1,43 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "进阶制品",
+  "icon": "forgeborneodyssey:copper_sword_blade",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "从铜槽片继续加工",
+      "text": "§0掌握了基本冷锻工艺后，你可以进一步制作更复杂的制品。以铜为例，从铜槽片出发可以制作多种产品。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "环与钩的制作",
+      "text": "从铜槽片出发，通过斧头右键加工可以制作环、钩和针：$(br2)$(li)铜槽片 + 斧头右键1次 → §6铜环$(br)$(li)铜环 + 斧头右键1次 → §6铜钩$(br)$(li)铜钩 + 斧头右键1次 → §6铜针$(br2)银槽片和金槽片加工时直接变为对应的银针和金针，没有环和钩的中间步骤。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_ring",
+      "text": "§c铜环——从铜槽片加工而成，用于制作鱼竿等。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_hook",
+      "text": "§c铜钩——从铜环加工而成，用于悬挂或装饰。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "可以制作的最终产品",
+      "text": "$(li)§c武器类：原始铜刀、打制铜剑（需组装）$(br)$(li)§c工具类：打制铜斧头（从弯片锻造）$(br)$(li)§c防具类：饰针胸甲（装饰品）$(br)$(li)§c配件类：环、钩、珠、条等多种饰品$(br)$(li)§c功能类：铜鱼竿等"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:copper_fishing_rod",
+      "text": "§a铜鱼竿——铜环 + 铜钩 + 线 + 木棍合成。制作鱼竿需要先制作铜环和铜钩，再在合成台组装。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "产品价值",
+      "text": "不同金属制品有不同的价值：$(br)$(li)铜制品——基础装备，实用可靠$(br)$(li)银制品——性能优良，装饰性强$(br)$(li)金制品——极为珍贵，装饰性极佳$(br2)此外，饰针胸甲可以作为饰品佩戴在胸口。"
+    }
+  ],
+  "sortnum": 4
+}

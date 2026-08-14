@@ -1,0 +1,22 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Introduction",
+  "icon": "forgeborneodyssey:copper_sheet",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "§bWelcome to the Primitive Cold Forge Manual!§r$(br2)This guide will teach you the core gameplay of Forgeborne Odyssey - the cold forging process. You will learn how to start with the most basic stone tools, find natural metals, prepare billets, heat and soften them, and finally forge them into beautiful metal products.$(br2)The manual is divided into six chapters, following game progression. We recommend reading from the beginning."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Game Flow Overview",
+      "text": "$(li)§6Chapter 1§r: Craft Stone Tools - Create your basic tools$(br)$(li)§6Chapter 2§r: Find Natural Metals - Explore the world for resources$(br)$(li)§6Chapter 3§r: Prepare Soft Billets - Craft billets and heat them$(br)$(li)§6Chapter 4§r: Cold Forging Process - Forge on the anvil$(br)$(li)§6Chapter 5§r: Advanced Crafting - Weapons, tools, and accessories$(br)$(li)§6Chapter 6§r: Important Mechanics - Weight tiers, cooling, and more"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Controls Tip",
+      "text": "$(li)Left-click with hammer to forge metal on anvil$(br)$(li)Right-click with axe to process metal on anvil$(br)$(li)Left-click with chisel to carve final products$(br)$(li)Hold §aShift§r to view item details$(br)$(li)Use §6/forgeodyssey find§r to locate natural metals$(br)$(li)Use §bwooden clamp§r for hot items to avoid burns"
+    }
+  ],
+  "sortnum": -1
+}

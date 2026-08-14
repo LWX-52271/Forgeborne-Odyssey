@@ -20,7 +20,7 @@ public class CobblestoneHammerItem extends SwordItem {
     public CobblestoneHammerItem() {
         super(Tiers.STONE, 3, -2.4F, new Item.Properties()
             .stacksTo(1)  // 只能持有一个
-            .durability(32)); // 耐久度设置为32
+            .durability(96)); // 耐久度设置为96
     }
     
     @Override
@@ -32,7 +32,7 @@ public class CobblestoneHammerItem extends SwordItem {
             // 显示剩余耐久度
             if (stack.getMaxDamage() > 0) {
                 int durability = stack.getMaxDamage() - stack.getDamageValue();
-                tooltip.add(Component.literal("§7耐久度: " + durability + "/" + stack.getMaxDamage()));
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.durability", durability + "/" + stack.getMaxDamage()));
             }
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));

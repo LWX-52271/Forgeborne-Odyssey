@@ -92,105 +92,125 @@ public class CopperOrePlacedFeatures {
         Holder<ConfiguredFeature<?, ?>> cuprovanaditeOre = context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CopperOreGeneration.CUPROVANADITE_ORE_KEY);
         Holder<ConfiguredFeature<?, ?>> chrysocollaOre = context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(CopperOreGeneration.CHRYSOCOLLA_ORE_KEY);
 
-        // 黄铜矿 - Y=-64~72, 峰值Y=16, 6次尝试
-        register(context, CHALCOPYRITE_ORE_PLACED_KEY, chalcopyriteOre,
-                commonOrePlacement(6, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(72))));
-        
-        // 黄铜矿深层变种 - Y=-64~0, 峰值Y=-32
-        register(context, CHALCOPYRITE_ORE_DEEP_PLACED_KEY, chalcopyriteOreDeep,
-                commonOrePlacement(6, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
+        /*
+         * ============================================================
+         * 放置特征说明
+         * ============================================================
+         * triangle(x, y) 创建三角形分布，峰值在 (x+y)/2
+         * commonOrePlacement: 较多矿脉, rareOrePlacement: 较少矿脉
+         * 实际矿脉数 = count × size 的分布
+         * ============================================================
+         */
 
-        // 斑铜矿 - Y=-64~32, 峰值Y=-16, 4次尝试
+        // --- 原生硫化物带 (Primary Sulfide Zone) ---
+
+        // 黄铜矿 - Y=-64~48, 峰值Y=-8, 5次/区块 (最主要的铜矿)
+        register(context, CHALCOPYRITE_ORE_PLACED_KEY, chalcopyriteOre,
+                commonOrePlacement(5, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(48))));
+        
+        // 黄铜矿深层变种 - Y=-64~-16, 峰值Y=-40, 3次/区块
+        register(context, CHALCOPYRITE_ORE_DEEP_PLACED_KEY, chalcopyriteOreDeep,
+                commonOrePlacement(3, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(-16))));
+
+        // 斑铜矿 - Y=-64~16, 峰值Y=-24, 3次/区块
         register(context, BORNITE_ORE_PLACED_KEY, borniteOre,
-                commonOrePlacement(4, HeightRangePlacement.triangle(
+                commonOrePlacement(3, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(16))));
+
+        // 黝铜矿 - Y=-64~32, 峰值Y=-16, 2次/区块
+        register(context, TETRAHEDRITE_ORE_PLACED_KEY, tetrahedriteOre,
+                rareOrePlacement(2, HeightRangePlacement.triangle(
                         VerticalAnchor.absolute(-64), VerticalAnchor.absolute(32))));
 
-        // 辉铜矿 - Y=-64~16, 峰值Y=-32, 2次尝试
-        register(context, CHALCOCITE_ORE_PLACED_KEY, chalcociteOre,
+        // 砷黝铜矿 - Y=-64~16, 峰值Y=-24, 2次/区块
+        register(context, TENNANTITE_ORE_PLACED_KEY, tennantiteOre,
                 rareOrePlacement(2, HeightRangePlacement.triangle(
                         VerticalAnchor.absolute(-64), VerticalAnchor.absolute(16))));
 
-        // 铜蓝 - Y=-64~48, 峰值Y=0, 3次尝试
-        register(context, COVELLITE_ORE_PLACED_KEY, covelliteOre,
-                commonOrePlacement(3, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(48))));
-
-        // 方黄铜矿 - Y=-64~16, 峰值Y=-24, 1次尝试
+        // 方黄铜矿 - Y=-64~-16, 峰值Y=-40, 1次/区块 (稀有)
         register(context, CUBANITE_ORE_PLACED_KEY, cubaniteOre,
                 rareOrePlacement(1, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(16))));
+                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(-16))));
 
-        // 孔雀石 - Y=-32~112, 峰值Y=48, 5次尝试
+        // --- 次生富集带 (Supergene Enrichment Zone) ---
+
+        // 辉铜矿 - Y=-16~64, 峰值Y=24, 3次/区块
+        register(context, CHALCOCITE_ORE_PLACED_KEY, chalcociteOre,
+                commonOrePlacement(3, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(-16), VerticalAnchor.absolute(64))));
+
+        // 铜蓝 - Y=-16~64, 峰值Y=24, 2次/区块
+        register(context, COVELLITE_ORE_PLACED_KEY, covelliteOre,
+                rareOrePlacement(2, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(-16), VerticalAnchor.absolute(64))));
+
+        // --- 氧化带 (Oxidized Zone) ---
+
+        // 孔雀石 - Y=0~128, 峰值Y=64, 5次/区块 (最常见的氧化铜矿)
         register(context, MALACHITE_ORE_PLACED_KEY, malachiteOre,
                 commonOrePlacement(5, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-32), VerticalAnchor.absolute(112))));
+                        VerticalAnchor.absolute(0), VerticalAnchor.absolute(128))));
 
-        // 蓝铜矿 - Y=-32~96, 峰值Y=32, 4次尝试
+        // 蓝铜矿 - Y=0~96, 峰值Y=48, 3次/区块
         register(context, AZURITE_ORE_PLACED_KEY, azuriteOre,
-                commonOrePlacement(4, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-32), VerticalAnchor.absolute(96))));
+                commonOrePlacement(3, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(0), VerticalAnchor.absolute(96))));
 
-        // 赤铜矿 - Y=-64~64, 峰值Y=-16, 2次尝试
+        // 硅孔雀石 - Y=0~96, 峰值Y=48, 3次/区块
+        register(context, CHRYSOCOLLA_ORE_PLACED_KEY, chrysocollaOre,
+                commonOrePlacement(3, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(0), VerticalAnchor.absolute(96))));
+
+        // 赤铜矿 - Y=0~80, 峰值Y=40, 2次/区块
         register(context, CUPRITE_ORE_PLACED_KEY, cupriteOre,
                 rareOrePlacement(2, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(64))));
+                        VerticalAnchor.absolute(0), VerticalAnchor.absolute(80))));
 
-        // 黑铜矿 - Y=-64~48, 峰值Y=0, 2次尝试
+        // 黑铜矿 - Y=16~96, 峰值Y=56, 1次/区块
         register(context, TENORITE_ORE_PLACED_KEY, tenoriteOre,
-                rareOrePlacement(2, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(48))));
-
-        // 胆矾 - Y=-16~128, 峰值Y=64, 1次尝试
-        register(context, CHALCANTHITE_ORE_PLACED_KEY, chalcanthiteOre,
                 rareOrePlacement(1, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-16), VerticalAnchor.absolute(128))));
+                        VerticalAnchor.absolute(16), VerticalAnchor.absolute(96))));
 
-        // 水胆矾 - Y=-16~96, 峰值Y=48, 1次尝试
-        register(context, BROCHANTITE_ORE_PLACED_KEY, brochantiteOre,
-                rareOrePlacement(1, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-16), VerticalAnchor.absolute(96))));
+        // --- 特殊/稀有 (Special/Rare) ---
 
-        // 混合铜矿石 - Y=-64~112, 峰值Y=48, 5次尝试
-        register(context, MIXED_COPPER_ORE_PLACED_KEY, mixedCopperOre,
-                commonOrePlacement(5, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(112))));
-        
-        // 混合铜矿石深层变种 - Y=-64~0, 峰值Y=-32
-        register(context, MIXED_COPPER_ORE_DEEP_PLACED_KEY, mixedCopperOreDeep,
-                commonOrePlacement(5, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(0))));
-
-        // 自然铜 - Y=-64~32, 峰值Y=-16, 1次尝试
+        // 自然铜 - Y=-64~32, 峰值Y=-16, 1次/区块
         register(context, NATIVE_COPPER_ORE_PLACED_KEY, nativeCopperOre,
                 rareOrePlacement(1, HeightRangePlacement.triangle(
                         VerticalAnchor.absolute(-64), VerticalAnchor.absolute(32))));
 
-        // 黝铜矿 - Y=-64~48, 峰值Y=0, 3次尝试
-        register(context, TETRAHEDRITE_ORE_PLACED_KEY, tetrahedriteOre,
-                commonOrePlacement(3, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(48))));
+        // 胆矾 - Y=48~128, 峰值Y=88, 1次/区块 (仅干旱氧化带)
+        register(context, CHALCANTHITE_ORE_PLACED_KEY, chalcanthiteOre,
+                rareOrePlacement(1, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(48), VerticalAnchor.absolute(128))));
 
-        // 砷黝铜矿 - Y=-64~32, 峰值Y=-16, 2次尝试
-        register(context, TENNANTITE_ORE_PLACED_KEY, tennantiteOre,
-                rareOrePlacement(2, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(32))));
+        // 水胆矾 - Y=32~112, 峰值Y=72, 1次/区块 (干旱氧化带)
+        register(context, BROCHANTITE_ORE_PLACED_KEY, brochantiteOre,
+                rareOrePlacement(1, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(32), VerticalAnchor.absolute(112))));
 
-        // 铜铀云母 - Y=-64~16, 峰值Y=-32, 1次尝试
+        // 铜铀云母 - Y=-32~32, 峰值Y=0, 1次/区块 (极其稀有，含铀)
         register(context, TORBERNITE_ORE_PLACED_KEY, torberniteOre,
                 rareOrePlacement(1, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(16))));
+                        VerticalAnchor.absolute(-32), VerticalAnchor.absolute(32))));
 
-        // 钒铜矿 - Y=-64~48, 峰值Y=0, 1次尝试
+        // 钒铜矿 - Y=-32~48, 峰值Y=8, 1次/区块 (极其稀有，含钒)
         register(context, CUPROVANADITE_ORE_PLACED_KEY, cuprovanaditeOre,
                 rareOrePlacement(1, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(48))));
+                        VerticalAnchor.absolute(-32), VerticalAnchor.absolute(48))));
 
-        // 硅孔雀石 - Y=-32~96, 峰值Y=32, 3次尝试
-        register(context, CHRYSOCOLLA_ORE_PLACED_KEY, chrysocollaOre,
+        // --- 综合矿脉 ---
+
+        // 混合铜矿石 - Y=-64~80, 峰值Y=8, 3次/区块
+        register(context, MIXED_COPPER_ORE_PLACED_KEY, mixedCopperOre,
                 commonOrePlacement(3, HeightRangePlacement.triangle(
-                        VerticalAnchor.absolute(-32), VerticalAnchor.absolute(96))));
+                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80))));
+        
+        // 混合铜矿石深层变种 - Y=-64~-16, 峰值Y=-40, 2次/区块
+        register(context, MIXED_COPPER_ORE_DEEP_PLACED_KEY, mixedCopperOreDeep,
+                rareOrePlacement(2, HeightRangePlacement.triangle(
+                        VerticalAnchor.absolute(-64), VerticalAnchor.absolute(-16))));
     }
 
     private static ResourceKey<PlacedFeature> createKey(String name) {

@@ -138,6 +138,12 @@ repositories {
         name = 'JEI Maven (Mirror)'
         url = 'https://modmaven.dev/'
     }
+
+    // Patchouli Maven
+    maven {
+        name = 'BlameJared'
+        url = 'https://maven.blamejared.com'
+    }
 }
 
 dependencies {
@@ -152,6 +158,9 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+
+    // Patchouli - 编译依赖 + 内嵌配置
+    implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
@@ -200,6 +209,31 @@ tasks.named('jar', Jar).configure {
 
     // This is the preferred method to reobfuscate your jar file
     finalizedBy 'reobfJar'
+}
+
+// jar-in-jar 配置：手动将 Patchouli 内嵌到 jar 中
+configurations {
+    embedJars {
+        transitive = false
+    }
+}
+
+dependencies {
+    embedJars "vazkii.patchouli:Patchouli:${patchouli_version}"
+}
+
+tasks.register('copyEmbeddedJars', Copy) {
+    from configurations.embedJars
+    into "${buildDir}/resources/main/META-INF/jarjar"
+    rename { "Patchouli-${patchouli_version}.jar" }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    finalizedBy 'copyEmbeddedJars'
+}
+
+tasks.named('jar', Jar).configure {
+    dependsOn 'copyEmbeddedJars'
 }
 
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing:

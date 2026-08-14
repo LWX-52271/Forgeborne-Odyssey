@@ -54,8 +54,7 @@ public class MetalSwordBladeItem extends Item {
             
             // 添加纯度提示
             float purity = getPurity(stack);
-            Component purityText = Component.literal(String.format("§b纯度：%.2f%%", purity));
-            tooltip.add(purityText);
+            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
             
             // 添加继承提示
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));

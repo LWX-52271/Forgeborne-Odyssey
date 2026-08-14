@@ -153,5 +153,35 @@
         "pitch": 1.0
       }
     ]
+  },
+  "rock.sizzle": {
+    "subtitle": "sounds.forgeborneodyssey.rock.sizzle",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:rock_sizzle",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "rock.thermal_crack": {
+    "subtitle": "sounds.forgeborneodyssey.rock.thermal_crack",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:rock_thermal_crack",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "rock.steam": {
+    "subtitle": "sounds.forgeborneodyssey.rock.steam",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:rock_steam",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
   }
 }

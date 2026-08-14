@@ -11,6 +11,17 @@ import com.lwx.forgeborneodyssey.blocks.naturalmetals.NaturalSilverBlock;
 
 import com.lwx.forgeborneodyssey.blocks.SurfaceCobblestoneBlock;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlock;
+import com.lwx.forgeborneodyssey.blocks.FireMouthBlock;
+import com.lwx.forgeborneodyssey.blocks.KilnLidBlock;
+import com.lwx.forgeborneodyssey.blocks.KilnLidBlockEntity;
+import com.lwx.forgeborneodyssey.blocks.GrateBlock;
+import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
+import com.lwx.forgeborneodyssey.blocks.PitKilnBlockEntity;
+import com.lwx.forgeborneodyssey.blocks.KilnAshPileBlock;
+
+import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
+import com.lwx.forgeborneodyssey.blocks.DryingRackBlock;
+import com.lwx.forgeborneodyssey.blocks.DryingRackBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.*;
@@ -29,7 +40,7 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ForgeborneOdyssey.MOD_ID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ForgeborneOdyssey.MOD_ID);
 
-    // 铜相关矿物方块
+    // 铜相关矿物方�?
     public static final RegistryObject<Block> CHALCOPYRITE_ORE = BLOCKS.register("chalcopyrite_ore", () ->
         new StressBlock(Block.Properties.of()
             .mapColor(MapColor.STONE)
@@ -230,7 +241,7 @@ public class ModBlocks {
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
     
-    // 自然金属块
+    // 自然金属�?
     public static final RegistryObject<Block> NATURAL_GOLD_BLOCK = BLOCKS.register("natural_gold_block", NaturalGoldBlock::new);
     public static final RegistryObject<Block> NATURAL_SILVER_BLOCK = BLOCKS.register("natural_silver_block", NaturalSilverBlock::new);
     public static final RegistryObject<Block> NATURAL_COPPER_BLOCK = BLOCKS.register("natural_copper_block", NaturalCopperBlock::new);
@@ -271,7 +282,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> SERICITIZED_ROCK_SLAB = BLOCKS.register("sericitized_rock_slab", SericitizedRockSlabBlock::new);
     public static final RegistryObject<Block> CHLORITE_ROCK_SLAB = BLOCKS.register("chlorite_rock_slab", ChloriteRockSlabBlock::new);
     
-    // 岩石墙方块
+    // 岩石墙方�?
     public static final RegistryObject<Block> SHALE_WALL = BLOCKS.register("shale_wall", ShaleWallBlock::new);
     public static final RegistryObject<Block> SANDSTONE_WALL = BLOCKS.register("sandstone_wall", SandstoneWallBlock::new);
     public static final RegistryObject<Block> LIMESTONE_WALL = BLOCKS.register("limestone_wall", LimestoneWallBlock::new);
@@ -285,10 +296,50 @@ public class ModBlocks {
     // 火塘方块
     public static final RegistryObject<Block> FIRE_PIT_BLOCK = BLOCKS.register("fire_pit_block", FirePitBlock::new);
     
+    // 竖穴窑方块
+    public static final RegistryObject<Block> PIT_KILN = BLOCKS.register("pit_kiln",
+            () -> new PitKilnBlock(Block.Properties.of()
+                    .mapColor(MapColor.TERRACOTTA_BROWN)
+                    .strength(0.6F)
+                    .sound(SoundType.GRAVEL)
+                    .noOcclusion()
+                    .isViewBlocking((s, l, p) -> false)
+            ));
+
+    // 灰烬堆
+    public static final RegistryObject<Block> KILN_ASH_PILE = BLOCKS.register("kiln_ash_pile", KilnAshPileBlock::new);
+
+    // 晾坯架
+    public static final RegistryObject<Block> DRYING_RACK = BLOCKS.register("drying_rack", DryingRackBlock::new);
+
+    // 火门
+    public static final RegistryObject<Block> FIRE_MOUTH = BLOCKS.register("fire_mouth", FireMouthBlock::new);
+
+    // 窑顶盖
+    public static final RegistryObject<Block> KILN_LID = BLOCKS.register("kiln_lid", KilnLidBlock::new);
+
+    // 窑箅
+    public static final RegistryObject<Block> GRATE_BLOCK = BLOCKS.register("grate_block", GrateBlock::new);
+
+    // 铜草花
+    public static final RegistryObject<Block> COPPER_GRASS_FLOWER = BLOCKS.register("copper_grass_flower", CopperGrassFlowerBlock::new);
+
+    // 竖穴窑方块实体类型
+    public static final RegistryObject<BlockEntityType<PitKilnBlockEntity>> PIT_KILN_BLOCK_ENTITY = BLOCK_ENTITIES.register("pit_kiln_block_entity",
+            () -> BlockEntityType.Builder.of(PitKilnBlockEntity::new, PIT_KILN.get()).build(null));
+
+    // 窑顶盖方块实体类型
+    public static final RegistryObject<BlockEntityType<KilnLidBlockEntity>> KILN_LID_BLOCK_ENTITY = BLOCK_ENTITIES.register("kiln_lid_block_entity",
+            () -> BlockEntityType.Builder.of(KilnLidBlockEntity::new, KILN_LID.get()).build(null));
+
+    // 晾坯架方块实体类型
+    public static final RegistryObject<BlockEntityType<DryingRackBlockEntity>> DRYING_RACK_BLOCK_ENTITY = BLOCK_ENTITIES.register("drying_rack_block_entity",
+            () -> BlockEntityType.Builder.of(DryingRackBlockEntity::new, DRYING_RACK.get()).build(null));
+
     // 火塘方块实体类型
     public static final RegistryObject<BlockEntityType<FirePitBlockEntity>> FIRE_PIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("fire_pit_block_entity", 
         () -> BlockEntityType.Builder.of(FirePitBlockEntity::new, FIRE_PIT_BLOCK.get()).build(null));
-    
+
     // 应力方块实体类型
     public static final RegistryObject<BlockEntityType<StressBlock.StressBlockEntity>> STRESS_BLOCK_ENTITY = BLOCK_ENTITIES.register("stress_block_entity",
         () -> {

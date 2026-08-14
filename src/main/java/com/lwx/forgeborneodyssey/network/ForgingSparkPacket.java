@@ -37,8 +37,10 @@ public class ForgingSparkPacket {
     
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
+        if (context.getDirection().getReceptionSide().isServer()) {
+            return false;
+        }
         context.enqueueWork(() -> {
-            // 在客户端处理
             var minecraft = net.minecraft.client.Minecraft.getInstance();
             if (minecraft.level != null) {
                 // 播放锻打音效

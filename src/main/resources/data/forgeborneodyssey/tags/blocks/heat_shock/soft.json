@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sandstone",
+    "minecraft:red_sandstone",
+    "forgeborneodyssey:sandstone_block",
+    "forgeborneodyssey:shale_block",
+    "forgeborneodyssey:sericitized_rock_block",
+    "forgeborneodyssey:chlorite_rock_block",
+    "minecraft:tuff",
+    "minecraft:calcite"
+  ]
+}

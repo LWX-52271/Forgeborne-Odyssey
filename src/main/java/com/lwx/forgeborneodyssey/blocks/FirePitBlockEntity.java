@@ -118,7 +118,8 @@ public class FirePitBlockEntity extends BlockEntity {
         if (itemStack.is(Items.STICK)) return 20;  // 1 秒
         
         // 木制品（通过 Forge 的燃料系统）
-        return ForgeHooks.getBurnTime(itemStack, null) / 4;  // 除以 4 平衡时间
+        // 除以 4 平衡时间：火塘作为持续热源，燃料效率高于火裂采矿的露天火焰
+        return ForgeHooks.getBurnTime(itemStack, null) / 4;
     }
     
     // 烧制相关的方法
@@ -445,13 +446,8 @@ public class FirePitBlockEntity extends BlockEntity {
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         CompoundTag tag = pkt.getTag();
-        if (tag == null) {
-            tag = new CompoundTag();
-        }
-        load(tag);
-        if (level != null && level.isClientSide) {
-            // 强制重绘该位置
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        if (tag != null) {
+            load(tag);
         }
     }
 }

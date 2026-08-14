@@ -45,20 +45,19 @@ public class WroughtCopperAxeItem extends AxeItem {
             
             // 添加纯度提示
             float purity = getPurity(stack);
-            Component purityText = Component.literal(String.format("§b纯度：%.2f%%", purity));
-            tooltip.add(purityText);
+            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
             
             // 显示实际伤害值
             float modifier = getDamageModifierFromWeight(stack);
             float actualDamage = 5.0F + modifier;
-            tooltip.add(Component.literal("§7基础伤害: " + String.format("%.1f", actualDamage)));
+            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.base_damage", String.format("%.1f", actualDamage)));
             
             // 显示基于纯度的耐久度
             int baseDurability = 64; // 基础耐久度
             int actualDurability = getDurabilityFromPurity(purity, baseDurability);
             int currentDamage = stack.getDamageValue();
             int remainingDurability = Math.max(0, actualDurability - currentDamage);
-            tooltip.add(Component.literal("§7耐久度: " + remainingDurability + "/" + actualDurability));
+            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.durability", remainingDurability + "/" + actualDurability));
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
         }

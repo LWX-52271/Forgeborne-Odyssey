@@ -1,0 +1,18 @@
+{
+  "name": "item.forgeborneodyssey.pit_kiln_guide_book",
+  "landing_text": "guidebook.forgeborneodyssey.pit_kiln.landing",
+  "version": 0,
+  "book_texture": "patchouli:textures/gui/book_brown.png",
+  "model": "patchouli:book_brown",
+  "use_resource_pack": true,
+  "show_progress": false,
+  "i18n": true,
+  "macros": {
+    "$(build)": "§6【第一步：建造窑体】",
+    "$(load)": "§6【第二步：装填窑炉】",
+    "$(ignite)": "§6【第三步：点火烧制】",
+    "$(control)": "§6【第四步：气氛与温度控制】",
+    "$(result)": "§6【烧制结果】",
+    "$(cool)": "§6【冷却与收集】"
+  }
+}

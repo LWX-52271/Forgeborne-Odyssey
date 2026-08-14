@@ -1,0 +1,43 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Prepare Soft Billets",
+  "icon": "forgeborneodyssey:copper_billet",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Chapter 3: Prepare Soft Billets",
+      "text": "§7[Step 1: Craft Billets]$(br2)After obtaining natural metal blocks, craft them with a water bucket in the crafting table to make billets. Billets are the basic forging material."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:copper_billet_crafting",
+      "text": "§bCopper Billet Recipe$(br2)Natural Copper Block + Water Bucket = Copper Billet$(br)Silver and gold billets are crafted the same way."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:fire_pit_crafting",
+      "text": "§bFire Pit Recipe$(br2)The fire pit is the facility for heating billets, crafted from 8 surface cobblestone blocks in a ring."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "§7[Step 2: Heat in Fire Pit]",
+      "text": "Place the crafted billet in the fire pit to heat and soften it for forging.$(br2)Steps:$(br)$(li)1. Place fire pit block and add fuel (e.g. firewood)$(br)$(li)2. Right-click fire pit to ignite$(br)$(li)3. Put billet in fire pit to heat$(br)$(li)4. Wait to get softened billet"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:firewood_crafting",
+      "text": "§bFirewood - Basic fuel for the fire pit. Crafted from any log."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:wooden_clamp",
+      "text": "§cWARNING: Use §bwooden clamp§r for hot items!$(br2)Bare hands will burn and catch fire. The wooden clamp safely handles hot items."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:soft_copper_billet",
+      "text": "§bSoftened Copper Billet$(br2)Obtained after heating in fire pit. Darker color, softer texture, ready for forging on the anvil. Note: Soft copper billet auto-cools after 1.5 minutes in inventory."
+    }
+  ],
+  "sortnum": 2
+}

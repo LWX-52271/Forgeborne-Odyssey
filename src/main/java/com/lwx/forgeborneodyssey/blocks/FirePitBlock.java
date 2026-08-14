@@ -95,11 +95,6 @@ public class FirePitBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, net.minecraft.world.phys.shapes.CollisionContext context) {
-        return SHAPE;
-    }
-
-    @Override
     public VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, net.minecraft.world.phys.shapes.CollisionContext context) {
         return SHAPE;
     }

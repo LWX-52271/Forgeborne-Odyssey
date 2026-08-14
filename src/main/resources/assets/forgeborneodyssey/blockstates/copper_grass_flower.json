@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "age=0,frozen=false": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 270 }
+    ],
+    "age=0,frozen=true": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 270 }
+    ],
+    "age=1,frozen=false": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 270 }
+    ],
+    "age=1,frozen=true": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_seedling", "y": 270 }
+    ],
+    "age=2,frozen=false": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower", "y": 270 }
+    ],
+    "age=2,frozen=true": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower", "y": 270 }
+    ],
+    "age=3,frozen=false": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower_bloom", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_bloom", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_bloom", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_bloom", "y": 270 }
+    ],
+    "age=3,frozen=true": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower_bloom", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_bloom", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_bloom", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_bloom", "y": 270 }
+    ],
+    "age=4,frozen=false": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower_withered", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_withered", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_withered", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_withered", "y": 270 }
+    ],
+    "age=4,frozen=true": [
+      { "model": "forgeborneodyssey:block/copper_grass_flower_withered", "y": 0 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_withered", "y": 90 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_withered", "y": 180 },
+      { "model": "forgeborneodyssey:block/copper_grass_flower_withered", "y": 270 }
+    ]
+  }
+}

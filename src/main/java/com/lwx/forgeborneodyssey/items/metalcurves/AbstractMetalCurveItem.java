@@ -74,19 +74,16 @@ public abstract class AbstractMetalCurveItem extends Item {
             CompoundTag tag = stack.getTag();
             if (tag != null && tag.contains("Weight")) {
                 double weight = tag.getDouble("Weight");
-                String weightText;
                 if (weight >= 1000.0) {
-                    weightText = String.format("§b重量：%.3fkg", weight / 1000.0);
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
                 } else {
-                    weightText = String.format("§b重量：%.2fg", weight);
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", weight));
                 }
-                tooltip.add(Component.literal(weightText));
             }
             
             // 添加纯度提示
             float purity = getPurity(stack);
-            Component purityText = Component.literal(String.format("§b纯度：%.2f%%", purity));
-            tooltip.add(purityText);
+            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
             
             // 添加继承提示
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));

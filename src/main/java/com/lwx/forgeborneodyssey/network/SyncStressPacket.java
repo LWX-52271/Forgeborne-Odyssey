@@ -33,14 +33,17 @@ public class SyncStressPacket {
     
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
+        if (context.getDirection().getReceptionSide().isServer()) {
+            return false;
+        }
         context.enqueueWork(() -> {
-            // 在客户端更新应力值
             Level level = net.minecraft.client.Minecraft.getInstance().level;
             if (level != null) {
                 var blockEntity = level.getBlockEntity(pos);
                 if (blockEntity instanceof com.lwx.forgeborneodyssey.blocks.StressBlock.StressBlockEntity stressBlockEntity) {
-                    // 直接设置应力值，不触发额外的同步
                     stressBlockEntity.setStress(stress);
+                } else {
+                    com.lwx.forgeborneodyssey.util.VanillaBlockStressManager.setClientStress(pos, stress);
                 }
             }
         });

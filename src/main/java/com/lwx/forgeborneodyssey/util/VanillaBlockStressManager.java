@@ -5,202 +5,111 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 原版方块应力值管理器
- * 用于存储和管理原版岩石和矿物的应力值
+ * 用于存储和管理原版岩石和矿物的应力值，通过 SavedData 持久化
  */
 public class VanillaBlockStressManager {
     
-    private static final Map<BlockPosKey, Float> stressMap = new HashMap<>();
-    
-    /**
-     * 方块位置键类
-     */
-    public static class BlockPosKey {
-        private final long posHash;
-        private final int dimensionHash;
-        
-        public BlockPosKey(BlockPos pos, Level level) {
-            this.posHash = pos.asLong();
-            this.dimensionHash = Objects.hashCode(level.dimension());
-        }
-        
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            BlockPosKey that = (BlockPosKey) o;
-            return posHash == that.posHash && dimensionHash == that.dimensionHash;
-        }
-        
-        @Override
-        public int hashCode() {
-            return Objects.hash(posHash, dimensionHash);
-        }
+    private static final Map<BlockPos, Float> CLIENT_STRESS_MAP = new ConcurrentHashMap<>();
+
+    private static final Set<Block> VANILLA_ROCK_SET = Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+    static {
+        VANILLA_ROCK_SET.add(Blocks.STONE);
+        VANILLA_ROCK_SET.add(Blocks.GRANITE);
+        VANILLA_ROCK_SET.add(Blocks.DIORITE);
+        VANILLA_ROCK_SET.add(Blocks.ANDESITE);
+        VANILLA_ROCK_SET.add(Blocks.DEEPSLATE);
+        VANILLA_ROCK_SET.add(Blocks.TUFF);
+        VANILLA_ROCK_SET.add(Blocks.COBBLESTONE);
+        VANILLA_ROCK_SET.add(Blocks.MOSSY_COBBLESTONE);
+        VANILLA_ROCK_SET.add(Blocks.COBBLED_DEEPSLATE);
+        VANILLA_ROCK_SET.add(Blocks.IRON_ORE);
+        VANILLA_ROCK_SET.add(Blocks.DEEPSLATE_IRON_ORE);
+        VANILLA_ROCK_SET.add(Blocks.COAL_ORE);
+        VANILLA_ROCK_SET.add(Blocks.DEEPSLATE_COAL_ORE);
+        VANILLA_ROCK_SET.add(Blocks.COPPER_ORE);
+        VANILLA_ROCK_SET.add(Blocks.DEEPSLATE_COPPER_ORE);
+        VANILLA_ROCK_SET.add(Blocks.GOLD_ORE);
+        VANILLA_ROCK_SET.add(Blocks.DEEPSLATE_GOLD_ORE);
+        VANILLA_ROCK_SET.add(Blocks.REDSTONE_ORE);
+        VANILLA_ROCK_SET.add(Blocks.DEEPSLATE_REDSTONE_ORE);
+        VANILLA_ROCK_SET.add(Blocks.EMERALD_ORE);
+        VANILLA_ROCK_SET.add(Blocks.DEEPSLATE_EMERALD_ORE);
+        VANILLA_ROCK_SET.add(Blocks.LAPIS_ORE);
+        VANILLA_ROCK_SET.add(Blocks.DEEPSLATE_LAPIS_ORE);
+        VANILLA_ROCK_SET.add(Blocks.DIAMOND_ORE);
+        VANILLA_ROCK_SET.add(Blocks.DEEPSLATE_DIAMOND_ORE);
+        VANILLA_ROCK_SET.add(Blocks.NETHER_GOLD_ORE);
+        VANILLA_ROCK_SET.add(Blocks.NETHER_QUARTZ_ORE);
+        VANILLA_ROCK_SET.add(Blocks.ANCIENT_DEBRIS);
     }
-    
+
     /**
      * 获取方块的应力值
+     * 服务端：从 SavedData 读取
+     * 客户端：从客户端缓存读取（由 SyncStressPacket 同步）
      */
     public static float getStress(Level level, BlockPos pos) {
-        BlockPosKey key = new BlockPosKey(pos, level);
-        return stressMap.getOrDefault(key, 0.0f);
+        if (level.isClientSide) {
+            return CLIENT_STRESS_MAP.getOrDefault(pos, 0.0f);
+        }
+        return VanillaStressSavedData.get(level).getStress(level.dimension().location(), pos);
     }
-    
+
     /**
-     * 设置方块的应力值
+     * 设置方块的应力值（仅服务端）
      */
     public static void setStress(Level level, BlockPos pos, float stress) {
-        BlockPosKey key = new BlockPosKey(pos, level);
-        if (stress <= 0.0f) {
-            stressMap.remove(key);
-        } else {
-            stressMap.put(key, stress);
-        }
+        if (level.isClientSide) return;
+        VanillaStressSavedData.get(level).setStress(level.dimension().location(), pos, stress);
     }
-    
+
+    /**
+     * 设置客户端应力缓存（由 SyncStressPacket 处理时调用）
+     */
+    public static void setClientStress(BlockPos pos, float stress) {
+        CLIENT_STRESS_MAP.put(pos, stress);
+    }
+
+    /**
+     * 清除客户端应力缓存（方块被破坏时调用）
+     */
+    public static void clearClientStress(BlockPos pos) {
+        CLIENT_STRESS_MAP.remove(pos);
+    }
+
     /**
      * 增加方块的应力值
      */
     public static void addStress(Level level, BlockPos pos, float amount) {
-        BlockPosKey key = new BlockPosKey(pos, level);
-        float currentStress = stressMap.getOrDefault(key, 0.0f);
+        if (level.isClientSide) return;
+        float currentStress = getStress(level, pos);
         float newStress = currentStress + amount;
-        if (newStress <= 0.0f) {
-            stressMap.remove(key);
-        } else {
-            stressMap.put(key, newStress);
-        }
+        setStress(level, pos, newStress);
     }
-    
+
     /**
      * 重置方块的应力值
      */
     public static void resetStress(Level level, BlockPos pos) {
-        BlockPosKey key = new BlockPosKey(pos, level);
-        stressMap.remove(key);
+        if (level.isClientSide) {
+            CLIENT_STRESS_MAP.remove(pos);
+            return;
+        }
+        VanillaStressSavedData.get(level).resetStress(level.dimension().location(), pos);
     }
     
     /**
      * 检查是否是原版岩石或矿物
      */
     public static boolean isVanillaRockOrOre(Block block) {
-        return block == Blocks.STONE ||
-               block == Blocks.GRANITE ||
-               block == Blocks.DIORITE ||
-               block == Blocks.ANDESITE ||
-               block == Blocks.DEEPSLATE ||
-               block == Blocks.TUFF ||
-               block == Blocks.COBBLESTONE ||
-               block == Blocks.MOSSY_COBBLESTONE ||
-               block == Blocks.COBBLED_DEEPSLATE ||
-               block == Blocks.IRON_ORE ||
-               block == Blocks.DEEPSLATE_IRON_ORE ||
-               block == Blocks.COAL_ORE ||
-               block == Blocks.DEEPSLATE_COAL_ORE ||
-               block == Blocks.COPPER_ORE ||
-               block == Blocks.DEEPSLATE_COPPER_ORE ||
-               block == Blocks.GOLD_ORE ||
-               block == Blocks.DEEPSLATE_GOLD_ORE ||
-               block == Blocks.REDSTONE_ORE ||
-               block == Blocks.DEEPSLATE_REDSTONE_ORE ||
-               block == Blocks.EMERALD_ORE ||
-               block == Blocks.DEEPSLATE_EMERALD_ORE ||
-               block == Blocks.LAPIS_ORE ||
-               block == Blocks.DEEPSLATE_LAPIS_ORE ||
-               block == Blocks.DIAMOND_ORE ||
-               block == Blocks.DEEPSLATE_DIAMOND_ORE ||
-               block == Blocks.NETHER_GOLD_ORE ||
-               block == Blocks.NETHER_QUARTZ_ORE ||
-               block == Blocks.ANCIENT_DEBRIS;
-    }
-    
-    /**
-     * 获取方块的最大应力值
-     */
-    public static float getMaxStressPerHit(Block block) {
-        // 石头（泛指）- 砂岩/石灰岩 - 50 MPa
-        if (block == Blocks.STONE) {
-            return 50.0f;
-        }
-        // 花岗岩 - 160 MPa
-        if (block == Blocks.GRANITE) {
-            return 160.0f;
-        }
-        // 闪长岩 - 150 MPa
-        if (block == Blocks.DIORITE) {
-            return 150.0f;
-        }
-        // 安山岩 - 150 MPa
-        if (block == Blocks.ANDESITE) {
-            return 150.0f;
-        }
-        // 深板岩 - 板岩（各向异性）- 100 MPa
-        if (block == Blocks.DEEPSLATE || block == Blocks.COBBLED_DEEPSLATE) {
-            return 100.0f;
-        }
-        // 凝灰岩 - 33 MPa
-        if (block == Blocks.TUFF) {
-            return 33.0f;
-        }
-        // 圆石 - 砾岩（松散胶结）- 15 MPa
-        if (block == Blocks.COBBLESTONE || block == Blocks.MOSSY_COBBLESTONE) {
-            return 15.0f;
-        }
-        // 矿物方块 - 根据围岩类型设置应力值
-        // 铁矿石 - 磁铁矿（围岩似花岗岩）- 120 MPa
-        if (block == Blocks.IRON_ORE || block == Blocks.DEEPSLATE_IRON_ORE) {
-            return 120.0f;
-        }
-        // 煤矿石 - 煤岩 - 15 MPa
-        if (block == Blocks.COAL_ORE || block == Blocks.DEEPSLATE_COAL_ORE) {
-            return 15.0f;
-        }
-        // 铜矿石 - 黄铜矿（围岩似闪长岩）- 100 MPa
-        if (block == Blocks.COPPER_ORE || block == Blocks.DEEPSLATE_COPPER_ORE) {
-            return 100.0f;
-        }
-        // 金矿石 - 含金石英脉 - 80 MPa
-        if (block == Blocks.GOLD_ORE || block == Blocks.DEEPSLATE_GOLD_ORE) {
-            return 80.0f;
-        }
-        // 红石矿石 - 红砂岩 - 150 MPa
-        if (block == Blocks.REDSTONE_ORE || block == Blocks.DEEPSLATE_REDSTONE_ORE) {
-            return 150.0f;
-        }
-        // 绿宝石矿石 - 绿柱石（赋存于花岗伟晶岩）- 130 MPa
-        if (block == Blocks.EMERALD_ORE || block == Blocks.DEEPSLATE_EMERALD_ORE) {
-            return 130.0f;
-        }
-        // 青金石矿石 - 青金石岩（莫氏5.5）- 70 MPa
-        if (block == Blocks.LAPIS_ORE || block == Blocks.DEEPSLATE_LAPIS_ORE) {
-            return 70.0f;
-        }
-        // 钻石矿石 - 金伯利岩 - 140 MPa
-        if (block == Blocks.DIAMOND_ORE) {
-            return 140.0f;
-        }
-        // 深层钻石矿石 - 在深板岩中，围岩较弱，原值减10
-        if (block == Blocks.DEEPSLATE_DIAMOND_ORE) {
-            return 130.0f;
-        }
-        // 下界金矿石 - 100 MPa
-        if (block == Blocks.NETHER_GOLD_ORE) {
-            return 100.0f;
-        }
-        // 下界石英矿石 - 100 MPa
-        if (block == Blocks.NETHER_QUARTZ_ORE) {
-            return 100.0f;
-        }
-        // 远古残骸 - 150 MPa
-        if (block == Blocks.ANCIENT_DEBRIS) {
-            return 150.0f;
-        }
-        // 默认值
-        return 1.0f;
+        return VANILLA_ROCK_SET.contains(block);
     }
 }

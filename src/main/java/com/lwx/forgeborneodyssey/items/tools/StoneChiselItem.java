@@ -32,7 +32,7 @@ public class StoneChiselItem extends SwordItem {
             // 显示剩余耐久度
             if (stack.getMaxDamage() > 0) {
                 int durability = stack.getMaxDamage() - stack.getDamageValue();
-                tooltip.add(Component.literal("§7耐久度: " + durability + "/" + stack.getMaxDamage()));
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.durability", durability + "/" + stack.getMaxDamage()));
             }
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));

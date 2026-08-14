@@ -1,16 +1,18 @@
 package com.lwx.forgeborneodyssey.events;
 
+import com.lwx.forgeborneodyssey.api.ForgeborneAPI;
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModSounds;
-import com.lwx.forgeborneodyssey.util.StressHelper;
-import com.lwx.forgeborneodyssey.util.VanillaBlockStressManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.slf4j.Logger;
@@ -31,6 +34,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * 岩石和矿物挖掘事件监听器
@@ -43,95 +47,119 @@ public class RockMiningHandler {
     
     // 冷却时间：500毫秒（0.5秒，强制单击）
     private static final long COOLDOWN = 500;
-    private static long lastActionTime = 0;
+    private static final double MAX_DISTANCE_SQ = 36.0;
+
+    // 每个玩家独立追踪冷却时间（多人游戏下不会互相干扰）
+    private static final Map<UUID, Long> lastActionTimeMap = new HashMap<>();
+    private static final Map<UUID, BlockPos> lastClickedPosMap = new HashMap<>();
+    private static final Map<UUID, Long> lastClickTimeMap = new HashMap<>();
     
     // 随机数生成器，用于随机选择裂纹音效
     private static final Random RANDOM = new Random();
     
-    // 跟踪上次点击的方块位置，防止按住右键持续触发
-    private static BlockPos lastClickedPos = null;
-    private static long lastClickTime = 0;
-    
-    // 需要禁止左键挖掘的方块集合
+    // 需要禁止左键挖掘的方块集合（性能优化：快速查找）
     private static Set<Block> PROTECTED_BLOCKS = null;
-    
-    // 方块应力值映射
-    private static Map<Block, Float> BLOCK_STRESS_VALUES = null;
     
     private static void initProtectedBlocks() {
         if (PROTECTED_BLOCKS != null) {
             return;
         }
         PROTECTED_BLOCKS = new HashSet<>();
-        BLOCK_STRESS_VALUES = new HashMap<>();
         
-        // 添加所有铜矿石及其应力值
-        addBlockWithStress(ModBlocks.CHALCOPYRITE_ORE.get(), 80.0f);
-        addBlockWithStress(ModBlocks.BORNITE_ORE.get(), 60.0f);
-        addBlockWithStress(ModBlocks.CHALCOCITE_ORE.get(), 50.0f);
-        addBlockWithStress(ModBlocks.COVELLITE_ORE.get(), 20.0f);
-        addBlockWithStress(ModBlocks.CUBANITE_ORE.get(), 75.0f);
-        addBlockWithStress(ModBlocks.MALACHITE_ORE.get(), 65.0f);
-        addBlockWithStress(ModBlocks.AZURITE_ORE.get(), 65.0f);
-        addBlockWithStress(ModBlocks.CUPRITE_ORE.get(), 70.0f);
-        addBlockWithStress(ModBlocks.TENORITE_ORE.get(), 70.0f);
-        addBlockWithStress(ModBlocks.CHALCANTHITE_ORE.get(), 15.0f);
-        addBlockWithStress(ModBlocks.BROCHANTITE_ORE.get(), 60.0f);
-        addBlockWithStress(ModBlocks.MIXED_COPPER_ORE.get(), 70.0f);
-        addBlockWithStress(ModBlocks.NATIVE_COPPER_ORE.get(), 40.0f);
-        addBlockWithStress(ModBlocks.TETRAHEDRITE_ORE.get(), 80.0f);
-        addBlockWithStress(ModBlocks.TENNANTITE_ORE.get(), 75.0f);
-        addBlockWithStress(ModBlocks.TORBERNITE_ORE.get(), 25.0f);
-        addBlockWithStress(ModBlocks.CUPROVANADITE_ORE.get(), 50.0f);
-        addBlockWithStress(ModBlocks.CHRYSOCOLLA_ORE.get(), 60.0f); // 硅孔雀石
+        PROTECTED_BLOCKS.add(ModBlocks.CHALCOPYRITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.BORNITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.CHALCOCITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.COVELLITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.CUBANITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.MALACHITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.AZURITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.CUPRITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.TENORITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.CHALCANTHITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.BROCHANTITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.MIXED_COPPER_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.NATIVE_COPPER_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.TETRAHEDRITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.TENNANTITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.TORBERNITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.CUPROVANADITE_ORE.get());
+        PROTECTED_BLOCKS.add(ModBlocks.CHRYSOCOLLA_ORE.get());
         
-        // 添加所有岩石方块及其应力值
-        addBlockWithStress(ModBlocks.SHALE_BLOCK.get(), 50.0f);
-        addBlockWithStress(ModBlocks.SANDSTONE_BLOCK.get(), 60.0f);
-        addBlockWithStress(ModBlocks.LIMESTONE_BLOCK.get(), 70.0f);
-        addBlockWithStress(ModBlocks.POLISHED_LIMESTONE_BLOCK.get(), 70.0f);
-        addBlockWithStress(ModBlocks.MARBLE_BLOCK.get(), 80.0f);
-        addBlockWithStress(ModBlocks.QUARTZITE_BLOCK.get(), 200.0f);
-        addBlockWithStress(ModBlocks.GABBRO_BLOCK.get(), 150.0f);
-        addBlockWithStress(ModBlocks.QUARTZ_VEIN_BLOCK.get(), 180.0f);
-        addBlockWithStress(ModBlocks.SERICITIZED_ROCK_BLOCK.get(), 30.0f);
-        addBlockWithStress(ModBlocks.CHLORITE_ROCK_BLOCK.get(), 40.0f);
+        PROTECTED_BLOCKS.add(ModBlocks.SHALE_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.SANDSTONE_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.LIMESTONE_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.POLISHED_LIMESTONE_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.MARBLE_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.QUARTZITE_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.GABBRO_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.QUARTZ_VEIN_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.SERICITIZED_ROCK_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.CHLORITE_ROCK_BLOCK.get());
         
-        // 添加原版岩石及其应力值（取中间值）
-        addBlockWithStress(Blocks.STONE, 85.0f); // 石头：50-120 MPa
-        addBlockWithStress(Blocks.GRANITE, 185.0f); // 花岗岩：150-220 MPa
-        addBlockWithStress(Blocks.DIORITE, 225.0f); // 闪长岩：180-270 MPa
-        addBlockWithStress(Blocks.ANDESITE, 135.0f); // 安山岩：90-180 MPa
-        addBlockWithStress(Blocks.DEEPSLATE, 250.0f); // 深板岩：200-300 MPa
-        addBlockWithStress(Blocks.TUFF, 12.5f); // 凝灰岩：5-20 MPa
-        addBlockWithStress(Blocks.COBBLESTONE, 115.0f); // 圆石：80-150 MPa
-        addBlockWithStress(Blocks.MOSSY_COBBLESTONE, 55.0f); // 苔石：30-80 MPa
-        addBlockWithStress(Blocks.COBBLED_DEEPSLATE, 200.0f); // 深板岩圆石：150-250 MPa
-    }
-    
-    private static void addBlockWithStress(Block block, float stress) {
-        PROTECTED_BLOCKS.add(block);
-        BLOCK_STRESS_VALUES.put(block, stress);
-    }
-    
-    /**
-     * 获取方块的应力值
-     */
-    public static float getBlockStressValue(Block block) {
-        if (BLOCK_STRESS_VALUES == null) {
-            initProtectedBlocks();
-        }
-        return BLOCK_STRESS_VALUES.getOrDefault(block, 0.0f);
+        PROTECTED_BLOCKS.add(Blocks.STONE);
+        PROTECTED_BLOCKS.add(Blocks.GRANITE);
+        PROTECTED_BLOCKS.add(Blocks.DIORITE);
+        PROTECTED_BLOCKS.add(Blocks.ANDESITE);
+        PROTECTED_BLOCKS.add(Blocks.DEEPSLATE);
+        PROTECTED_BLOCKS.add(Blocks.TUFF);
+        PROTECTED_BLOCKS.add(Blocks.COBBLESTONE);
+        PROTECTED_BLOCKS.add(Blocks.MOSSY_COBBLESTONE);
+        PROTECTED_BLOCKS.add(Blocks.COBBLED_DEEPSLATE);
+
+        PROTECTED_BLOCKS.add(Blocks.IRON_ORE);
+        PROTECTED_BLOCKS.add(Blocks.DEEPSLATE_IRON_ORE);
+        PROTECTED_BLOCKS.add(Blocks.COAL_ORE);
+        PROTECTED_BLOCKS.add(Blocks.DEEPSLATE_COAL_ORE);
+        PROTECTED_BLOCKS.add(Blocks.COPPER_ORE);
+        PROTECTED_BLOCKS.add(Blocks.DEEPSLATE_COPPER_ORE);
+        PROTECTED_BLOCKS.add(Blocks.GOLD_ORE);
+        PROTECTED_BLOCKS.add(Blocks.DEEPSLATE_GOLD_ORE);
+        PROTECTED_BLOCKS.add(Blocks.REDSTONE_ORE);
+        PROTECTED_BLOCKS.add(Blocks.DEEPSLATE_REDSTONE_ORE);
+        PROTECTED_BLOCKS.add(Blocks.EMERALD_ORE);
+        PROTECTED_BLOCKS.add(Blocks.DEEPSLATE_EMERALD_ORE);
+        PROTECTED_BLOCKS.add(Blocks.LAPIS_ORE);
+        PROTECTED_BLOCKS.add(Blocks.DEEPSLATE_LAPIS_ORE);
+        PROTECTED_BLOCKS.add(Blocks.DIAMOND_ORE);
+        PROTECTED_BLOCKS.add(Blocks.DEEPSLATE_DIAMOND_ORE);
+        PROTECTED_BLOCKS.add(Blocks.NETHER_GOLD_ORE);
+        PROTECTED_BLOCKS.add(Blocks.NETHER_QUARTZ_ORE);
+        PROTECTED_BLOCKS.add(Blocks.ANCIENT_DEBRIS);
     }
     
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         // 延迟初始化方块集合
         initProtectedBlocks();
+
+        // 如果事件已被取消（如火裂采矿的水桶淬火已处理），直接返回
+        if (event.isCanceled()) {
+            return;
+        }
         
         Level level = event.getLevel();
         var pos = event.getPos();
         Player player = event.getEntity();
+        
+        // 创造模式玩家可以正常放置方块，不处理应力值
+        if (player.isCreative()) {
+            return;
+        }
+
+        // 潜行时右键应该正常放置方块，不处理应力值
+        if (player.isShiftKeyDown()) {
+            return;
+        }
+
+        // 检查手持物品：只有空手或持有效工具时才能触发应力增加，持其他物品时按原版逻辑处理
+        ItemStack heldItem = player.getMainHandItem();
+        if (!heldItem.isEmpty()
+                && !heldItem.is(Items.STONE_PICKAXE)
+                && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.STONE_HAMMER.get())
+                && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.COBBLESTONE_HAMMER.get())
+                && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.HANDLE_STONE_HAMMER.get())) {
+            return;
+        }
         
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
@@ -141,16 +169,6 @@ public class RockMiningHandler {
         boolean isVanillaRock = PROTECTED_BLOCKS.contains(block);
         
         if (!isModStressBlock && !isVanillaRock) {
-            return;
-        }
-        
-        // 取消事件，防止持续挖掘（客户端和服务端都要取消）
-        event.setCanceled(true);
-        
-        long currentTime = System.currentTimeMillis();
-        
-        // 检查冷却时间（后摇硬直：0.5秒）
-        if (currentTime - lastActionTime < COOLDOWN) {
             return;
         }
         
@@ -196,10 +214,30 @@ public class RockMiningHandler {
             
             return;
         }
+
+        // 服务端：取消事件防止放置方块，并处理应力值
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.SUCCESS);
+
+        long currentTime = System.currentTimeMillis();
+        UUID playerId = player.getUUID();
+
+        // 检查冷却时间（后摇硬直：0.5秒，按玩家独立追踪）
+        long playerLastActionTime = lastActionTimeMap.getOrDefault(playerId, 0L);
+        if (currentTime - playerLastActionTime < COOLDOWN) {
+            return;
+        }
+        // 冷却校验通过，立即记录本次操作时间
+        lastActionTimeMap.put(playerId, currentTime);
+
+        // 更新点击记录（按玩家追踪）
+        lastClickedPosMap.put(playerId, pos);
+        lastClickTimeMap.put(playerId, currentTime);
         
-        // 更新点击记录
-        lastClickedPos = pos;
-        lastClickTime = currentTime;
+        // 验证玩家是否在目标方块的交互范围内
+        if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > MAX_DISTANCE_SQ) {
+            return;
+        }
         
         // 发送挖掘动作数据包到所有客户端（用于同步其他玩家的挖掘动画）
         com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
@@ -212,32 +250,38 @@ public class RockMiningHandler {
             new com.lwx.forgeborneodyssey.network.MiningActionPacket(player.getUUID(), pos)
         );
         
-        // 获取当前应力值（区分模组方块和原版岩石）
-        float currentStress;
-        if (isModStressBlock) {
-            currentStress = StressHelper.getStress(level, pos);
-        } else {
-            currentStress = VanillaBlockStressManager.getStress(level, pos);
-        }
+        // 获取当前应力值
+        float currentStress = ForgeborneAPI.getStress(level, pos);
         
-        // 获取玩家手中的物品和增加量
-        ItemStack heldItem = player.getMainHandItem();
+        // 获取应力增加量（heldItem 已在方法开头获取）
         float increaseAmount = 1.0f; // 默认空手增加1
         
-        // 如果手持石镐，增加6
+        // 如果手持石镐或石锤，增加6
         if (!heldItem.isEmpty() && heldItem.is(Items.STONE_PICKAXE)) {
             increaseAmount = 6.0f;
+        } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.STONE_HAMMER.get())) {
+            increaseAmount = 6.0f;
+        } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.COBBLESTONE_HAMMER.get())) {
+            increaseAmount = 4.0f;
+        } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.HANDLE_STONE_HAMMER.get())) {
+            increaseAmount = 8.0f;
+        }
+        
+        // 火裂采矿淬火加成：淬火后的岩石更脆弱，工具敲击应力 ×1.5
+        float quenchBonus = FireCrackMiningHandler.getQuenchBonus(pos, level);
+        if (quenchBonus > 1.0f) {
+            increaseAmount *= quenchBonus;
         }
         
         // 获取最大应力值
-        float maxStress = getBlockStressValue(block);
+        float maxStress = ForgeborneAPI.getMaxStress(block);
         
         // 计算新的应力值（不能超过最大值）
         float newStress = Math.min(maxStress, currentStress + increaseAmount);
         
         // 消耗镐子耐久
         if (!heldItem.isEmpty() && heldItem.isDamageableItem()) {
-            heldItem.hurtAndBreak(6, player, (p) -> {
+            heldItem.hurtAndBreak(3, player, (p) -> {
                 p.broadcastBreakEvent(p.getUsedItemHand());
             });
         }
@@ -245,15 +289,11 @@ public class RockMiningHandler {
         // 消耗玩家饱食度（每次敲击消耗0.5点饥饿值）
         player.causeFoodExhaustion(0.5f);
         
-        // 更新应力值（区分模组方块和原版岩石）
-        if (isModStressBlock) {
-            StressHelper.setStress(level, pos, newStress);
-        } else {
-            VanillaBlockStressManager.setStress(level, pos, newStress);
-        }
+        // 更新应力值
+        ForgeborneAPI.setStress(level, pos, newStress);
         
-        // 发送应力值同步数据包到所有客户端（仅模组方块需要）
-        if (isModStressBlock && !level.isClientSide) {
+        // 发送应力值同步数据包到所有客户端（仅岩石和矿石）
+        if ((isModStressBlock || isVanillaRock) && !level.isClientSide) {
             com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
                 net.minecraftforge.network.PacketDistributor.NEAR.with(
                     net.minecraftforge.network.PacketDistributor.TargetPoint.p(
@@ -263,6 +303,59 @@ public class RockMiningHandler {
                 ),
                 new com.lwx.forgeborneodyssey.network.SyncStressPacket(pos, newStress)
             );
+        }
+
+        // 相邻岩石矿石有几率连带增加应力值（裂纹扩散效应）
+        for (Direction direction : Direction.values()) {
+            BlockPos neighborPos = pos.relative(direction);
+            BlockState neighborState = level.getBlockState(neighborPos);
+            Block neighborBlock = neighborState.getBlock();
+            boolean isNeighborModBlock = neighborBlock instanceof com.lwx.forgeborneodyssey.blocks.StressBlock;
+            boolean isNeighborVanillaRock = PROTECTED_BLOCKS.contains(neighborBlock);
+
+            if (!isNeighborModBlock && !isNeighborVanillaRock) {
+                continue;
+            }
+
+            // 30% 概率对相邻方块增加 1~2 点应力
+            if (RANDOM.nextFloat() < 0.30f) {
+                float neighborCurrentStress = ForgeborneAPI.getStress(level, neighborPos);
+                float neighborMaxStress = ForgeborneAPI.getMaxStress(neighborBlock);
+                float neighborIncrease = 1.0f + RANDOM.nextFloat(); // 1.0 ~ 2.0
+                float neighborNewStress = Math.min(neighborMaxStress, neighborCurrentStress + neighborIncrease);
+
+                ForgeborneAPI.setStress(level, neighborPos, neighborNewStress);
+
+                if ((isNeighborModBlock || isNeighborVanillaRock) && !level.isClientSide) {
+                    com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
+                        net.minecraftforge.network.PacketDistributor.NEAR.with(
+                            net.minecraftforge.network.PacketDistributor.TargetPoint.p(
+                                neighborPos.getX(), neighborPos.getY(), neighborPos.getZ(),
+                                32.0, level.dimension()
+                            )
+                        ),
+                        new com.lwx.forgeborneodyssey.network.SyncStressPacket(neighborPos, neighborNewStress)
+                    );
+                }
+
+                // 检查相邻方块是否达到最大应力值
+                if (neighborNewStress >= neighborMaxStress) {
+                    level.playSound(null, neighborPos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_BREAK.get(), net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
+                    level.destroyBlock(neighborPos, true);
+
+                    if ((isNeighborModBlock || isNeighborVanillaRock) && !level.isClientSide) {
+                        com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
+                            net.minecraftforge.network.PacketDistributor.NEAR.with(
+                                net.minecraftforge.network.PacketDistributor.TargetPoint.p(
+                                    neighborPos.getX(), neighborPos.getY(), neighborPos.getZ(),
+                                    32.0, level.dimension()
+                                )
+                            ),
+                            new com.lwx.forgeborneodyssey.network.SyncStressPacket(neighborPos, 0.0f)
+                        );
+                    }
+                }
+            }
         }
         
         // 计算并保存损坏阶段
@@ -290,19 +383,33 @@ public class RockMiningHandler {
             
             // 播放破坏音效和粒子效果
             level.destroyBlock(pos, true);
+
+            // 同步清零应力值，确保客户端裂纹消失
+            if ((isModStressBlock || isVanillaRock) && !level.isClientSide) {
+                com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
+                    net.minecraftforge.network.PacketDistributor.NEAR.with(
+                        net.minecraftforge.network.PacketDistributor.TargetPoint.p(
+                            pos.getX(), pos.getY(), pos.getZ(),
+                            32.0, level.dimension()
+                        )
+                    ),
+                    new com.lwx.forgeborneodyssey.network.SyncStressPacket(pos, 0.0f)
+                );
+            }
             return;
         }
         
         // 播放音效：镐击声
         level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_PICK_HIT.get(), net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
-        
-        // 更新最后操作时间
-        lastActionTime = currentTime;
     }
     
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onBreakBlock(BlockEvent.BreakEvent event) {
         initProtectedBlocks();
+        
+        if (FireCrackMiningHandler.isBreakingByFireCrack(event.getPos(), (ServerLevel) event.getLevel())) {
+            return;
+        }
         
         // 创造模式玩家可以随意破坏
         if (event.getPlayer().isCreative()) {

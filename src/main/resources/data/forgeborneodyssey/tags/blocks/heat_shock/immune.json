@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:obsidian",
+    "minecraft:crying_obsidian",
+    "minecraft:iron_block",
+    "minecraft:gold_block",
+    "minecraft:copper_block",
+    "minecraft:diamond_block",
+    "minecraft:netherite_block",
+    "minecraft:glass",
+    "minecraft:tinted_glass",
+    "minecraft:bedrock"
+  ]
+}

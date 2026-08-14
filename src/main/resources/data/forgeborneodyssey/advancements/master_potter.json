@@ -1,0 +1,70 @@
+{
+  "parent": "forgeborneodyssey:pit_kiln",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:red_mold"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.master_potter.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.master_potter.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_fired_brick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:fired_brick"
+            ]
+          }
+        ]
+      }
+    },
+    "get_gray_crucible": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:gray_crucible"
+            ]
+          }
+        ]
+      }
+    },
+    "get_red_mold": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:red_mold"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_fired_brick"
+    ],
+    [
+      "get_gray_crucible"
+    ],
+    [
+      "get_red_mold"
+    ]
+  ]
+}

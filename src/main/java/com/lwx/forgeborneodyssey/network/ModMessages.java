@@ -78,5 +78,19 @@ public class ModMessages {
             .decoder(SyncStressPacket::new)
             .consumerMainThread(SyncStressPacket::handle)
             .add();
+
+        // 火裂采矿热量同步（服务端 -> 所有客户端）
+        CHANNEL.messageBuilder(FireCrackSyncPacket.class, messageID++)
+            .encoder(FireCrackSyncPacket::toBytes)
+            .decoder(FireCrackSyncPacket::new)
+            .consumerMainThread(FireCrackSyncPacket::handle)
+            .add();
+
+        // 火裂采矿热量批量同步（服务端 -> 所有客户端）
+        CHANNEL.messageBuilder(FireCrackBatchSyncPacket.class, messageID++)
+            .encoder(FireCrackBatchSyncPacket::toBytes)
+            .decoder(FireCrackBatchSyncPacket::new)
+            .consumerMainThread(FireCrackBatchSyncPacket::handle)
+            .add();
     }
 }

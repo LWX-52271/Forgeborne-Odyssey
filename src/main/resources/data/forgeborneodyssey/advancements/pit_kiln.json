@@ -1,0 +1,39 @@
+{
+  "parent": "forgeborneodyssey:light_fire",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:pit_kiln"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.pit_kiln.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.pit_kiln.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_fired_ceramic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:fired_brick",
+              "forgeborneodyssey:gray_crucible"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_fired_ceramic"
+    ]
+  ]
+}

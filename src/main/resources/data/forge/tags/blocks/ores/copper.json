@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "forgeborneodyssey:chalcopyrite_ore",
+    "forgeborneodyssey:bornite_ore",
+    "forgeborneodyssey:chalcocite_ore",
+    "forgeborneodyssey:covellite_ore",
+    "forgeborneodyssey:cubanite_ore",
+    "forgeborneodyssey:malachite_ore",
+    "forgeborneodyssey:azurite_ore",
+    "forgeborneodyssey:cuprite_ore",
+    "forgeborneodyssey:tenorite_ore",
+    "forgeborneodyssey:chalcanthite_ore",
+    "forgeborneodyssey:brochantite_ore",
+    "forgeborneodyssey:mixed_copper_ore",
+    "forgeborneodyssey:native_copper_ore",
+    "forgeborneodyssey:tetrahedrite_ore",
+    "forgeborneodyssey:tennantite_ore",
+    "forgeborneodyssey:torbernite_ore",
+    "forgeborneodyssey:cuprovanadite_ore",
+    "forgeborneodyssey:chrysocolla_ore"
+  ]
+}

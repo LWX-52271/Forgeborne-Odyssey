@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " AC",
+    "ACA",
+    "CA "
+  ],
+  "key": {
+    "C": {
+      "item": "forgeborneodyssey:temper_grog"
+    },
+    "A": {
+      "item": "forgeborneodyssey:mixed_clay"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:greenware_brick",
+    "count": 1
+  }
+}
