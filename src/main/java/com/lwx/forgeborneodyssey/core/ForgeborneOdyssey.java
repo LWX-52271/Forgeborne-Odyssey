@@ -4,6 +4,7 @@ import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
 import com.lwx.forgeborneodyssey.core.registration.*;
 import com.lwx.forgeborneodyssey.world.*;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -109,6 +110,10 @@ public class ForgeborneOdyssey {
         // 注册特征
         FEATURES.register(modEventBus);
 
+        // 注册结构
+        ModStructures.STRUCTURE_TYPES.register(modEventBus);
+        ModStructures.STRUCTURE_PIECE_TYPES.register(modEventBus);
+
         // 添加生物群系修饰符注册（重要！）
         ModBiomeModifiersRegistry.BIOME_MODIFIERS.register(modEventBus);
         // 调用 ModBiomeModifiers 的注册方法
@@ -194,7 +199,9 @@ public class ForgeborneOdyssey {
                         com.lwx.forgeborneodyssey.world.NaturalMetalBiomeModifiers.bootstrap(context);
                         com.lwx.forgeborneodyssey.world.SimpleWorldGen.bootstrapBiomeModifier(context);
                         com.lwx.forgeborneodyssey.world.CopperGrassFlowerGeneration.bootstrapBiomeModifier(context);
-                    });
+                    })
+                    .add(Registries.STRUCTURE, com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration::bootstrapStructure)
+                    .add(Registries.STRUCTURE_SET, com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration::bootstrapStructureSet);
 
             // 添加单一的数据包提供者
             generator.addProvider(event.includeServer(),

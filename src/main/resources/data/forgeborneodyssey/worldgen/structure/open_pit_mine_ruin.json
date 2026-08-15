@@ -1,0 +1,7 @@
+{
+  "type": "forgeborneodyssey:open_pit_mine_ruin",
+  "biomes": "#forgeborneodyssey:has_open_pit_mine",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

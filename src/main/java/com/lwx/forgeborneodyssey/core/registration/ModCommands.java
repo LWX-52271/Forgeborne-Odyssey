@@ -56,6 +56,7 @@ public class ModCommands {
                     .then(literal("nearest_gold")
                         .executes(context -> findNearestNaturalMetal((CommandContext<CommandSourceStack>) context, ModBlocks.NATURAL_GOLD_BLOCK.get()))
                     )
+                    
                 )
                 .then(literal("coppergrass")
                     .then(literal("set")
@@ -306,4 +307,6 @@ public class ModCommands {
             return dz > 0 ? "南" : "北";
         }
     }
+
+    
 }
