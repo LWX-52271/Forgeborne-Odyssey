@@ -9,6 +9,8 @@ import com.lwx.forgeborneodyssey.blocks.naturalmetals.NaturalCopperBlock;
 import com.lwx.forgeborneodyssey.blocks.naturalmetals.NaturalGoldBlock;
 import com.lwx.forgeborneodyssey.blocks.naturalmetals.NaturalSilverBlock;
 
+import com.lwx.forgeborneodyssey.blocks.ShaftFrameBlock;
+import com.lwx.forgeborneodyssey.blocks.TunnelSupportBlock;
 import com.lwx.forgeborneodyssey.blocks.SurfaceCobblestoneBlock;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlock;
 import com.lwx.forgeborneodyssey.blocks.FireMouthBlock;
@@ -339,6 +341,12 @@ public class ModBlocks {
     // 火塘方块实体类型
     public static final RegistryObject<BlockEntityType<FirePitBlockEntity>> FIRE_PIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("fire_pit_block_entity", 
         () -> BlockEntityType.Builder.of(FirePitBlockEntity::new, FIRE_PIT_BLOCK.get()).build(null));
+
+    // 竖井框架方块
+    public static final RegistryObject<Block> SHAFT_FRAME = BLOCKS.register("shaft_frame", ShaftFrameBlock::new);
+
+    // 平巷支护方块
+    public static final RegistryObject<Block> TUNNEL_SUPPORT = BLOCKS.register("tunnel_support", TunnelSupportBlock::new);
 
     // 应力方块实体类型
     public static final RegistryObject<BlockEntityType<StressBlock.StressBlockEntity>> STRESS_BLOCK_ENTITY = BLOCK_ENTITIES.register("stress_block_entity",

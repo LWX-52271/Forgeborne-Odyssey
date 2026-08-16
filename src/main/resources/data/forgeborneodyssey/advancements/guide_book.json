@@ -1,0 +1,40 @@
+{
+  "parent": "forgeborneodyssey:stone_age",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:forgeborne_guide_book"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.guide_book.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.guide_book.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_guide_book": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:forgeborne_guide_book",
+              "forgeborneodyssey:pit_kiln_guide_book",
+              "forgeborneodyssey:fire_crack_mining_guide"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_guide_book"
+    ]
+  ]
+}

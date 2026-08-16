@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "bottom=false,top=false": {
+      "model": "forgeborneodyssey:block/shaft_frame_middle"
+    },
+    "bottom=true,top=false": {
+      "model": "forgeborneodyssey:block/shaft_frame_bottom"
+    },
+    "bottom=false,top=true": {
+      "model": "forgeborneodyssey:block/shaft_frame_top"
+    },
+    "bottom=true,top=true": {
+      "model": "forgeborneodyssey:block/shaft_frame_single"
+    }
+  }
+}

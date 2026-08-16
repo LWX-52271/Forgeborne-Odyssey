@@ -183,5 +183,15 @@
         "pitch": 1.0
       }
     ]
+  },
+  "rock.cave_in": {
+    "subtitle": "sounds.forgeborneodyssey.rock.cave_in",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:rock_cave_in",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
   }
 }

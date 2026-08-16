@@ -1,14 +1,14 @@
 {
-  "parent": "forgeborneodyssey:sparks_fly",
+  "parent": "forgeborneodyssey:metal_slot",
   "display": {
     "icon": {
-      "item": "forgeborneodyssey:pit_kiln"
+      "item": "forgeborneodyssey:gold_bar"
     },
     "title": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.title"
+      "translate": "advancement.forgeborneodyssey.metal_bar.title"
     },
     "description": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.description"
+      "translate": "advancement.forgeborneodyssey.metal_bar.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,15 +16,15 @@
     "hidden": false
   },
   "criteria": {
-    "get_fired_ceramic": {
+    "get_metal_bar": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "player": [],
         "items": [
           {
             "items": [
-              "forgeborneodyssey:fired_brick",
-              "forgeborneodyssey:gray_crucible"
+              "forgeborneodyssey:gold_bar",
+              "forgeborneodyssey:silver_bar"
             ]
           }
         ]
@@ -33,7 +33,7 @@
   },
   "requirements": [
     [
-      "get_fired_ceramic"
+      "get_metal_bar"
     ]
   ]
 }

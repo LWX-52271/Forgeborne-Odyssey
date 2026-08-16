@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.world.phys.BlockHitResult;
 import javax.annotation.Nullable;
 
@@ -178,7 +179,7 @@ public class FirePitBlock extends Block implements EntityBlock {
         // 优先处理点燃/熄灭逻辑（使用打火石、火球、水桶、铲子）
         if (!state.getValue(LIT)) {
             // 点燃火塘
-            if (heldItem.is(Items.FLINT_AND_STEEL) || heldItem.is(Items.FIRE_CHARGE)) {
+            if (heldItem.is(Items.FLINT_AND_STEEL) || heldItem.is(Items.FIRE_CHARGE) || heldItem.is(ModItems.FIRE_DRILL.get())) {
                 // 检查是否有燃料
                 BlockEntity blockEntity = level.getBlockEntity(pos);
                 boolean hasFuel = blockEntity instanceof FirePitBlockEntity firePitBE && firePitBE.hasFuel();
@@ -201,7 +202,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                     level.sendBlockUpdated(pos, state, newState, 3);
                     level.gameEvent(player, net.minecraft.world.level.gameevent.GameEvent.BLOCK_CHANGE, pos);
                     if (!player.isCreative()) {
-                        if (heldItem.is(Items.FLINT_AND_STEEL)) {
+                        if (heldItem.is(Items.FLINT_AND_STEEL) || heldItem.is(ModItems.FIRE_DRILL.get())) {
                             heldItem.hurtAndBreak(1, player, (p) -> {
                                 p.broadcastBreakEvent(hand);
                             });

@@ -92,5 +92,12 @@ public class ModMessages {
             .decoder(FireCrackBatchSyncPacket::new)
             .consumerMainThread(FireCrackBatchSyncPacket::handle)
             .add();
+
+        // 爬行状态同步（服务端 -> 客户端）
+        CHANNEL.messageBuilder(SyncCrawlStatePacket.class, messageID++)
+            .encoder(SyncCrawlStatePacket::toBytes)
+            .decoder(SyncCrawlStatePacket::new)
+            .consumerMainThread(SyncCrawlStatePacket::handle)
+            .add();
     }
 }

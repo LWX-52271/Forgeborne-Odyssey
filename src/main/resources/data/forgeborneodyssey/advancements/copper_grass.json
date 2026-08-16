@@ -1,14 +1,14 @@
 {
-  "parent": "forgeborneodyssey:sparks_fly",
+  "parent": "forgeborneodyssey:stone_age",
   "display": {
     "icon": {
-      "item": "forgeborneodyssey:pit_kiln"
+      "item": "forgeborneodyssey:copper_grass_flower"
     },
     "title": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.title"
+      "translate": "advancement.forgeborneodyssey.copper_grass.title"
     },
     "description": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.description"
+      "translate": "advancement.forgeborneodyssey.copper_grass.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,15 +16,14 @@
     "hidden": false
   },
   "criteria": {
-    "get_fired_ceramic": {
+    "find_copper_grass": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "player": [],
         "items": [
           {
             "items": [
-              "forgeborneodyssey:fired_brick",
-              "forgeborneodyssey:gray_crucible"
+              "forgeborneodyssey:copper_grass_flower"
             ]
           }
         ]
@@ -33,7 +32,7 @@
   },
   "requirements": [
     [
-      "get_fired_ceramic"
+      "find_copper_grass"
     ]
   ]
 }

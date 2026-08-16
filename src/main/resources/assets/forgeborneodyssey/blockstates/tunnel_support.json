@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "forgeborneodyssey:block/tunnel_support"
+    },
+    "facing=south": {
+      "model": "forgeborneodyssey:block/tunnel_support",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "forgeborneodyssey:block/tunnel_support",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "forgeborneodyssey:block/tunnel_support",
+      "y": 90
+    }
+  }
+}

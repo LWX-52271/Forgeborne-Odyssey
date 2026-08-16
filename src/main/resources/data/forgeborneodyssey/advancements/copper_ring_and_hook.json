@@ -1,0 +1,54 @@
+{
+  "parent": "forgeborneodyssey:metal_slot",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:copper_ring"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.copper_ring_and_hook.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.copper_ring_and_hook.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_copper_ring": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:copper_ring"
+            ]
+          }
+        ]
+      }
+    },
+    "get_copper_hook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:copper_hook"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_copper_ring"
+    ],
+    [
+      "get_copper_hook"
+    ]
+  ]
+}

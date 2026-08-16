@@ -100,6 +100,12 @@ public class ModItems {
     // 地表圆石物品
     public static final RegistryObject<Item> SURFACE_COBBLESTONE_BLOCK_ITEM = ITEMS.register("surface_cobblestone_block", () -> new com.lwx.forgeborneodyssey.items.ThrowableSurfaceCobblestoneItem(ModBlocks.SURFACE_COBBLESTONE_BLOCK.get()));
 
+    // 竖井框架物品
+    public static final RegistryObject<Item> SHAFT_FRAME_ITEM = createBlockItem("shaft_frame", ModBlocks.SHAFT_FRAME);
+
+    // 平巷支护物品
+    public static final RegistryObject<Item> TUNNEL_SUPPORT_ITEM = createBlockItem("tunnel_support", ModBlocks.TUNNEL_SUPPORT);
+
     // 自然金属块对应的物品
     public static final RegistryObject<Item> NATURAL_GOLD_BLOCK_ITEM = createBlockItem("natural_gold_block", ModBlocks.NATURAL_GOLD_BLOCK);
     public static final RegistryObject<Item> NATURAL_SILVER_BLOCK_ITEM = createBlockItem("natural_silver_block", ModBlocks.NATURAL_SILVER_BLOCK);

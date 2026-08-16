@@ -200,8 +200,14 @@ public class ForgeborneOdyssey {
                         com.lwx.forgeborneodyssey.world.SimpleWorldGen.bootstrapBiomeModifier(context);
                         com.lwx.forgeborneodyssey.world.CopperGrassFlowerGeneration.bootstrapBiomeModifier(context);
                     })
-                    .add(Registries.STRUCTURE, com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration::bootstrapStructure)
-                    .add(Registries.STRUCTURE_SET, com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration::bootstrapStructureSet);
+                    .add(Registries.STRUCTURE, context -> {
+                        com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration.bootstrapStructure(context);
+                        com.lwx.forgeborneodyssey.world.ShaftMineRuinGeneration.bootstrapStructure(context);
+                    })
+                    .add(Registries.STRUCTURE_SET, context -> {
+                        com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration.bootstrapStructureSet(context);
+                        com.lwx.forgeborneodyssey.world.ShaftMineRuinGeneration.bootstrapStructureSet(context);
+                    });
 
             // 添加单一的数据包提供者
             generator.addProvider(event.includeServer(),

@@ -1,0 +1,7 @@
+{
+  "type": "forgeborneodyssey:shaft_mine_ruin",
+  "biomes": "#forgeborneodyssey:has_shaft_mine",
+  "step": "underground_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

@@ -1,30 +1,29 @@
 {
-  "parent": "forgeborneodyssey:sparks_fly",
+  "parent": "forgeborneodyssey:copper_ring_and_hook",
   "display": {
     "icon": {
-      "item": "forgeborneodyssey:pit_kiln"
+      "item": "forgeborneodyssey:copper_fishing_rod"
     },
     "title": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.title"
+      "translate": "advancement.forgeborneodyssey.copper_fishing_rod.title"
     },
     "description": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.description"
+      "translate": "advancement.forgeborneodyssey.copper_fishing_rod.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
   },
   "criteria": {
-    "get_fired_ceramic": {
+    "get_copper_fishing_rod": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "player": [],
         "items": [
           {
             "items": [
-              "forgeborneodyssey:fired_brick",
-              "forgeborneodyssey:gray_crucible"
+              "forgeborneodyssey:copper_fishing_rod"
             ]
           }
         ]
@@ -33,7 +32,7 @@
   },
   "requirements": [
     [
-      "get_fired_ceramic"
+      "get_copper_fishing_rod"
     ]
   ]
 }

@@ -1,14 +1,14 @@
 {
-  "parent": "forgeborneodyssey:sparks_fly",
+  "parent": "forgeborneodyssey:stone_age",
   "display": {
     "icon": {
-      "item": "forgeborneodyssey:pit_kiln"
+      "item": "forgeborneodyssey:raw_clay"
     },
     "title": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.title"
+      "translate": "advancement.forgeborneodyssey.clay_collector.title"
     },
     "description": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.description"
+      "translate": "advancement.forgeborneodyssey.clay_collector.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,15 +16,14 @@
     "hidden": false
   },
   "criteria": {
-    "get_fired_ceramic": {
+    "get_raw_clay": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "player": [],
         "items": [
           {
             "items": [
-              "forgeborneodyssey:fired_brick",
-              "forgeborneodyssey:gray_crucible"
+              "forgeborneodyssey:raw_clay"
             ]
           }
         ]
@@ -33,7 +32,7 @@
   },
   "requirements": [
     [
-      "get_fired_ceramic"
+      "get_raw_clay"
     ]
   ]
 }

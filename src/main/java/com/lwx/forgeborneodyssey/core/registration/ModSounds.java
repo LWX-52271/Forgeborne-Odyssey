@@ -71,6 +71,10 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> ROCK_STEAM = SOUND_EVENTS.register("rock.steam",
         () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "rock.steam")));
 
+    // 塌方音效
+    public static final RegistryObject<SoundEvent> ROCK_CAVE_IN = SOUND_EVENTS.register("rock.cave_in",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "rock.cave_in")));
+
     /**
      * 注册音效到事件总线
      */

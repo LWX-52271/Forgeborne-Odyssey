@@ -1,0 +1,40 @@
+{
+  "parent": "forgeborneodyssey:clay_collector",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:greenware_crucible"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.first_greenware.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.first_greenware.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_greenware": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:greenware_crucible",
+              "forgeborneodyssey:greenware_mold",
+              "forgeborneodyssey:greenware_brick"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_greenware"
+    ]
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "values": [
+    "#minecraft:is_forest",
+    "#minecraft:is_hill",
+    "#minecraft:is_mountain",
+    "minecraft:stony_peaks",
+    "minecraft:jagged_peaks",
+    "minecraft:windswept_hills",
+    "minecraft:windswept_forest",
+    "minecraft:windswept_gravelly_hills",
+    "minecraft:meadow",
+    "minecraft:savanna_plateau",
+    "minecraft:wooded_badlands"
+  ]
+}

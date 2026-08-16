@@ -326,6 +326,7 @@
   "sounds.forgeborneodyssey.rock.pick_hit": "Pickaxe Strike",
   "sounds.forgeborneodyssey.rock.crack": "Rock Cracking",
   "sounds.forgeborneodyssey.rock.break": "Rock Shattering",
+  "sounds.forgeborneodyssey.rock.cave_in": "Rock Collapse",
   
   "message.forgeborneodyssey.fire_crack.quenched": "§cThe rock is quenched by water, cracking violently!",
   "message.forgeborneodyssey.fire_crack.chain_reaction": "§6Thermal chain reaction!",
@@ -635,5 +636,45 @@
   "tag.forgeborneodyssey.heat_shock.lime_bearing": "Lime-Bearing Rock",
 
   "advancement.forgeborneodyssey.heat_shock.title": "Fire-Crack Mining",
-  "advancement.forgeborneodyssey.heat_shock.description": "Use fire-roasting and water-shock to embrittle rock for faster mining"
+  "advancement.forgeborneodyssey.heat_shock.description": "Use fire-roasting and water-shock to embrittle rock for faster mining",
+
+  "advancement.forgeborneodyssey.clay_collector.title": "Digging for Clay",
+  "advancement.forgeborneodyssey.clay_collector.description": "Use a flint shovel to extract raw clay from sandy blocks",
+
+  "advancement.forgeborneodyssey.first_greenware.title": "First Shaping",
+  "advancement.forgeborneodyssey.first_greenware.description": "Craft your first pottery greenware",
+
+  "advancement.forgeborneodyssey.copper_grass.title": "Nature's Compass",
+  "advancement.forgeborneodyssey.copper_grass.description": "Discover copper grass flower — a natural indicator of copper ore",
+
+  "advancement.forgeborneodyssey.metal_curve.title": "Bending Iron",
+  "advancement.forgeborneodyssey.metal_curve.description": "Use an axe to bend a metal sheet into a curve",
+
+  "advancement.forgeborneodyssey.metal_slot.title": "Grooving Metal",
+  "advancement.forgeborneodyssey.metal_slot.description": "Process a metal curve into a slotted piece",
+
+  "advancement.forgeborneodyssey.metal_pin.title": "Grinding a Needle",
+  "advancement.forgeborneodyssey.metal_pin.description": "Craft a metal pin",
+
+  "advancement.forgeborneodyssey.copper_ring_and_hook.title": "Linked Together",
+  "advancement.forgeborneodyssey.copper_ring_and_hook.description": "Craft a copper ring and a copper hook",
+
+  "advancement.forgeborneodyssey.metal_bead.title": "Precious Beads",
+  "advancement.forgeborneodyssey.metal_bead.description": "Craft a metal bead",
+
+  "advancement.forgeborneodyssey.metal_bar.title": "Casting Bars",
+  "advancement.forgeborneodyssey.metal_bar.description": "Craft a precious metal bar",
+
+  "advancement.forgeborneodyssey.copper_fishing_rod.title": "Gone Fishing",
+  "advancement.forgeborneodyssey.copper_fishing_rod.description": "Assemble a copper fishing rod with ring, hook and line",
+
+  "advancement.forgeborneodyssey.guide_book.title": "Well Read",
+  "advancement.forgeborneodyssey.guide_book.description": "Obtain a crafting guide book",
+
+  "block.forgeborneodyssey.shaft_frame": "Shaft Frame",
+  "block.forgeborneodyssey.shaft_frame.tooltip": "§7Stack vertically, climbable\n§7Adjacent frames auto-connect, forming shaft support",
+  "block.forgeborneodyssey.tunnel_support": "Tunnel Support",
+  "block.forgeborneodyssey.tunnel_support.tooltip": "§7Place in tunnels to prevent cave-ins\n§7Protects 3×3×3 area around it",
+  "message.forgeborneodyssey.cave_in": "§cRocks above you come loose and collapse!",
+  "message.forgeborneodyssey.crawl_hint": "§eRight-click  to crawl"
 }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:shaft_frame",
+    "count": 12
+  }
+}

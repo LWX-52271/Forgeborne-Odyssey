@@ -347,6 +347,7 @@
   "sounds.forgeborneodyssey.rock.pick_hit": "镐击岩石",
   "sounds.forgeborneodyssey.rock.crack": "岩石开裂",
   "sounds.forgeborneodyssey.rock.break": "岩石碎裂",
+  "sounds.forgeborneodyssey.rock.cave_in": "岩石塌落",
   
   "message.forgeborneodyssey.fire_crack.quenched": "§c岩石被水淬火，剧烈开裂！",
   "message.forgeborneodyssey.fire_crack.chain_reaction": "§6热裂连锁反应！",
@@ -616,6 +617,39 @@
 
   "advancement.forgeborneodyssey.heat_shock.title": "火裂采石",
   "advancement.forgeborneodyssey.heat_shock.description": "利用火烤水击热震法使岩石脆化，大幅加速挖掘",
+
+  "advancement.forgeborneodyssey.clay_collector.title": "掘土得泥",
+  "advancement.forgeborneodyssey.clay_collector.description": "用石锹从沙质方块中挖出原生黏土团",
+
+  "advancement.forgeborneodyssey.first_greenware.title": "初塑泥胎",
+  "advancement.forgeborneodyssey.first_greenware.description": "制作第一个陶器生坯",
+
+  "advancement.forgeborneodyssey.copper_grass.title": "铜花引路",
+  "advancement.forgeborneodyssey.copper_grass.description": "发现铜草花——铜矿的天然指示植物",
+
+  "advancement.forgeborneodyssey.metal_curve.title": "弯弓折铁",
+  "advancement.forgeborneodyssey.metal_curve.description": "用斧头将金属片弯曲成弯片",
+
+  "advancement.forgeborneodyssey.metal_slot.title": "凿槽为器",
+  "advancement.forgeborneodyssey.metal_slot.description": "将金属弯片进一步加工成槽片",
+
+  "advancement.forgeborneodyssey.metal_pin.title": "磨铁成针",
+  "advancement.forgeborneodyssey.metal_pin.description": "制作一根金属针",
+
+  "advancement.forgeborneodyssey.copper_ring_and_hook.title": "环环相扣",
+  "advancement.forgeborneodyssey.copper_ring_and_hook.description": "制作铜环和铜钩",
+
+  "advancement.forgeborneodyssey.metal_bead.title": "珠圆玉润",
+  "advancement.forgeborneodyssey.metal_bead.description": "制作金属珠",
+
+  "advancement.forgeborneodyssey.metal_bar.title": "铸条成锭",
+  "advancement.forgeborneodyssey.metal_bar.description": "制作贵金属条",
+
+  "advancement.forgeborneodyssey.copper_fishing_rod.title": "垂钓江湖",
+  "advancement.forgeborneodyssey.copper_fishing_rod.description": "用铜环、铜钩和线组装一把铜鱼竿",
+
+  "advancement.forgeborneodyssey.guide_book.title": "开卷有益",
+  "advancement.forgeborneodyssey.guide_book.description": "获取一本工艺指南书",
   "message.forgeborneodyssey.firemouth.not_fuel_stage": "窑炉未处于可添柴阶段",
   "message.forgeborneodyssey.firemouth.fuel_added": "已添加燃料 (%s)",
   "message.forgeborneodyssey.firemouth.fuel_insufficient": "燃料不足，无法取出整份",
@@ -656,5 +690,12 @@
   "command.forgeborneodyssey.find.suggestion_gold": "§e建议：%s",
   "command.forgeborneodyssey.find.suggestion_silver": "§f建议：%s",
   "command.forgeborneodyssey.find.suggestion_copper": "§c建议：%s",
-  "command.forgeborneodyssey.find.navigate": "§a导航：从当前位置向%s"
+  "command.forgeborneodyssey.find.navigate": "§a导航：从当前位置向%s",
+
+  "block.forgeborneodyssey.shaft_frame": "竖井框架",
+  "block.forgeborneodyssey.shaft_frame.tooltip": "§7竖直堆叠放置，可攀爬\n§7相邻框架自动连接，构成竖井支护结构",
+  "block.forgeborneodyssey.tunnel_support": "平巷支护",
+  "block.forgeborneodyssey.tunnel_support.tooltip": "§7放置在平巷中，防止塌方\n§7保护周围3×3×3范围",
+  "message.forgeborneodyssey.cave_in": "§c头顶的岩石松动塌落！",
+  "message.forgeborneodyssey.crawl_hint": "§e右键 进入爬行"
 }

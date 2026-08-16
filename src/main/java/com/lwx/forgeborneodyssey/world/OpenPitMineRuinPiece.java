@@ -21,6 +21,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BarrelBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -110,6 +111,7 @@ public class OpenPitMineRuinPiece extends StructurePiece {
 
         clearSurfaceAbove(level, center, pitRadius);
         carvePit(level, center, pitRadius, pitDepth, wallRock, random);
+        handleSnowfall(level, center, pitRadius, pitDepth, random);
         placeWoodenSupports(level, center, pitRadius, pitDepth, random);
         placeLadders(level, center, pitRadius, pitDepth, random);
         placeWorkerBenches(level, center, pitRadius, pitDepth, random);
@@ -160,6 +162,48 @@ public class OpenPitMineRuinPiece extends StructurePiece {
                             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private void handleSnowfall(WorldGenLevel level, BlockPos center, int radius, int depth,
+                                 RandomSource random) {
+        int topY = center.getY();
+        int bottomY = center.getY() - depth + 1;
+        float bottomRadius = radius * (1.0f - (float) (depth - 1) / depth * 0.45f);
+        int clearRadius = radius + 2;
+
+        boolean hasSnow = false;
+        for (int dx = -clearRadius; dx <= clearRadius; dx++) {
+            for (int dz = -clearRadius; dz <= clearRadius; dz++) {
+                double dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist > clearRadius) continue;
+                for (int y = 1; y <= 25; y++) {
+                    BlockPos pos = new BlockPos(center.getX() + dx, topY + y, center.getZ() + dz);
+                    if (level.getBlockState(pos).is(Blocks.SNOW)) {
+                        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                        hasSnow = true;
+                    }
+                }
+            }
+        }
+
+        if (!hasSnow) return;
+
+        int r = (int) Math.ceil(bottomRadius);
+        for (int dx = -r; dx <= r; dx++) {
+            for (int dz = -r; dz <= r; dz++) {
+                double dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist > bottomRadius - 0.5) continue;
+                if (random.nextFloat() > 0.6f) continue;
+
+                BlockPos pos = new BlockPos(center.getX() + dx, bottomY, center.getZ() + dz);
+                BlockState currentState = level.getBlockState(pos);
+                if (currentState.isAir() || currentState.canBeReplaced()) {
+                    int layers = 1 + random.nextInt(4);
+                    level.setBlock(pos, Blocks.SNOW.defaultBlockState()
+                            .setValue(SnowLayerBlock.LAYERS, layers), 3);
                 }
             }
         }

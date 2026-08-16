@@ -1,14 +1,14 @@
 {
-  "parent": "forgeborneodyssey:sparks_fly",
+  "parent": "forgeborneodyssey:stone_hammer",
   "display": {
     "icon": {
-      "item": "forgeborneodyssey:pit_kiln"
+      "item": "minecraft:water_bucket"
     },
     "title": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.title"
+      "translate": "advancement.forgeborneodyssey.heat_shock.title"
     },
     "description": {
-      "translate": "advancement.forgeborneodyssey.pit_kiln.description"
+      "translate": "advancement.forgeborneodyssey.heat_shock.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,15 +16,14 @@
     "hidden": false
   },
   "criteria": {
-    "get_fired_ceramic": {
+    "get_gravel": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "player": [],
         "items": [
           {
             "items": [
-              "forgeborneodyssey:fired_brick",
-              "forgeborneodyssey:gray_crucible"
+              "forgeborneodyssey:gravel"
             ]
           }
         ]
@@ -33,7 +32,7 @@
   },
   "requirements": [
     [
-      "get_fired_ceramic"
+      "get_gravel"
     ]
   ]
 }

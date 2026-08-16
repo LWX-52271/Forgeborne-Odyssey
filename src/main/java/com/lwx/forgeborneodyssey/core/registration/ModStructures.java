@@ -3,6 +3,8 @@ package com.lwx.forgeborneodyssey.core.registration;
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.world.OpenPitMineRuinPiece;
 import com.lwx.forgeborneodyssey.world.OpenPitMineRuinStructure;
+import com.lwx.forgeborneodyssey.world.ShaftMineRuinPiece;
+import com.lwx.forgeborneodyssey.world.ShaftMineRuinStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -24,4 +26,12 @@ public class ModStructures {
     public static final RegistryObject<StructurePieceType> OPEN_PIT_MINE_RUIN_PIECE =
             STRUCTURE_PIECE_TYPES.register("open_pit_mine_ruin_piece",
                     () -> OpenPitMineRuinPiece::new);
+
+    public static final RegistryObject<StructureType<ShaftMineRuinStructure>> SHAFT_MINE_RUIN =
+            STRUCTURE_TYPES.register("shaft_mine_ruin",
+                    () -> () -> ShaftMineRuinStructure.CODEC);
+
+    public static final RegistryObject<StructurePieceType> SHAFT_MINE_RUIN_PIECE =
+            STRUCTURE_PIECE_TYPES.register("shaft_mine_ruin_piece",
+                    () -> ShaftMineRuinPiece::new);
 }
