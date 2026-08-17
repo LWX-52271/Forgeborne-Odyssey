@@ -55,11 +55,14 @@ public class PitKilnBlockEntity extends BlockEntity {
     public int coolDownTicks = 0;
     public ItemStack fuelItem = ItemStack.EMPTY;
 
-    public static final float MAX_TEMPERATURE = 1200.0F;
+    public static final float MAX_TEMPERATURE = 900.0F;
+    public static final float BLOWPIPE_MAX_TEMPERATURE = 1200.0F;
     public static final float ROOM_TEMPERATURE = 20.0F;
     public static final int OXYGEN_MIN = -100;
     public static final int OXYGEN_MAX = 100;
     public static final int COOL_DOWN_REQUIRED = 1200;
+
+    public int blowBoostTicks = 0;
 
     private static final Set<Block> EARTH_BLOCKS = Set.of(
             Blocks.DIRT,
@@ -94,11 +97,11 @@ public class PitKilnBlockEntity extends BlockEntity {
 
     public static float getInsulatedMaxTemp(int count) {
         return switch (count) {
-            case 4 -> 1200.0F;
-            case 3 -> 1000.0F;
-            case 2 -> 800.0F;
-            case 1 -> 550.0F;
-            default -> 350.0F;
+            case 4 -> 900.0F;
+            case 3 -> 750.0F;
+            case 2 -> 600.0F;
+            case 1 -> 410.0F;
+            default -> 260.0F;
         };
     }
 
@@ -109,6 +112,23 @@ public class PitKilnBlockEntity extends BlockEntity {
     private static boolean isFireMouthOpen(Level level, BlockPos pos, Direction facing) {
         BlockState fmState = level.getBlockState(pos.relative(facing));
         return fmState.is(ModBlocks.FIRE_MOUTH.get()) && fmState.getValue(FireMouthBlock.OPEN);
+    }
+
+    @Nullable
+    public static PitKilnBlockEntity findKilnBehindFireMouth(Level level, BlockPos fireMouthPos) {
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
+            BlockPos candidatePos = fireMouthPos.relative(dir);
+            BlockState candidateState = level.getBlockState(candidatePos);
+            if (candidateState.is(ModBlocks.PIT_KILN.get())) {
+                Direction kilnFacing = candidateState.getValue(PitKilnBlock.FACING);
+                if (dir == kilnFacing.getOpposite()) {
+                    if (level.getBlockEntity(candidatePos) instanceof PitKilnBlockEntity k) {
+                        return k;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public static float getOxygenDelta(PitKilnBlock.VentState vent, boolean fireMouthOpen) {
@@ -155,7 +175,8 @@ public class PitKilnBlockEntity extends BlockEntity {
     public boolean isGreenware(ItemStack stack) {
         return stack.is(ModItems.GREENWARE_CRUCIBLE.get()) ||
                 stack.is(ModItems.GREENWARE_MOLD.get()) ||
-                stack.is(ModItems.GREENWARE_BRICK.get());
+                stack.is(ModItems.GREENWARE_BRICK.get()) ||
+                stack.is(ModItems.GREENWARE_BLOWPIPE.get());
     }
 
     public ItemStack getResultForSlot(ItemStack greenware, RandomSource random) {
@@ -194,6 +215,16 @@ public class PitKilnBlockEntity extends BlockEntity {
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 4);
         }
 
+        if (greenware.is(ModItems.GREENWARE_BLOWPIPE.get())) {
+            if (oxy < -50 && temp > 950) {
+                if (!isDried && random.nextFloat() > 0.15F) {
+                    return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
+                }
+                return new ItemStack(ModItems.CERAMIC_BLOWPIPE.get());
+            }
+            return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
+        }
+
         return ItemStack.EMPTY;
     }
 
@@ -214,6 +245,11 @@ public class PitKilnBlockEntity extends BlockEntity {
                     entity.fuelBurnTicks = 1800;
                 }
 
+                // 吹管助推衰减
+                if (entity.blowBoostTicks > 0) {
+                    entity.blowBoostTicks--;
+                }
+
                 // 每10tick升温
                 if (level.getGameTime() % 10 == 0) {
                     Direction facing = state.getValue(PitKilnBlock.FACING);
@@ -221,9 +257,13 @@ public class PitKilnBlockEntity extends BlockEntity {
                     float insulationFactor = getInsulationFactor(insulation);
                     float effectiveMaxTemp = getInsulatedMaxTemp(insulation);
 
+                    // 吹管助推：火门开启 + 吹管活跃 → 升温速度提升50%
+                    boolean fmOpen = isFireMouthOpen(level, pos, facing);
+                    float blowpipeBonus = (entity.blowBoostTicks > 0 && fmOpen) ? 1.5F : 1.0F;
+
                     float efficiency = hasGrate ? 1.0F : 0.3F;
                     float ventBonus = (vent == PitKilnBlock.VentState.CLOSED) ? 1.2F : 0.8F;
-                    float addedTemp = 1.0F * efficiency * ventBonus * insulationFactor;
+                    float addedTemp = 1.0F * efficiency * ventBonus * insulationFactor * blowpipeBonus;
                     entity.temperature = Math.min(entity.temperature + addedTemp, effectiveMaxTemp);
                     if (entity.temperature > entity.peakTemperature) {
                         entity.peakTemperature = entity.temperature;
@@ -265,6 +305,11 @@ public class PitKilnBlockEntity extends BlockEntity {
                 return;
             }
 
+            // 吹管助推衰减
+            if (entity.blowBoostTicks > 0) {
+                entity.blowBoostTicks--;
+            }
+
             // 消耗燃料
             if (entity.fuelStack > 0) {
                 entity.fuelBurnTicks--;
@@ -286,16 +331,29 @@ public class PitKilnBlockEntity extends BlockEntity {
                     float insulationFactor = getInsulationFactor(insulation);
                     float effectiveMaxTemp = getInsulatedMaxTemp(insulation);
 
+                    // 吹管助推：火门开启 + 吹管活跃 → 温度上限提升至1200，升温速度提升50%
+                    boolean fmOpen = isFireMouthOpen(level, pos, facing);
+                    float currentMaxTemp = effectiveMaxTemp;
+                    float blowpipeBonus = 1.0F;
+                    if (entity.blowBoostTicks > 0 && fmOpen) {
+                        currentMaxTemp = BLOWPIPE_MAX_TEMPERATURE;
+                        blowpipeBonus = 1.5F;
+                    }
+
                     float efficiency = hasGrate ? 1.0F : 0.3F;
                     float ventBonus = (vent == PitKilnBlock.VentState.CLOSED) ? 1.2F : 0.8F;
-                    float addedTemp = 1.0F * efficiency * ventBonus * insulationFactor;
-                    entity.temperature = Math.min(entity.temperature + addedTemp, effectiveMaxTemp);
+                    float addedTemp = 1.0F * efficiency * ventBonus * insulationFactor * blowpipeBonus;
+
+                    if (entity.temperature < currentMaxTemp) {
+                        entity.temperature = Math.min(entity.temperature + addedTemp, currentMaxTemp);
+                    } else if (entity.temperature > currentMaxTemp) {
+                        entity.temperature = Math.max(currentMaxTemp, entity.temperature - 0.5F);
+                    }
                     if (entity.temperature > entity.peakTemperature) {
                         entity.peakTemperature = entity.temperature;
                     }
 
                     // 氧气累计
-                    boolean fmOpen = isFireMouthOpen(level, pos, facing);
                     float oxyDelta = getOxygenDelta(vent, fmOpen);
                     entity.oxygenAccumulator = (int) Mth.clamp(entity.oxygenAccumulator + oxyDelta, OXYGEN_MIN, OXYGEN_MAX);
 
@@ -309,6 +367,10 @@ public class PitKilnBlockEntity extends BlockEntity {
                         spawnFlameParticles(level, pos, vent);
                         if (vent != PitKilnBlock.VentState.CLOSED) {
                             spawnSmokeParticles(level, pos, state);
+                        }
+                        // 吹管助推时额外火焰粒子
+                        if (entity.blowBoostTicks > 0 && fmOpen) {
+                            spawnBlowpipeBoostParticles(level, pos, facing);
                         }
                     }
                 }
@@ -391,6 +453,34 @@ public class PitKilnBlockEntity extends BlockEntity {
         }
     }
 
+    private static void spawnBlowpipeBoostParticles(Level level, BlockPos pos, Direction facing) {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
+        // 火门位置喷射大量火焰
+        BlockPos fmPos = pos.relative(facing);
+        double fmX = fmPos.getX() + 0.5;
+        double fmY = fmPos.getY() + 0.5;
+        double fmZ = fmPos.getZ() + 0.5;
+
+        // 向火门前方喷射火焰粒子
+        double dx = facing.getStepX() * 0.4;
+        double dz = facing.getStepZ() * 0.4;
+
+        serverLevel.sendParticles(ParticleTypes.FLAME,
+                fmX, fmY, fmZ, 8, 0.25, 0.15, 0.25, 0.08);
+        serverLevel.sendParticles(ParticleTypes.FLAME,
+                fmX + dx, fmY + 0.1, fmZ + dz, 5, 0.15, 0.1, 0.15, 0.12);
+
+        // 窑内火焰翻腾
+        double bx = pos.getX() + 0.5;
+        double by = pos.getY() + 0.2;
+        double bz = pos.getZ() + 0.5;
+        serverLevel.sendParticles(ParticleTypes.FLAME,
+                bx, by, bz, 6, 0.2, 0.1, 0.2, 0.06);
+        serverLevel.sendParticles(ParticleTypes.SMOKE,
+                bx, by + 0.3, bz, 3, 0.15, 0.05, 0.15, 0.02);
+    }
+
     private static void spawnSteamParticles(Level level, BlockPos pos) {
         if (!(level instanceof ServerLevel serverLevel)) return;
         double x = pos.getX() + 0.5;
@@ -462,6 +552,7 @@ public class PitKilnBlockEntity extends BlockEntity {
         tag.putBoolean("Ignited", ignited);
         tag.putInt("HighTempTicks", highTempTicks);
         tag.putInt("CoolDownTicks", coolDownTicks);
+        tag.putInt("BlowBoostTicks", blowBoostTicks);
         if (!fuelItem.isEmpty()) {
             tag.put("FuelItem", fuelItem.save(new CompoundTag()));
         }
@@ -479,6 +570,7 @@ public class PitKilnBlockEntity extends BlockEntity {
         ignited = tag.getBoolean("Ignited");
         highTempTicks = tag.getInt("HighTempTicks");
         coolDownTicks = tag.getInt("CoolDownTicks");
+        blowBoostTicks = tag.getInt("BlowBoostTicks");
         if (tag.contains("FuelItem")) {
             fuelItem = ItemStack.of(tag.getCompound("FuelItem"));
         } else {

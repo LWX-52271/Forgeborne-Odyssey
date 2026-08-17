@@ -10,17 +10,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import com.lwx.forgeborneodyssey.core.registration.ModSounds;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
@@ -44,6 +48,9 @@ public class CaveInEventHandler {
     private static final int SUPPORT_VERTICAL_RADIUS = 2;
     private static final int CAVE_IN_SOUND_COOLDOWN = 40;
 
+    private static final TagKey<Block> CAVEIN_COLLAPSIBLE = BlockTags.create(
+            new ResourceLocation("forgeborneodyssey", "cavein_collapsible"));
+
     private static long lastCaveInSoundTick = -CAVE_IN_SOUND_COOLDOWN;
 
     @SubscribeEvent
@@ -58,6 +65,16 @@ public class CaveInEventHandler {
 
         // 不对支护方块自身触发塌方
         if (state.getBlock() instanceof ShaftFrameBlock || state.getBlock() instanceof TunnelSupportBlock) {
+            return;
+        }
+
+        // 非固体方块（火把、灯笼等）不触发塌方
+        if (!state.isSolid()) {
+            return;
+        }
+
+        // 仅泥土、岩石等自然方块可触发塌方
+        if (!state.is(CAVEIN_COLLAPSIBLE)) {
             return;
         }
 
@@ -180,6 +197,30 @@ public class CaveInEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onLevelTick(TickEvent.LevelTickEvent event) {
+        if (event.phase != TickEvent.Phase.START) return;
+        if (event.level.isClientSide()) return;
+
+        ServerLevel level = (ServerLevel) event.level;
+        for (Entity entity : level.getEntities().getAll()) {
+            if (entity instanceof FallingBlockEntity falling) {
+                BlockPos pos = falling.blockPosition();
+                BlockPos below = pos.below();
+
+                for (BlockPos checkPos : new BlockPos[]{pos, below}) {
+                    BlockState state = level.getBlockState(checkPos);
+                    if (state.getBlock() == Blocks.TORCH
+                            || state.getBlock() == Blocks.WALL_TORCH
+                            || state.getBlock() == Blocks.SOUL_TORCH
+                            || state.getBlock() == Blocks.SOUL_WALL_TORCH) {
+                        level.destroyBlock(checkPos, true);
+                    }
+                }
+            }
+        }
+    }
+
     private static boolean isUndergroundMining(Level level, BlockPos pos) {
         int solidCount = 0;
         for (int dy = 1; dy <= 3; dy++) {
@@ -277,8 +318,6 @@ public class CaveInEventHandler {
                 player.hurt(player.damageSources().generic(), 4.0f);
             }
 
-            level.playSound(null, pos, SoundEvents.GRAVEL_BREAK, SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
-            level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.7f, 0.6f + level.random.nextFloat() * 0.4f);
             playCaveInSound(level, pos);
         }
     }
@@ -295,29 +334,37 @@ public class CaveInEventHandler {
             else break;
         }
 
+        int caveInTop = Math.min(shaftTop, pos.getY() + 3);
+        int caveInBottom = Math.max(shaftBottom, pos.getY() - 3);
+        if (caveInBottom > caveInTop) return;
+
         int pushCount = 2 + level.random.nextInt(3);
         for (int i = 0; i < pushCount; i++) {
-            int y = shaftBottom + level.random.nextInt(shaftTop - shaftBottom + 1);
+            int y = caveInBottom + level.random.nextInt(caveInTop - caveInBottom + 1);
             Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(level.random);
             BlockPos wallPos = pos.atY(y).relative(dir);
             BlockPos shaftPos = pos.atY(y);
 
             BlockState wallState = level.getBlockState(wallPos);
             if (wallState.isSolid() && !wallState.isAir()
+                    && wallState.is(CAVEIN_COLLAPSIBLE)
                     && !(wallState.getBlock() instanceof ShaftFrameBlock)
                     && !(wallState.getBlock() instanceof TunnelSupportBlock)) {
                 level.setBlock(wallPos, Blocks.AIR.defaultBlockState(), 3);
+                level.levelEvent(2001, wallPos, Block.getId(wallState));
                 FallingBlockEntity fallingBlock = FallingBlockEntity.fall(level, shaftPos, wallState);
                 fallingBlock.setHurtsEntities(4.0f, 20);
                 fallingBlock.dropItem = false;
 
                 BlockPos cascadePos = wallPos.above();
-                for (int j = 0; j < 8; j++) {
+                for (int j = 0; j < 4; j++) {
                     BlockState aboveState = level.getBlockState(cascadePos);
                     if (aboveState.isSolid() && !aboveState.isAir()
+                            && aboveState.is(CAVEIN_COLLAPSIBLE)
                             && !(aboveState.getBlock() instanceof ShaftFrameBlock)
                             && !(aboveState.getBlock() instanceof TunnelSupportBlock)) {
                         level.setBlock(cascadePos, Blocks.AIR.defaultBlockState(), 3);
+                        level.levelEvent(2001, cascadePos, Block.getId(aboveState));
                         FallingBlockEntity aboveFalling = FallingBlockEntity.fall(level, cascadePos, aboveState);
                         aboveFalling.setHurtsEntities(4.0f, 20);
                         aboveFalling.dropItem = false;
@@ -329,8 +376,6 @@ public class CaveInEventHandler {
             }
         }
 
-        level.playSound(null, pos, SoundEvents.GRAVEL_BREAK, SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
-        level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.7f, 0.6f + level.random.nextFloat() * 0.4f);
         playCaveInSound(level, pos);
     }
 
@@ -344,17 +389,17 @@ public class CaveInEventHandler {
             BlockPos ceilingPos = pos.offset(dx, dy, dz);
             BlockState ceilingState = level.getBlockState(ceilingPos);
             if (ceilingState.isSolid() && !ceilingState.isAir()
+                    && ceilingState.is(CAVEIN_COLLAPSIBLE)
                     && !(ceilingState.getBlock() instanceof ShaftFrameBlock)
                     && !(ceilingState.getBlock() instanceof TunnelSupportBlock)) {
                 level.setBlock(ceilingPos, Blocks.AIR.defaultBlockState(), 3);
+                level.levelEvent(2001, ceilingPos, Block.getId(ceilingState));
                 FallingBlockEntity fallingBlock = FallingBlockEntity.fall(level, ceilingPos, ceilingState);
                 fallingBlock.setHurtsEntities(4.0f, 20);
                 fallingBlock.dropItem = false;
             }
         }
 
-        level.playSound(null, pos, SoundEvents.GRAVEL_BREAK, SoundSource.BLOCKS, 1.0f, 0.8f + level.random.nextFloat() * 0.4f);
-        level.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.7f, 0.6f + level.random.nextFloat() * 0.4f);
         playCaveInSound(level, pos);
     }
 

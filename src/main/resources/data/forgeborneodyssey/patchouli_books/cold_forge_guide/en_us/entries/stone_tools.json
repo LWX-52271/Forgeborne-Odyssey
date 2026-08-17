@@ -11,12 +11,12 @@
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§bCobblestone Hammer§r - Attack 3, Durability 32. Your earliest forging tool for striking metal billets on the anvil."
+      "text": "§bCobblestone Hammer§r - Attack 3, Durability 96. Your earliest forging tool for striking metal billets on the anvil."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
-      "text": "§bHandle Hammer§r - Attack 4, Durability 64. More durable with a wooden handle, your primary forging tool."
+      "text": "§bHandle Hammer§r - Attack 4, Durability 256. More durable with a wooden handle, your primary forging tool."
     },
     {
       "type": "patchouli:crafting",

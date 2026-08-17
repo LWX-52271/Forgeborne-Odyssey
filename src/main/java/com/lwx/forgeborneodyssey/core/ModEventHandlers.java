@@ -27,6 +27,9 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
@@ -371,7 +374,7 @@ public class ModEventHandlers {
             return;
         }
 
-        if (held.is(ModItems.FLINT_KNIFE.get()) && isGrassLike(state)) {
+        if (held.is(TagKey.create(Registries.ITEM, new ResourceLocation("forge", "tools/knives"))) && isGrassLike(state)) {
             int count = 1 + event.getLevel().getRandom().nextInt(2);
             ItemStack fiber = new ItemStack(ModItems.GRASS_FIBER.get(), count);
             if (!player.getInventory().add(fiber)) {
@@ -383,36 +386,6 @@ public class ModEventHandlers {
 
             if (event.getLevel() instanceof ServerLevel serverLevel) {
                 ItemStack displayStack = new ItemStack(ModItems.GRASS_FIBER.get());
-                for (int i = 0; i < 8; i++) {
-                    double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
-                    double offsetY = serverLevel.random.nextDouble() * 0.5;
-                    double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
-                    serverLevel.sendParticles(
-                        new ItemParticleOption(ParticleTypes.ITEM, displayStack),
-                        pos.getX() + 0.5 + offsetX,
-                        pos.getY() + 0.5 + offsetY,
-                        pos.getZ() + 0.5 + offsetZ,
-                        1, 0.0, 0.0, 0.0, 0.0);
-                }
-            }
-
-            event.setCanceled(true);
-            event.setCancellationResult(InteractionResult.SUCCESS);
-            return;
-        }
-
-        if (held.is(ModItems.STONE_HAMMER.get()) && isStoneLike(state)) {
-            int count = 1 + event.getLevel().getRandom().nextInt(2);
-            ItemStack grog = new ItemStack(ModItems.TEMPER_GROG.get(), count);
-            if (!player.getInventory().add(grog)) {
-                player.drop(grog, false);
-            }
-            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
-            event.getLevel().playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 0.6F, 1.2F);
-            useBlock(event.getLevel(), pos, STONE_MAX_USAGE);
-
-            if (event.getLevel() instanceof ServerLevel serverLevel) {
-                ItemStack displayStack = new ItemStack(ModItems.TEMPER_GROG.get());
                 for (int i = 0; i < 8; i++) {
                     double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
                     double offsetY = serverLevel.random.nextDouble() * 0.5;

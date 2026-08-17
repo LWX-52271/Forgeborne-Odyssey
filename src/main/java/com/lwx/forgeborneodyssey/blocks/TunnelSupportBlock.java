@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -84,6 +85,21 @@ public class TunnelSupportBlock extends Block implements SimpleWaterloggedBlock 
     }
 
     @Override
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+        if (!state.isAir()) {
+            int dx = fromPos.getX() - pos.getX();
+            int dy = fromPos.getY() - pos.getY();
+            int dz = fromPos.getZ() - pos.getZ();
+            Direction direction = Direction.getNearest(dx, dy, dz);
+            BlockState neighborState = level.getBlockState(fromPos);
+            BlockState newState = state.updateShape(direction, neighborState, level, pos, fromPos);
+            if (newState != state) {
+                level.setBlock(pos, newState, 3);
+            }
+        }
+    }
+
+    @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
                                   LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
@@ -91,7 +107,8 @@ public class TunnelSupportBlock extends Block implements SimpleWaterloggedBlock 
         }
 
         if (!state.getValue(WATERLOGGED) && !neighborState.getFluidState().isEmpty()
-                && neighborState.getFluidState().isSource() && neighborState.getFluidState().is(Fluids.WATER)) {
+                && neighborState.getFluidState().is(Fluids.WATER)
+                && !(neighborState.getBlock() instanceof SimpleWaterloggedBlock)) {
             state = state.setValue(WATERLOGGED, true);
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }

@@ -1,0 +1,28 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "forgeborneodyssey:item/ceramic_blowpipe"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 3, 1],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 3, 1],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"firstperson_righthand": {
+			"rotation": [-3.59, -86.24, -53.09],
+			"translation": [-7.87, 6.7, 5.13],
+			"scale": [0.68, 0.68, 0.68]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-17, -86, 25],
+			"translation": [-8.12, 6.7, 4.13],
+			"scale": [0.68, 0.68, 0.68]
+		}
+	}
+}

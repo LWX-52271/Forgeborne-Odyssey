@@ -193,5 +193,15 @@
         "pitch": 1.0
       }
     ]
+  },
+  "blowpipe.blow": {
+    "subtitle": "sounds.forgeborneodyssey.blowpipe.blow",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:blowpipe_blow",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
   }
 }

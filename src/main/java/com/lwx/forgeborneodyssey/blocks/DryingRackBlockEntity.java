@@ -66,6 +66,9 @@ public class DryingRackBlockEntity extends BlockEntity {
                     entity.setChanged();
                     level.sendBlockUpdated(pos, state, state, 3);
                     spawnDryingCompleteParticles(level, pos, slot);
+                } else if (entity.progress[slot] % 20 == 0) {
+                    entity.setChanged();
+                    level.sendBlockUpdated(pos, state, state, 3);
                 }
             } else {
                 entity.progress[slot] = 0;
@@ -186,7 +189,7 @@ public class DryingRackBlockEntity extends BlockEntity {
         return getVanillaDryingResult(stack) == null;
     }
 
-    private static int getDryingTime(ItemStack stack) {
+    public static int getDryingTime(ItemStack stack) {
         if (isGreenwareItem(stack)) {
             return CLAY_DRYING_TICKS;
         }
@@ -203,6 +206,7 @@ public class DryingRackBlockEntity extends BlockEntity {
         if (stack.is(Items.JUNGLE_LEAVES)) return Items.DEAD_BUSH;
         if (stack.is(Items.ACACIA_LEAVES)) return Items.DEAD_BUSH;
         if (stack.is(Items.DARK_OAK_LEAVES)) return Items.DEAD_BUSH;
+        if (stack.is(ModItems.GREENWARE_BLOWPIPE.get())) return ModItems.CERAMIC_BLOWPIPE.get();
         return null;
     }
 

@@ -144,6 +144,12 @@ repositories {
         name = 'BlameJared'
         url = 'https://maven.blamejared.com'
     }
+
+    // Jade Maven
+    maven {
+        name = 'CurseMaven'
+        url = 'https://www.cursemaven.com'
+    }
 }
 
 dependencies {
@@ -158,6 +164,10 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+
+    // Jade 依赖配置
+    compileOnly fg.deobf("curse.maven:jade-324717:${jade_version}")
+    runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_version}")
 
     // Patchouli - 编译依赖 + 内嵌配置
     implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")

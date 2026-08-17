@@ -9,12 +9,9 @@
     "L": {
       "tag": "minecraft:logs"
     },
-    "K": [
-      {"item": "forgeborneodyssey:flint_knife"},
-      {"item": "forgeborneodyssey:primitive_copper_knife"},
-      {"item": "forgeborneodyssey:primitive_silver_knife"},
-      {"item": "forgeborneodyssey:primitive_gold_knife"}
-    ]
+    "K": {
+      "tag": "forge:tools/knives"
+    }
   },
   "tool": "K",
   "result": {

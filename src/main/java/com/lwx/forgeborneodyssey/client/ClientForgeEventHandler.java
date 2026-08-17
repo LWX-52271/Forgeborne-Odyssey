@@ -205,9 +205,9 @@ public class ClientForgeEventHandler {
 
         mc.getBlockRenderer().renderBreakingTexture(state, pos, level, poseStack, vertexConsumer);
 
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
         bufferSource.endBatch();
+
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         poseStack.popPose();
     }

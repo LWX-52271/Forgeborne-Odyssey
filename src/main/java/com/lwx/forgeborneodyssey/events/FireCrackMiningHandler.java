@@ -97,10 +97,10 @@ public class FireCrackMiningHandler {
 
     private static final float OXYGEN_FULL = 1.0f;
     private static final float OXYGEN_NEAR_WATER = 0.7f;
-    private static final float OXYGEN_PARTIAL = 0.25f;
-    private static final float OXYGEN_ENCLOSED = 0.05f;
+    private static final float OXYGEN_PARTIAL = 0.5f;
+    private static final float OXYGEN_ENCLOSED = 0.25f;
     private static final int OXYGEN_SCAN_HEIGHT = 10;
-    private static final int OXYGEN_DECAY_MAX = 4;
+    private static final int OXYGEN_DECAY_MAX = 2;
 
     private static final float SUFFOCATION_OXYGEN_THRESHOLD = 0.3f;
     private static final int SUFFOCATION_FIRE_RADIUS = 2;
@@ -116,7 +116,7 @@ public class FireCrackMiningHandler {
 
     private static final Set<ResourceKey<Level>> HEAT_MAP_LOADED = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-    private static final int MAX_HEAT_MAP_SIZE = 128;
+    private static final int MAX_HEAT_MAP_SIZE = 256;
 
     private static final Map<Item, Integer> FUEL_BURN_TIME_MAP = new HashMap<>();
     private static final Map<Block, Float> THERMAL_CONDUCTIVITY_MAP = new HashMap<>();
@@ -198,8 +198,8 @@ public class FireCrackMiningHandler {
         THERMAL_CONDUCTIVITY_MAP.put(Blocks.ANCIENT_DEBRIS, 1.5f);
         THERMAL_CONDUCTIVITY_MAP.put(Blocks.NETHER_GOLD_ORE, 1.3f);
         THERMAL_CONDUCTIVITY_MAP.put(Blocks.NETHER_QUARTZ_ORE, 1.3f);
-        THERMAL_CONDUCTIVITY_MAP.put(Blocks.DEEPSLATE, 1.2f);
-        THERMAL_CONDUCTIVITY_MAP.put(Blocks.COBBLED_DEEPSLATE, 1.2f);
+        THERMAL_CONDUCTIVITY_MAP.put(Blocks.DEEPSLATE, 1.5f);
+        THERMAL_CONDUCTIVITY_MAP.put(Blocks.COBBLED_DEEPSLATE, 1.5f);
         THERMAL_CONDUCTIVITY_MAP.put(Blocks.COAL_ORE, 1.1f);
         THERMAL_CONDUCTIVITY_MAP.put(Blocks.DEEPSLATE_COAL_ORE, 1.1f);
         THERMAL_CONDUCTIVITY_MAP.put(Blocks.REDSTONE_ORE, 1.1f);
@@ -311,9 +311,6 @@ public class FireCrackMiningHandler {
             return true;
         }
         if (block instanceof FirePitBlock && state.getValue(FirePitBlock.LIT)) {
-            return true;
-        }
-        if (block instanceof FireMouthBlock && state.getValue(FireMouthBlock.OPEN)) {
             return true;
         }
         return false;
@@ -699,9 +696,8 @@ public class FireCrackMiningHandler {
                 }
 
                 int decayMultiplier;
-                if (oxygen >= OXYGEN_NEAR_WATER) decayMultiplier = 1;
-                else if (oxygen >= OXYGEN_PARTIAL) decayMultiplier = 2;
-                else decayMultiplier = OXYGEN_DECAY_MAX;
+                if (oxygen >= OXYGEN_PARTIAL) decayMultiplier = 1;
+                else decayMultiplier = 2;
                 int remaining = entry.getValue() - decayMultiplier;
 
                 if (remaining <= 0) {

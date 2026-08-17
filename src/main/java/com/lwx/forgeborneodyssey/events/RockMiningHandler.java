@@ -3,6 +3,7 @@ package com.lwx.forgeborneodyssey.events;
 import com.lwx.forgeborneodyssey.api.ForgeborneAPI;
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.core.registration.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -303,6 +305,12 @@ public class RockMiningHandler {
                 ),
                 new com.lwx.forgeborneodyssey.network.SyncStressPacket(pos, newStress)
             );
+        }
+
+        // 每次敲击有5%几率掉落掺和料
+        if (RANDOM.nextFloat() < 0.05f) {
+            Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                new ItemStack(ModItems.TEMPER_GROG.get()));
         }
 
         // 相邻岩石矿石有几率连带增加应力值（裂纹扩散效应）

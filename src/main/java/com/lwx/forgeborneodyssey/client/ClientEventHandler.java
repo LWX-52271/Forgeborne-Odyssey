@@ -56,6 +56,7 @@ public class ClientEventHandler {
                     return isFishing ? 1.0F : 0.0F;
                 }
             );
+
         });
         
         // 注册实体渲染器

@@ -24,7 +24,7 @@
     {
       "type": "patchouli:text",
       "title": "Insulation Grade",
-      "text": "The number of dirt blocks surrounding the pit kiln directly affects insulation and maximum temperature:$(br2)$(li)4 sides dirt: §aExcellent§r — Max 1200℃$(br)$(li)3 sides dirt: §eGood§r — Max 1000℃$(br)$(li)2 sides dirt: §6Fair§r — Max 800℃$(br)$(li)1 side dirt: §cPoor§r — Max 550℃$(br)$(li)0 sides dirt: §4Very Poor§r — Max 350℃$(br2)Better insulation means faster heating and higher max temperature. Aim for at least 3 sides."
+      "text": "The number of dirt blocks surrounding the pit kiln directly affects insulation and maximum temperature:$(br2)$(li)4 sides dirt: §aExcellent§r — Max 900℃ (1200℃ with blowpipe)$(br)$(li)3 sides dirt: §eGood§r — Max 750℃$(br)$(li)2 sides dirt: §6Fair§r — Max 600℃$(br)$(li)1 side dirt: §cPoor§r — Max 410℃$(br)$(li)0 sides dirt: §4Very Poor§r — Max 260℃$(br2)Better insulation means faster heating and higher max temperature. Aim for at least 3 sides."
     },
     {
       "type": "patchouli:text",
@@ -61,7 +61,7 @@
     {
       "type": "patchouli:text",
       "title": "Drying Rack",
-      "text": "Greenware items must be dried on a drying rack before use. Right-click the drying rack with any of the three greenware types (crucible, mold, brick) to place them. Wait for them to dry, then load them into the kiln.$(br2)The drying rack can also dry other items (wet sponge, kelp, leaves, etc.)."
+      "text": "Greenware items must be dried on a drying rack before use. Right-click the drying rack with any of the greenware types (crucible, mold, brick, blowpipe) to place them. Wait for them to dry, then load them into the kiln.$(br2)The drying rack can also dry other items (wet sponge, kelp, leaves, etc.)."
     },
     {
       "type": "patchouli:crafting",

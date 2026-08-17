@@ -99,5 +99,12 @@ public class ModMessages {
             .decoder(SyncCrawlStatePacket::new)
             .consumerMainThread(SyncCrawlStatePacket::handle)
             .add();
+
+        // 吹管吹气粒子效果（服务端 -> 客户端）
+        CHANNEL.messageBuilder(BlowpipeBurstPacket.class, messageID++)
+            .encoder(BlowpipeBurstPacket::toBytes)
+            .decoder(BlowpipeBurstPacket::new)
+            .consumerMainThread(BlowpipeBurstPacket::handle)
+            .add();
     }
 }

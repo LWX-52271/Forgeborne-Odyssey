@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "forgeborneodyssey:flint_knife",
+    "forgeborneodyssey:primitive_copper_knife",
+    "forgeborneodyssey:primitive_silver_knife",
+    "forgeborneodyssey:primitive_gold_knife"
+  ]
+}

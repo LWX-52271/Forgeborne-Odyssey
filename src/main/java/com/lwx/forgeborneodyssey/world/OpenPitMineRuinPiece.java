@@ -144,7 +144,7 @@ public class OpenPitMineRuinPiece extends StructurePiece {
             }
         }
 
-        return totalCount > 0 && (float) airCount / totalCount > 0.75f;
+        return totalCount > 0 && (float) airCount / totalCount > 0.90f;
     }
 
     private void clearSurfaceAbove(WorldGenLevel level, BlockPos center, int radius) {

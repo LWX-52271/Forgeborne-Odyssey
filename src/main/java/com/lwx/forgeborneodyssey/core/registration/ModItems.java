@@ -302,6 +302,8 @@ public class ModItems {
         () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_mold.tooltip"));
     public static final RegistryObject<Item> GREENWARE_BRICK = ITEMS.register("greenware_brick",
         () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_brick.tooltip"));
+    public static final RegistryObject<Item> GREENWARE_BLOWPIPE = ITEMS.register("greenware_blowpipe",
+        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_blowpipe.tooltip"));
     // 第五类：燃料与气氛控制物（陶器系统）
     public static final RegistryObject<Item> FIREWOOD = ITEMS.register("firewood",
         () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.firewood.tooltip"));
@@ -316,6 +318,8 @@ public class ModItems {
         () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.red_mold.tooltip"));
     public static final RegistryObject<Item> FIRED_BRICK = ITEMS.register("fired_brick",
         () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.fired_brick.tooltip"));
+    public static final RegistryObject<Item> CERAMIC_BLOWPIPE = ITEMS.register("ceramic_blowpipe",
+        CeramicBlowpipeItem::new);
 
     // 第七类：副产物与失败品（陶器系统）
     public static final RegistryObject<Item> KILN_WASTE_SHARD = ITEMS.register("kiln_waste_shard",

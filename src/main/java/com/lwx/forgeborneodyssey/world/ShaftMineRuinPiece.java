@@ -15,9 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BarrelBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -116,6 +118,10 @@ public class ShaftMineRuinPiece extends StructurePiece {
             return;
         }
 
+        if (isInsideOpenPit(level, center)) {
+            return;
+        }
+
         Block wallRock = WALL_ROCKS[random.nextInt(WALL_ROCKS.length)];
 
         clearSurfaceAbove(level, center);
@@ -123,6 +129,7 @@ public class ShaftMineRuinPiece extends StructurePiece {
         placeWoodenSupports(level, center, random);
 
         List<TunnelInfo> tunnels = carveHorizontalTunnels(level, center, wallRock, random);
+        carveCrossTunnelConnections(level, center, tunnels, wallRock, random);
         placeShaftLadders(level, center, tunnels, random);
         placeTunnelOres(level, center, tunnels, random);
         placeTunnelPlatforms(level, center, tunnels, random);
@@ -132,6 +139,7 @@ public class ShaftMineRuinPiece extends StructurePiece {
         placeVentilationShaft(level, center, wallRock, random);
         placeSurfaceEntrance(level, center, random);
         scatterSurfaceDebris(level, center, random);
+        placeOreProcessingArea(level, center, random);
     }
 
     private static boolean isBlockBelowSolid(WorldGenLevel level, BlockPos pos) {
@@ -153,7 +161,7 @@ public class ShaftMineRuinPiece extends StructurePiece {
             }
         }
 
-        return totalCount > 0 && (float) airCount / totalCount > 0.75f;
+        return totalCount > 0 && (float) airCount / totalCount > 0.90f;
     }
 
     private boolean isShaftIntersectingCave(WorldGenLevel level, BlockPos center, RandomSource random) {
@@ -176,12 +184,12 @@ public class ShaftMineRuinPiece extends StructurePiece {
                 }
             }
 
-            if (totalCount > 0 && (float) airCount / totalCount > 0.30f) {
+            if (totalCount > 0 && (float) airCount / totalCount > 0.55f) {
                 return true;
             }
         }
 
-        int tunnelLevels = 2 + random.nextInt(2);
+        int tunnelLevels = 3 + random.nextInt(2);
         for (int t = 0; t < tunnelLevels; t++) {
             int tunnelDepth = 4 + t * (shaftDepth / Math.max(1, tunnelLevels))
                     + (shaftDepth / Math.max(1, 2 * tunnelLevels));
@@ -204,13 +212,27 @@ public class ShaftMineRuinPiece extends StructurePiece {
                     }
                 }
 
-                if (totalCount > 0 && (float) airCount / totalCount > 0.35f) {
+                if (totalCount > 0 && (float) airCount / totalCount > 0.55f) {
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    private static boolean isInsideOpenPit(WorldGenLevel level, BlockPos center) {
+        int airCount = 0;
+        int totalCount = 0;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                totalCount++;
+                if (level.getBlockState(center.offset(dx, -1, dz)).isAir()) {
+                    airCount++;
+                }
+            }
+        }
+        return totalCount > 0 && (float) airCount / totalCount > 0.50f;
     }
 
     private void clearSurfaceAbove(WorldGenLevel level, BlockPos center) {
@@ -235,11 +257,30 @@ public class ShaftMineRuinPiece extends StructurePiece {
     private void carveShaft(WorldGenLevel level, BlockPos center, Block wallRock, RandomSource random) {
         int topY = center.getY();
 
+        boolean waterFlowing = false;
+
         for (int y = 0; y < shaftDepth; y++) {
             int currentY = topY - y;
             BlockPos shaftPos = new BlockPos(center.getX(), currentY, center.getZ());
 
-            level.setBlock(shaftPos, Blocks.AIR.defaultBlockState(), 3);
+            BlockState shaftState = level.getBlockState(shaftPos);
+            boolean hasWater = !shaftState.getFluidState().isEmpty();
+            if (!hasWater) {
+                for (Direction dir : Direction.Plane.HORIZONTAL) {
+                    if (!level.getBlockState(shaftPos.relative(dir)).getFluidState().isEmpty()) {
+                        hasWater = true;
+                        break;
+                    }
+                }
+            }
+            if (hasWater) {
+                waterFlowing = true;
+            }
+            if (waterFlowing) {
+                level.setBlock(shaftPos, Blocks.WATER.defaultBlockState(), 3);
+            } else {
+                level.setBlock(shaftPos, Blocks.AIR.defaultBlockState(), 3);
+            }
 
             for (Direction dir : Direction.Plane.HORIZONTAL) {
                 BlockPos wallPos = shaftPos.relative(dir);
@@ -271,7 +312,9 @@ public class ShaftMineRuinPiece extends StructurePiece {
                 continue;
             }
 
-            level.setBlock(pos, ModBlocks.SHAFT_FRAME.get().defaultBlockState(), 3);
+            boolean waterlogged = !currentState.getFluidState().isEmpty();
+            level.setBlock(pos, ModBlocks.SHAFT_FRAME.get().defaultBlockState()
+                .setValue(ShaftFrameBlock.WATERLOGGED, waterlogged), 3);
         }
 
         for (int y = 2; y < shaftDepth - 2; y++) {
@@ -285,8 +328,10 @@ public class ShaftMineRuinPiece extends StructurePiece {
             boolean belowIsShaft = level.getBlockState(pos.below()).getBlock() instanceof ShaftFrameBlock;
             boolean aboveIsShaft = level.getBlockState(pos.above()).getBlock() instanceof ShaftFrameBlock;
 
+            boolean waterlogged = state.getValue(ShaftFrameBlock.WATERLOGGED);
             state = state.setValue(ShaftFrameBlock.BOTTOM, calcFrameBottom(belowIsShaft, aboveIsShaft, currentY))
-                         .setValue(ShaftFrameBlock.TOP, calcFrameTop(belowIsShaft, aboveIsShaft, currentY));
+                         .setValue(ShaftFrameBlock.TOP, calcFrameTop(belowIsShaft, aboveIsShaft, currentY))
+                         .setValue(ShaftFrameBlock.WATERLOGGED, waterlogged);
             level.setBlock(pos, state, 3);
         }
     }
@@ -350,7 +395,7 @@ public class ShaftMineRuinPiece extends StructurePiece {
     private List<TunnelInfo> carveHorizontalTunnels(WorldGenLevel level, BlockPos center, Block wallRock,
                                                      RandomSource random) {
         int topY = center.getY();
-        int tunnelLevels = 2 + random.nextInt(2);
+        int tunnelLevels = 3 + random.nextInt(2);
         List<TunnelInfo> tunnels = new ArrayList<>();
         List<Integer> usedDepths = new ArrayList<>();
 
@@ -450,7 +495,10 @@ public class ShaftMineRuinPiece extends StructurePiece {
                     center.getZ() + tunnelDir.getStepZ()
                 );
                 BlockState entranceState = level.getBlockState(entrancePos);
-                if (entranceState.isAir() || entranceState.canBeReplaced()) {
+                if (entranceState.getBlock() instanceof ShaftFrameBlock) {
+                    level.setBlock(entrancePos, Blocks.AIR.defaultBlockState(), 3);
+                }
+                if (level.getBlockState(entrancePos).isAir() || level.getBlockState(entrancePos).canBeReplaced()) {
                     level.setBlock(entrancePos,
                         ModBlocks.TUNNEL_SUPPORT.get().defaultBlockState()
                             .setValue(TunnelSupportBlock.FACING, tunnelDir),
@@ -467,6 +515,13 @@ public class ShaftMineRuinPiece extends StructurePiece {
             if (belowState.isAir() || belowState.canBeReplaced()) {
                 level.setBlock(belowEntrance, wallRock.defaultBlockState(), 3);
             }
+
+            if (random.nextFloat() < 0.35f) {
+                int blindStartX = center.getX() + tunnelDir.getStepX() * actualLength;
+                int blindStartZ = center.getZ() + tunnelDir.getStepZ() * actualLength;
+                int blindStartY = currentY;
+                carveBlindShaft(level, blindStartX, blindStartZ, blindStartY, wallRock, random);
+            }
         }
 
         return tunnels;
@@ -479,6 +534,231 @@ public class ShaftMineRuinPiece extends StructurePiece {
             }
         }
         return false;
+    }
+
+    private void carveBlindShaft(WorldGenLevel level, int shaftX, int shaftZ, int startY,
+                                  Block wallRock, RandomSource random) {
+        int blindDepth = 5 + random.nextInt(6);
+
+        for (int y = 0; y < blindDepth; y++) {
+            int currentY = startY - y;
+            BlockPos shaftPos = new BlockPos(shaftX, currentY, shaftZ);
+            BlockState currentState = level.getBlockState(shaftPos);
+            if (currentState.isSolid() && !currentState.isAir()) {
+                level.setBlock(shaftPos, Blocks.AIR.defaultBlockState(), 3);
+            }
+        }
+
+        for (int y = 1; y < blindDepth - 1; y++) {
+            int currentY = startY - y;
+            BlockPos wallPos = new BlockPos(shaftX, currentY, shaftZ);
+            BlockState wallState = level.getBlockState(wallPos);
+            if (wallState.isSolid() && !wallState.isAir() && isBlockBelowSolid(level, wallPos)) {
+                if (random.nextFloat() < 0.50f) {
+                    Block ore = DEEP_COPPER_ORES[random.nextInt(DEEP_COPPER_ORES.length)];
+                    for (Direction dir : Direction.Plane.HORIZONTAL) {
+                        BlockPos orePos = new BlockPos(shaftX + dir.getStepX(), currentY,
+                                shaftZ + dir.getStepZ());
+                        BlockState oreWallState = level.getBlockState(orePos);
+                        if (oreWallState.isSolid() && !oreWallState.isAir()
+                                && isBlockBelowSolid(level, orePos)
+                                && !(oreWallState.getBlock() instanceof ShaftFrameBlock)) {
+                            level.setBlock(orePos, ore.defaultBlockState(), 3);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int y = 1; y < blindDepth - 1; y += 3) {
+            int currentY = startY - y;
+            BlockPos framePos = new BlockPos(shaftX, currentY, shaftZ);
+            BlockState currentState = level.getBlockState(framePos);
+            if (currentState.isAir() || currentState.canBeReplaced()) {
+                level.setBlock(framePos, ModBlocks.SHAFT_FRAME.get().defaultBlockState(), 3);
+            }
+        }
+
+        for (int y = 1; y < blindDepth - 1; y++) {
+            int currentY = startY - y;
+            BlockPos framePos = new BlockPos(shaftX, currentY, shaftZ);
+            BlockState state = level.getBlockState(framePos);
+            if (!(state.getBlock() instanceof ShaftFrameBlock)) {
+                continue;
+            }
+            boolean belowIsShaft = level.getBlockState(framePos.below()).getBlock()
+                    instanceof ShaftFrameBlock;
+            boolean aboveIsShaft = level.getBlockState(framePos.above()).getBlock()
+                    instanceof ShaftFrameBlock;
+            state = state.setValue(ShaftFrameBlock.BOTTOM,
+                            calcFrameBottom(belowIsShaft, aboveIsShaft, framePos.getY()))
+                         .setValue(ShaftFrameBlock.TOP,
+                            calcFrameTop(belowIsShaft, aboveIsShaft, framePos.getY()));
+            level.setBlock(framePos, state, 3);
+        }
+
+        int chamberTopY = startY - blindDepth + 1;
+        Direction expandDir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+        Direction sideDir = expandDir.getClockWise();
+
+        for (int h = 0; h < 2; h++) {
+            int carveY = chamberTopY + h;
+            for (int a = 0; a <= 1; a++) {
+                for (int b = 0; b <= 1; b++) {
+                    int cx = shaftX + expandDir.getStepX() * a + sideDir.getStepX() * b;
+                    int cz = shaftZ + expandDir.getStepZ() * a + sideDir.getStepZ() * b;
+                    BlockPos pos = new BlockPos(cx, carveY, cz);
+                    BlockState currentState = level.getBlockState(pos);
+                    if (currentState.isSolid() && !currentState.isAir()) {
+                        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
+
+        for (int h = 0; h < 2; h++) {
+            int oreY = chamberTopY + h;
+            for (int a = 0; a <= 1; a++) {
+                for (int b = 0; b <= 1; b++) {
+                    int cx = shaftX + expandDir.getStepX() * a + sideDir.getStepX() * b;
+                    int cz = shaftZ + expandDir.getStepZ() * a + sideDir.getStepZ() * b;
+                    for (Direction dir : Direction.Plane.HORIZONTAL) {
+                        BlockPos wallPos = new BlockPos(cx + dir.getStepX(), oreY,
+                                cz + dir.getStepZ());
+                        if (isInsideChamber(wallPos, shaftX, shaftZ, chamberTopY,
+                                expandDir, sideDir)) {
+                            continue;
+                        }
+                        BlockState wallState = level.getBlockState(wallPos);
+                        if (wallState.isSolid() && !wallState.isAir()
+                                && isBlockBelowSolid(level, wallPos)
+                                && !(wallState.getBlock() instanceof ShaftFrameBlock)) {
+                            if (random.nextFloat() < 0.55f) {
+                                Block ore = DEEP_COPPER_ORES[random.nextInt(
+                                        DEEP_COPPER_ORES.length)];
+                                level.setBlock(wallPos, ore.defaultBlockState(), 3);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        int waterY = chamberTopY - 1;
+        BlockPos waterPos = new BlockPos(shaftX, waterY, shaftZ);
+        if (level.getBlockState(waterPos).isAir()
+                || level.getBlockState(waterPos).canBeReplaced()) {
+            level.setBlock(waterPos, Blocks.WATER.defaultBlockState(), 3);
+            level.scheduleTick(waterPos, Blocks.WATER, 1);
+        }
+    }
+
+    private static boolean isInsideChamber(BlockPos pos, int shaftX, int shaftZ,
+                                            int chamberTopY, Direction expandDir,
+                                            Direction sideDir) {
+        for (int h = 0; h < 2; h++) {
+            for (int a = 0; a <= 1; a++) {
+                for (int b = 0; b <= 1; b++) {
+                    int cx = shaftX + expandDir.getStepX() * a + sideDir.getStepX() * b;
+                    int cz = shaftZ + expandDir.getStepZ() * a + sideDir.getStepZ() * b;
+                    if (pos.getX() == cx && pos.getY() == chamberTopY + h
+                            && pos.getZ() == cz) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private void carveCrossTunnelConnections(WorldGenLevel level, BlockPos center,
+                                              List<TunnelInfo> tunnels, Block wallRock,
+                                              RandomSource random) {
+        if (tunnels.size() < 2) {
+            return;
+        }
+
+        List<TunnelInfo> sorted = new ArrayList<>(tunnels);
+        sorted.sort((a, b) -> Integer.compare(a.depth, b.depth));
+
+        for (int i = 0; i < sorted.size() - 1; i++) {
+            TunnelInfo upper = sorted.get(i);
+            TunnelInfo lower = sorted.get(i + 1);
+
+            if (random.nextFloat() >= 0.25f) {
+                continue;
+            }
+
+            int upperEndX = center.getX() + upper.direction.getStepX() * upper.length;
+            int upperEndZ = center.getZ() + upper.direction.getStepZ() * upper.length;
+            int lowerEndX = center.getX() + lower.direction.getStepX() * lower.length;
+            int lowerEndZ = center.getZ() + lower.direction.getStepZ() * lower.length;
+
+            int hDist = Math.abs(lowerEndX - upperEndX) + Math.abs(lowerEndZ - upperEndZ);
+            int vDist = lower.depth - upper.depth;
+
+            if (hDist > vDist * 2 || vDist < 3) {
+                continue;
+            }
+
+            carveConnectionRamp(level, center, upper, lower, wallRock, random);
+        }
+    }
+
+    private void carveConnectionRamp(WorldGenLevel level, BlockPos center,
+                                      TunnelInfo upper, TunnelInfo lower,
+                                      Block wallRock, RandomSource random) {
+        int topY = center.getY();
+        int upperY = topY - upper.depth;
+        int lowerY = topY - lower.depth;
+
+        int upperEndX = center.getX() + upper.direction.getStepX() * upper.length;
+        int upperEndZ = center.getZ() + upper.direction.getStepZ() * upper.length;
+        int lowerEndX = center.getX() + lower.direction.getStepX() * lower.length;
+        int lowerEndZ = center.getZ() + lower.direction.getStepZ() * lower.length;
+
+        int dx = lowerEndX - upperEndX;
+        int dz = lowerEndZ - upperEndZ;
+        int steps = upperY - lowerY;
+
+        double stepX = (double) dx / steps;
+        double stepZ = (double) dz / steps;
+        double curX = upperEndX + 0.5;
+        double curZ = upperEndZ + 0.5;
+
+        for (int i = 1; i < steps; i++) {
+            int curY = upperY - i;
+            int bx = (int) Math.round(curX);
+            int bz = (int) Math.round(curZ);
+
+            for (int h = 0; h < 2; h++) {
+                BlockPos pos = new BlockPos(bx, curY + h, bz);
+                BlockState currentState = level.getBlockState(pos);
+                if (currentState.isSolid() && !currentState.isAir()) {
+                    level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+
+            for (Direction dir : Direction.Plane.HORIZONTAL) {
+                for (int h = 0; h < 2; h++) {
+                    BlockPos wallPos = new BlockPos(bx + dir.getStepX(), curY + h,
+                            bz + dir.getStepZ());
+                    if (wallPos.getX() == center.getX() && wallPos.getZ() == center.getZ()) {
+                        continue;
+                    }
+                    BlockState wallState = level.getBlockState(wallPos);
+                    if (wallState.isSolid() && !wallState.isAir()
+                            && isBlockBelowSolid(level, wallPos)
+                            && !(wallState.getBlock() instanceof ShaftFrameBlock)
+                            && !(wallState.getBlock() instanceof TunnelSupportBlock)) {
+                        level.setBlock(wallPos, wallRock.defaultBlockState(), 3);
+                    }
+                }
+            }
+
+            curX += stepX;
+            curZ += stepZ;
+        }
     }
 
     private void placeTunnelOres(WorldGenLevel level, BlockPos center, List<TunnelInfo> tunnels, RandomSource random) {
@@ -527,26 +807,17 @@ public class ShaftMineRuinPiece extends StructurePiece {
             int currentY = topY - tunnel.depth;
 
             BlockPos platPos = new BlockPos(
-                center.getX() + tunnel.direction.getStepX(),
-                currentY,
-                center.getZ() + tunnel.direction.getStepZ()
-            );
+            center.getX() + tunnel.direction.getStepX() * tunnel.length,
+            currentY,
+            center.getZ() + tunnel.direction.getStepZ() * tunnel.length
+        );
             if (level.getBlockState(platPos).isAir() || level.getBlockState(platPos).canBeReplaced()) {
-                level.setBlock(platPos, Blocks.OAK_PLANKS.defaultBlockState(), 3);
-            }
-
-            if (random.nextFloat() < 0.4f) {
-                BlockPos barrelPos = new BlockPos(
-                    center.getX() + tunnel.direction.getStepX() * 2,
-                    currentY,
-                    center.getZ() + tunnel.direction.getStepZ() * 2
-                );
-                if (level.getBlockState(barrelPos).isAir()) {
-                    level.setBlock(barrelPos,
+                if (level.getBlockState(platPos.below()).isSolid()) {
+                    level.setBlock(platPos,
                         Blocks.BARREL.defaultBlockState()
                             .setValue(net.minecraft.world.level.block.BarrelBlock.FACING, Direction.UP),
                         3);
-                    BlockEntity be = level.getBlockEntity(barrelPos);
+                    BlockEntity be = level.getBlockEntity(platPos);
                     if (be instanceof BarrelBlockEntity barrel) {
                         fillBarrelWithLoot(barrel, random);
                     }
@@ -869,6 +1140,136 @@ public class ShaftMineRuinPiece extends StructurePiece {
         }
 
         placeCopperGrassFlowers(level, center, random);
+    }
+
+    private void placeOreProcessingArea(WorldGenLevel level, BlockPos center, RandomSource random) {
+        int topY = center.getY();
+
+        Direction areaDir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+        int areaDist = 3 + random.nextInt(4);
+
+        int areaX = center.getX() + areaDir.getStepX() * areaDist;
+        int areaZ = center.getZ() + areaDir.getStepZ() * areaDist;
+
+        BlockPos areaCenter = new BlockPos(areaX, topY, areaZ);
+        BlockPos surfacePos = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, areaCenter);
+
+        if (Math.abs(surfacePos.getY() - center.getY()) > 3) {
+            return;
+        }
+
+        int surfaceY = surfacePos.getY();
+
+        int anvilCount = 1 + random.nextInt(2);
+        for (int i = 0; i < anvilCount; i++) {
+            double angle = random.nextDouble() * Math.PI * 2;
+            int dx = (int) Math.round(Math.cos(angle) * 1.5);
+            int dz = (int) Math.round(Math.sin(angle) * 1.5);
+
+            BlockPos anvilPos = new BlockPos(areaX + dx, surfaceY, areaZ + dz);
+            BlockPos anvilSurface = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, anvilPos);
+
+            if (Math.abs(anvilSurface.getY() - center.getY()) > 3) {
+                continue;
+            }
+
+            BlockState belowState = level.getBlockState(anvilSurface.below());
+            if (!belowState.isFaceSturdy(level, anvilSurface.below(), Direction.UP)) {
+                continue;
+            }
+
+            BlockState surfaceState = level.getBlockState(anvilSurface);
+            if (!surfaceState.isAir() && !surfaceState.canBeReplaced()) {
+                continue;
+            }
+
+            Block anvilBlock = random.nextBoolean()
+                    ? ModBlocks.GRANITE_ANVIL.get()
+                    : ModBlocks.LIMESTONE_ANVIL.get();
+            level.setBlock(anvilSurface,
+                    anvilBlock.defaultBlockState()
+                            .setValue(HorizontalDirectionalBlock.FACING,
+                                    Direction.Plane.HORIZONTAL.getRandomDirection(random)),
+                    3);
+
+            if (random.nextFloat() < 0.35f) {
+                ItemStack damagedHammer = createDamagedTool(
+                        random.nextBoolean()
+                                ? ModItems.STONE_HAMMER.get()
+                                : ModItems.COBBLESTONE_HAMMER.get(),
+                        random, 0.10f, 0.35f);
+                ItemEntity itemEntity = new ItemEntity(level.getLevel(),
+                        anvilSurface.getX() + 0.5,
+                        anvilSurface.getY() + 0.5,
+                        anvilSurface.getZ() + 0.5,
+                        damagedHammer);
+                itemEntity.setDefaultPickUpDelay();
+                level.getLevel().addFreshEntity(itemEntity);
+            }
+        }
+
+        for (int i = 0; i < 3 + random.nextInt(5); i++) {
+            double angle = random.nextDouble() * Math.PI * 2;
+            double dist = 1 + random.nextDouble() * 2.5;
+            int dx = (int) Math.round(Math.cos(angle) * dist);
+            int dz = (int) Math.round(Math.sin(angle) * dist);
+
+            BlockPos debrisPos = new BlockPos(areaX + dx, surfaceY, areaZ + dz);
+            BlockPos debrisSurface = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, debrisPos);
+
+            if (Math.abs(debrisSurface.getY() - center.getY()) > 3) {
+                continue;
+            }
+
+            BlockState belowState = level.getBlockState(debrisSurface.below());
+            if (!belowState.isFaceSturdy(level, debrisSurface.below(), Direction.UP)) {
+                continue;
+            }
+
+            BlockState surfaceState = level.getBlockState(debrisSurface);
+            if (!surfaceState.isAir() && !surfaceState.canBeReplaced()) {
+                continue;
+            }
+
+            if (random.nextFloat() < 0.55f) {
+                level.setBlock(debrisSurface,
+                        ModBlocks.SURFACE_COBBLESTONE_BLOCK.get().defaultBlockState()
+                                .setValue(SurfaceCobblestoneBlock.FACING,
+                                        Direction.Plane.HORIZONTAL.getRandomDirection(random)),
+                        3);
+            }
+        }
+
+        Direction sideDir = areaDir.getClockWise();
+
+        BlockPos shallowPile = new BlockPos(areaX + sideDir.getStepX(), surfaceY,
+                areaZ + sideDir.getStepZ());
+        BlockPos shallowSurface = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, shallowPile);
+        if (Math.abs(shallowSurface.getY() - center.getY()) <= 3) {
+            BlockState below = level.getBlockState(shallowSurface.below());
+            if (below.isFaceSturdy(level, shallowSurface.below(), Direction.UP)) {
+                BlockState surface = level.getBlockState(shallowSurface);
+                if (surface.isAir() || surface.canBeReplaced()) {
+                    Block shallowOre = random.nextBoolean()
+                            ? ModBlocks.MALACHITE_ORE.get()
+                            : ModBlocks.AZURITE_ORE.get();
+                    level.setBlock(shallowSurface, shallowOre.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        BlockPos deepPile = new BlockPos(areaX - sideDir.getStepX(), surfaceY,
+                areaZ - sideDir.getStepZ());
+        BlockPos deepSurface = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, deepPile);
+        if (Math.abs(deepSurface.getY() - center.getY()) <= 3) {
+            BlockState below = level.getBlockState(deepSurface.below());
+            if (below.isFaceSturdy(level, deepSurface.below(), Direction.UP)) {
+                BlockState surface = level.getBlockState(deepSurface);
+                if (surface.isAir() || surface.canBeReplaced()) {
+                    level.setBlock(deepSurface, ModBlocks.CHALCOPYRITE_ORE.get().defaultBlockState(), 3);
+                }
+            }
+        }
     }
 
     private void placeCopperGrassFlowers(WorldGenLevel level, BlockPos center, RandomSource random) {

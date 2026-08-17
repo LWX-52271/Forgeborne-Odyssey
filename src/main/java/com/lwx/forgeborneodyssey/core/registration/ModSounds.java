@@ -75,6 +75,10 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> ROCK_CAVE_IN = SOUND_EVENTS.register("rock.cave_in",
         () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "rock.cave_in")));
 
+    // 冶炼陶吹管吹气音效
+    public static final RegistryObject<SoundEvent> BLOWPIPE_BLOW = SOUND_EVENTS.register("blowpipe.blow",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "blowpipe.blow")));
+
     /**
      * 注册音效到事件总线
      */

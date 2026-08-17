@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CAC",
+    "CAC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "forgeborneodyssey:mixed_clay"
+    },
+    "A": {
+      "item": "forgeborneodyssey:temper_grog"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:pit_kiln",
+    "count": 1
+  }
+}

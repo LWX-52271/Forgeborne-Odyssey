@@ -15,12 +15,12 @@
     {
       "type": "patchouli:text",
       "title": "Key Concepts",
-      "text": "$(li)§bTemperature§r: Determined by fuel, grate efficiency, and insulation grade, max 1200℃$(br)$(li)§bOxygen Content§r: Range -100 to +100, controlled by fire mouth and vents$(br)$(li)§bOxidizing Atmosphere§r: High oxygen, suitable for redware$(br)$(li)§bReducing Atmosphere§r: Low oxygen, suitable for gray ware and black ware$(br)$(li)§bInsulation Grade§r: Determined by surrounding dirt blocks (0-4 sides)"
+      "text": "$(li)§bTemperature§r: Determined by fuel, grate efficiency, and insulation grade, max 900℃ (1200℃ with blowpipe)$(br)$(li)§bOxygen Content§r: Range -100 to +100, controlled by fire mouth and vents$(br)$(li)§bOxidizing Atmosphere§r: High oxygen, suitable for redware$(br)$(li)§bReducing Atmosphere§r: Low oxygen, suitable for gray ware and black ware$(br)$(li)§bInsulation Grade§r: Determined by surrounding dirt blocks (0-4 sides)"
     },
     {
       "type": "patchouli:text",
       "title": "Required Materials",
-      "text": "Building a complete pit kiln requires the following materials:$(br2)$(li)Dirt blocks ×8 (for kiln body)$(br)$(li)Fire mouth block ×1$(br)$(li)Grate block ×1$(br)$(li)Kiln lid ×1$(br)$(li)Fire drill ×1 (ignition tool)$(br)$(li)Fuel (firewood, straw, rice husk char, etc.)$(br)$(li)Greenware items (crucible greenware, mold greenware, etc.)"
+      "text": "Building a complete pit kiln requires the following materials:$(br2)$(li)Pit kiln block ×1 (see crafting recipe in Building the Kiln chapter)$(br)$(li)Dirt blocks ×8 (for kiln body)$(br)$(li)Fire mouth block ×1$(br)$(li)Grate block ×1$(br)$(li)Kiln lid ×1$(br)$(li)Fire drill ×1 (ignition tool)$(br)$(li)Fuel (firewood, straw, rice husk char, etc.)$(br)$(li)Greenware items (crucible, mold, brick, blowpipe greenware, etc.)"
     },
     {
       "type": "patchouli:spotlight",

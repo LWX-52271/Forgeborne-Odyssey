@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "forgeborneodyssey:item/ceramic_blowpipe"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "forgeborneodyssey:item/ceramic_blowpipe_using"
+    }
+  ]
+}
