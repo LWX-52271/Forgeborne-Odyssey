@@ -61,6 +61,19 @@
     "forgeborneodyssey:quartz_vein_wall",
     "forgeborneodyssey:sericitized_rock_wall",
     "forgeborneodyssey:chlorite_rock_wall",
-    "forgeborneodyssey:fire_pit_block"
+    "forgeborneodyssey:fire_pit_block",
+    "forgeborneodyssey:endoskarn_block",
+    "forgeborneodyssey:garnet_skarn_block",
+    "forgeborneodyssey:pyroxene_skarn_block",
+    "forgeborneodyssey:wollastonite_skarn_block",
+    "forgeborneodyssey:massive_skarn_ore",
+    "forgeborneodyssey:epidote_skarn_block",
+    "forgeborneodyssey:actinolite_skarn_block",
+    "forgeborneodyssey:tremolite_skarn_block",
+    "forgeborneodyssey:magnetite_ore",
+    "forgeborneodyssey:scheelite_ore",
+    "forgeborneodyssey:galena_ore",
+    "forgeborneodyssey:sphalerite_ore",
+    "forgeborneodyssey:molybdenite_ore"
   ]
 }

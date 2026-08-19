@@ -6,12 +6,28 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "forgeborneodyssey:bornite_ore"
+          "name": "forgeborneodyssey:raw_bornite",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 3, "max": 5 }
+            }
+          ]
         }
-      ],
-      "conditions": [
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
         {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:item",
+          "name": "forgeborneodyssey:quartz_vein_rubble",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 1, "max": 2 }
+            }
+          ]
         }
       ]
     }

@@ -348,6 +348,100 @@ public class ModBlocks {
     // 平巷支护方块
     public static final RegistryObject<Block> TUNNEL_SUPPORT = BLOCKS.register("tunnel_support", TunnelSupportBlock::new);
 
+    // 矽卡岩矿床方块
+    public static final RegistryObject<Block> ENDOSKARN_BLOCK = BLOCKS.register("endoskarn_block", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_BROWN)
+            .strength(4.0f, 4.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> GARNET_SKARN_BLOCK = BLOCKS.register("garnet_skarn_block", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_RED)
+            .strength(3.5f, 3.5f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> PYROXENE_SKARN_BLOCK = BLOCKS.register("pyroxene_skarn_block", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.COLOR_GREEN)
+            .strength(3.5f, 3.5f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> WOLLASTONITE_SKARN_BLOCK = BLOCKS.register("wollastonite_skarn_block", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_WHITE)
+            .strength(3.0f, 3.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> MASSIVE_SKARN_ORE = BLOCKS.register("massive_skarn_ore", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_BROWN)
+            .strength(4.0f, 4.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    // 退化蚀变矽卡岩（湿矽卡岩阶段）
+    public static final RegistryObject<Block> EPIDOTE_SKARN_BLOCK = BLOCKS.register("epidote_skarn_block", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.COLOR_GREEN)
+            .strength(3.5f, 3.5f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> ACTINOLITE_SKARN_BLOCK = BLOCKS.register("actinolite_skarn_block", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.COLOR_GREEN)
+            .strength(3.5f, 3.5f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> TREMOLITE_SKARN_BLOCK = BLOCKS.register("tremolite_skarn_block", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_WHITE)
+            .strength(3.0f, 3.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    // 矽卡岩型多金属矿石
+    public static final RegistryObject<Block> MAGNETITE_ORE = BLOCKS.register("magnetite_ore", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_BLACK)
+            .strength(4.0f, 4.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> SCHEELITE_ORE = BLOCKS.register("scheelite_ore", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_WHITE)
+            .strength(3.5f, 3.5f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> GALENA_ORE = BLOCKS.register("galena_ore", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.COLOR_GRAY)
+            .strength(3.5f, 3.5f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> SPHALERITE_ORE = BLOCKS.register("sphalerite_ore", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_BROWN)
+            .strength(3.5f, 3.5f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    public static final RegistryObject<Block> MOLYBDENITE_ORE = BLOCKS.register("molybdenite_ore", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.COLOR_GRAY)
+            .strength(3.5f, 3.5f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
     // 应力方块实体类型
     public static final RegistryObject<BlockEntityType<StressBlock.StressBlockEntity>> STRESS_BLOCK_ENTITY = BLOCK_ENTITIES.register("stress_block_entity",
         () -> {
@@ -359,7 +453,12 @@ public class ModBlocks {
                 NATIVE_COPPER_ORE.get(), TETRAHEDRITE_ORE.get(), TENNANTITE_ORE.get(), TORBERNITE_ORE.get(),
                 CUPROVANADITE_ORE.get(), CHRYSOCOLLA_ORE.get(), SHALE_BLOCK.get(), SANDSTONE_BLOCK.get(), LIMESTONE_BLOCK.get(),
                 POLISHED_LIMESTONE_BLOCK.get(), MARBLE_BLOCK.get(), QUARTZITE_BLOCK.get(), GABBRO_BLOCK.get(),
-                QUARTZ_VEIN_BLOCK.get(), SERICITIZED_ROCK_BLOCK.get(), CHLORITE_ROCK_BLOCK.get()
+                QUARTZ_VEIN_BLOCK.get(), SERICITIZED_ROCK_BLOCK.get(), CHLORITE_ROCK_BLOCK.get(),
+                ENDOSKARN_BLOCK.get(), GARNET_SKARN_BLOCK.get(), PYROXENE_SKARN_BLOCK.get(),
+                WOLLASTONITE_SKARN_BLOCK.get(), MASSIVE_SKARN_ORE.get(),
+                EPIDOTE_SKARN_BLOCK.get(), ACTINOLITE_SKARN_BLOCK.get(), TREMOLITE_SKARN_BLOCK.get(),
+                MAGNETITE_ORE.get(), SCHEELITE_ORE.get(), GALENA_ORE.get(),
+                SPHALERITE_ORE.get(), MOLYBDENITE_ORE.get()
             };
             return BlockEntityType.Builder.of(StressBlock.StressBlockEntity::new, stressBlocks).build(null);
         });

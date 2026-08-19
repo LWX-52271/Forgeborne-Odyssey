@@ -1,0 +1,7 @@
+{
+  "type": "forgeborneodyssey:skarn_deposit",
+  "biomes": "#minecraft:is_mountain",
+  "step": "underground_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

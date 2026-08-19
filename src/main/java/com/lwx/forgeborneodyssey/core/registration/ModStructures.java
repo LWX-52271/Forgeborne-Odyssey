@@ -5,6 +5,8 @@ import com.lwx.forgeborneodyssey.world.OpenPitMineRuinPiece;
 import com.lwx.forgeborneodyssey.world.OpenPitMineRuinStructure;
 import com.lwx.forgeborneodyssey.world.ShaftMineRuinPiece;
 import com.lwx.forgeborneodyssey.world.ShaftMineRuinStructure;
+import com.lwx.forgeborneodyssey.world.SkarnDepositPiece;
+import com.lwx.forgeborneodyssey.world.SkarnDepositStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -34,4 +36,12 @@ public class ModStructures {
     public static final RegistryObject<StructurePieceType> SHAFT_MINE_RUIN_PIECE =
             STRUCTURE_PIECE_TYPES.register("shaft_mine_ruin_piece",
                     () -> ShaftMineRuinPiece::new);
+
+    public static final RegistryObject<StructureType<SkarnDepositStructure>> SKARN_DEPOSIT =
+            STRUCTURE_TYPES.register("skarn_deposit",
+                    () -> () -> SkarnDepositStructure.CODEC);
+
+    public static final RegistryObject<StructurePieceType> SKARN_DEPOSIT_PIECE =
+            STRUCTURE_PIECE_TYPES.register("skarn_deposit_piece",
+                    () -> SkarnDepositPiece::new);
 }

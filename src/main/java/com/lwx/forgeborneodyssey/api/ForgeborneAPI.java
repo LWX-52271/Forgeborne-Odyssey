@@ -62,6 +62,23 @@ public class ForgeborneAPI {
         STRESS_THRESHOLD_MAP.put(ModBlocks.SERICITIZED_ROCK_BLOCK.get(), 30.0f);
         STRESS_THRESHOLD_MAP.put(ModBlocks.CHLORITE_ROCK_BLOCK.get(), 40.0f);
 
+        // 矽卡岩（接触交代变质岩）
+        STRESS_THRESHOLD_MAP.put(ModBlocks.ENDOSKARN_BLOCK.get(), 150.0f);        // 内矽卡岩，Mohs 5-6
+        STRESS_THRESHOLD_MAP.put(ModBlocks.GARNET_SKARN_BLOCK.get(), 200.0f);     // 石榴石矽卡岩，Mohs 6.5-7.5
+        STRESS_THRESHOLD_MAP.put(ModBlocks.PYROXENE_SKARN_BLOCK.get(), 170.0f);   // 辉石矽卡岩，Mohs 5-6
+        STRESS_THRESHOLD_MAP.put(ModBlocks.WOLLASTONITE_SKARN_BLOCK.get(), 100.0f); // 硅灰石矽卡岩，Mohs 4.5-5
+        STRESS_THRESHOLD_MAP.put(ModBlocks.MASSIVE_SKARN_ORE.get(), 140.0f);       // 块状矽卡岩矿，混合
+        STRESS_THRESHOLD_MAP.put(ModBlocks.EPIDOTE_SKARN_BLOCK.get(), 180.0f);    // 绿帘石矽卡岩，Mohs 6-7
+        STRESS_THRESHOLD_MAP.put(ModBlocks.ACTINOLITE_SKARN_BLOCK.get(), 160.0f);  // 阳起石矽卡岩，Mohs 5-6
+        STRESS_THRESHOLD_MAP.put(ModBlocks.TREMOLITE_SKARN_BLOCK.get(), 150.0f);  // 透闪石矽卡岩，Mohs 5-6
+
+        // 矽卡岩型矿床矿石矿物
+        STRESS_THRESHOLD_MAP.put(ModBlocks.MAGNETITE_ORE.get(), 180.0f);    // 磁铁矿，Mohs 5.5-6.5
+        STRESS_THRESHOLD_MAP.put(ModBlocks.SCHEELITE_ORE.get(), 120.0f);    // 白钨矿，Mohs 4.5-5
+        STRESS_THRESHOLD_MAP.put(ModBlocks.GALENA_ORE.get(), 50.0f);         // 方铅矿，Mohs 2.5
+        STRESS_THRESHOLD_MAP.put(ModBlocks.SPHALERITE_ORE.get(), 80.0f);     // 闪锌矿，Mohs 3.5-4
+        STRESS_THRESHOLD_MAP.put(ModBlocks.MOLYBDENITE_ORE.get(), 20.0f);    // 辉钼矿，Mohs 1-1.5
+
         // 原版岩石
         STRESS_THRESHOLD_MAP.put(Blocks.STONE, 85.0f);
         STRESS_THRESHOLD_MAP.put(Blocks.GRANITE, 185.0f);

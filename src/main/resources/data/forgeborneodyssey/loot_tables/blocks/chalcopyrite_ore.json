@@ -6,12 +6,28 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "forgeborneodyssey:chalcopyrite_ore"
+          "name": "forgeborneodyssey:raw_chalcopyrite",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 2, "max": 4 }
+            }
+          ]
         }
-      ],
-      "conditions": [
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
         {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:item",
+          "name": "forgeborneodyssey:gabbro_rubble",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 2, "max": 3 }
+            }
+          ]
         }
       ]
     }

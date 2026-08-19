@@ -106,6 +106,25 @@ public class ModItems {
     // 平巷支护物品
     public static final RegistryObject<Item> TUNNEL_SUPPORT_ITEM = createBlockItem("tunnel_support", ModBlocks.TUNNEL_SUPPORT);
 
+    // 矽卡岩矿床物品
+    public static final RegistryObject<Item> ENDOSKARN_BLOCK_ITEM = createBlockItem("endoskarn_block", ModBlocks.ENDOSKARN_BLOCK);
+    public static final RegistryObject<Item> GARNET_SKARN_BLOCK_ITEM = createBlockItem("garnet_skarn_block", ModBlocks.GARNET_SKARN_BLOCK);
+    public static final RegistryObject<Item> PYROXENE_SKARN_BLOCK_ITEM = createBlockItem("pyroxene_skarn_block", ModBlocks.PYROXENE_SKARN_BLOCK);
+    public static final RegistryObject<Item> WOLLASTONITE_SKARN_BLOCK_ITEM = createBlockItem("wollastonite_skarn_block", ModBlocks.WOLLASTONITE_SKARN_BLOCK);
+    public static final RegistryObject<Item> MASSIVE_SKARN_ORE_ITEM = createBlockItem("massive_skarn_ore", ModBlocks.MASSIVE_SKARN_ORE);
+
+    // 退化蚀变矽卡岩物品
+    public static final RegistryObject<Item> EPIDOTE_SKARN_BLOCK_ITEM = createBlockItem("epidote_skarn_block", ModBlocks.EPIDOTE_SKARN_BLOCK);
+    public static final RegistryObject<Item> ACTINOLITE_SKARN_BLOCK_ITEM = createBlockItem("actinolite_skarn_block", ModBlocks.ACTINOLITE_SKARN_BLOCK);
+    public static final RegistryObject<Item> TREMOLITE_SKARN_BLOCK_ITEM = createBlockItem("tremolite_skarn_block", ModBlocks.TREMOLITE_SKARN_BLOCK);
+
+    // 矽卡岩型多金属矿石物品
+    public static final RegistryObject<Item> MAGNETITE_ORE_ITEM = createBlockItem("magnetite_ore", ModBlocks.MAGNETITE_ORE);
+    public static final RegistryObject<Item> SCHEELITE_ORE_ITEM = createBlockItem("scheelite_ore", ModBlocks.SCHEELITE_ORE);
+    public static final RegistryObject<Item> GALENA_ORE_ITEM = createBlockItem("galena_ore", ModBlocks.GALENA_ORE);
+    public static final RegistryObject<Item> SPHALERITE_ORE_ITEM = createBlockItem("sphalerite_ore", ModBlocks.SPHALERITE_ORE);
+    public static final RegistryObject<Item> MOLYBDENITE_ORE_ITEM = createBlockItem("molybdenite_ore", ModBlocks.MOLYBDENITE_ORE);
+
     // 自然金属块对应的物品
     public static final RegistryObject<Item> NATURAL_GOLD_BLOCK_ITEM = createBlockItem("natural_gold_block", ModBlocks.NATURAL_GOLD_BLOCK);
     public static final RegistryObject<Item> NATURAL_SILVER_BLOCK_ITEM = createBlockItem("natural_silver_block", ModBlocks.NATURAL_SILVER_BLOCK);
@@ -249,6 +268,44 @@ public class ModItems {
     public static final RegistryObject<Item> SILVER_FRAGMENT = ITEMS.register("silver_fragment", SilverFragmentItem::new);
     public static final RegistryObject<Item> GOLD_FRAGMENT = ITEMS.register("gold_fragment", GoldFragmentItem::new);
 
+    // 铜矿石碎块（18种）
+    public static final RegistryObject<Item> RAW_CHALCOPYRITE = simpleItem("raw_chalcopyrite");
+    public static final RegistryObject<Item> RAW_BORNITE = simpleItem("raw_bornite");
+    public static final RegistryObject<Item> RAW_CHALCOCITE = simpleItem("raw_chalcocite");
+    public static final RegistryObject<Item> RAW_COVELLITE = simpleItem("raw_covellite");
+    public static final RegistryObject<Item> RAW_CUBANITE = simpleItem("raw_cubanite");
+    public static final RegistryObject<Item> RAW_MALACHITE = simpleItem("raw_malachite");
+    public static final RegistryObject<Item> RAW_AZURITE = simpleItem("raw_azurite");
+    public static final RegistryObject<Item> RAW_CUPRITE = simpleItem("raw_cuprite");
+    public static final RegistryObject<Item> RAW_TENORITE = simpleItem("raw_tenorite");
+    public static final RegistryObject<Item> RAW_CHALCANTHITE = simpleItem("raw_chalcanthite");
+    public static final RegistryObject<Item> RAW_BROCHANTITE = simpleItem("raw_brochantite");
+    public static final RegistryObject<Item> RAW_MIXED_COPPER = simpleItem("raw_mixed_copper");
+    public static final RegistryObject<Item> RAW_NATIVE_COPPER = simpleItem("raw_native_copper");
+    public static final RegistryObject<Item> RAW_TETRAHEDRITE = simpleItem("raw_tetrahedrite");
+    public static final RegistryObject<Item> RAW_TENNANTITE = simpleItem("raw_tennantite");
+    public static final RegistryObject<Item> RAW_TORBERNITE = simpleItem("raw_torbernite");
+    public static final RegistryObject<Item> RAW_CUPROVANADITE = simpleItem("raw_cuprovanadite");
+    public static final RegistryObject<Item> RAW_CHRYSOCOLLA = simpleItem("raw_chrysocolla");
+
+    // 矽卡岩型矿床原矿碎块（5种）
+    public static final RegistryObject<Item> RAW_MAGNETITE = simpleItem("raw_magnetite");
+    public static final RegistryObject<Item> RAW_SCHEELITE = simpleItem("raw_scheelite");
+    public static final RegistryObject<Item> RAW_GALENA = simpleItem("raw_galena");
+    public static final RegistryObject<Item> RAW_SPHALERITE = simpleItem("raw_sphalerite");
+    public static final RegistryObject<Item> RAW_MOLYBDENITE = simpleItem("raw_molybdenite");
+
+    // 岩石碎片（9种）
+    public static final RegistryObject<Item> SHALE_RUBBLE = simpleItem("shale_rubble");
+    public static final RegistryObject<Item> SANDSTONE_RUBBLE = simpleItem("sandstone_rubble");
+    public static final RegistryObject<Item> LIMESTONE_RUBBLE = simpleItem("limestone_rubble");
+    public static final RegistryObject<Item> MARBLE_RUBBLE = simpleItem("marble_rubble");
+    public static final RegistryObject<Item> QUARTZITE_RUBBLE = simpleItem("quartzite_rubble");
+    public static final RegistryObject<Item> GABBRO_RUBBLE = simpleItem("gabbro_rubble");
+    public static final RegistryObject<Item> QUARTZ_VEIN_RUBBLE = simpleItem("quartz_vein_rubble");
+    public static final RegistryObject<Item> SERICITIZED_RUBBLE = simpleItem("sericitized_rubble");
+    public static final RegistryObject<Item> CHLORITE_RUBBLE = simpleItem("chlorite_rubble");
+
     // 金属针物品
     public static final RegistryObject<Item> COPPER_PIN = ITEMS.register("copper_pin", CopperPinItem::new);
     public static final RegistryObject<Item> SILVER_PIN = ITEMS.register("silver_pin", SilverPinItem::new);
@@ -368,6 +425,10 @@ public class ModItems {
     }
 
 
+
+    private static RegistryObject<Item> simpleItem(String name) {
+        return ITEMS.register(name, () -> new Item(new Item.Properties().stacksTo(64)));
+    }
 
     private static RegistryObject<Item> createBlockItem(String name, RegistryObject<Block> block) {
         return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));

@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.core.registration;
 
 import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
+import com.lwx.forgeborneodyssey.world.SkarnDepositPiece;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -64,6 +65,14 @@ public class ModCommands {
                             .executes(ModCommands::setCopperGrassAge)
                         )
                     )
+                )
+                .then(literal("skarn")
+                    .then(literal("stratoid").executes(ctx -> generateSkarn(ctx, "stratoid")))
+                    .then(literal("lenticular").executes(ctx -> generateSkarn(ctx, "lenticular")))
+                    .then(literal("pod").executes(ctx -> generateSkarn(ctx, "pod")))
+                    .then(literal("vein").executes(ctx -> generateSkarn(ctx, "vein")))
+                    .then(literal("columnar").executes(ctx -> generateSkarn(ctx, "columnar")))
+                    .then(literal("random").executes(ctx -> generateSkarn(ctx, "random")))
                 )
         );
     }
@@ -308,5 +317,29 @@ public class ModCommands {
         }
     }
 
-    
+    private static int generateSkarn(CommandContext<CommandSourceStack> context, String type) {
+        CommandSourceStack source = context.getSource();
+        ServerPlayer player = source.getPlayer();
+
+        if (player == null) {
+            source.sendFailure(Component.translatable("command.forgeborneodyssey.player_only"));
+            return 0;
+        }
+
+        ServerLevel level = player.serverLevel();
+        BlockPos pos = player.blockPosition().above(5);
+
+        SkarnDepositPiece.SkarnMorphology morph;
+        if (type.equals("random")) {
+            morph = SkarnDepositPiece.SkarnMorphology.values()[level.random.nextInt(5)];
+        } else {
+            morph = SkarnDepositPiece.SkarnMorphology.valueOf(type.toUpperCase());
+        }
+
+        SkarnDepositPiece.generateDeposit(level, pos, morph, level.random);
+        source.sendSuccess(() -> Component.literal(
+                "§a已生成 §e" + morph.name() + " §a矽卡岩矿体于 §b["
+                        + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + "]"), true);
+        return 1;
+    }
 }

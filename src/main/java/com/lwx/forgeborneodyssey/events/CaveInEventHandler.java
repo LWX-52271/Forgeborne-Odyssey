@@ -314,10 +314,6 @@ public class CaveInEventHandler {
                 }
             }
 
-            if (player != null) {
-                player.hurt(player.damageSources().generic(), 4.0f);
-            }
-
             playCaveInSound(level, pos);
         }
     }

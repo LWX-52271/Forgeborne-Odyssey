@@ -6,39 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "forgeborneodyssey:marble_block",
+          "name": "forgeborneodyssey:marble_rubble",
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 1
+              "count": { "min": 2, "max": 3 }
             }
           ]
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "forgeborneodyssey:natural_gold_block",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "forgeborneodyssey:natural_silver_block",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "forgeborneodyssey:natural_copper_block",
-          "weight": 7
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.003
         }
       ]
     }

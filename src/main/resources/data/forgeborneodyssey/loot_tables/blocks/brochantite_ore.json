@@ -6,12 +6,28 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "forgeborneodyssey:brochantite_ore"
+          "name": "forgeborneodyssey:raw_brochantite",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 2, "max": 3 }
+            }
+          ]
         }
-      ],
-      "conditions": [
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
         {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:item",
+          "name": "forgeborneodyssey:sandstone_rubble",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 2, "max": 3 }
+            }
+          ]
         }
       ]
     }

@@ -203,10 +203,12 @@ public class ForgeborneOdyssey {
                     .add(Registries.STRUCTURE, context -> {
                         com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration.bootstrapStructure(context);
                         com.lwx.forgeborneodyssey.world.ShaftMineRuinGeneration.bootstrapStructure(context);
+                        com.lwx.forgeborneodyssey.world.SkarnDepositGeneration.bootstrapStructure(context);
                     })
                     .add(Registries.STRUCTURE_SET, context -> {
                         com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration.bootstrapStructureSet(context);
                         com.lwx.forgeborneodyssey.world.ShaftMineRuinGeneration.bootstrapStructureSet(context);
+                        com.lwx.forgeborneodyssey.world.SkarnDepositGeneration.bootstrapStructureSet(context);
                     });
 
             // 添加单一的数据包提供者

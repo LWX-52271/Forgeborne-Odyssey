@@ -1,0 +1,15 @@
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace stone
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace deepslate
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace tuff
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace granite
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace diorite
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace andesite
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace dirt
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace grass_block
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace gravel
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace water
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace lava
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace calcite
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace forgeborneodyssey:limestone_block
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace forgeborneodyssey:marble_block
+fill ~-15 ~-16 ~-15 ~15 ~16 ~15 air replace forgeborneodyssey:gabbro_block

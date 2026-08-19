@@ -6,12 +6,28 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "forgeborneodyssey:native_copper_ore"
+          "name": "forgeborneodyssey:raw_native_copper",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 1, "max": 2 }
+            }
+          ]
         }
-      ],
-      "conditions": [
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
         {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:item",
+          "name": "forgeborneodyssey:gabbro_rubble",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 0, "max": 1 }
+            }
+          ]
         }
       ]
     }
