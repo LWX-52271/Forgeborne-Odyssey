@@ -2,6 +2,7 @@ package com.lwx.forgeborneodyssey.client.render;
 
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlockEntity;
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -87,12 +88,20 @@ public class PitKilnRenderer implements BlockEntityRenderer<PitKilnBlockEntity> 
             poseStack.pushPose();
 
             double[] pos = GREENWARE_POSITIONS[slot];
-            poseStack.translate(pos[0], pos[1], pos[2]);
+            boolean isCrucible = stack.is(ModItems.GREENWARE_CRUCIBLE.get());
+
+            if (isCrucible) {
+                poseStack.translate(pos[0], pos[1] - 0.15, pos[2]);
+            } else {
+                poseStack.translate(pos[0], pos[1], pos[2]);
+            }
 
             poseStack.scale(0.35F, 0.35F, 0.35F);
 
-            poseStack.mulPose(new Quaternionf(new AxisAngle4f(
-                    (float) Math.toRadians(90), 1, 0, 0)));
+            if (!isCrucible) {
+                poseStack.mulPose(new Quaternionf(new AxisAngle4f(
+                        (float) Math.toRadians(90), 1, 0, 0)));
+            }
 
             poseStack.mulPose(new Quaternionf(new AxisAngle4f(
                     (float) Math.toRadians(GREENWARE_ROTATIONS[slot]), 0, 0, 1)));

@@ -79,6 +79,9 @@ public class ForgeborneAPI {
         STRESS_THRESHOLD_MAP.put(ModBlocks.SPHALERITE_ORE.get(), 80.0f);     // 闪锌矿，Mohs 3.5-4
         STRESS_THRESHOLD_MAP.put(ModBlocks.MOLYBDENITE_ORE.get(), 20.0f);    // 辉钼矿，Mohs 1-1.5
 
+        // 冲积砂锡矿
+        STRESS_THRESHOLD_MAP.put(ModBlocks.CASSITERITE_PLACER_BLOCK.get(), 20.0f); // 砂锡矿，疏松砂质
+
         // 原版岩石
         STRESS_THRESHOLD_MAP.put(Blocks.STONE, 85.0f);
         STRESS_THRESHOLD_MAP.put(Blocks.GRANITE, 185.0f);

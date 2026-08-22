@@ -34,13 +34,77 @@ public class ModCreativeTabs {
                 // 添加所有模组物品到创造模式标签页（排除BlockItem）
                 ModItems.ITEMS.getEntries().forEach(itemRegistryObject -> {
                     var item = itemRegistryObject.get();
-                    // 检查是否为BlockItem，如果不是则添加
                     if (!(item instanceof net.minecraft.world.item.BlockItem)) {
                         output.accept(item);
                     }
                 });
             })
             .icon(() -> new ItemStack(ModItems.COPPER_BILLET.get()))  // 使用铜坯料作为图标
+            .build()
+    );
+
+    // 矿石碎块颗粒创造模式标签页
+    public static final RegistryObject<CreativeModeTab> ORE_FRAGMENTS_TAB = CREATIVE_MODE_TABS.register("ore_fragments_tab", () ->
+        CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.forgeborneodyssey.ore_fragments"))
+            .displayItems((parameters, output) -> {
+                // 铜矿石碎块（18种）
+                output.accept(ModItems.RAW_CHALCOPYRITE.get());
+                output.accept(ModItems.RAW_BORNITE.get());
+                output.accept(ModItems.RAW_CHALCOCITE.get());
+                output.accept(ModItems.RAW_COVELLITE.get());
+                output.accept(ModItems.RAW_CUBANITE.get());
+                output.accept(ModItems.RAW_MALACHITE.get());
+                output.accept(ModItems.RAW_AZURITE.get());
+                output.accept(ModItems.RAW_CUPRITE.get());
+                output.accept(ModItems.RAW_TENORITE.get());
+                output.accept(ModItems.RAW_CHALCANTHITE.get());
+                output.accept(ModItems.RAW_BROCHANTITE.get());
+                output.accept(ModItems.RAW_MIXED_COPPER.get());
+                output.accept(ModItems.RAW_NATIVE_COPPER.get());
+                output.accept(ModItems.RAW_TETRAHEDRITE.get());
+                output.accept(ModItems.RAW_TENNANTITE.get());
+                output.accept(ModItems.RAW_TORBERNITE.get());
+                output.accept(ModItems.RAW_CUPROVANADITE.get());
+                output.accept(ModItems.RAW_CHRYSOCOLLA.get());
+
+                // 矽卡岩型矿床原矿碎块（7种）
+                output.accept(ModItems.RAW_MAGNETITE.get());
+                output.accept(ModItems.RAW_SCHEELITE.get());
+                output.accept(ModItems.RAW_GALENA.get());
+                output.accept(ModItems.RAW_SPHALERITE.get());
+                output.accept(ModItems.RAW_MOLYBDENITE.get());
+                output.accept(ModItems.RAW_CASSITERITE.get());
+                output.accept(ModItems.RAW_CASSITERITE_SAND.get());
+
+                // 铜矿石颗粒（18种）
+                output.accept(ModItems.CHALCOPYRITE_GRAIN.get());
+                output.accept(ModItems.BORNITE_GRAIN.get());
+                output.accept(ModItems.CHALCOCITE_GRAIN.get());
+                output.accept(ModItems.COVELLITE_GRAIN.get());
+                output.accept(ModItems.CUBANITE_GRAIN.get());
+                output.accept(ModItems.MALACHITE_GRAIN.get());
+                output.accept(ModItems.AZURITE_GRAIN.get());
+                output.accept(ModItems.CUPRITE_GRAIN.get());
+                output.accept(ModItems.TENORITE_GRAIN.get());
+                output.accept(ModItems.CHALCANTHITE_GRAIN.get());
+                output.accept(ModItems.BROCHANTITE_GRAIN.get());
+                output.accept(ModItems.MIXED_COPPER_GRAIN.get());
+                output.accept(ModItems.NATIVE_COPPER_GRAIN.get());
+                output.accept(ModItems.TETRAHEDRITE_GRAIN.get());
+                output.accept(ModItems.TENNANTITE_GRAIN.get());
+                output.accept(ModItems.TORBERNITE_GRAIN.get());
+                output.accept(ModItems.CUPROVANADITE_GRAIN.get());
+                output.accept(ModItems.CHRYSOCOLLA_GRAIN.get());
+
+                // 矽卡岩型矿床原矿颗粒（5种）
+                output.accept(ModItems.MAGNETITE_GRAIN.get());
+                output.accept(ModItems.SCHEELITE_GRAIN.get());
+                output.accept(ModItems.GALENA_GRAIN.get());
+                output.accept(ModItems.SPHALERITE_GRAIN.get());
+                output.accept(ModItems.MOLYBDENITE_GRAIN.get());
+            })
+            .icon(() -> new ItemStack(ModItems.RAW_CHALCOPYRITE.get()))  // 使用黄铜矿碎块作为图标
             .build()
     );
 }

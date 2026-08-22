@@ -331,6 +331,17 @@ public class OpenPitMineRuinPiece extends StructurePiece {
         return stack;
     }
 
+    private static ItemStack createRandomGradedFragment(ItemStack template, RandomSource random) {
+        ItemStack stack = template.copy();
+        stack.setCount(1);
+        CompoundTag tag = stack.getOrCreateTag();
+        float purity = random.nextFloat();
+        float quality = random.nextFloat();
+        tag.putFloat("ore_purity", purity);
+        tag.putFloat("ore_quality", quality);
+        return stack;
+    }
+
     private void placeLootChest(WorldGenLevel level, BlockPos center, int bottomY, float bottomRadius,
                                 RandomSource random) {
         for (int attempt = 0; attempt < 8; attempt++) {
@@ -356,17 +367,26 @@ public class OpenPitMineRuinPiece extends StructurePiece {
     }
 
     private void fillChestWithLoot(ChestBlockEntity chest, RandomSource random) {
-        ItemStack[] orePool = {
-            new ItemStack(ModItems.MALACHITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.AZURITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.CUPRITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.CHRYSOCOLLA_ORE_ITEM.get()),
-            new ItemStack(ModItems.NATIVE_COPPER_ORE_ITEM.get()),
-            new ItemStack(ModItems.CHALCOPYRITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.BORNITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.CHALCOCITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.COVELLITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.TETRAHEDRITE_ORE_ITEM.get())
+        ItemStack[] rawOrePool = {
+            new ItemStack(ModItems.RAW_MALACHITE.get()),
+            new ItemStack(ModItems.RAW_AZURITE.get()),
+            new ItemStack(ModItems.RAW_CUPRITE.get()),
+            new ItemStack(ModItems.RAW_CHRYSOCOLLA.get()),
+            new ItemStack(ModItems.RAW_NATIVE_COPPER.get()),
+            new ItemStack(ModItems.RAW_CHALCOPYRITE.get()),
+            new ItemStack(ModItems.RAW_BORNITE.get()),
+            new ItemStack(ModItems.RAW_CHALCOCITE.get()),
+            new ItemStack(ModItems.RAW_COVELLITE.get()),
+            new ItemStack(ModItems.RAW_TETRAHEDRITE.get())
+        };
+
+        ItemStack[] rubblePool = {
+            new ItemStack(ModItems.SHALE_RUBBLE.get()),
+            new ItemStack(ModItems.LIMESTONE_RUBBLE.get()),
+            new ItemStack(ModItems.SANDSTONE_RUBBLE.get()),
+            new ItemStack(ModItems.MARBLE_RUBBLE.get()),
+            new ItemStack(ModItems.QUARTZITE_RUBBLE.get()),
+            new ItemStack(ModItems.GABBRO_RUBBLE.get())
         };
 
         Item[] toolPool = {
@@ -390,7 +410,8 @@ public class OpenPitMineRuinPiece extends StructurePiece {
             ItemStack item;
 
             if (roll < 0.22f) {
-                ItemStack ore = orePool[random.nextInt(orePool.length)].copy();
+                ItemStack ore = createRandomGradedFragment(
+                    rawOrePool[random.nextInt(rawOrePool.length)], random);
                 ore.setCount(1 + random.nextInt(4));
                 item = ore;
             } else if (roll < 0.35f) {
@@ -420,12 +441,12 @@ public class OpenPitMineRuinPiece extends StructurePiece {
                 item = createDamagedTool(ModItems.FIRE_DRILL.get(),
                     random, 0.30f, 0.60f);
             } else if (roll < 0.80f) {
-                item = new ItemStack(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get(),
-                    1 + random.nextInt(3));
+                item = createRandomGradedFragment(
+                    rubblePool[random.nextInt(rubblePool.length)], random);
+                item.setCount(1 + random.nextInt(3));
             } else if (roll < 0.84f) {
-                item = new ItemStack(random.nextBoolean()
-                    ? ModItems.GRANITE_ANVIL_ITEM.get()
-                    : ModItems.LIMESTONE_ANVIL_ITEM.get(), 1);
+                item = createRandomGradedFragment(
+                    rubblePool[random.nextInt(rubblePool.length)], random);
             } else {
                 item = switch (random.nextInt(5)) {
                     case 0 -> new ItemStack(net.minecraft.world.item.Items.STICK, 2 + random.nextInt(6));
@@ -441,12 +462,21 @@ public class OpenPitMineRuinPiece extends StructurePiece {
     }
 
     private void fillBarrelWithLoot(BarrelBlockEntity barrel, RandomSource random) {
-        ItemStack[] orePool = {
-            new ItemStack(ModItems.MALACHITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.AZURITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.NATIVE_COPPER_ORE_ITEM.get()),
-            new ItemStack(ModItems.CHALCOPYRITE_ORE_ITEM.get()),
-            new ItemStack(ModItems.BORNITE_ORE_ITEM.get())
+        ItemStack[] rawOrePool = {
+            new ItemStack(ModItems.RAW_MALACHITE.get()),
+            new ItemStack(ModItems.RAW_AZURITE.get()),
+            new ItemStack(ModItems.RAW_NATIVE_COPPER.get()),
+            new ItemStack(ModItems.RAW_CHALCOPYRITE.get()),
+            new ItemStack(ModItems.RAW_BORNITE.get())
+        };
+
+        ItemStack[] rubblePool = {
+            new ItemStack(ModItems.SHALE_RUBBLE.get()),
+            new ItemStack(ModItems.LIMESTONE_RUBBLE.get()),
+            new ItemStack(ModItems.SANDSTONE_RUBBLE.get()),
+            new ItemStack(ModItems.MARBLE_RUBBLE.get()),
+            new ItemStack(ModItems.QUARTZITE_RUBBLE.get()),
+            new ItemStack(ModItems.GABBRO_RUBBLE.get())
         };
 
         Item[] toolPool = {
@@ -466,7 +496,8 @@ public class OpenPitMineRuinPiece extends StructurePiece {
             ItemStack item;
 
             if (roll < 0.30f) {
-                ItemStack ore = orePool[random.nextInt(orePool.length)].copy();
+                ItemStack ore = createRandomGradedFragment(
+                    rawOrePool[random.nextInt(rawOrePool.length)], random);
                 ore.setCount(1 + random.nextInt(3));
                 item = ore;
             } else if (roll < 0.48f) {
@@ -485,8 +516,9 @@ public class OpenPitMineRuinPiece extends StructurePiece {
                 item = createDamagedTool(toolPool[random.nextInt(toolPool.length)],
                     random, 0.20f, 0.55f);
             } else if (roll < 0.80f) {
-                item = new ItemStack(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get(),
-                    1 + random.nextInt(2));
+                item = createRandomGradedFragment(
+                    rubblePool[random.nextInt(rubblePool.length)], random);
+                item.setCount(1 + random.nextInt(2));
             } else {
                 item = switch (random.nextInt(5)) {
                     case 0 -> new ItemStack(net.minecraft.world.item.Items.STICK, 2 + random.nextInt(5));

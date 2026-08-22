@@ -72,6 +72,18 @@ public class ClientEventHandler {
                 com.lwx.forgeborneodyssey.core.registration.ModEntities.SURFACE_COBBLESTONE_THROWN.get(),
                 context -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(context)
             );
+
+            // 注册石矛投掷物的渲染器
+            net.minecraft.client.renderer.entity.EntityRenderers.register(
+                com.lwx.forgeborneodyssey.core.registration.ModEntities.STONE_SPEAR_THROWN.get(),
+                context -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(context)
+            );
+
+            // 注册投石索弹丸的渲染器
+            net.minecraft.client.renderer.entity.EntityRenderers.register(
+                com.lwx.forgeborneodyssey.core.registration.ModEntities.SLING_STONE_THROWN.get(),
+                context -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(context)
+            );
         });
     }
     

@@ -56,6 +56,7 @@ public class ForgingHitPacket {
                 var level = player.level();
                 if (level.getBlockEntity(pos) instanceof AnvilBlockEntity anvilBE) {
                     anvilBE.handleForgingHit(player, hammer, offsetX, offsetZ);
+                    com.lwx.forgeborneodyssey.util.PlayerStrengthManager.rewardForgingTraining(player);
                 }
             }
         });

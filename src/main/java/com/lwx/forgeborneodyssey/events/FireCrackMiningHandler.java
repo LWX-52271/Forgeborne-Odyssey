@@ -979,6 +979,9 @@ public class FireCrackMiningHandler {
 
         if (!isStressTracked(block)) return false;
 
+        float currentStress = ForgeborneAPI.getStress(level, pos);
+        if (currentStress <= 0f) return false;
+
         if (level.isClientSide) {
             player.swing(InteractionHand.MAIN_HAND, true);
             if (event instanceof PlayerInteractEvent.LeftClickBlock leftEvent) {

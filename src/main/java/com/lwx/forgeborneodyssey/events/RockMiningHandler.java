@@ -97,6 +97,7 @@ public class RockMiningHandler {
         PROTECTED_BLOCKS.add(ModBlocks.QUARTZ_VEIN_BLOCK.get());
         PROTECTED_BLOCKS.add(ModBlocks.SERICITIZED_ROCK_BLOCK.get());
         PROTECTED_BLOCKS.add(ModBlocks.CHLORITE_ROCK_BLOCK.get());
+        PROTECTED_BLOCKS.add(ModBlocks.CASSITERITE_PLACER_BLOCK.get());
         
         PROTECTED_BLOCKS.add(Blocks.STONE);
         PROTECTED_BLOCKS.add(Blocks.GRANITE);
@@ -153,13 +154,15 @@ public class RockMiningHandler {
             return;
         }
 
-        // 检查手持物品：只有空手或持有效工具时才能触发应力增加，持其他物品时按原版逻辑处理
+        // 检查手持物品：只有空手、石镐、石锤、铲子（仅限砂锡矿）时才能触发应力增加
         ItemStack heldItem = player.getMainHandItem();
+        boolean isFlintShovel = !heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.FLINT_SHOVEL.get());
         if (!heldItem.isEmpty()
                 && !heldItem.is(Items.STONE_PICKAXE)
                 && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.STONE_HAMMER.get())
                 && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.COBBLESTONE_HAMMER.get())
-                && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.HANDLE_STONE_HAMMER.get())) {
+                && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.HANDLE_STONE_HAMMER.get())
+                && !isFlintShovel) {
             return;
         }
         
@@ -171,6 +174,11 @@ public class RockMiningHandler {
         boolean isVanillaRock = PROTECTED_BLOCKS.contains(block);
         
         if (!isModStressBlock && !isVanillaRock) {
+            return;
+        }
+        
+        // 燧石铲只能用于砂锡矿，对其他岩石无效
+        if (isFlintShovel && block != ModBlocks.CASSITERITE_PLACER_BLOCK.get()) {
             return;
         }
         
@@ -224,9 +232,11 @@ public class RockMiningHandler {
         long currentTime = System.currentTimeMillis();
         UUID playerId = player.getUUID();
 
-        // 检查冷却时间（后摇硬直：0.5秒，按玩家独立追踪）
+        // 检查冷却时间（后摇硬直：0.5秒，按玩家独立追踪，受负重影响）
         long playerLastActionTime = lastActionTimeMap.getOrDefault(playerId, 0L);
-        if (currentTime - playerLastActionTime < COOLDOWN) {
+        float cooldownMultiplier = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getMiningCooldownMultiplier(player);
+        long effectiveCooldown = (long) (COOLDOWN * cooldownMultiplier);
+        if (currentTime - playerLastActionTime < effectiveCooldown) {
             return;
         }
         // 冷却校验通过，立即记录本次操作时间
@@ -267,6 +277,8 @@ public class RockMiningHandler {
             increaseAmount = 4.0f;
         } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.HANDLE_STONE_HAMMER.get())) {
             increaseAmount = 8.0f;
+        } else if (isFlintShovel) {
+            increaseAmount = 5.0f;
         }
         
         // 火裂采矿淬火加成：淬火后的岩石更脆弱，工具敲击应力 ×1.5
@@ -278,8 +290,9 @@ public class RockMiningHandler {
         // 获取最大应力值
         float maxStress = ForgeborneAPI.getMaxStress(block);
         
-        // 计算新的应力值（不能超过最大值）
-        float newStress = Math.min(maxStress, currentStress + increaseAmount);
+        // 计算新的应力值（不能超过最大值，受负重影响）
+        float stressMultiplier = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getMiningStressMultiplier(player);
+        float newStress = Math.min(maxStress, currentStress + increaseAmount * stressMultiplier);
         
         // 消耗镐子耐久
         if (!heldItem.isEmpty() && heldItem.isDamageableItem()) {
@@ -288,11 +301,13 @@ public class RockMiningHandler {
             });
         }
         
-        // 消耗玩家饱食度（每次敲击消耗0.5点饥饿值）
-        player.causeFoodExhaustion(0.5f);
+        // 消耗玩家饱食度
+        player.causeFoodExhaustion(0.06f);
         
         // 更新应力值
         ForgeborneAPI.setStress(level, pos, newStress);
+        
+        com.lwx.forgeborneodyssey.util.PlayerStrengthManager.rewardRockMiningTraining(player);
         
         // 发送应力值同步数据包到所有客户端（仅岩石和矿石）
         if ((isModStressBlock || isVanillaRock) && !level.isClientSide) {
@@ -370,23 +385,31 @@ public class RockMiningHandler {
         int damageStage = (int)((newStress / maxStress) * 10);
         damageStage = Math.min(9, Math.max(0, damageStage));
         
+        boolean isSandBlock = block == ModBlocks.CASSITERITE_PLACER_BLOCK.get() && (isFlintShovel || heldItem.isEmpty());
+        
         // 检查是否达到最大应力值，如果是则破坏方块
         if (newStress >= maxStress) {
-            // 播放方块碎裂音效
-            level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_BREAK.get(), net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
+            // 播放方块碎裂音效：砂锡矿用沙声，镐/锤用岩石声
+            if (isSandBlock) {
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.SAND_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
+            } else {
+                level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_BREAK.get(), net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
+            }
             
-            // 随机播放一个裂纹破碎音效
-            int crackSoundIndex = RANDOM.nextInt(3) + 1; // 1, 2, or 3
-            switch (crackSoundIndex) {
-                case 1:
-                    level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_CRACK_1.get(), net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 0.9f + RANDOM.nextFloat() * 0.2f);
-                    break;
-                case 2:
-                    level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_CRACK_2.get(), net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 0.9f + RANDOM.nextFloat() * 0.2f);
-                    break;
-                case 3:
-                    level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_CRACK_3.get(), net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 0.9f + RANDOM.nextFloat() * 0.2f);
-                    break;
+            // 随机播放一个裂纹破碎音效（砂锡矿不播裂纹声）
+            if (!isSandBlock) {
+                int crackSoundIndex = RANDOM.nextInt(3) + 1; // 1, 2, or 3
+                switch (crackSoundIndex) {
+                    case 1:
+                        level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_CRACK_1.get(), net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 0.9f + RANDOM.nextFloat() * 0.2f);
+                        break;
+                    case 2:
+                        level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_CRACK_2.get(), net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 0.9f + RANDOM.nextFloat() * 0.2f);
+                        break;
+                    case 3:
+                        level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_CRACK_3.get(), net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 0.9f + RANDOM.nextFloat() * 0.2f);
+                        break;
+                }
             }
             
             // 播放破坏音效和粒子效果
@@ -407,8 +430,12 @@ public class RockMiningHandler {
             return;
         }
         
-        // 播放音效：镐击声
-        level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_PICK_HIT.get(), net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
+        // 播放音效：砂锡矿用沙声（铲子或空手），镐/锤用敲击声
+        if (isSandBlock) {
+            level.playSound(null, pos, net.minecraft.sounds.SoundEvents.SAND_BREAK, net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
+        } else {
+            level.playSound(null, pos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_PICK_HIT.get(), net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
+        }
     }
     
     @SubscribeEvent(priority = EventPriority.HIGH)

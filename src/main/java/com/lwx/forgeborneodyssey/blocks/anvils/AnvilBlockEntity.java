@@ -2,17 +2,24 @@ package com.lwx.forgeborneodyssey.blocks.anvils;
 
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import com.lwx.forgeborneodyssey.world.OreQuality;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 石砧方块实体——极简实现，仅存储一个物品并保证客户端同步
@@ -30,6 +37,39 @@ public class AnvilBlockEntity extends BlockEntity {
     
     // 渲染拉伸效果相关数据（客户端）
     private float stretchFactor = 0.0f; // 拉伸因子，随每次敲击累积
+    
+    // 矿石破碎相关数据
+    private int oreCrushCount = 0; // 矿石破碎敲击次数
+    private int oreCrushRequired = 0; // 矿石破碎所需总次数（1-2，随机）
+    
+    // 矿碎块 -> 对应颗粒的映射表（不含锡）
+    private static final Map<Item, Item> ORE_CHUNK_TO_GRAIN = new HashMap<>();
+    
+    static {
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_CHALCOPYRITE.get(), ModItems.CHALCOPYRITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_BORNITE.get(), ModItems.BORNITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_CHALCOCITE.get(), ModItems.CHALCOCITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_COVELLITE.get(), ModItems.COVELLITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_CUBANITE.get(), ModItems.CUBANITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_MALACHITE.get(), ModItems.MALACHITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_AZURITE.get(), ModItems.AZURITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_CUPRITE.get(), ModItems.CUPRITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_TENORITE.get(), ModItems.TENORITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_CHALCANTHITE.get(), ModItems.CHALCANTHITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_BROCHANTITE.get(), ModItems.BROCHANTITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_MIXED_COPPER.get(), ModItems.MIXED_COPPER_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_NATIVE_COPPER.get(), ModItems.NATIVE_COPPER_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_TETRAHEDRITE.get(), ModItems.TETRAHEDRITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_TENNANTITE.get(), ModItems.TENNANTITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_TORBERNITE.get(), ModItems.TORBERNITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_CUPROVANADITE.get(), ModItems.CUPROVANADITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_CHRYSOCOLLA.get(), ModItems.CHRYSOCOLLA_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_MAGNETITE.get(), ModItems.MAGNETITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_SCHEELITE.get(), ModItems.SCHEELITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_GALENA.get(), ModItems.GALENA_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_SPHALERITE.get(), ModItems.SPHALERITE_GRAIN.get());
+        ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_MOLYBDENITE.get(), ModItems.MOLYBDENITE_GRAIN.get());
+    }
 
     public AnvilBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.ANVIL_BLOCK_ENTITY.get(), pos, state);
@@ -43,7 +83,7 @@ public class AnvilBlockEntity extends BlockEntity {
 
     /**
      * 检查是否可以放置该物品
-     * 允许放置所有与锻打有关的金属物品：
+     * 允许放置所有与锻打有关的金属物品，以及矿碎块（不含锡石/含锡砂土）：
      * - 胚料：金坯料、银坯料、铜坯料、软化铜坯料
      * - 软化金属条：软化铜条
      * - 金属片：金片、银片、铜片
@@ -58,12 +98,18 @@ public class AnvilBlockEntity extends BlockEntity {
      * - 打制武器：打制铜剑、打制银剑、打制金剑
      * - 打制工具：打制铜斧、打制银斧、打制金斧
      * - 铜鱼竿
+     * - 矿碎块（18种铜矿 + 5种矽卡岩矿，不含锡石/含锡砂土）
      * 
      * 注意：金属碎片（copper/silver/gold fragment）不允许放置在石砧上，因为它们无法再次锻造
      */
     public boolean canPlaceItem(ItemStack stack) {
         if (stack.isEmpty()) {
             return false;
+        }
+        
+        // 允许放置矿碎块（不含锡石/含锡砂土）
+        if (isRawOreChunk(stack)) {
+            return true;
         }
         
         // 允许放置所有与锻打有关的金属物品
@@ -111,6 +157,13 @@ public class AnvilBlockEntity extends BlockEntity {
                stack.is(ModItems.WROUGHT_GOLD_AXE.get()) ||
                stack.is(ModItems.COPPER_FISHING_ROD.get());
     }
+    
+    /**
+     * 检查物品是否为矿碎块（不含锡石/含锡砂土）
+     */
+    private boolean isRawOreChunk(ItemStack stack) {
+        return ORE_CHUNK_TO_GRAIN.containsKey(stack.getItem());
+    }
 
     public void setStoredItem(ItemStack stack) {
         // 检查是否为相同类型的物品，如果是则保留进度
@@ -125,6 +178,8 @@ public class AnvilBlockEntity extends BlockEntity {
             this.hitCount = 0; // 重置敲击计数
             this.carveCount = 0; // 重置雕刻计数
             this.stretchFactor = 0.0f; // 重置拉伸因子
+            this.oreCrushCount = 0; // 重置矿石破碎计数
+            this.oreCrushRequired = 0; // 重置矿石破碎所需次数
         }
         
         setChanged();
@@ -140,6 +195,12 @@ public class AnvilBlockEntity extends BlockEntity {
     public void handleForgingHit(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
         if (level == null || level.isClientSide) return;
         if (storedItem.isEmpty()) return;
+        
+        // 检查是否为矿碎块，进行矿石破碎
+        if (isRawOreChunk(storedItem)) {
+            handleOreCrushing(player, hammer, offsetX, offsetZ);
+            return;
+        }
         
         // 检查是否为可锻打的物品（金属胚料、软化胚料、金属弯片或金属槽片）
         boolean canForge = storedItem.is(ModItems.COPPER_BILLET.get()) ||
@@ -179,16 +240,30 @@ public class AnvilBlockEntity extends BlockEntity {
         }
         
         // 根据锤子类型消耗不同的饱食度
-        float exhaustionAmount = 0.8f; // 默认值
+        float exhaustionAmount = 0.3f; // 默认值
         if (hammer.is(ModItems.HANDLE_STONE_HAMMER.get())) {
-            exhaustionAmount = 0.6f; // 带柄石锤更高效，消耗较少
+            exhaustionAmount = 0.2f; // 带柄石锤更高效，消耗较少
         } else if (hammer.is(ModItems.COBBLESTONE_HAMMER.get())) {
-            exhaustionAmount = 1.0f; // 圆石锤效率较低，消耗较多
+            exhaustionAmount = 0.4f; // 圆石锤效率较低，消耗较多
         }
         player.causeFoodExhaustion(exhaustionAmount);
         
-        // 每次敲击增加计数
+        // 每次敲击增加计数（受负重影响，负重过重时可能白敲）
         this.hitCount++;
+        float forgeEfficiency = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getForgingEfficiencyMultiplier(player);
+        boolean effectiveHit = level.random.nextFloat() < forgeEfficiency;
+        if (!effectiveHit) {
+            this.hitCount--;
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.ineffective_hit"),
+                true
+            );
+            setChanged();
+            if (level != null) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+            return;
+        }
         
         // 每次敲击增加拉伸因子，最多累积到1.5
         this.stretchFactor = Math.min(this.stretchFactor + 0.15f, 1.5f);
@@ -249,6 +324,203 @@ public class AnvilBlockEntity extends BlockEntity {
                 true
             );
         }
+    }
+    
+    /**
+     * 处理矿石破碎敲击
+     * 模拟夏朝人用石锤在石砧上手工破碎矿石的完整流程：
+     * - 品质越高的矿石越致密，需要更多锤击才能碎裂
+     * - 破碎过程中有粉尘损耗（约10%概率损失物料）
+     * - 手工劳作消耗大量饱食度
+     * - 最终分离出矿物颗粒（有用）和掺和料（废石）
+     */
+    private void handleOreCrushing(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
+        if (level == null || level.isClientSide) return;
+        if (storedItem.isEmpty()) return;
+        
+        // 首次敲击时根据矿石品质确定所需总次数
+        if (oreCrushRequired <= 0) {
+            CompoundTag tag = storedItem.getTag();
+            float quality = 0.5f;
+            if (tag != null && tag.contains("ore_quality")) {
+                quality = tag.getFloat("ore_quality");
+            }
+            OreQuality oreQuality = OreQuality.fromValue(quality);
+            oreCrushRequired = switch (oreQuality) {
+                case FRACTURED -> 2;                                  // 已碎裂，一敲即碎
+                case ROUGH     -> 2 + level.random.nextInt(2);        // 2-3
+                case INTACT    -> 3;                                   // 完整，需3锤
+                case DENSE     -> 3 + level.random.nextInt(2);        // 3-4，致密难碎
+                case PERFECT   -> 3 + level.random.nextInt(2);        // 3-4，极难碎裂
+                default        -> 3;
+            };
+        }
+        
+        // 手工碎石消耗饱食度（夏朝纯人力劳作，消耗较大）
+        float exhaustionAmount;
+        if (hammer.is(ModItems.HANDLE_STONE_HAMMER.get())) {
+            exhaustionAmount = 0.25f;
+        } else if (hammer.is(ModItems.COBBLESTONE_HAMMER.get())) {
+            exhaustionAmount = 0.35f;
+        } else {
+            exhaustionAmount = 0.30f;
+        }
+        player.causeFoodExhaustion(exhaustionAmount);
+        
+        // 受负重影响，手臂太累时可能无效敲击
+        this.oreCrushCount++;
+        float forgeEfficiency = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getForgingEfficiencyMultiplier(player);
+        boolean effectiveHit = level.random.nextFloat() < forgeEfficiency;
+        if (!effectiveHit) {
+            this.oreCrushCount--;
+            player.displayClientMessage(
+                Component.translatable("message.forgeborneodyssey.anvil.ineffective_hit"),
+                true
+            );
+            setChanged();
+            if (level != null) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+            return;
+        }
+        
+        // 播放石锤敲击音效，音调随进度升高（模拟矿石逐渐碎裂）
+        float pitch = 0.85f + 0.05f * oreCrushCount + level.random.nextFloat() * 0.1f;
+        level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.STONE_HIT,
+            net.minecraft.sounds.SoundSource.BLOCKS, 0.9f, pitch);
+        
+        // 矿碎块自身贴图的碎裂粒子，粒子数量随进度递增
+        int particleCount = 5 + oreCrushCount * 3;
+        ((ServerLevel) level).sendParticles(
+            new ItemParticleOption(ParticleTypes.ITEM, storedItem),
+            worldPosition.getX() + 0.5D + offsetX * 0.5D,
+            worldPosition.getY() + 1.1D,
+            worldPosition.getZ() + 0.5D + offsetZ * 0.5D,
+            particleCount,
+            0.15D, 0.15D, 0.15D,
+            0.05D
+        );
+        
+        // 检查是否达到所需次数
+        if (this.oreCrushCount >= this.oreCrushRequired) {
+            crushOreChunk(player);
+        } else {
+            setChanged();
+            if (level != null) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+            player.displayClientMessage(
+                Component.translatable("message.forgeborneodyssey.anvil.ore_crushing_progress", 
+                    this.oreCrushCount, this.oreCrushRequired),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 矿石破碎完成：碎裂成掺和料和对应矿物颗粒
+     * 
+     * 夏朝手工碎石产出模型：
+     * - 品质决定矿物含量，品质越高颗粒越多、废石越少
+     * - 纯度影响颗粒的品质标签，但不影响数量
+     * - 手工破碎有粉尘损耗（约10%概率损失一个颗粒或掺和料）
+     * - 总体产废率远高于有用矿物产出率，符合原始工艺特征
+     */
+    private void crushOreChunk(ServerPlayer player) {
+        if (level == null || storedItem.isEmpty()) return;
+        
+        CompoundTag tag = storedItem.getTag();
+        float quality = 0.5f;
+        float purity = 0.5f;
+        if (tag != null) {
+            if (tag.contains("ore_quality")) {
+                quality = tag.getFloat("ore_quality");
+            }
+            if (tag.contains("ore_purity")) {
+                purity = tag.getFloat("ore_purity");
+            }
+        }
+        
+        Item grainItem = ORE_CHUNK_TO_GRAIN.get(storedItem.getItem());
+        if (grainItem == null) return;
+        
+        // 使用 OreQuality 枚举的随机倍率（含品质等级内的随机波动）
+        OreQuality oreQuality = OreQuality.fromValue(quality);
+        float qualityMultiplier = oreQuality.getRandomMultiplier(level.random);
+        // 品质倍率范围：碎裂 0.70~0.85 / 粗糙 0.85~0.95 / 完好 0.95~1.10 / 致密 1.10~1.25 / 完美 1.25~1.50
+        
+        // 颗粒数量：品质倍率 × 基础随机(1~2)，至少1个
+        int grainCount = Math.max(1, Math.round(qualityMultiplier * (1 + level.random.nextInt(2))));
+        
+        // 掺和料数量：夏朝手工碎石废石率极高
+        // 废石倍率 = 2.5 - 品质倍率，范围 1.00~1.80
+        // 基础废石 2~4，乘以废石倍率后范围约 2~7
+        float wasteMultiplier = 2.5f - qualityMultiplier;
+        int temperCount = Math.max(1, Math.round(wasteMultiplier * (2 + level.random.nextInt(3))));
+        
+        // 粉尘损耗：约10%概率损失一个产出物（优先损失掺和料）
+        if (level.random.nextFloat() < 0.10f) {
+            if (temperCount > 1) {
+                temperCount--;
+            } else if (grainCount > 1) {
+                grainCount--;
+            }
+        }
+        
+        // 播放碎裂音效，音调随品质升高（品质越高碎裂声越清脆）
+        float breakPitch = 0.75f + quality * 0.5f + level.random.nextFloat() * 0.15f;
+        level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.STONE_BREAK,
+            net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, breakPitch);
+        
+        // 生成矿物颗粒——继承原矿的纯度和品质
+        for (int i = 0; i < grainCount; i++) {
+            ItemStack grainStack = new ItemStack(grainItem);
+            CompoundTag grainTag = grainStack.getOrCreateTag();
+            grainTag.putFloat("ore_purity", purity);
+            grainTag.putFloat("ore_quality", quality);
+            
+            net.minecraft.world.entity.item.ItemEntity grainEntity = 
+                new net.minecraft.world.entity.item.ItemEntity(
+                    level,
+                    worldPosition.getX() + 0.5D + (level.random.nextDouble() - 0.5) * 0.7,
+                    worldPosition.getY() + 1.0D,
+                    worldPosition.getZ() + 0.5D + (level.random.nextDouble() - 0.5) * 0.7,
+                    grainStack
+                );
+            grainEntity.setDefaultPickUpDelay();
+            level.addFreshEntity(grainEntity);
+        }
+        
+        // 生成掺和料（废石）——继承原矿品质，无纯度
+        for (int i = 0; i < temperCount; i++) {
+            ItemStack temperStack = new ItemStack(ModItems.TEMPER_GROG.get());
+            CompoundTag temperTag = temperStack.getOrCreateTag();
+            temperTag.putFloat("ore_quality", quality);
+            
+            net.minecraft.world.entity.item.ItemEntity temperEntity = 
+                new net.minecraft.world.entity.item.ItemEntity(
+                    level,
+                    worldPosition.getX() + 0.5D + (level.random.nextDouble() - 0.5) * 0.7,
+                    worldPosition.getY() + 1.0D,
+                    worldPosition.getZ() + 0.5D + (level.random.nextDouble() - 0.5) * 0.7,
+                    temperStack
+                );
+            temperEntity.setDefaultPickUpDelay();
+            level.addFreshEntity(temperEntity);
+        }
+        
+        // 清空石砧
+        this.storedItem = ItemStack.EMPTY;
+        this.oreCrushCount = 0;
+        this.oreCrushRequired = 0;
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        
+        player.displayClientMessage(
+            Component.translatable("message.forgeborneodyssey.anvil.ore_crushing_complete", 
+                grainCount, temperCount),
+            true
+        );
     }
     
     /**
@@ -399,8 +671,22 @@ public class AnvilBlockEntity extends BlockEntity {
             return;
         }
         
-        // 每次雕刻增加计数
+        // 每次雕刻增加计数（受负重影响）
         this.carveCount++;
+        float forgeEfficiency = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getForgingEfficiencyMultiplier(player);
+        boolean effectiveHit = level.random.nextFloat() < forgeEfficiency;
+        if (!effectiveHit) {
+            this.carveCount--;
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.ineffective_hit"),
+                true
+            );
+            setChanged();
+            if (level != null) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+            return;
+        }
         
         // 播放雕刻音效和粒子效果
         com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
@@ -803,6 +1089,8 @@ public class AnvilBlockEntity extends BlockEntity {
         tag.putInt("HitCount", hitCount);
         tag.putInt("CarveCount", carveCount);
         tag.putFloat("StretchFactor", stretchFactor);
+        tag.putInt("OreCrushCount", oreCrushCount);
+        tag.putInt("OreCrushRequired", oreCrushRequired);
     }
 
     @Override
@@ -812,6 +1100,8 @@ public class AnvilBlockEntity extends BlockEntity {
         hitCount = tag.getInt("HitCount");
         carveCount = tag.getInt("CarveCount");
         stretchFactor = tag.getFloat("StretchFactor");
+        oreCrushCount = tag.getInt("OreCrushCount");
+        oreCrushRequired = tag.getInt("OreCrushRequired");
     }
 
     @Nullable

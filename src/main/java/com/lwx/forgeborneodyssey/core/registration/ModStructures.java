@@ -1,6 +1,8 @@
 package com.lwx.forgeborneodyssey.core.registration;
 
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
+import com.lwx.forgeborneodyssey.world.CassiteritePlacerPiece;
+import com.lwx.forgeborneodyssey.world.CassiteritePlacerStructure;
 import com.lwx.forgeborneodyssey.world.OpenPitMineRuinPiece;
 import com.lwx.forgeborneodyssey.world.OpenPitMineRuinStructure;
 import com.lwx.forgeborneodyssey.world.ShaftMineRuinPiece;
@@ -44,4 +46,12 @@ public class ModStructures {
     public static final RegistryObject<StructurePieceType> SKARN_DEPOSIT_PIECE =
             STRUCTURE_PIECE_TYPES.register("skarn_deposit_piece",
                     () -> SkarnDepositPiece::new);
+
+    public static final RegistryObject<StructureType<CassiteritePlacerStructure>> CASSITERITE_PLACER =
+            STRUCTURE_TYPES.register("cassiterite_placer",
+                    () -> () -> CassiteritePlacerStructure.CODEC);
+
+    public static final RegistryObject<StructurePieceType> CASSITERITE_PLACER_PIECE =
+            STRUCTURE_PIECE_TYPES.register("cassiterite_placer_piece",
+                    () -> (context, tag) -> new CassiteritePlacerPiece(tag));
 }

@@ -20,6 +20,7 @@ import com.lwx.forgeborneodyssey.items.metalaxes.GoldAxeItem;
 import com.lwx.forgeborneodyssey.items.armor.GoldPinArmorItem;
 import com.lwx.forgeborneodyssey.items.armor.SilverPinArmorItem;
 import com.lwx.forgeborneodyssey.items.armor.CopperPinArmorItem;
+import com.lwx.forgeborneodyssey.items.armor.GrassArmorItem;
 import com.lwx.forgeborneodyssey.items.softmetalbillets.SoftCopperBilletItem;
 import com.lwx.forgeborneodyssey.items.softmetalstrips.SoftCopperStripItem;
 import com.lwx.forgeborneodyssey.items.tools.CobblestoneHammerItem;
@@ -34,9 +35,14 @@ import com.lwx.forgeborneodyssey.items.tools.WoodenTongsItem;
 import com.lwx.forgeborneodyssey.items.tools.WroughtCopperAxeItem;
 import com.lwx.forgeborneodyssey.items.tools.WroughtSilverAxeItem;
 import com.lwx.forgeborneodyssey.items.tools.WroughtGoldAxeItem;
+import com.lwx.forgeborneodyssey.items.FiberRopeItem;
+import com.lwx.forgeborneodyssey.items.TutorialGuideBookItem;
 import com.lwx.forgeborneodyssey.items.tools.CopperFishingRodItem;
 import com.lwx.forgeborneodyssey.items.weapons.MetalKnifeItem;
 import com.lwx.forgeborneodyssey.items.weapons.MetalSwordBladeItem;
+import com.lwx.forgeborneodyssey.items.weapons.SlingItem;
+import com.lwx.forgeborneodyssey.items.weapons.StoneAxeItem;
+import com.lwx.forgeborneodyssey.items.weapons.StoneSpearItem;
 import com.lwx.forgeborneodyssey.items.weapons.WroughtMetalSwordItem;
 import com.lwx.forgeborneodyssey.items.beads.GoldBeadItem;
 import com.lwx.forgeborneodyssey.items.beads.SilverBeadItem;
@@ -51,6 +57,7 @@ import com.lwx.forgeborneodyssey.items.fragments.SilverFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.GoldFragmentItem;
 // import com.lwx.forgeborneodyssey.items.PitKilnGuideBookItem; // 暂由Patchouli自动生成
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
@@ -124,6 +131,7 @@ public class ModItems {
     public static final RegistryObject<Item> GALENA_ORE_ITEM = createBlockItem("galena_ore", ModBlocks.GALENA_ORE);
     public static final RegistryObject<Item> SPHALERITE_ORE_ITEM = createBlockItem("sphalerite_ore", ModBlocks.SPHALERITE_ORE);
     public static final RegistryObject<Item> MOLYBDENITE_ORE_ITEM = createBlockItem("molybdenite_ore", ModBlocks.MOLYBDENITE_ORE);
+    public static final RegistryObject<Item> CASSITERITE_PLACER_BLOCK_ITEM = createBlockItem("cassiterite_placer_block", ModBlocks.CASSITERITE_PLACER_BLOCK);
 
     // 自然金属块对应的物品
     public static final RegistryObject<Item> NATURAL_GOLD_BLOCK_ITEM = createBlockItem("natural_gold_block", ModBlocks.NATURAL_GOLD_BLOCK);
@@ -194,6 +202,19 @@ public class ModItems {
     public static final RegistryObject<Item> WROUGHT_SILVER_AXE = ITEMS.register("wrought_silver_axe", WroughtSilverAxeItem::new);
     public static final RegistryObject<Item> WROUGHT_GOLD_AXE = ITEMS.register("wrought_gold_axe", WroughtGoldAxeItem::new);
 
+    // 石器武器
+    public static final RegistryObject<Item> STONE_SPEAR = ITEMS.register("stone_spear", StoneSpearItem::new);
+    public static final RegistryObject<Item> STONE_AXE = ITEMS.register("stone_axe", StoneAxeItem::new);
+    public static final RegistryObject<Item> SLING = ITEMS.register("sling", SlingItem::new);
+
+    // 草编护甲
+    public static final RegistryObject<Item> GRASS_HELMET = ITEMS.register("grass_helmet",
+            () -> new GrassArmorItem(ArmorItem.Type.HELMET));
+    public static final RegistryObject<Item> GRASS_CHESTPLATE = ITEMS.register("grass_chestplate",
+            () -> new GrassArmorItem(ArmorItem.Type.CHESTPLATE));
+    public static final RegistryObject<Item> GRASS_LEGGINGS = ITEMS.register("grass_leggings",
+            () -> new GrassArmorItem(ArmorItem.Type.LEGGINGS));
+
     // 材料物品
     public static final RegistryObject<Item> GRAVEL = ITEMS.register("gravel", GravelItem::new);
 
@@ -230,7 +251,7 @@ public class ModItems {
     // 灰烬堆物品
     public static final RegistryObject<Item> KILN_ASH_PILE_ITEM = ITEMS.register("kiln_ash_pile", () -> new BlockItem(ModBlocks.KILN_ASH_PILE.get(), new Item.Properties()));
 
-    // 晾坯架物品
+    // 地表圆石晾坯架物品
     public static final RegistryObject<Item> DRYING_RACK_ITEM = ITEMS.register("drying_rack", () -> new BlockItem(ModBlocks.DRYING_RACK.get(), new Item.Properties()));
 
     // 饰针胸甲物品（可装备形式）
@@ -288,14 +309,43 @@ public class ModItems {
     public static final RegistryObject<Item> RAW_CUPROVANADITE = simpleItem("raw_cuprovanadite");
     public static final RegistryObject<Item> RAW_CHRYSOCOLLA = simpleItem("raw_chrysocolla");
 
-    // 矽卡岩型矿床原矿碎块（5种）
+    // 矽卡岩型矿床原矿碎块（6种）
     public static final RegistryObject<Item> RAW_MAGNETITE = simpleItem("raw_magnetite");
     public static final RegistryObject<Item> RAW_SCHEELITE = simpleItem("raw_scheelite");
     public static final RegistryObject<Item> RAW_GALENA = simpleItem("raw_galena");
     public static final RegistryObject<Item> RAW_SPHALERITE = simpleItem("raw_sphalerite");
     public static final RegistryObject<Item> RAW_MOLYBDENITE = simpleItem("raw_molybdenite");
+    public static final RegistryObject<Item> RAW_CASSITERITE = simpleItem("raw_cassiterite");
+    public static final RegistryObject<Item> RAW_CASSITERITE_SAND = simpleItem("raw_cassiterite_sand");
 
-    // 岩石碎片（9种）
+    // 铜矿石颗粒（18种）
+    public static final RegistryObject<Item> CHALCOPYRITE_GRAIN = simpleItem("chalcopyrite_grain");
+    public static final RegistryObject<Item> BORNITE_GRAIN = simpleItem("bornite_grain");
+    public static final RegistryObject<Item> CHALCOCITE_GRAIN = simpleItem("chalcocite_grain");
+    public static final RegistryObject<Item> COVELLITE_GRAIN = simpleItem("covellite_grain");
+    public static final RegistryObject<Item> CUBANITE_GRAIN = simpleItem("cubanite_grain");
+    public static final RegistryObject<Item> MALACHITE_GRAIN = simpleItem("malachite_grain");
+    public static final RegistryObject<Item> AZURITE_GRAIN = simpleItem("azurite_grain");
+    public static final RegistryObject<Item> CUPRITE_GRAIN = simpleItem("cuprite_grain");
+    public static final RegistryObject<Item> TENORITE_GRAIN = simpleItem("tenorite_grain");
+    public static final RegistryObject<Item> CHALCANTHITE_GRAIN = simpleItem("chalcanthite_grain");
+    public static final RegistryObject<Item> BROCHANTITE_GRAIN = simpleItem("brochantite_grain");
+    public static final RegistryObject<Item> MIXED_COPPER_GRAIN = simpleItem("mixed_copper_grain");
+    public static final RegistryObject<Item> NATIVE_COPPER_GRAIN = simpleItem("native_copper_grain");
+    public static final RegistryObject<Item> TETRAHEDRITE_GRAIN = simpleItem("tetrahedrite_grain");
+    public static final RegistryObject<Item> TENNANTITE_GRAIN = simpleItem("tennantite_grain");
+    public static final RegistryObject<Item> TORBERNITE_GRAIN = simpleItem("torbernite_grain");
+    public static final RegistryObject<Item> CUPROVANADITE_GRAIN = simpleItem("cuprovanadite_grain");
+    public static final RegistryObject<Item> CHRYSOCOLLA_GRAIN = simpleItem("chrysocolla_grain");
+
+    // 矽卡岩型矿床原矿颗粒（5种）
+    public static final RegistryObject<Item> MAGNETITE_GRAIN = simpleItem("magnetite_grain");
+    public static final RegistryObject<Item> SCHEELITE_GRAIN = simpleItem("scheelite_grain");
+    public static final RegistryObject<Item> GALENA_GRAIN = simpleItem("galena_grain");
+    public static final RegistryObject<Item> SPHALERITE_GRAIN = simpleItem("sphalerite_grain");
+    public static final RegistryObject<Item> MOLYBDENITE_GRAIN = simpleItem("molybdenite_grain");
+
+    // 岩石碎片（10种）
     public static final RegistryObject<Item> SHALE_RUBBLE = simpleItem("shale_rubble");
     public static final RegistryObject<Item> SANDSTONE_RUBBLE = simpleItem("sandstone_rubble");
     public static final RegistryObject<Item> LIMESTONE_RUBBLE = simpleItem("limestone_rubble");
@@ -305,6 +355,7 @@ public class ModItems {
     public static final RegistryObject<Item> QUARTZ_VEIN_RUBBLE = simpleItem("quartz_vein_rubble");
     public static final RegistryObject<Item> SERICITIZED_RUBBLE = simpleItem("sericitized_rubble");
     public static final RegistryObject<Item> CHLORITE_RUBBLE = simpleItem("chlorite_rubble");
+    
 
     // 金属针物品
     public static final RegistryObject<Item> COPPER_PIN = ITEMS.register("copper_pin", CopperPinItem::new);
@@ -334,6 +385,9 @@ public class ModItems {
     // 铜鱼竿物品
     public static final RegistryObject<Item> COPPER_FISHING_ROD = ITEMS.register("copper_fishing_rod", CopperFishingRodItem::new);
 
+    // 新手教程书
+    public static final RegistryObject<Item> TUTORIAL_GUIDE_BOOK = ITEMS.register("tutorial_guide_book", TutorialGuideBookItem::new);
+
     // 冶锻入门手册
     public static final RegistryObject<Item> FORGEBORNE_GUIDE_BOOK = ITEMS.register("forgeborne_guide_book", ForgeborneGuideBookItem::new);
 
@@ -347,6 +401,7 @@ public class ModItems {
     public static final RegistryObject<Item> RAW_CLAY = ITEMS.register("raw_clay", RawClayItem::new);
     public static final RegistryObject<Item> TEMPER_GROG = ITEMS.register("temper_grog", TemperGrogItem::new);
     public static final RegistryObject<Item> GRASS_FIBER = ITEMS.register("grass_fiber", GrassFiberItem::new);
+    public static final RegistryObject<Item> FIBER_ROPE = ITEMS.register("fiber_rope", FiberRopeItem::new);
     public static final RegistryObject<Item> RICE_HUSK = ITEMS.register("rice_husk",
         () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.rice_husk.tooltip"));
 

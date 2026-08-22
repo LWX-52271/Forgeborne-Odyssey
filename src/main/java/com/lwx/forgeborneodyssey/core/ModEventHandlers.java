@@ -10,14 +10,23 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.TallGrassBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
@@ -26,13 +35,22 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -280,6 +298,30 @@ public class ModEventHandlers {
     }
     
     /**
+     * 玩家首次登录时赠送教程书
+     */
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+
+        var data = player.getPersistentData();
+        String key = ForgeborneOdyssey.MOD_ID + ":tutorial_book_received";
+
+        if (data.getBoolean(key)) {
+            return;
+        }
+
+        ItemStack book = new ItemStack(ModItems.TUTORIAL_GUIDE_BOOK.get());
+        if (!player.getInventory().add(book)) {
+            player.drop(book, false);
+        }
+
+        data.putBoolean(key, true);
+    }
+
+    /**
      * 玩家登出时清理冷却数据，防止内存泄漏
      */
     @SubscribeEvent
@@ -503,4 +545,113 @@ public class ModEventHandlers {
             }
         }
     }
-}
+
+    /**
+     * 判断是否为原版工具（镐、斧、铲、锄）
+     */
+    private static boolean isVanillaTool(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return false;
+        Item item = stack.getItem();
+        if (item == null) return false;
+        ResourceLocation id = ForgeRegistries.ITEMS.getKey(item);
+        if (id == null || !id.getNamespace().equals("minecraft")) return false;
+        return item instanceof PickaxeItem || item instanceof AxeItem 
+            || item instanceof ShovelItem || item instanceof HoeItem;
+    }
+
+    /**
+     * 禁用原版工具的方块挖掘功能
+     */
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+        if (event.getLevel().isClientSide()) return;
+        Player player = event.getPlayer();
+        if (player == null) return;
+        ItemStack mainHand = player.getMainHandItem();
+        if (isVanillaTool(mainHand)) {
+            event.setCanceled(true);
+        }
+    }
+
+    /**
+     * 禁用原版工具的右键交互（锄耕地、铲铲平、斧剥离等）
+     */
+    @SubscribeEvent
+    public static void onRightClickBlockVanillaTools(PlayerInteractEvent.RightClickBlock event) {
+        ItemStack held = event.getItemStack();
+        if (isVanillaTool(held)) {
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.FAIL);
+        }
+    }
+
+    /**
+     * 禁用原版工具的左键攻击实体
+     */
+    @SubscribeEvent
+    public static void onAttackEntity(PlayerInteractEvent.EntityInteract event) {
+        ItemStack held = event.getItemStack();
+        if (isVanillaTool(held)) {
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.FAIL);
+        }
+    }
+
+    /**
+     * 移除原版木炭和原版工具的合成配方
+     */
+    @SubscribeEvent
+    public static void onServerStarted(ServerStartedEvent event) {
+        try {
+            RecipeManager recipeManager = event.getServer().getRecipeManager();
+
+            Field byNameField = RecipeManager.class.getDeclaredField("byName");
+            byNameField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<ResourceLocation, Recipe<?>> byName = (Map<ResourceLocation, Recipe<?>>) byNameField.get(recipeManager);
+
+            Field recipesField = RecipeManager.class.getDeclaredField("recipes");
+            recipesField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> recipes =
+                (Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>>) recipesField.get(recipeManager);
+
+            removeRecipe(byName, recipes, new ResourceLocation("minecraft", "charcoal"));
+
+            String[] materials = {"wooden", "stone", "iron", "golden", "diamond", "netherite"};
+            String[] tools = {"_pickaxe", "_axe", "_shovel", "_hoe"};
+            int removedCount = 0;
+            for (String material : materials) {
+                for (String tool : tools) {
+                    ResourceLocation toolId = new ResourceLocation("minecraft", material + tool);
+                    if (removeRecipe(byName, recipes, toolId)) {
+                        removedCount++;
+                    }
+                    ResourceLocation smithingId = new ResourceLocation("minecraft", "smithing_" + material + tool + "_smithing");
+                    if (removeRecipe(byName, recipes, smithingId)) {
+                        removedCount++;
+                    }
+                }
+            }
+            ForgeborneOdyssey.LOGGER.info("Removed vanilla charcoal recipe and " + removedCount + " vanilla tool recipes");
+        } catch (Exception e) {
+            ForgeborneOdyssey.LOGGER.error("Failed to remove vanilla recipes", e);
+        }
+    }
+
+    private static boolean removeRecipe(Map<ResourceLocation, Recipe<?>> byName,
+                                        Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> recipes,
+                                        ResourceLocation id) {
+        boolean removed = false;
+        if (byName.remove(id) != null) {
+            removed = true;
+        }
+        for (Map<ResourceLocation, Recipe<?>> map : recipes.values()) {
+            if (map.remove(id) != null) {
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
+    }

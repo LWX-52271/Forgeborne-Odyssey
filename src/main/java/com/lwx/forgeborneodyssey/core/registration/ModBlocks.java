@@ -442,6 +442,14 @@ public class ModBlocks {
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
 
+    // 冲积砂锡矿
+    public static final RegistryObject<Block> CASSITERITE_PLACER_BLOCK = BLOCKS.register("cassiterite_placer_block", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_BROWN)
+            .strength(0.8f, 0.8f)
+            .sound(SoundType.SAND)
+            .requiresCorrectToolForDrops()));
+
     // 应力方块实体类型
     public static final RegistryObject<BlockEntityType<StressBlock.StressBlockEntity>> STRESS_BLOCK_ENTITY = BLOCK_ENTITIES.register("stress_block_entity",
         () -> {
@@ -458,7 +466,8 @@ public class ModBlocks {
                 WOLLASTONITE_SKARN_BLOCK.get(), MASSIVE_SKARN_ORE.get(),
                 EPIDOTE_SKARN_BLOCK.get(), ACTINOLITE_SKARN_BLOCK.get(), TREMOLITE_SKARN_BLOCK.get(),
                 MAGNETITE_ORE.get(), SCHEELITE_ORE.get(), GALENA_ORE.get(),
-                SPHALERITE_ORE.get(), MOLYBDENITE_ORE.get()
+                SPHALERITE_ORE.get(), MOLYBDENITE_ORE.get(),
+                CASSITERITE_PLACER_BLOCK.get()
             };
             return BlockEntityType.Builder.of(StressBlock.StressBlockEntity::new, stressBlocks).build(null);
         });

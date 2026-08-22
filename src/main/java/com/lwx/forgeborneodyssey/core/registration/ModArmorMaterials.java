@@ -41,6 +41,16 @@ public enum ModArmorMaterials implements ArmorMaterial {
         0.0f,
         0.0f,
         () -> Ingredient.EMPTY
+    ),
+    GRASS(
+        "forgeborneodyssey:grass",
+        5,
+        new int[]{1, 2, 1, 1},
+        15,
+        SoundEvents.ARMOR_EQUIP_LEATHER,
+        0.0f,
+        0.0f,
+        () -> Ingredient.of(net.minecraft.world.item.Items.WHEAT)
     );
     
     private final String name;

@@ -169,6 +169,7 @@ public abstract class AbstractAnvilBlock extends HorizontalDirectionalBlock impl
                         // 在服务端处理弯曲/槽片制作逻辑
                         if (!level.isClientSide && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
                             anvilBE.handleAxeBend(serverPlayer, heldItem);
+                            com.lwx.forgeborneodyssey.util.PlayerStrengthManager.rewardForgingTraining(player);
                             
                             // 消耗斧头耐久度
                             heldItem.hurtAndBreak(1, player, (p) -> {
@@ -197,6 +198,7 @@ public abstract class AbstractAnvilBlock extends HorizontalDirectionalBlock impl
                         // 在服务端处理凿子雕刻逻辑
                         if (!level.isClientSide && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
                             anvilBE.handleChiselCarve(serverPlayer, heldItem);
+                            com.lwx.forgeborneodyssey.util.PlayerStrengthManager.rewardForgingTraining(player);
                             
                             // 消耗凿子耐久度
                             heldItem.hurtAndBreak(1, player, (p) -> {

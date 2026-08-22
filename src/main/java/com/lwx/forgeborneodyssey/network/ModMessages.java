@@ -106,5 +106,12 @@ public class ModMessages {
             .decoder(BlowpipeBurstPacket::new)
             .consumerMainThread(BlowpipeBurstPacket::handle)
             .add();
+
+        // 力气数据同步（服务端 -> 客户端）
+        CHANNEL.messageBuilder(SyncStrengthPacket.class, messageID++)
+            .encoder(SyncStrengthPacket::toBytes)
+            .decoder(SyncStrengthPacket::new)
+            .consumerMainThread(SyncStrengthPacket::handle)
+            .add();
     }
 }

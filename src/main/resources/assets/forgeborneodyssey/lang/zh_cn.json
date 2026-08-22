@@ -1,6 +1,7 @@
 {
   "itemGroup.forgeborneodyssey.blocks": "冶锻纪行 - 方块",
   "itemGroup.forgeborneodyssey.items": "冶锻纪行 - 物品",
+  "itemGroup.forgeborneodyssey.ore_fragments": "冶锻纪行 - 矿石碎块与颗粒",
   "block.forgeborneodyssey.chalcopyrite_ore": "黄铜矿",
   "block.forgeborneodyssey.bornite_ore": "斑铜矿",
   "block.forgeborneodyssey.chalcocite_ore": "辉铜矿",
@@ -155,6 +156,9 @@
   "message.forgeborneodyssey.anvil.cracked": "§c 加工硬化过高，物品开裂损坏！",
   "message.forgeborneodyssey.anvil.complete": "§a 锻造完成！物品已制作成功。",
   "message.forgeborneodyssey.anvil.forging_progress": "§e锻打进度：%s/8",
+  "message.forgeborneodyssey.anvil.ineffective_hit": "§c手臂太累了，挥锤无力！",
+  "message.forgeborneodyssey.anvil.ore_crushing_progress": "§e石锤落下，矿石正在碎裂...（%s/%s）",
+  "message.forgeborneodyssey.anvil.ore_crushing_complete": "§a碎块迸裂！散落出 %s 个矿物颗粒和 %s 个掺和料。",
   "message.forgeborneodyssey.anvil.sheet_complete": "§a锻打完成!坯料已转化为金属片。",
   "item.forgeborneodyssey.cobblestone_hammer": "圆石锤",
   "item.forgeborneodyssey.flint_shovel": "燧石铲",
@@ -162,6 +166,18 @@
   "item.forgeborneodyssey.stone_hammer.tooltip": "§7攻击力4，耐久160",
   "item.forgeborneodyssey.flint_knife": "燧石刀",
   "item.forgeborneodyssey.flint_sickle": "石镰刀",
+  "item.forgeborneodyssey.stone_spear": "石矛",
+  "item.forgeborneodyssey.stone_axe": "石斧",
+  "item.forgeborneodyssey.sling": "投石索",
+
+  "item.forgeborneodyssey.fiber_rope": "纤维绳",
+  "item.forgeborneodyssey.fiber_rope.tooltip": "§7草茎纤维搓成的绳索，基础合成材料",
+
+  "item.forgeborneodyssey.grass_helmet": "草编帽",
+  "item.forgeborneodyssey.grass_chestplate": "草编衣",
+  "item.forgeborneodyssey.grass_leggings": "草编裤",
+  "item.forgeborneodyssey.grass_armor.tooltip": "§7草茎纤维编织的原始护甲，护甲值低但易修复",
+
   "item.forgeborneodyssey.fire_drill": "弓钻",
   "item.forgeborneodyssey.cobblestone_hammer.tooltip": "§7攻击力3，耐久96",
   
@@ -318,12 +334,15 @@
   
   "item.forgeborneodyssey.forgeborne_guide_book": "冷锻手册",
   "item.forgeborneodyssey.forgeborne_guide_book.tooltip": "§e记载着冷锻工艺的指南书\n§7右键点击查看详细内容",
+  "item.forgeborneodyssey.tutorial_guide_book": "冶锻纪行新手教程",
+  "item.forgeborneodyssey.tutorial_guide_book.tooltip": "§e记载着冶锻纪行完整入门知识的教程书\n§7右键点击查看详细内容",
   "item.forgeborneodyssey.pit_kiln_guide_book": "竖穴升焰窑使用指南",
   "item.forgeborneodyssey.pit_kiln_guide_book.tooltip": "§e记载着竖穴升焰窑烧制陶器工艺的指南书\n§7右键点击查看详细内容",
   "item.forgeborneodyssey.fire_crack_mining_guide": "火裂采矿术",
   "item.forgeborneodyssey.fire_crack_mining_guide.tooltip": "§e记载着火裂采矿工艺的指南书\n§7右键点击查看详细内容",
   "guidebook.forgeborneodyssey.pit_kiln.landing": "陶器烧制完全手册 —— 从建造窑体到取出成品，一步不落。",
   "guidebook.forgeborneodyssey.landing": "从石器到金属器的冷锻完全手册，带你掌握冷锻工艺的每一步。",
+  "guidebook.forgeborneodyssey.tutorial.landing": "冶锻纪行完整新手教程 —— 从石器到金属，从采矿到烧陶，一步不落。",
   "guidebook.forgeborneodyssey.fire_crack.landing": "火裂采矿完全手册 —— 从生火加热到泼水淬火，掌握热应力开采的每一个细节。",
   
   "item.forgeborneodyssey.copper_axe.tooltip": "§c铜斧头，装饰材料",
@@ -520,6 +539,7 @@
   "item.forgeborneodyssey.raw_clay.tooltip": "§7手持石锹右键沙质方块获得\n§7用于制作陶器的基础原料",
   "item.forgeborneodyssey.temper_grog": "掺和料（碎陶砂）",
   "item.forgeborneodyssey.temper_grog.tooltip": "§7挖矿时每次敲击有小几率掉落\n§7混合泥坯的辅料，增强陶器强度",
+  "item.forgeborneodyssey.temper_grog.quality_hint": "§7质量源自原矿，影响掺和料的烧结性能",
   "item.forgeborneodyssey.grass_fiber": "草茎纤维",
   "item.forgeborneodyssey.grass_fiber.tooltip": "§7手持石刀右键草类方块获得\n§7混合泥坯的辅料，增强韧性",
   "item.forgeborneodyssey.rice_husk": "稻壳",
@@ -732,6 +752,32 @@
   "item.forgeborneodyssey.raw_galena": "方铅矿碎块",
   "item.forgeborneodyssey.raw_sphalerite": "闪锌矿碎块",
   "item.forgeborneodyssey.raw_molybdenite": "辉钼矿碎块",
+  "item.forgeborneodyssey.raw_cassiterite": "锡石颗粒",
+  "item.forgeborneodyssey.raw_cassiterite_sand": "含锡砂土",
+
+  "item.forgeborneodyssey.chalcopyrite_grain": "黄铜矿颗粒",
+  "item.forgeborneodyssey.bornite_grain": "斑铜矿颗粒",
+  "item.forgeborneodyssey.chalcocite_grain": "辉铜矿颗粒",
+  "item.forgeborneodyssey.covellite_grain": "铜蓝颗粒",
+  "item.forgeborneodyssey.cubanite_grain": "方黄铜矿颗粒",
+  "item.forgeborneodyssey.malachite_grain": "孔雀石颗粒",
+  "item.forgeborneodyssey.azurite_grain": "蓝铜矿颗粒",
+  "item.forgeborneodyssey.cuprite_grain": "赤铜矿颗粒",
+  "item.forgeborneodyssey.tenorite_grain": "黑铜矿颗粒",
+  "item.forgeborneodyssey.chalcanthite_grain": "胆矾颗粒",
+  "item.forgeborneodyssey.brochantite_grain": "水胆矾颗粒",
+  "item.forgeborneodyssey.mixed_copper_grain": "混合铜矿颗粒",
+  "item.forgeborneodyssey.native_copper_grain": "自然铜颗粒",
+  "item.forgeborneodyssey.tetrahedrite_grain": "黝铜矿颗粒",
+  "item.forgeborneodyssey.tennantite_grain": "砷黝铜矿颗粒",
+  "item.forgeborneodyssey.torbernite_grain": "铜铀云母颗粒",
+  "item.forgeborneodyssey.cuprovanadite_grain": "钒铜矿颗粒",
+  "item.forgeborneodyssey.chrysocolla_grain": "硅孔雀石颗粒",
+  "item.forgeborneodyssey.magnetite_grain": "磁铁矿颗粒",
+  "item.forgeborneodyssey.scheelite_grain": "白钨矿颗粒",
+  "item.forgeborneodyssey.galena_grain": "方铅矿颗粒",
+  "item.forgeborneodyssey.sphalerite_grain": "闪锌矿颗粒",
+  "item.forgeborneodyssey.molybdenite_grain": "辉钼矿颗粒",
 
   "item.forgeborneodyssey.shale_rubble": "页岩碎片",
   "item.forgeborneodyssey.sandstone_rubble": "砂岩碎片",
@@ -742,6 +788,7 @@
   "item.forgeborneodyssey.quartz_vein_rubble": "石英脉碎片",
   "item.forgeborneodyssey.sericitized_rubble": "绢云母化岩碎片",
   "item.forgeborneodyssey.chlorite_rubble": "绿泥石化岩碎片",
+  
 
   "block.forgeborneodyssey.endoskarn_block": "内矽卡岩",
   "block.forgeborneodyssey.garnet_skarn_block": "石榴子石矽卡岩",
@@ -756,6 +803,7 @@
   "block.forgeborneodyssey.galena_ore": "方铅矿",
   "block.forgeborneodyssey.sphalerite_ore": "闪锌矿",
   "block.forgeborneodyssey.molybdenite_ore": "辉钼矿",
+  "block.forgeborneodyssey.cassiterite_placer_block": "锡石砂矿",
   "block.forgeborneodyssey.endoskarn_block.tooltip": "§7蚀变的花岗岩边缘，矽卡岩矿床的内接触带，靠近侵入体一侧",
   "block.forgeborneodyssey.garnet_skarn_block.tooltip": "§c近端矽卡岩，富含石榴子石，是铜矿物的主要富集带",
   "block.forgeborneodyssey.pyroxene_skarn_block.tooltip": "§2中间矽卡岩带，以透辉石为主，含有次要铜矿化",
@@ -768,5 +816,26 @@
   "block.forgeborneodyssey.scheelite_ore.tooltip": "§f氧化物阶段钨矿化产物，紫外线下发蓝色荧光，矽卡岩型钨矿的主要矿石矿物",
   "block.forgeborneodyssey.galena_ore.tooltip": "§7硫化物阶段铅矿化产物，常与闪锌矿共生，构成矽卡岩型铅锌矿体",
   "block.forgeborneodyssey.sphalerite_ore.tooltip": "§6硫化物阶段锌矿化产物，常与方铅矿共生，构成矽卡岩型铅锌矿体",
-  "block.forgeborneodyssey.molybdenite_ore.tooltip": "§8硫化物阶段钼矿化产物，呈鳞片状集合体，矽卡岩型钼矿的主要矿石矿物"
+  "block.forgeborneodyssey.molybdenite_ore.tooltip": "§8硫化物阶段钼矿化产物，呈鳞片状集合体，矽卡岩型钼矿的主要矿石矿物",
+  "block.forgeborneodyssey.cassiterite_placer_block.tooltip": "§6残坡积-冲积型砂锡矿，锡石风化剥蚀后经水流搬运至河谷富集\n§7特征：河流/沙滩群系地下浅层，透镜状矿体（长宽比3:1~7:1），含黑色锡石颗粒\n§6夏朝优先开采的锡矿类型，地表或浅层即可获取",
+
+  "jade.forgeborneodyssey.ore_grade.poor": "§7品位: §c贫矿",
+  "jade.forgeborneodyssey.ore_grade.low": "§7品位: §e低品位",
+  "jade.forgeborneodyssey.ore_grade.medium": "§7品位: §a中品位",
+  "jade.forgeborneodyssey.ore_grade.high": "§7品位: §b高品位",
+  "jade.forgeborneodyssey.ore_grade.rich": "§7品位: §6§l富矿",
+
+  "tooltip.forgeborneodyssey.ore_purity.very_impure": "§7纯度: §8极不纯",
+  "tooltip.forgeborneodyssey.ore_purity.impure": "§7纯度: §7不纯",
+  "tooltip.forgeborneodyssey.ore_purity.normal": "§7纯度: §f正常",
+  "tooltip.forgeborneodyssey.ore_purity.pure": "§7纯度: §a较纯",
+  "tooltip.forgeborneodyssey.ore_purity.very_pure": "§7纯度: §b§l高纯",
+
+  "tooltip.forgeborneodyssey.ore_quality.fractured": "§7质量: §8碎裂",
+  "tooltip.forgeborneodyssey.ore_quality.rough": "§7质量: §7粗糙",
+  "tooltip.forgeborneodyssey.ore_quality.intact": "§7质量: §f完好",
+  "tooltip.forgeborneodyssey.ore_quality.dense": "§7质量: §a致密",
+  "tooltip.forgeborneodyssey.ore_quality.perfect": "§7质量: §b§l完美",
+
+  "message.forgeborneodyssey.strength.level_up": "§6你的力气增长了！当前等级：§e%s §7（%s）"
 }

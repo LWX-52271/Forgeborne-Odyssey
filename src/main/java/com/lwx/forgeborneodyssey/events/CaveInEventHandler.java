@@ -5,7 +5,7 @@ import com.lwx.forgeborneodyssey.blocks.TunnelSupportBlock;
 import com.lwx.forgeborneodyssey.network.ModMessages;
 import com.lwx.forgeborneodyssey.network.SyncCrawlStatePacket;
 import com.lwx.forgeborneodyssey.core.registration.ModSounds;
-import com.lwx.forgeborneodyssey.core.registration.ModSounds;
+import com.lwx.forgeborneodyssey.util.PlayerStrengthManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -107,6 +107,9 @@ public class CaveInEventHandler {
         int adjacentAir = countAdjacentAir(level, pos);
         chance += adjacentAir * 0.03;
 
+        // 负重影响塌方概率（负重越重，动作越不稳，越容易引发塌方）
+        chance += PlayerStrengthManager.getCaveInChanceBonus(event.getPlayer());
+
         if (level.random.nextDouble() < chance) {
             triggerCaveIn((ServerLevel) level, pos, event.getPlayer(), inShaft, inTunnel);
         }
@@ -141,13 +144,29 @@ public class CaveInEventHandler {
             if (isCrawling) {
                 player.setPose(Pose.SWIMMING);
                 player.refreshDimensions();
+                if (!player.level().isClientSide) {
+                    PlayerStrengthManager.addTrainingProgress(player, 0.01f);
+                    int weightLevel = PlayerStrengthManager.getEffectiveWeightLevel(player);
+                    if (weightLevel > 0) {
+                        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                            net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN,
+                            40, weightLevel - 1, false, false, true));
+                    }
+                }
             }
 
             if (!player.level().isClientSide && player.onClimbable() && Math.abs(player.getDeltaMovement().y) > 0.01) {
                 BlockPos playerPos = player.blockPosition();
                 if (player.level().getBlockState(playerPos).getBlock() instanceof ShaftFrameBlock
                         || player.level().getBlockState(playerPos.above()).getBlock() instanceof ShaftFrameBlock) {
-                    player.causeFoodExhaustion(0.02f);
+                    player.causeFoodExhaustion(0.01f);
+                    PlayerStrengthManager.addTrainingProgress(player, 0.02f);
+                    int weightLevel = PlayerStrengthManager.getEffectiveWeightLevel(player);
+                    if (weightLevel > 0) {
+                        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                            net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN,
+                            40, weightLevel - 1, false, false, true));
+                    }
                 }
             }
         }
@@ -348,7 +367,7 @@ public class CaveInEventHandler {
                     && !(wallState.getBlock() instanceof TunnelSupportBlock)) {
                 level.setBlock(wallPos, Blocks.AIR.defaultBlockState(), 3);
                 level.levelEvent(2001, wallPos, Block.getId(wallState));
-                FallingBlockEntity fallingBlock = FallingBlockEntity.fall(level, shaftPos, wallState);
+                FallingBlockEntity fallingBlock = FallingBlockEntity.fall(level, shaftPos, getFallingBlockState(wallState));
                 fallingBlock.setHurtsEntities(4.0f, 20);
                 fallingBlock.dropItem = false;
 
@@ -361,7 +380,7 @@ public class CaveInEventHandler {
                             && !(aboveState.getBlock() instanceof TunnelSupportBlock)) {
                         level.setBlock(cascadePos, Blocks.AIR.defaultBlockState(), 3);
                         level.levelEvent(2001, cascadePos, Block.getId(aboveState));
-                        FallingBlockEntity aboveFalling = FallingBlockEntity.fall(level, cascadePos, aboveState);
+                        FallingBlockEntity aboveFalling = FallingBlockEntity.fall(level, cascadePos, getFallingBlockState(aboveState));
                         aboveFalling.setHurtsEntities(4.0f, 20);
                         aboveFalling.dropItem = false;
                         cascadePos = cascadePos.above();
@@ -390,13 +409,23 @@ public class CaveInEventHandler {
                     && !(ceilingState.getBlock() instanceof TunnelSupportBlock)) {
                 level.setBlock(ceilingPos, Blocks.AIR.defaultBlockState(), 3);
                 level.levelEvent(2001, ceilingPos, Block.getId(ceilingState));
-                FallingBlockEntity fallingBlock = FallingBlockEntity.fall(level, ceilingPos, ceilingState);
+                FallingBlockEntity fallingBlock = FallingBlockEntity.fall(level, ceilingPos, getFallingBlockState(ceilingState));
                 fallingBlock.setHurtsEntities(4.0f, 20);
                 fallingBlock.dropItem = false;
             }
         }
 
         playCaveInSound(level, pos);
+    }
+
+    private static BlockState getFallingBlockState(BlockState original) {
+        if (original.is(Blocks.STONE)) {
+            return Blocks.COBBLESTONE.defaultBlockState();
+        }
+        if (original.is(Blocks.DEEPSLATE)) {
+            return Blocks.COBBLED_DEEPSLATE.defaultBlockState();
+        }
+        return original;
     }
 
     private static void playCaveInSound(Level level, BlockPos pos) {

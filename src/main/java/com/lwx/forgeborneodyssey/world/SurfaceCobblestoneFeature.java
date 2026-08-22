@@ -3,6 +3,7 @@ package com.lwx.forgeborneodyssey.world;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -27,14 +28,15 @@ public class SurfaceCobblestoneFeature extends Feature<NoneFeatureConfiguration>
         BlockPos origin = context.origin();
         RandomSource random = context.random();
         
-        // 检查生物群系 - 只在合适的生物群系生成
+        // 检查生物群系 - 只在合适的生物群系生成，排除沙漠和海洋
         if (!level.getBiome(origin).is(BiomeTags.IS_OVERWORLD) || 
-            level.getBiome(origin).is(BiomeTags.IS_OCEAN)) {
+            level.getBiome(origin).is(BiomeTags.IS_OCEAN) ||
+            level.getBiome(origin).is(BiomeTags.HAS_DESERT_PYRAMID)) {
             return false;
         }
         
-        // 获取地表位置（使用 WORLD_SURFACE 而不是 OCEAN_FLOOR 避免水面问题）
-        BlockPos surfacePos = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, origin);
+        // 获取地表位置（使用 MOTION_BLOCKING_NO_LEAVES 避免树冠干扰）
+        BlockPos surfacePos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, origin);
         
         // 检查高度范围（地表附近）
         if (surfacePos.getY() < 60 || surfacePos.getY() > 200) {
@@ -50,6 +52,15 @@ public class SurfaceCobblestoneFeature extends Feature<NoneFeatureConfiguration>
             !belowState.isSolid() || 
             belowState.is(Blocks.WATER) || 
             belowState.is(Blocks.LAVA)) {
+            return false;
+        }
+        
+        // 检查下方方块是否为自然地表（避免生成在树顶、屋顶等非自然地面上）
+        if (!belowState.is(BlockTags.DIRT) && 
+            !belowState.is(BlockTags.SAND) && 
+            !belowState.is(BlockTags.BASE_STONE_OVERWORLD) &&
+            !belowState.is(Blocks.GRAVEL) &&
+            !belowState.is(Blocks.CLAY)) {
             return false;
         }
         

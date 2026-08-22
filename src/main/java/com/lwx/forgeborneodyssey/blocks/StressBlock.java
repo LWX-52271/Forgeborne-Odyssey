@@ -52,6 +52,8 @@ public class StressBlock extends Block implements EntityBlock {
     public static class StressBlockEntity extends BlockEntity {
         private float stress = 0.0f;
         private int lastDamageStage = 0; // 初始化为0，表示无裂纹
+        private float grade = -1.0f; // -1 表示未初始化，0.0~1.0 表示品位值
+        private boolean gradeInitialized = false;
         
         public StressBlockEntity(BlockPos pos, BlockState blockState) {
             super(com.lwx.forgeborneodyssey.core.registration.ModBlocks.STRESS_BLOCK_ENTITY.get(), pos, blockState);
@@ -121,11 +123,39 @@ public class StressBlock extends Block implements EntityBlock {
             this.lastDamageStage = stage;
         }
         
+        public float getGrade() {
+            return grade;
+        }
+
+        public void setGrade(float grade) {
+            this.grade = Math.max(0.0f, Math.min(1.0f, grade));
+            this.gradeInitialized = true;
+            setChanged();
+        }
+
+        public boolean isGradeInitialized() {
+            return gradeInitialized;
+        }
+
+        @Override
+        public void onLoad() {
+            super.onLoad();
+            if (!gradeInitialized && level != null && !level.isClientSide) {
+                if (getBlockState().is(com.lwx.forgeborneodyssey.core.registration.ModBlocks.CASSITERITE_PLACER_BLOCK.get())) {
+                    setGrade(com.lwx.forgeborneodyssey.world.OreGrade.generatePlacerGradeValue(level.random));
+                } else {
+                    setGrade(com.lwx.forgeborneodyssey.world.OreGrade.generateRandomGradeValue(level.random));
+                }
+            }
+        }
+
         @Override
         protected void saveAdditional(CompoundTag tag) {
             super.saveAdditional(tag);
             tag.putFloat(STRESS_TAG, stress);
             tag.putInt("lastDamageStage", lastDamageStage);
+            tag.putFloat("grade", grade);
+            tag.putBoolean("gradeInitialized", gradeInitialized);
         }
         
         @Override
@@ -135,6 +165,10 @@ public class StressBlock extends Block implements EntityBlock {
                 stress = tag.getFloat(STRESS_TAG);
             }
             lastDamageStage = tag.getInt("lastDamageStage");
+            if (tag.contains("grade")) {
+                grade = tag.getFloat("grade");
+            }
+            gradeInitialized = tag.getBoolean("gradeInitialized");
             if (level != null && level.isClientSide) {
                 updateCrackStage();
             }

@@ -55,12 +55,21 @@ public class DryingRackBlockEntity extends BlockEntity {
                 entity.progress[slot]++;
                 int dryingTime = getDryingTime(stack);
                 if (entity.progress[slot] >= dryingTime) {
+                    boolean isSunDrying = level.canSeeSky(pos) && level.isDay();
                     if (isGreenwareItem(stack)) {
-                        setDried(stack);
+                        if (isSunDrying) {
+                            entity.items[slot] = new ItemStack(ModItems.KILN_WASTE_SHARD.get(), getWasteShardCount(stack));
+                        } else {
+                            setDried(stack);
+                        }
                     } else {
                         Item driedResult = getVanillaDryingResult(stack);
                         if (driedResult != null) {
-                            entity.items[slot] = new ItemStack(driedResult);
+                            if (isGreenwareBlowpipe(stack) && isSunDrying) {
+                                entity.items[slot] = new ItemStack(ModItems.KILN_WASTE_SHARD.get(), getWasteShardCount(stack));
+                            } else {
+                                entity.items[slot] = new ItemStack(driedResult);
+                            }
                         }
                     }
                     entity.setChanged();
@@ -214,6 +223,18 @@ public class DryingRackBlockEntity extends BlockEntity {
         return stack.is(ModItems.GREENWARE_CRUCIBLE.get()) ||
                 stack.is(ModItems.GREENWARE_MOLD.get()) ||
                 stack.is(ModItems.GREENWARE_BRICK.get());
+    }
+
+    private static boolean isGreenwareBlowpipe(ItemStack stack) {
+        return stack.is(ModItems.GREENWARE_BLOWPIPE.get());
+    }
+
+    private static int getWasteShardCount(ItemStack stack) {
+        if (stack.is(ModItems.GREENWARE_CRUCIBLE.get())) return 2;
+        if (stack.is(ModItems.GREENWARE_MOLD.get())) return 1;
+        if (stack.is(ModItems.GREENWARE_BRICK.get())) return 4;
+        if (stack.is(ModItems.GREENWARE_BLOWPIPE.get())) return 1;
+        return 1;
     }
 
     private static void spawnDryingCompleteParticles(Level level, BlockPos pos, int slot) {
