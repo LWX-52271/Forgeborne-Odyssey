@@ -38,7 +38,7 @@ public class WroughtMetalSwordItem extends SwordItem {
      */
     public static WroughtMetalSwordItem createWroughtCopperSword() {
         Tier copperTier = new ForgeTier(0, 100, 2.0F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
-        return new WroughtMetalSwordItem(copperTier, 6, -2.4F);
+        return new WroughtMetalSwordItem(copperTier, 4, -2.4F);
     }
     
     /**
@@ -47,7 +47,7 @@ public class WroughtMetalSwordItem extends SwordItem {
      */
     public static WroughtMetalSwordItem createWroughtSilverSword() {
         Tier silverTier = new ForgeTier(0, 70, 1.5F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
-        return new WroughtMetalSwordItem(silverTier, 5, -2.4F);
+        return new WroughtMetalSwordItem(silverTier, 4, -2.4F);
     }
     
     /**
@@ -56,7 +56,7 @@ public class WroughtMetalSwordItem extends SwordItem {
      */
     public static WroughtMetalSwordItem createWroughtGoldSword() {
         Tier goldTier = new ForgeTier(0, 40, 1.0F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
-        return new WroughtMetalSwordItem(goldTier, 4, -2.4F);
+        return new WroughtMetalSwordItem(goldTier, 4, -2.6F);
     }
     
     /**

@@ -41,6 +41,16 @@ public class AnvilBlockEntity extends BlockEntity {
     // 矿石破碎相关数据
     private int oreCrushCount = 0; // 矿石破碎敲击次数
     private int oreCrushRequired = 0; // 矿石破碎所需总次数（1-2，随机）
+
+    // 打制石器三阶段流程：打台面(Platform) → 剥片(Flaking) → 修整(Retouch)
+    // 或：打台面(Platform) → 修整石核(CoreShaping) → 大工具
+    private int knappingHitCount = 0; // 敲击次数（剥片或修整石核共用）
+    private int knappingRequiredHits = 0; // 所需总次数
+    private boolean knappingPlatformCreated = false; // 是否已打出台面（阶段一完成）
+    private boolean isCoreShaping = false; // true=修整石核路线，false=剥片路线
+    private long knappingLastHitTick = 0;  // 上次敲击的tick，用于检测连续急敲
+    private int knappingFragility = 0;    // 急敲脆弱度 0-100，达到100则碎裂
+    private static final int RAPID_HIT_THRESHOLD = 10; // 间隔低于此值视为急敲（0.5秒）
     
     // 矿碎块 -> 对应颗粒的映射表（不含锡）
     private static final Map<Item, Item> ORE_CHUNK_TO_GRAIN = new HashMap<>();
@@ -70,6 +80,26 @@ public class AnvilBlockEntity extends BlockEntity {
         ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_SPHALERITE.get(), ModItems.SPHALERITE_GRAIN.get());
         ORE_CHUNK_TO_GRAIN.put(ModItems.RAW_MOLYBDENITE.get(), ModItems.MOLYBDENITE_GRAIN.get());
     }
+
+    // 石器打制产出权重表（燧石片修整 → 小工具，刀头最常见，镰刀头最稀有）
+    private static final java.util.List<KnappingOutput> KNAPPING_OUTPUTS = java.util.List.of(
+        new KnappingOutput(() -> new ItemStack(ModItems.FLINT_KNIFE_HEAD.get()), 40),
+        new KnappingOutput(() -> new ItemStack(ModItems.FLINT_ARROWHEAD.get(), 2), 25),
+        new KnappingOutput(() -> new ItemStack(ModItems.FLINT_SPEARHEAD.get()), 15),
+        new KnappingOutput(() -> new ItemStack(ModItems.FLINT_SHOVEL_HEAD.get()), 10),
+        new KnappingOutput(() -> new ItemStack(ModItems.FLINT_SICKLE_HEAD.get()), 5),
+        new KnappingOutput(() -> new ItemStack(ModItems.STONE_AXE_HEAD.get()), 5)
+    );
+
+    // 修整石核产出权重表（石核本体 → 大工具，斧头最常见）
+    private static final java.util.List<CoreShapingOutput> CORE_SHAPING_OUTPUTS = java.util.List.of(
+        new CoreShapingOutput(() -> new ItemStack(ModItems.STONE_AXE_HEAD.get()), 40),
+        new CoreShapingOutput(() -> new ItemStack(ModItems.FLINT_SHOVEL_HEAD.get()), 30),
+        new CoreShapingOutput(() -> new ItemStack(ModItems.STONE_HOE_HEAD.get()), 30)
+    );
+
+    private record KnappingOutput(java.util.function.Supplier<ItemStack> supplier, int weight) {}
+    private record CoreShapingOutput(java.util.function.Supplier<ItemStack> supplier, int weight) {}
 
     public AnvilBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.ANVIL_BLOCK_ENTITY.get(), pos, state);
@@ -109,6 +139,14 @@ public class AnvilBlockEntity extends BlockEntity {
         
         // 允许放置矿碎块（不含锡石/含锡砂土）
         if (isRawOreChunk(stack)) {
+            return true;
+        }
+
+        // 允许放置燧石砾石、石核或燧石片，用于石器打制
+        if (stack.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get()) ||
+            stack.is(ModItems.FLINT_PEBBLE.get()) ||
+            stack.is(ModItems.STONE_CORE.get()) ||
+            stack.is(ModItems.FLINT_FLAKE.get())) {
             return true;
         }
         
@@ -180,6 +218,12 @@ public class AnvilBlockEntity extends BlockEntity {
             this.stretchFactor = 0.0f; // 重置拉伸因子
             this.oreCrushCount = 0; // 重置矿石破碎计数
             this.oreCrushRequired = 0; // 重置矿石破碎所需次数
+            this.knappingHitCount = 0; // 重置石器打制计数
+            this.knappingRequiredHits = 0; // 重置石器打制所需次数
+            this.knappingPlatformCreated = false; // 重置台面状态
+            this.isCoreShaping = false; // 重置修整石核状态
+            this.knappingFragility = 0; // 重置脆弱度
+            this.knappingLastHitTick = 0; // 重置上次敲击时间
         }
         
         setChanged();
@@ -192,13 +236,38 @@ public class AnvilBlockEntity extends BlockEntity {
     /**
      * 处理锻造敲击
      */
-    public void handleForgingHit(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
+    public void handleForgingHit(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ, boolean sneaking) {
         if (level == null || level.isClientSide) return;
         if (storedItem.isEmpty()) return;
         
         // 检查是否为矿碎块，进行矿石破碎
         if (isRawOreChunk(storedItem)) {
             handleOreCrushing(player, hammer, offsetX, offsetZ);
+            return;
+        }
+
+        // 检查是否为地表圆石或燧石砾石，进行石器打制（打台面）
+        if (storedItem.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get()) ||
+            storedItem.is(ModItems.FLINT_PEBBLE.get())) {
+            handleKnappingHit(player, hammer, offsetX, offsetZ);
+            return;
+        }
+
+        // 石核的两条路线：
+        // Shift+右键 → 路线B：修整石核（大工具）
+        // 普通右键 → 路线A：剥片（燧石片 → 小工具）
+        if (storedItem.is(ModItems.STONE_CORE.get())) {
+            if (sneaking) {
+                handleCoreShapingHit(player, hammer, offsetX, offsetZ);
+            } else {
+                handleKnappingHit(player, hammer, offsetX, offsetZ);
+            }
+            return;
+        }
+
+        // 检查是否为燧石片，进行修整
+        if (storedItem.is(ModItems.FLINT_FLAKE.get())) {
+            handleKnappingHit(player, hammer, offsetX, offsetZ);
             return;
         }
         
@@ -240,11 +309,11 @@ public class AnvilBlockEntity extends BlockEntity {
         }
         
         // 根据锤子类型消耗不同的饱食度
-        float exhaustionAmount = 0.3f; // 默认值
+        float exhaustionAmount;
         if (hammer.is(ModItems.HANDLE_STONE_HAMMER.get())) {
-            exhaustionAmount = 0.2f; // 带柄石锤更高效，消耗较少
-        } else if (hammer.is(ModItems.COBBLESTONE_HAMMER.get())) {
-            exhaustionAmount = 0.4f; // 圆石锤效率较低，消耗较多
+            exhaustionAmount = 0.2f;
+        } else {
+            exhaustionAmount = 0.4f;
         }
         player.causeFoodExhaustion(exhaustionAmount);
         
@@ -522,7 +591,596 @@ public class AnvilBlockEntity extends BlockEntity {
             true
         );
     }
-    
+
+    /**
+     * 处理打制石器敲击 —— 三阶段流程
+     * 
+     * 阶段一（打台面）：燧石砾石 → 第一击敲出平台 → 制成石核
+     *   第一击必定成功，砾石变为石核物品
+     * 
+     * 阶段二（剥片）：石核 → 斜敲台面边缘 → 每次60%概率剥落燧石片
+     *   40%概率打废（产出碎石废料）
+     *   连续急敲（间隔<0.5秒）累积脆弱度，100%则石核碎裂
+     * 
+     * 阶段三（修整）：燧石片 → 精细敲击 → 随机石器头
+     *   修整为精细活，无急敲惩罚
+     */
+    private void handleKnappingHit(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
+        if (level == null || level.isClientSide) return;
+        if (storedItem.isEmpty()) return;
+
+        boolean isPebble = storedItem.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get()) ||
+                           storedItem.is(ModItems.FLINT_PEBBLE.get());
+        boolean isCore = storedItem.is(ModItems.STONE_CORE.get());
+        boolean isFlake = storedItem.is(ModItems.FLINT_FLAKE.get());
+        if (!isPebble && !isCore && !isFlake) return;
+
+        long currentTick = level.getGameTime();
+
+        // 消耗饱食度
+        float exhaustionAmount;
+        if (hammer.is(ModItems.HANDLE_STONE_HAMMER.get())) {
+            exhaustionAmount = 0.15f;
+        } else {
+            exhaustionAmount = 0.25f;
+        }
+        player.causeFoodExhaustion(exhaustionAmount);
+
+        // === 急敲检测（打台面+剥片阶段） ===
+        if ((isPebble || isCore) && knappingLastHitTick > 0 && (currentTick - knappingLastHitTick) < RAPID_HIT_THRESHOLD) {
+            this.knappingFragility += 30;
+            this.knappingLastHitTick = currentTick;
+            hammer.hurtAndBreak(2, player, (p) -> p.broadcastBreakEvent(net.minecraft.world.InteractionHand.MAIN_HAND));
+            player.displayClientMessage(
+                Component.translatable("message.forgeborneodyssey.anvil.knapping_rapid_hit",
+                    this.knappingFragility),
+                true
+            );
+            playKnappingFeedback(offsetX, offsetZ, false);
+
+            if (this.knappingFragility >= 100) {
+                shatterPebble(player);
+                return;
+            }
+
+            // 脆弱度警告：首次达到60时提示玩家放慢节奏
+            if (this.knappingFragility == 60) {
+                player.displayClientMessage(
+                    Component.translatable("message.forgeborneodyssey.anvil.knapping_fragility_warning",
+                        this.knappingFragility),
+                    true
+                );
+            }
+
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            return;
+        }
+
+        this.knappingLastHitTick = currentTick;
+
+        // === 阶段一：打台面 ===
+        if (isPebble && !knappingPlatformCreated) {
+            createPlatform(player, hammer, offsetX, offsetZ);
+            return;
+        }
+
+        // === 阶段二：剥片 ===
+        if (isCore) {
+            detachFlake(player, hammer, offsetX, offsetZ);
+            return;
+        }
+
+        // === 阶段三：修整 ===
+        if (isFlake) {
+            retouchFlake(player, hammer, offsetX, offsetZ);
+            return;
+        }
+    }
+
+    /**
+     * 路线B：修整石核（Core Shaping）
+     * Shift+右键石核，直接修整石核本体为大型工具头（斧/铲/锄）
+     * 3-5次敲击，无急敲惩罚（大工具需要更稳的手法）
+     */
+    private void handleCoreShapingHit(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
+        if (level == null || level.isClientSide) return;
+
+        // 首次敲击时初始化
+        if (!isCoreShaping) {
+            this.isCoreShaping = true;
+            int strengthLevel = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getStrengthLevel(player);
+            int baseHits = 3 + level.random.nextInt(3); // 3-5次
+            int reduction = Math.min(2, strengthLevel / 5);
+            this.knappingRequiredHits = baseHits - reduction;
+            this.knappingHitCount = 0;
+        }
+
+        hammer.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(net.minecraft.world.InteractionHand.MAIN_HAND));
+
+        // 力量效率判定
+        float efficiency = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getForgingEfficiencyMultiplier(player);
+        boolean effectiveHit = level.random.nextFloat() < efficiency;
+
+        if (!effectiveHit) {
+            player.displayClientMessage(
+                Component.translatable("message.forgeborneodyssey.anvil.ineffective_hit"),
+                true
+            );
+            playKnappingFeedback(offsetX, offsetZ, false);
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            return;
+        }
+
+        this.knappingHitCount++;
+        playKnappingFeedback(offsetX, offsetZ, true);
+
+        if (this.knappingHitCount >= this.knappingRequiredHits) {
+            completeCoreShaping(player);
+        } else {
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            player.displayClientMessage(
+                Component.translatable(getCoreShapingMessage(knappingHitCount, knappingRequiredHits)),
+                true
+            );
+        }
+    }
+
+    /**
+     * 修整石核完成：产出大型工具头
+     */
+    private void completeCoreShaping(ServerPlayer player) {
+        if (level == null) return;
+
+        // 加权随机选择大型工具
+        int totalWeight = CORE_SHAPING_OUTPUTS.stream().mapToInt(CoreShapingOutput::weight).sum();
+        int roll = level.random.nextInt(totalWeight);
+        int cumulative = 0;
+        ItemStack result = ItemStack.EMPTY;
+        for (CoreShapingOutput output : CORE_SHAPING_OUTPUTS) {
+            cumulative += output.weight();
+            if (roll < cumulative) {
+                result = output.supplier().get();
+                break;
+            }
+        }
+        if (result.isEmpty()) {
+            result = new ItemStack(ModItems.STONE_AXE_HEAD.get());
+        }
+
+        net.minecraft.world.entity.item.ItemEntity itemEntity =
+            new net.minecraft.world.entity.item.ItemEntity(
+                level,
+                worldPosition.getX() + 0.5D,
+                worldPosition.getY() + 1.0D,
+                worldPosition.getZ() + 0.5D,
+                result
+            );
+        itemEntity.setDefaultPickUpDelay();
+        level.addFreshEntity(itemEntity);
+
+        level.playSound(null, worldPosition,
+            net.minecraft.sounds.SoundEvents.STONE_BREAK,
+            net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 1.2f);
+
+        this.storedItem = ItemStack.EMPTY;
+        this.knappingHitCount = 0;
+        this.knappingRequiredHits = 0;
+        this.knappingPlatformCreated = false;
+        this.isCoreShaping = false;
+        this.knappingFragility = 0;
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+
+        player.displayClientMessage(
+            Component.translatable("message.forgeborneodyssey.anvil.core_shaping_complete",
+                result.getHoverName().getString()),
+            true
+        );
+    }
+
+    /**
+     * 修整石核进度消息
+     */
+    private static String getCoreShapingMessage(int hits, int required) {
+        if (hits == 1) return "message.forgeborneodyssey.anvil.core_shaping_first";
+        if (hits == required - 1) return "message.forgeborneodyssey.anvil.core_shaping_final";
+        return "message.forgeborneodyssey.anvil.core_shaping_stage";
+    }
+
+    /**
+     * 阶段一：打台面
+     * 第一击敲出平整台面，圆石制成石核。必定成功，不需要力量判定。
+     */
+    private void createPlatform(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
+        if (level == null) return;
+
+        // 砾石变为石核
+        this.storedItem = new ItemStack(ModItems.STONE_CORE.get());
+        this.knappingPlatformCreated = true;
+
+        int strengthLevel = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getStrengthLevel(player);
+        int baseHits = 3 + level.random.nextInt(3); // 3-5次剥片机会
+        int reduction = Math.min(2, strengthLevel / 5);
+        this.knappingRequiredHits = baseHits - reduction;
+
+        hammer.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(net.minecraft.world.InteractionHand.MAIN_HAND));
+        playKnappingFeedback(offsetX, offsetZ, true);
+
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+
+        player.displayClientMessage(
+            Component.translatable("message.forgeborneodyssey.anvil.platform_created"),
+            true
+        );
+    }
+
+    /**
+     * 阶段二：剥片
+     * 斜敲石核台面边缘，概率性剥落燧石片。真实情况：十次敲击有几次直接打废。
+     */
+    private void detachFlake(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
+        if (level == null) return;
+
+        hammer.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(net.minecraft.world.InteractionHand.MAIN_HAND));
+
+        // 力量效率判定
+        float efficiency = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getForgingEfficiencyMultiplier(player);
+        boolean effectiveHit = level.random.nextFloat() < efficiency;
+
+        if (!effectiveHit) {
+            player.displayClientMessage(
+                Component.translatable("message.forgeborneodyssey.anvil.ineffective_hit"),
+                true
+            );
+            playKnappingFeedback(offsetX, offsetZ, false);
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            return;
+        }
+
+        this.knappingHitCount++;
+
+        // 60%概率剥落燧石片，40%概率打废（产出碎石废料）
+        boolean gotFlake = level.random.nextFloat() < 0.60f;
+        if (gotFlake) {
+            spawnFlintFlakes(1);
+            playKnappingFeedback(offsetX, offsetZ, true);
+        } else {
+            spawnDebitage(1);
+            player.displayClientMessage(
+                Component.translatable("message.forgeborneodyssey.anvil.flaking_waste"),
+                true
+            );
+            playKnappingFeedback(offsetX, offsetZ, false);
+        }
+
+        // 正常节奏敲击降低脆弱度
+        if (knappingFragility > 0) {
+            knappingFragility = Math.max(0, knappingFragility - 10);
+        }
+
+        if (this.knappingHitCount >= this.knappingRequiredHits) {
+            completeFlaking(player);
+        } else {
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            player.displayClientMessage(
+                Component.translatable(getKnappingMessage(knappingHitCount, knappingRequiredHits, true)),
+                true
+            );
+        }
+    }
+
+    /**
+     * 阶段三：修整
+     * 精细敲击燧石片边缘，修整为石器头。无急敲惩罚。
+     */
+    private void retouchFlake(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
+        if (level == null) return;
+
+        // 首次修整时初始化
+        if (knappingRequiredHits <= 0) {
+            int strengthLevel = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getStrengthLevel(player);
+            int baseHits = 3;
+            int reduction = Math.min(1, strengthLevel / 5);
+            knappingRequiredHits = baseHits - reduction;
+        }
+
+        hammer.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(net.minecraft.world.InteractionHand.MAIN_HAND));
+
+        // 力量效率判定
+        float efficiency = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getForgingEfficiencyMultiplier(player);
+        boolean effectiveHit = level.random.nextFloat() < efficiency;
+
+        if (!effectiveHit) {
+            player.displayClientMessage(
+                Component.translatable("message.forgeborneodyssey.anvil.ineffective_hit"),
+                true
+            );
+            playKnappingFeedback(offsetX, offsetZ, false);
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            return;
+        }
+
+        this.knappingHitCount++;
+        playKnappingFeedback(offsetX, offsetZ, true);
+
+        if (this.knappingHitCount >= this.knappingRequiredHits) {
+            completeRetouch(player);
+        } else {
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            player.displayClientMessage(
+                Component.translatable(getKnappingMessage(knappingHitCount, knappingRequiredHits, false)),
+                true
+            );
+        }
+    }
+
+    /**
+     * 在石砧周围生成燧石片掉落物
+     */
+    private void spawnFlintFlakes(int count) {
+        if (level == null) return;
+        for (int i = 0; i < count; i++) {
+            ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get());
+            net.minecraft.world.entity.item.ItemEntity flakeEntity =
+                new net.minecraft.world.entity.item.ItemEntity(
+                    level,
+                    worldPosition.getX() + 0.5D + (level.random.nextDouble() - 0.5) * 0.6,
+                    worldPosition.getY() + 1.0D,
+                    worldPosition.getZ() + 0.5D + (level.random.nextDouble() - 0.5) * 0.6,
+                    flake
+                );
+            flakeEntity.setDefaultPickUpDelay();
+            flakeEntity.setDeltaMovement(
+                (level.random.nextDouble() - 0.5) * 0.2,
+                0.15 + level.random.nextDouble() * 0.15,
+                (level.random.nextDouble() - 0.5) * 0.2
+            );
+            level.addFreshEntity(flakeEntity);
+        }
+    }
+
+    /**
+     * 在石砧周围生成碎石废料掉落物
+     */
+    private void spawnDebitage(int count) {
+        if (level == null) return;
+        for (int i = 0; i < count; i++) {
+            ItemStack debris = new ItemStack(ModItems.STONE_DEBITAGE.get());
+            net.minecraft.world.entity.item.ItemEntity debrisEntity =
+                new net.minecraft.world.entity.item.ItemEntity(
+                    level,
+                    worldPosition.getX() + 0.5D + (level.random.nextDouble() - 0.5) * 0.6,
+                    worldPosition.getY() + 1.0D,
+                    worldPosition.getZ() + 0.5D + (level.random.nextDouble() - 0.5) * 0.6,
+                    debris
+                );
+            debrisEntity.setDefaultPickUpDelay();
+            debrisEntity.setDeltaMovement(
+                (level.random.nextDouble() - 0.5) * 0.15,
+                0.1 + level.random.nextDouble() * 0.1,
+                (level.random.nextDouble() - 0.5) * 0.15
+            );
+            level.addFreshEntity(debrisEntity);
+        }
+    }
+
+    /**
+     * 剥片阶段完成：石核耗尽，消耗完毕
+     */
+    private void completeFlaking(ServerPlayer player) {
+        if (level == null) return;
+
+        // 最后剥落 2 个燧石片
+        spawnFlintFlakes(2);
+
+        level.playSound(null, worldPosition,
+            net.minecraft.sounds.SoundEvents.STONE_BREAK,
+            net.minecraft.sounds.SoundSource.BLOCKS, 0.6f, 1.8f);
+
+        this.storedItem = ItemStack.EMPTY;
+        this.knappingHitCount = 0;
+        this.knappingRequiredHits = 0;
+        this.knappingPlatformCreated = false;
+        this.isCoreShaping = false;
+        this.knappingFragility = 0;
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+
+        player.displayClientMessage(
+            Component.translatable("message.forgeborneodyssey.anvil.core_exhausted"),
+            true
+        );
+    }
+
+    /**
+     * 修整阶段完成：燧石片加工为随机石器头
+     */
+    private void completeRetouch(ServerPlayer player) {
+        if (level == null || storedItem.isEmpty()) return;
+
+        // 加权随机选择产出
+        int totalWeight = KNAPPING_OUTPUTS.stream().mapToInt(KnappingOutput::weight).sum();
+        int roll = level.random.nextInt(totalWeight);
+        int cumulative = 0;
+        ItemStack result = ItemStack.EMPTY;
+        for (KnappingOutput output : KNAPPING_OUTPUTS) {
+            cumulative += output.weight();
+            if (roll < cumulative) {
+                result = output.supplier().get();
+                break;
+            }
+        }
+        if (result.isEmpty()) {
+            result = new ItemStack(ModItems.FLINT_KNIFE_HEAD.get());
+        }
+
+        net.minecraft.world.entity.item.ItemEntity itemEntity =
+            new net.minecraft.world.entity.item.ItemEntity(
+                level,
+                worldPosition.getX() + 0.5D,
+                worldPosition.getY() + 1.0D,
+                worldPosition.getZ() + 0.5D,
+                result
+            );
+        itemEntity.setDefaultPickUpDelay();
+        level.addFreshEntity(itemEntity);
+
+        level.playSound(null, worldPosition,
+            net.minecraft.sounds.SoundEvents.STONE_BREAK,
+            net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, 1.5f);
+
+        this.storedItem = ItemStack.EMPTY;
+        this.knappingHitCount = 0;
+        this.knappingRequiredHits = 0;
+        this.knappingPlatformCreated = false;
+        this.isCoreShaping = false;
+        this.knappingFragility = 0;
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+
+        player.displayClientMessage(
+            Component.translatable("message.forgeborneodyssey.anvil.knapping_complete",
+                result.getHoverName().getString()),
+            true
+        );
+    }
+
+    /**
+     * 圆石碎裂：失去进度，散落少量燧石碎片
+     */
+    private void shatterPebble(ServerPlayer player) {
+        if (level == null) return;
+
+        // 碎裂时产出少量燧石片和大量碎石废料
+        int flakeCount = 1 + level.random.nextInt(2);
+        for (int i = 0; i < flakeCount; i++) {
+            ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get());
+            net.minecraft.world.entity.item.ItemEntity flakeEntity =
+                new net.minecraft.world.entity.item.ItemEntity(
+                    level,
+                    worldPosition.getX() + 0.5D + (level.random.nextDouble() - 0.5) * 0.8,
+                    worldPosition.getY() + 1.0D,
+                    worldPosition.getZ() + 0.5D + (level.random.nextDouble() - 0.5) * 0.8,
+                    flake
+                );
+            flakeEntity.setDefaultPickUpDelay();
+            flakeEntity.setDeltaMovement(
+                (level.random.nextDouble() - 0.5) * 0.3,
+                0.2 + level.random.nextDouble() * 0.2,
+                (level.random.nextDouble() - 0.5) * 0.3
+            );
+            level.addFreshEntity(flakeEntity);
+        }
+
+        // 额外的碎石废料
+        int debrisCount = 2 + level.random.nextInt(3);
+        for (int i = 0; i < debrisCount; i++) {
+            ItemStack debris = new ItemStack(ModItems.STONE_DEBITAGE.get());
+            net.minecraft.world.entity.item.ItemEntity debrisEntity =
+                new net.minecraft.world.entity.item.ItemEntity(
+                    level,
+                    worldPosition.getX() + 0.5D + (level.random.nextDouble() - 0.5) * 0.8,
+                    worldPosition.getY() + 1.0D,
+                    worldPosition.getZ() + 0.5D + (level.random.nextDouble() - 0.5) * 0.8,
+                    debris
+                );
+            debrisEntity.setDefaultPickUpDelay();
+            debrisEntity.setDeltaMovement(
+                (level.random.nextDouble() - 0.5) * 0.2,
+                0.1 + level.random.nextDouble() * 0.15,
+                (level.random.nextDouble() - 0.5) * 0.2
+            );
+            level.addFreshEntity(debrisEntity);
+        }
+
+        level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.STONE_BREAK,
+            net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.5f);
+
+        this.storedItem = ItemStack.EMPTY;
+        this.knappingHitCount = 0;
+        this.knappingRequiredHits = 0;
+        this.knappingPlatformCreated = false;
+        this.isCoreShaping = false;
+        this.knappingFragility = 0;
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+
+        player.displayClientMessage(
+            Component.translatable("message.forgeborneodyssey.anvil.knapping_shatter"),
+            true
+        );
+    }
+
+    /**
+     * 根据敲击进度获取剥片/修整阶段的描述性消息
+     * @param isFlaking true=剥片阶段，false=修整阶段
+     */
+    private static String getKnappingMessage(int hits, int required, boolean isFlaking) {
+        if (isFlaking) {
+            if (hits == 1) return "message.forgeborneodyssey.anvil.flaking_first";
+            if (hits == required - 1) return "message.forgeborneodyssey.anvil.flaking_final";
+            return "message.forgeborneodyssey.anvil.flaking_stage1";
+        } else {
+            if (hits == 1) return "message.forgeborneodyssey.anvil.retouch_first_hit";
+            if (hits == required - 1) return "message.forgeborneodyssey.anvil.retouch_final";
+            return "message.forgeborneodyssey.anvil.retouch_stage1";
+        }
+    }
+
+    /**
+     * 播放石器打制的音效和粒子效果
+     * 模拟石锤敲击石核，石片飞溅，音效随进度升高
+     */
+    private void playKnappingFeedback(float offsetX, float offsetZ, boolean effective) {
+        if (level == null) return;
+
+        if (effective) {
+            // 有效敲击：清脆的石击声，音调随进度升高
+            float pitch = 0.85f + knappingHitCount * 0.06f + level.random.nextFloat() * 0.08f;
+            level.playSound(null, worldPosition,
+                net.minecraft.sounds.SoundEvents.STONE_HIT,
+                net.minecraft.sounds.SoundSource.BLOCKS, 0.7f, pitch);
+
+            // 石片飞溅粒子——向敲击方向两端散开
+            int particleCount = 5 + level.random.nextInt(3);
+            double spreadX = 0.35D;
+            double spreadZ = 0.35D;
+            ((ServerLevel) level).sendParticles(
+                new ItemParticleOption(ParticleTypes.ITEM, storedItem.copy()),
+                worldPosition.getX() + 0.5D,
+                worldPosition.getY() + 1.15D,
+                worldPosition.getZ() + 0.5D,
+                particleCount,
+                spreadX * (level.random.nextDouble() - 0.5),
+                0.05D,
+                spreadZ * (level.random.nextDouble() - 0.5),
+                0.15D
+            );
+        } else {
+            // 无效敲击：沉闷的敲击声
+            level.playSound(null, worldPosition,
+                net.minecraft.sounds.SoundEvents.STONE_HIT,
+                net.minecraft.sounds.SoundSource.BLOCKS, 0.3f, 0.55f);
+
+            // 少量粉尘
+            ((ServerLevel) level).sendParticles(
+                ParticleTypes.EXPLOSION,
+                worldPosition.getX() + 0.5D,
+                worldPosition.getY() + 1.1D,
+                worldPosition.getZ() + 0.5D,
+                1, 0.05D, 0.05D, 0.05D, 0.02D
+            );
+        }
+    }
+
     /**
      * 处理用斧头弯曲金属片或制作槽片
      */
@@ -789,6 +1447,33 @@ public class AnvilBlockEntity extends BlockEntity {
      */
     public int getHitCount() {
         return hitCount;
+    }
+
+    /**
+     * 获取打制进度比例（0.0 ~ 1.0），用于渲染
+     */
+    public float getKnappingProgress() {
+        if (knappingRequiredHits <= 0) return 0.0f;
+        return Math.min(1.0f, (float) knappingHitCount / knappingRequiredHits);
+    }
+
+    public int getKnappingFragility() {
+        return knappingFragility;
+    }
+
+    public boolean isKnappingPlatformCreated() {
+        return knappingPlatformCreated;
+    }
+
+    public boolean isCoreShaping() {
+        return isCoreShaping;
+    }
+
+    public boolean isKnappingInProgress() {
+        return !storedItem.isEmpty() && (storedItem.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())
+            || storedItem.is(ModItems.FLINT_PEBBLE.get())
+            || storedItem.is(ModItems.STONE_CORE.get())
+            || storedItem.is(ModItems.FLINT_FLAKE.get()));
     }
     
     /**
@@ -1080,6 +1765,60 @@ public class AnvilBlockEntity extends BlockEntity {
         }
     }
 
+    /**
+     * 石器打制的服务器端tick：处理脆弱度衰减和低频粒子提示
+     */
+    public void tickKnappingPhase() {
+        if (level == null || level.isClientSide) return;
+        if (!isKnappingInProgress()) return;
+
+        long currentTick = level.getGameTime();
+
+        // 剥片阶段：长时间不敲也会降低脆弱度（冷却恢复）
+        // 修整石核阶段：无急敲机制，不恢复脆弱度
+        boolean isFlakingStage = !isCoreShaping
+                && (storedItem.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())
+                || storedItem.is(ModItems.FLINT_PEBBLE.get())
+                || storedItem.is(ModItems.STONE_CORE.get()));
+        if (isFlakingStage
+                && knappingFragility > 0
+                && currentTick % 10 == 0) {
+            knappingFragility = Math.max(0, knappingFragility - 1);
+            setChanged();
+        }
+
+        // 低频粒子提示（每20 tick = 1秒一个粒子）
+        if (currentTick % 20 != 0) return;
+
+        double cx = worldPosition.getX() + 0.5D;
+        double cy = worldPosition.getY() + 1.1D;
+        double cz = worldPosition.getZ() + 0.5D;
+
+        if (storedItem.is(ModItems.STONE_CORE.get())) {
+            if (isCoreShaping) {
+                // 修整石核阶段：深色星点（厚重感）
+                ((ServerLevel) level).sendParticles(ParticleTypes.SCRAPE,
+                    cx, cy, cz, 1, 0.1D, 0.03D, 0.1D, 0);
+            } else {
+                // 剥片阶段：白色星点
+                ((ServerLevel) level).sendParticles(ParticleTypes.CRIT,
+                    cx, cy, cz, 1, 0.15D, 0.05D, 0.15D, 0);
+            }
+        } else if (storedItem.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())
+                || storedItem.is(ModItems.FLINT_PEBBLE.get())) {
+            // 打台面阶段：不显示粒子（等待第一击）
+        } else {
+            // 修整阶段：黄色星点
+            ((ServerLevel) level).sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                cx, cy, cz, 1, 0.1D, 0.05D, 0.1D, 0);
+        }
+
+        if (knappingFragility >= 60 && currentTick % 40 == 0) {
+            ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE,
+                cx, cy + 0.2D, cz, 1, 0.05D, 0.02D, 0.05D, 0.01D);
+        }
+    }
+
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
@@ -1091,6 +1830,12 @@ public class AnvilBlockEntity extends BlockEntity {
         tag.putFloat("StretchFactor", stretchFactor);
         tag.putInt("OreCrushCount", oreCrushCount);
         tag.putInt("OreCrushRequired", oreCrushRequired);
+        tag.putInt("KnappingHitCount", knappingHitCount);
+        tag.putInt("KnappingRequiredHits", knappingRequiredHits);
+        tag.putBoolean("KnappingPlatformCreated", knappingPlatformCreated);
+        tag.putBoolean("IsCoreShaping", isCoreShaping);
+        tag.putLong("KnappingLastHitTick", knappingLastHitTick);
+        tag.putInt("KnappingFragility", knappingFragility);
     }
 
     @Override
@@ -1102,6 +1847,12 @@ public class AnvilBlockEntity extends BlockEntity {
         stretchFactor = tag.getFloat("StretchFactor");
         oreCrushCount = tag.getInt("OreCrushCount");
         oreCrushRequired = tag.getInt("OreCrushRequired");
+        knappingHitCount = tag.getInt("KnappingHitCount");
+        knappingRequiredHits = tag.getInt("KnappingRequiredHits");
+        knappingPlatformCreated = tag.getBoolean("KnappingPlatformCreated");
+        isCoreShaping = tag.getBoolean("IsCoreShaping");
+        knappingLastHitTick = tag.getLong("KnappingLastHitTick");
+        knappingFragility = tag.getInt("KnappingFragility");
     }
 
     @Nullable

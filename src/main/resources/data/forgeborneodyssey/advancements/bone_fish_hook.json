@@ -1,0 +1,38 @@
+{
+  "parent": "forgeborneodyssey:stone_age",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:bone_fish_hook"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.bone_fish_hook.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.bone_fish_hook.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_bone_fish_hook": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:bone_fish_hook"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_bone_fish_hook"
+    ]
+  ]
+}

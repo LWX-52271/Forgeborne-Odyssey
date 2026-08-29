@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "forgeborneodyssey:firewood",
+    "forgeborneodyssey:straw_bale",
+    "forgeborneodyssey:rice_husk_char",
+    "forgeborneodyssey:charcoal_clump",
+    "forgeborneodyssey:rice_husk",
+    "forgeborneodyssey:grass_fiber",
+    "forgeborneodyssey:fiber_rope",
+    "forgeborneodyssey:grass_basket",
+    "forgeborneodyssey:wooden_clamp",
+    "forgeborneodyssey:simple_bow",
+    "forgeborneodyssey:simple_fishing_rod",
+    "forgeborneodyssey:copper_fishing_rod"
+  ]
+}

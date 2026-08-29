@@ -7,17 +7,52 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class FlintSickleItem extends SwordItem {
 
+    public static final Tier FLINT_SICKLE_TIER = new Tier() {
+        @Override
+        public int getUses() {
+            return 40;
+        }
+
+        @Override
+        public float getSpeed() {
+            return 2.0F;
+        }
+
+        @Override
+        public float getAttackDamageBonus() {
+            return 1.0F;
+        }
+
+        @Override
+        public int getLevel() {
+            return 0;
+        }
+
+        @Override
+        public int getEnchantmentValue() {
+            return 10;
+        }
+
+        @Override
+        public Ingredient getRepairIngredient() {
+            return Ingredient.of(ModItems.FLINT_SICKLE_HEAD.get());
+        }
+    };
+
     public FlintSickleItem() {
-        super(FlintKnifeItem.FLINT_KNIFE_TIER, 0, -2.0F, new Properties()
+        super(FLINT_SICKLE_TIER, 1, -1.8F, new Item.Properties()
                 .stacksTo(1)
                 .durability(40));
     }

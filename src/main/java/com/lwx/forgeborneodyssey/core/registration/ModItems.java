@@ -21,14 +21,17 @@ import com.lwx.forgeborneodyssey.items.armor.GoldPinArmorItem;
 import com.lwx.forgeborneodyssey.items.armor.SilverPinArmorItem;
 import com.lwx.forgeborneodyssey.items.armor.CopperPinArmorItem;
 import com.lwx.forgeborneodyssey.items.armor.GrassArmorItem;
+import com.lwx.forgeborneodyssey.items.armor.HideArmorItem;
+import com.lwx.forgeborneodyssey.items.tools.ScraperItem;
 import com.lwx.forgeborneodyssey.items.softmetalbillets.SoftCopperBilletItem;
 import com.lwx.forgeborneodyssey.items.softmetalstrips.SoftCopperStripItem;
 import com.lwx.forgeborneodyssey.items.tools.CobblestoneHammerItem;
 import com.lwx.forgeborneodyssey.items.tools.FlintShovelItem;
-import com.lwx.forgeborneodyssey.items.tools.StoneHammerItem;
+
 import com.lwx.forgeborneodyssey.items.tools.FlintKnifeItem;
 import com.lwx.forgeborneodyssey.items.tools.FlintSickleItem;
 import com.lwx.forgeborneodyssey.items.tools.FireDrillItem;
+import com.lwx.forgeborneodyssey.items.tools.StoneHoeItem;
 import com.lwx.forgeborneodyssey.items.tools.HandleStoneHammerItem;
 import com.lwx.forgeborneodyssey.items.tools.StoneChiselItem;
 import com.lwx.forgeborneodyssey.items.tools.WoodenTongsItem;
@@ -38,12 +41,24 @@ import com.lwx.forgeborneodyssey.items.tools.WroughtGoldAxeItem;
 import com.lwx.forgeborneodyssey.items.FiberRopeItem;
 import com.lwx.forgeborneodyssey.items.TutorialGuideBookItem;
 import com.lwx.forgeborneodyssey.items.tools.CopperFishingRodItem;
+import com.lwx.forgeborneodyssey.items.tools.SimpleFishingRodItem;
+import com.lwx.forgeborneodyssey.items.BoneFishHookItem;
+import com.lwx.forgeborneodyssey.items.HerbPoulticeItem;
 import com.lwx.forgeborneodyssey.items.weapons.MetalKnifeItem;
 import com.lwx.forgeborneodyssey.items.weapons.MetalSwordBladeItem;
 import com.lwx.forgeborneodyssey.items.weapons.SlingItem;
-import com.lwx.forgeborneodyssey.items.weapons.StoneAxeItem;
+import com.lwx.forgeborneodyssey.items.weapons.PolishedStoneAxeItem;
 import com.lwx.forgeborneodyssey.items.weapons.StoneSpearItem;
 import com.lwx.forgeborneodyssey.items.weapons.WroughtMetalSwordItem;
+import com.lwx.forgeborneodyssey.items.weapons.SimpleBowItem;
+import com.lwx.forgeborneodyssey.items.weapons.StoneArrowItem;
+import com.lwx.forgeborneodyssey.items.weapons.BoneArrowItem;
+import com.lwx.forgeborneodyssey.items.tools.BoneNeedleItem;
+import com.lwx.forgeborneodyssey.items.AnimalFatItem;
+import com.lwx.forgeborneodyssey.items.RawhideItem;
+import com.lwx.forgeborneodyssey.items.DriedHideItem;
+import com.lwx.forgeborneodyssey.items.TannedLeatherItem;
+import com.lwx.forgeborneodyssey.items.GrassBasketItem;
 import com.lwx.forgeborneodyssey.items.beads.GoldBeadItem;
 import com.lwx.forgeborneodyssey.items.beads.SilverBeadItem;
 import com.lwx.forgeborneodyssey.items.beads.CopperBeadItem;
@@ -191,7 +206,6 @@ public class ModItems {
     // 工具物品
     public static final RegistryObject<Item> COBBLESTONE_HAMMER = ITEMS.register("cobblestone_hammer", CobblestoneHammerItem::new);
     public static final RegistryObject<Item> FLINT_SHOVEL = ITEMS.register("flint_shovel", FlintShovelItem::new);
-    public static final RegistryObject<Item> STONE_HAMMER = ITEMS.register("stone_hammer", StoneHammerItem::new);
     public static final RegistryObject<Item> FLINT_KNIFE = ITEMS.register("flint_knife", FlintKnifeItem::new);
     public static final RegistryObject<Item> FLINT_SICKLE = ITEMS.register("flint_sickle", FlintSickleItem::new);
     public static final RegistryObject<Item> FIRE_DRILL = ITEMS.register("fire_drill", FireDrillItem::new);
@@ -204,8 +218,18 @@ public class ModItems {
 
     // 石器武器
     public static final RegistryObject<Item> STONE_SPEAR = ITEMS.register("stone_spear", StoneSpearItem::new);
-    public static final RegistryObject<Item> STONE_AXE = ITEMS.register("stone_axe", StoneAxeItem::new);
+    public static final RegistryObject<Item> POLISHED_STONE_AXE = ITEMS.register("polished_stone_axe", PolishedStoneAxeItem::new);
+    public static final RegistryObject<Item> STONE_HOE = ITEMS.register("stone_hoe", StoneHoeItem::new);
     public static final RegistryObject<Item> SLING = ITEMS.register("sling", SlingItem::new);
+
+    // 简易弓与箭
+    public static final RegistryObject<Item> SIMPLE_BOW = ITEMS.register("simple_bow", SimpleBowItem::new);
+    public static final RegistryObject<Item> STONE_ARROW = ITEMS.register("stone_arrow", StoneArrowItem::new);
+    public static final RegistryObject<Item> BONE_ARROW = ITEMS.register("bone_arrow", BoneArrowItem::new);
+
+    // 材料物品
+    public static final RegistryObject<Item> ANIMAL_FAT = ITEMS.register("animal_fat", AnimalFatItem::new);
+    public static final RegistryObject<Item> BONE_NEEDLE = ITEMS.register("bone_needle", BoneNeedleItem::new);
 
     // 草编护甲
     public static final RegistryObject<Item> GRASS_HELMET = ITEMS.register("grass_helmet",
@@ -215,8 +239,43 @@ public class ModItems {
     public static final RegistryObject<Item> GRASS_LEGGINGS = ITEMS.register("grass_leggings",
             () -> new GrassArmorItem(ArmorItem.Type.LEGGINGS));
 
+    // 兽皮加工链
+    public static final RegistryObject<Item> RAWHIDE = ITEMS.register("rawhide", RawhideItem::new);
+    public static final RegistryObject<Item> DRIED_HIDE = ITEMS.register("dried_hide", DriedHideItem::new);
+    public static final RegistryObject<Item> SCRAPER = ITEMS.register("scraper", ScraperItem::new);
+    public static final RegistryObject<Item> TANNED_LEATHER = ITEMS.register("tanned_leather", TannedLeatherItem::new);
+
+    // 兽皮护甲
+    public static final RegistryObject<Item> HIDE_HELMET = ITEMS.register("hide_helmet",
+            () -> new HideArmorItem(ArmorItem.Type.HELMET));
+    public static final RegistryObject<Item> HIDE_CHESTPLATE = ITEMS.register("hide_chestplate",
+            () -> new HideArmorItem(ArmorItem.Type.CHESTPLATE));
+    public static final RegistryObject<Item> HIDE_LEGGINGS = ITEMS.register("hide_leggings",
+            () -> new HideArmorItem(ArmorItem.Type.LEGGINGS));
+    public static final RegistryObject<Item> HIDE_BOOTS = ITEMS.register("hide_boots",
+            () -> new HideArmorItem(ArmorItem.Type.BOOTS));
+
+    // 草编篮
+    public static final RegistryObject<Item> GRASS_BASKET = ITEMS.register("grass_basket", GrassBasketItem::new);
+
     // 材料物品
     public static final RegistryObject<Item> GRAVEL = ITEMS.register("gravel", GravelItem::new);
+
+    // 工具配件（敲击台产出）
+    public static final RegistryObject<Item> FLINT_KNIFE_HEAD = simpleItem("flint_knife_head");
+    public static final RegistryObject<Item> FLINT_ARROWHEAD = simpleItem("flint_arrowhead");
+    public static final RegistryObject<Item> FLINT_SPEARHEAD = simpleItem("flint_spearhead");
+    public static final RegistryObject<Item> FLINT_SHOVEL_HEAD = simpleItem("flint_shovel_head");
+    public static final RegistryObject<Item> FLINT_SICKLE_HEAD = simpleItem("flint_sickle_head");
+    public static final RegistryObject<Item> STONE_AXE_HEAD = simpleItem("stone_axe_head");
+    public static final RegistryObject<Item> STONE_HOE_HEAD = simpleItem("stone_hoe_head");
+    public static final RegistryObject<Item> POLISHED_AXE_HEAD = simpleItem("polished_axe_head");
+
+    // 石器加工基础材料
+    public static final RegistryObject<Item> FLINT_PEBBLE = simpleItem("flint_pebble");
+    public static final RegistryObject<Item> STONE_CORE = simpleItem("stone_core");
+    public static final RegistryObject<Item> FLINT_FLAKE = simpleItem("flint_flake");
+    public static final RegistryObject<Item> STONE_DEBITAGE = simpleItem("stone_debitage");
 
     // 红铜片物品
     public static final RegistryObject<Item> COPPER_SHEET = ITEMS.register("copper_sheet", CopperSheetItem::new);
@@ -245,14 +304,25 @@ public class ModItems {
     // 窑箅物品
     public static final RegistryObject<Item> GRATE_BLOCK_ITEM = ITEMS.register("grate_block", () -> new BlockItem(ModBlocks.GRATE_BLOCK.get(), new Item.Properties()));
 
+    // 油脂火把物品
+    public static final RegistryObject<Item> GREASE_TORCH_ITEM = ITEMS.register("grease_torch", () -> new BlockItem(ModBlocks.GREASE_TORCH.get(), new Item.Properties()));
+
     // 铜草花物品
     public static final RegistryObject<Item> COPPER_GRASS_FLOWER_ITEM = createBlockItem("copper_grass_flower", ModBlocks.COPPER_GRASS_FLOWER);
 
     // 灰烬堆物品
     public static final RegistryObject<Item> KILN_ASH_PILE_ITEM = ITEMS.register("kiln_ash_pile", () -> new BlockItem(ModBlocks.KILN_ASH_PILE.get(), new Item.Properties()));
 
-    // 地表圆石晾坯架物品
+    // 晾晒架物品
     public static final RegistryObject<Item> DRYING_RACK_ITEM = ITEMS.register("drying_rack", () -> new BlockItem(ModBlocks.DRYING_RACK.get(), new Item.Properties()));
+
+    // 石磨盘
+    public static final RegistryObject<Item> QUERN_ITEM = ITEMS.register("quern", () -> new BlockItem(ModBlocks.QUERN.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> QUERN_UPPER = ITEMS.register("quern_upper", () -> new Item(new Item.Properties()));
+
+    // 面粉
+    public static final RegistryObject<Item> FLOUR = ITEMS.register("flour", FlourItem::new);
 
     // 饰针胸甲物品（可装备形式）
     public static final RegistryObject<Item> GOLD_PIN_CHESTPLATE = ITEMS.register("gold_pin_chestplate", GoldPinArmorItem::new);
@@ -384,6 +454,13 @@ public class ModItems {
 
     // 铜鱼竿物品
     public static final RegistryObject<Item> COPPER_FISHING_ROD = ITEMS.register("copper_fishing_rod", CopperFishingRodItem::new);
+
+    // 石器时代钓鱼
+    public static final RegistryObject<Item> BONE_FISH_HOOK = ITEMS.register("bone_fish_hook", BoneFishHookItem::new);
+    public static final RegistryObject<Item> SIMPLE_FISHING_ROD = ITEMS.register("simple_fishing_rod", SimpleFishingRodItem::new);
+
+    // 草药敷料
+    public static final RegistryObject<Item> HERB_POULTICE = ITEMS.register("herb_poultice", HerbPoulticeItem::new);
 
     // 新手教程书
     public static final RegistryObject<Item> TUTORIAL_GUIDE_BOOK = ITEMS.register("tutorial_guide_book", TutorialGuideBookItem::new);

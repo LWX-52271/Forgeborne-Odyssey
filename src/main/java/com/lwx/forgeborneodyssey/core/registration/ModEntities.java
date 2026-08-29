@@ -1,10 +1,13 @@
 package com.lwx.forgeborneodyssey.core.registration;
 
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
-import com.lwx.forgeborneodyssey.entities.ThrownMetalBead;
-import com.lwx.forgeborneodyssey.entities.ThrownSlingStone;
 import com.lwx.forgeborneodyssey.entities.ThrownStoneSpear;
+import com.lwx.forgeborneodyssey.entities.ThrownSlingStone;
+import com.lwx.forgeborneodyssey.entities.ThrownMetalBead;
 import com.lwx.forgeborneodyssey.entities.ThrownSurfaceCobblestone;
+import com.lwx.forgeborneodyssey.entities.StoneArrow;
+import com.lwx.forgeborneodyssey.entities.BoneArrow;
+import com.lwx.forgeborneodyssey.entities.CorpseEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -52,5 +55,35 @@ public class ModEntities {
             .clientTrackingRange(4)
             .updateInterval(10)
             .build(ForgeborneOdyssey.MOD_ID + ":sling_stone_thrown")
+    );
+
+    // 石箭实体
+    public static final RegistryObject<EntityType<StoneArrow>> STONE_ARROW = ENTITY_TYPES.register(
+        "stone_arrow",
+        () -> EntityType.Builder.<StoneArrow>of(StoneArrow::new, MobCategory.MISC)
+            .sized(0.5f, 0.5f)
+            .clientTrackingRange(4)
+            .updateInterval(20)
+            .build(ForgeborneOdyssey.MOD_ID + ":stone_arrow")
+    );
+
+    // 骨箭实体
+    public static final RegistryObject<EntityType<BoneArrow>> BONE_ARROW = ENTITY_TYPES.register(
+        "bone_arrow",
+        () -> EntityType.Builder.<BoneArrow>of(BoneArrow::new, MobCategory.MISC)
+            .sized(0.5f, 0.5f)
+            .clientTrackingRange(4)
+            .updateInterval(20)
+            .build(ForgeborneOdyssey.MOD_ID + ":bone_arrow")
+    );
+
+    // 尸体实体
+    public static final RegistryObject<EntityType<CorpseEntity>> CORPSE = ENTITY_TYPES.register(
+        "corpse",
+        () -> EntityType.Builder.<CorpseEntity>of(CorpseEntity::new, MobCategory.MISC)
+            .sized(1.8f, 0.3f)
+            .clientTrackingRange(8)
+            .updateInterval(20)
+            .build(ForgeborneOdyssey.MOD_ID + ":corpse")
     );
 }

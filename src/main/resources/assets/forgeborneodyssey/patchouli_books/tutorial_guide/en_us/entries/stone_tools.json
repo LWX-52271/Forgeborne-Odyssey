@@ -1,0 +1,53 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Stone Tools",
+  "icon": "forgeborneodyssey:cobblestone_hammer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Your First Tools",
+      "text": "Before you can work with metal, you need basic stone tools.$(br2)Start by finding §6surface cobblestone blocks§r scattered on the ground. They look like small rocks on the surface.$(br2)Pick them up and use them in the crafting table to make your first tools."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
+      "text": "§bCobblestone Hammer§r$(br)Attack: 3, Durability: 96$(br)Used for forging metal on anvils."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
+      "text": "§bHandle Stone Hammer§r$(br)Attack: 4, Durability: 256$(br)An upgraded hammer with a handle."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:stone_chisel_crafting",
+      "text": "§bStone Chisel§r$(br)Attack: 2, Durability: 48$(br)Used for carving finished products from metal."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:flint_knife_crafting",
+      "text": "§bFlint Knife§r$(br)Used for cutting grass to get grass fiber, and for various crafting tasks."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:flint_shovel_crafting",
+      "text": "§bFlint Shovel§r$(br)Right-click sand/gravel to extract raw clay. Right-click dirt to dig a kiln pit."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:flint_sickle_crafting",
+      "text": "§bFlint Sickle§r$(br)Right-click grass to obtain grass fiber, same efficiency as the flint knife."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:wooden_clamp_crafting",
+      "text": "§bWooden Clamp (Tongs)§r$(br)§cCRITICAL:§r Must use this to pick up hot items from fire pits! Bare hands will burn you."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tool Usage Tips",
+      "text": "$(li)§6Hammer + Anvil:§r Left-click on anvil to forge metal$(br)$(li)§6Axe + Anvil:§r Right-click on anvil to bend metal sheets$(br)$(li)§6Chisel + Anvil:§r Left-click on anvil to carve finished products$(br)$(li)§6Flint Shovel:§r Right-click sand for clay, dirt for kiln pit$(br)$(li)§6Flint Knife:§r Right-click grass for grass fiber$(br)$(li)§6Wooden Clamp:§r Always use for hot items!"
+    }
+  ],
+  "sortnum": 0
+}

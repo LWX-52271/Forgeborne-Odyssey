@@ -18,7 +18,7 @@ import java.util.List;
 public class CobblestoneHammerItem extends SwordItem {
     
     public CobblestoneHammerItem() {
-        super(Tiers.STONE, 3, -2.4F, new Item.Properties()
+        super(Tiers.STONE, 3, -2.9F, new Item.Properties()
             .stacksTo(1)  // 只能持有一个
             .durability(96)); // 耐久度设置为96
     }

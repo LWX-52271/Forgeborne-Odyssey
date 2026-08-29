@@ -27,7 +27,7 @@ import java.util.UUID;
 public class WroughtCopperAxeItem extends AxeItem {
     
     public WroughtCopperAxeItem() {
-        super(Tiers.STONE, 5.0F, -3.0F, new Item.Properties()
+        super(Tiers.STONE, 5.0F, -3.1F, new Item.Properties()
             .stacksTo(1)  // 只能持有一个
             .durability(64)); // 耐久度设置为64，比石斧的132低
     }

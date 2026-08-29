@@ -1,19 +1,14 @@
 {
-  "type": "forgeborneodyssey:tool_shaped",
-  "pattern": [
-    "K  ",
-    "L  ",
-    "   "
-  ],
-  "key": {
-    "L": {
+  "type": "forgeborneodyssey:tool_shapeless",
+  "ingredients": [
+    {
       "tag": "minecraft:logs"
     },
-    "K": {
+    {
       "tag": "forge:tools/knives"
     }
-  },
-  "tool": "K",
+  ],
+  "tool": "1",
   "result": {
     "item": "forgeborneodyssey:firewood",
     "count": 4

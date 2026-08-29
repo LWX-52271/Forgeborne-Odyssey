@@ -116,7 +116,7 @@ public class GuideBookScreen extends Screen {
         linesList.add("");
         
         // 第一章
-        addWrappedLines(linesList, "§6" + Component.translatable("guidebook.forgeborneodyssey.chapter1.title").getString());
+        addWrappedLines(linesList, "§4" + Component.translatable("guidebook.forgeborneodyssey.chapter1.title").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter1.preparation").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter1.cobblestone").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter1.hammer").getString());
@@ -126,7 +126,7 @@ public class GuideBookScreen extends Screen {
         linesList.add("");
         
         // 第二章
-        addWrappedLines(linesList, "§6" + Component.translatable("guidebook.forgeborneodyssey.chapter2.title").getString());
+        addWrappedLines(linesList, "§4" + Component.translatable("guidebook.forgeborneodyssey.chapter2.title").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter2.copper_title").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter2.copper_spawn").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter2.copper_feature").getString());
@@ -140,7 +140,7 @@ public class GuideBookScreen extends Screen {
         linesList.add("");
         
         // 第三章
-        addWrappedLines(linesList, "§6" + Component.translatable("guidebook.forgeborneodyssey.chapter3.title").getString());
+        addWrappedLines(linesList, "§4" + Component.translatable("guidebook.forgeborneodyssey.chapter3.title").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter3.get_billet").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter3.craft_billet").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter3.smelt_title").getString());
@@ -153,7 +153,7 @@ public class GuideBookScreen extends Screen {
         linesList.add("");
         
         // 第四章
-        addWrappedLines(linesList, "§6" + Component.translatable("guidebook.forgeborneodyssey.chapter4.title").getString());
+        addWrappedLines(linesList, "§4" + Component.translatable("guidebook.forgeborneodyssey.chapter4.title").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter4.stage1").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter4.billet_to_sheet").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter4.stage2").getString());
@@ -167,7 +167,7 @@ public class GuideBookScreen extends Screen {
         linesList.add("");
         
         // 第五章
-        addWrappedLines(linesList, "§6" + Component.translatable("guidebook.forgeborneodyssey.chapter5.title").getString());
+        addWrappedLines(linesList, "§4" + Component.translatable("guidebook.forgeborneodyssey.chapter5.title").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter5.processing").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter5.slot_to_ring").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter5.ring_to_hook").getString());
@@ -181,7 +181,7 @@ public class GuideBookScreen extends Screen {
         linesList.add("");
         
         // 第六章
-        addWrappedLines(linesList, "§6" + Component.translatable("guidebook.forgeborneodyssey.chapter6.title").getString());
+        addWrappedLines(linesList, "§4" + Component.translatable("guidebook.forgeborneodyssey.chapter6.title").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter6.quality").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter6.rough").getString());
         addWrappedLines(linesList, Component.translatable("guidebook.forgeborneodyssey.chapter6.normal_fine").getString());
@@ -311,7 +311,7 @@ public class GuideBookScreen extends Screen {
      * 判断是否为标题行
      */
     private boolean isTitleLine(String line) {
-        return line.contains("§6") || line.contains("§b");
+        return line.contains("§4") || line.contains("§b");
     }
     
     /**
@@ -320,8 +320,8 @@ public class GuideBookScreen extends Screen {
     private int getTitleColor(String line) {
         if (line.contains("§b")) {
             return 0x2F4F4F; // 深石板灰（替代天蓝色）
-        } else if (line.contains("§6")) {
-            return 0x8B4513; // 棕色（章节标题）
+        } else if (line.contains("§4")) {
+            return 0x8B0000; // 深红色（章节标题）
         }
         return 0x000000;
     }

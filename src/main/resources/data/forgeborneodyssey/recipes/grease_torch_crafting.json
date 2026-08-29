@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "F  ",
+    "S  ",
+    "R  "
+  ],
+  "key": {
+    "F": {
+      "item": "forgeborneodyssey:animal_fat"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "R": {
+      "item": "forgeborneodyssey:fiber_rope"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:grease_torch",
+    "count": 2
+  }
+}

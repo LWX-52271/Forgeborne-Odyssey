@@ -1,5 +1,5 @@
 {
-  "parent": "forgeborneodyssey:stone_hammer",
+  "parent": "forgeborneodyssey:first_stone_tool",
   "display": {
     "icon": {
       "item": "minecraft:water_bucket"

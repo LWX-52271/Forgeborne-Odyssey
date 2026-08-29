@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "§6§lFire-Crack Mining Technique§r$(br2)§0Fire-crack mining is an ancient extraction method that uses fire to heat rocks, causing them to expand, then rapidly cools them with water to create thermal stress that cracks and shatters the rock.$(br2)This system simulates real-world heat conduction and thermal stress physics, featuring a §dmulti-layer heat transfer model§r, §doxygen concentration mechanics§r, and §dflame decay system§r."
+      "text": "§4§lFire-Crack Mining Technique§r$(br2)§0Fire-crack mining is an ancient extraction method that uses fire to heat rocks, causing them to expand, then rapidly cools them with water to create thermal stress that cracks and shatters the rock.$(br2)This system simulates real-world heat conduction and thermal stress physics, featuring a §dmulti-layer heat transfer model§r, §doxygen concentration mechanics§r, and §dflame decay system§r."
     },
     {
       "type": "patchouli:text",
@@ -20,7 +20,7 @@
     {
       "type": "patchouli:text",
       "title": "Mining Process",
-      "text": "§0The complete fire-crack mining process:$(br2)§6[Step 1: Build Campfire]$(br) Place fuel items (torches, planks, etc.) near target rocks and ignite with flint and steel.$(br2)§6[Step 2: Heat Rocks]$(br) The fire heats adjacent rocks through thermal conduction, gradually raising their temperature.$(br2)§6[Step 3: Quench with Water]$(br) When rocks are sufficiently heated, douse them with a water bucket to trigger violent thermal stress.$(br2)§6[Step 4: Collect Minerals]$(br) Cracked rocks automatically drop their corresponding mineral items."
+      "text": "§0The complete fire-crack mining process:$(br2)§4[Step 1: Build Campfire]$(br) Place fuel items (torches, planks, etc.) near target rocks and ignite with flint and steel.$(br2)§4[Step 2: Heat Rocks]$(br) The fire heats adjacent rocks through thermal conduction, gradually raising their temperature.$(br2)§4[Step 3: Quench with Water]$(br) When rocks are sufficiently heated, douse them with a water bucket to trigger violent thermal stress.$(br2)§4[Step 4: Collect Minerals]$(br) Cracked rocks automatically drop their corresponding mineral items."
     },
     {
       "type": "patchouli:spotlight",

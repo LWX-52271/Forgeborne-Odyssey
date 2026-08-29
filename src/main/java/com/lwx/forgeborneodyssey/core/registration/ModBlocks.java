@@ -21,10 +21,13 @@ import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.KilnAshPileBlock;
 
+import com.lwx.forgeborneodyssey.blocks.GreaseTorchBlock;
 import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
 import com.lwx.forgeborneodyssey.blocks.DryingRackBlock;
 import com.lwx.forgeborneodyssey.blocks.DryingRackBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlockEntity;
+import com.lwx.forgeborneodyssey.blocks.QuernBlock;
+import com.lwx.forgeborneodyssey.blocks.QuernBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.*;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.*;
@@ -311,7 +314,7 @@ public class ModBlocks {
     // 灰烬堆
     public static final RegistryObject<Block> KILN_ASH_PILE = BLOCKS.register("kiln_ash_pile", KilnAshPileBlock::new);
 
-    // 晾坯架
+    // 晾晒架
     public static final RegistryObject<Block> DRYING_RACK = BLOCKS.register("drying_rack", DryingRackBlock::new);
 
     // 火门
@@ -322,6 +325,9 @@ public class ModBlocks {
 
     // 窑箅
     public static final RegistryObject<Block> GRATE_BLOCK = BLOCKS.register("grate_block", GrateBlock::new);
+
+    // 油脂火把
+    public static final RegistryObject<Block> GREASE_TORCH = BLOCKS.register("grease_torch", GreaseTorchBlock::new);
 
     // 铜草花
     public static final RegistryObject<Block> COPPER_GRASS_FLOWER = BLOCKS.register("copper_grass_flower", CopperGrassFlowerBlock::new);
@@ -334,9 +340,16 @@ public class ModBlocks {
     public static final RegistryObject<BlockEntityType<KilnLidBlockEntity>> KILN_LID_BLOCK_ENTITY = BLOCK_ENTITIES.register("kiln_lid_block_entity",
             () -> BlockEntityType.Builder.of(KilnLidBlockEntity::new, KILN_LID.get()).build(null));
 
-    // 晾坯架方块实体类型
+    // 晾晒架方块实体类型
     public static final RegistryObject<BlockEntityType<DryingRackBlockEntity>> DRYING_RACK_BLOCK_ENTITY = BLOCK_ENTITIES.register("drying_rack_block_entity",
             () -> BlockEntityType.Builder.of(DryingRackBlockEntity::new, DRYING_RACK.get()).build(null));
+
+    // 石磨盘
+    public static final RegistryObject<Block> QUERN = BLOCKS.register("quern", QuernBlock::new);
+
+    // 石磨盘方块实体类型
+    public static final RegistryObject<BlockEntityType<QuernBlockEntity>> QUERN_BLOCK_ENTITY = BLOCK_ENTITIES.register("quern_block_entity",
+            () -> BlockEntityType.Builder.of(QuernBlockEntity::new, QUERN.get()).build(null));
 
     // 火塘方块实体类型
     public static final RegistryObject<BlockEntityType<FirePitBlockEntity>> FIRE_PIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("fire_pit_block_entity", 

@@ -1,7 +1,7 @@
 package com.lwx.forgeborneodyssey.items.tools;
 
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -36,12 +36,12 @@ public class FlintKnifeItem extends SwordItem {
 
         @Override
         public Ingredient getRepairIngredient() {
-            return Ingredient.of(Items.FLINT);
+            return Ingredient.of(ModItems.FLINT_KNIFE_HEAD.get());
         }
     };
 
     public FlintKnifeItem() {
-        super(FLINT_KNIFE_TIER, 0, -2.0F, new Item.Properties()
+        super(FLINT_KNIFE_TIER, 1, -1.6F, new Item.Properties()
                 .stacksTo(1)
                 .durability(40));
     }

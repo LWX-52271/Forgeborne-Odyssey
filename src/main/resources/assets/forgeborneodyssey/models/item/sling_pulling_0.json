@@ -1,0 +1,6 @@
+{
+  "parent": "forgeborneodyssey:item/sling",
+  "textures": {
+    "layer0": "forgeborneodyssey:item/sling"
+  }
+}

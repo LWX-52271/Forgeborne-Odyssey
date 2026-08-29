@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  S",
+    "F S",
+    "  S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "F": {
+      "item": "forgeborneodyssey:fiber_rope"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:simple_bow",
+    "count": 1
+  }
+}

@@ -179,7 +179,7 @@ public class FirePitBlock extends Block implements EntityBlock {
         // 优先处理点燃/熄灭逻辑（使用打火石、火球、水桶、铲子）
         if (!state.getValue(LIT)) {
             // 点燃火塘
-            if (heldItem.is(Items.FLINT_AND_STEEL) || heldItem.is(Items.FIRE_CHARGE) || heldItem.is(ModItems.FIRE_DRILL.get())) {
+            if (heldItem.is(Items.FLINT_AND_STEEL) || heldItem.is(Items.FIRE_CHARGE)) {
                 // 检查是否有燃料
                 BlockEntity blockEntity = level.getBlockEntity(pos);
                 boolean hasFuel = blockEntity instanceof FirePitBlockEntity firePitBE && firePitBE.hasFuel();
@@ -202,7 +202,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                     level.sendBlockUpdated(pos, state, newState, 3);
                     level.gameEvent(player, net.minecraft.world.level.gameevent.GameEvent.BLOCK_CHANGE, pos);
                     if (!player.isCreative()) {
-                        if (heldItem.is(Items.FLINT_AND_STEEL) || heldItem.is(ModItems.FIRE_DRILL.get())) {
+                        if (heldItem.is(Items.FLINT_AND_STEEL)) {
                             heldItem.hurtAndBreak(1, player, (p) -> {
                                 p.broadcastBreakEvent(hand);
                             });
@@ -327,6 +327,11 @@ public class FirePitBlock extends Block implements EntityBlock {
                 
                 // 木钳不能用于放置物品到火塘
                 if (heldItem.getItem() == com.lwx.forgeborneodyssey.core.registration.ModItems.WOODEN_CLAMP.get()) {
+                    return InteractionResult.PASS;
+                }
+                
+                // 弓钻需要蓄力，不在这里处理
+                if (heldItem.getItem() == com.lwx.forgeborneodyssey.core.registration.ModItems.FIRE_DRILL.get()) {
                     return InteractionResult.PASS;
                 }
                 
@@ -487,8 +492,8 @@ public class FirePitBlock extends Block implements EntityBlock {
                     return InteractionResult.FAIL;
                 }
                 
-                // 木钳不能用于交换物品
-                if (heldItem.getItem() == com.lwx.forgeborneodyssey.core.registration.ModItems.WOODEN_CLAMP.get()) {
+                // 弓钻需要蓄力，不在这里处理
+                if (heldItem.getItem() == com.lwx.forgeborneodyssey.core.registration.ModItems.FIRE_DRILL.get()) {
                     return InteractionResult.PASS;
                 }
                 
@@ -498,7 +503,34 @@ public class FirePitBlock extends Block implements EntityBlock {
                 boolean hasTongsInMainHand = mainHandItem.getItem() == com.lwx.forgeborneodyssey.core.registration.ModItems.WOODEN_CLAMP.get();
                 boolean hasTongsInOffHand = offHandItem.getItem() == com.lwx.forgeborneodyssey.core.registration.ModItems.WOODEN_CLAMP.get();
                 boolean hasTongs = hasTongsInMainHand || hasTongsInOffHand;
-                
+
+                // 如果主手持有木钳，执行取出物品逻辑（与空手+木钳相同）
+                if (heldItem.getItem() == com.lwx.forgeborneodyssey.core.registration.ModItems.WOODEN_CLAMP.get()) {
+                    ItemStack itemToGive = firePitBE.getStoredItem().copy();
+                    player.getInventory().placeItemBackInInventory(itemToGive);
+                    firePitBE.setStoredItem(ItemStack.EMPTY);
+
+                    ItemStack tongsStack = heldItem;
+                    InteractionHand tongsHand = hand;
+                    tongsStack.hurtAndBreak(1, player, (p) -> {
+                        p.broadcastBreakEvent(tongsHand);
+                    });
+                    com.lwx.forgeborneodyssey.items.tools.WoodenTongsItem tongsItem =
+                        (com.lwx.forgeborneodyssey.items.tools.WoodenTongsItem) tongsStack.getItem();
+                    tongsItem.setUsing(tongsStack, true);
+
+                    level.playSound(null, pos, net.minecraft.sounds.SoundEvents.ITEM_FRAME_REMOVE_ITEM,
+                        SoundSource.BLOCKS, 0.6f, 1.0f);
+                    level.sendBlockUpdated(pos, state, state, 3);
+                    level.blockEntityChanged(pos);
+
+                    player.displayClientMessage(
+                            net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.firepit.take_item"),
+                            true
+                    );
+                    return InteractionResult.CONSUME;
+                }
+
                 // 检查火塘是否正在燃烧
                 boolean isLit = state.getValue(LIT);
                 

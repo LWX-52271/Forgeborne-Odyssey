@@ -2,15 +2,19 @@ package com.lwx.forgeborneodyssey.core;
 
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
+import com.lwx.forgeborneodyssey.core.registration.ModEntities;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import com.lwx.forgeborneodyssey.entities.CorpseEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.Entity;
@@ -32,6 +36,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
@@ -339,7 +345,6 @@ public class ModEventHandlers {
     
     /**
      * 自定义燃料燃烧时间
-     * 硬木柴: 1800 tick, 干草捆: 800 tick, 稻壳炭: 2400 tick, 炭化结块: 600 tick
      */
     @SubscribeEvent
     public static void onFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
@@ -354,6 +359,22 @@ public class ModEventHandlers {
             burnTime = 2400;
         } else if (stack.is(ModItems.CHARCOAL_CLUMP.get())) {
             burnTime = 600;
+        } else if (stack.is(ModItems.RICE_HUSK.get())) {
+            burnTime = 400;
+        } else if (stack.is(ModItems.GRASS_FIBER.get())) {
+            burnTime = 100;
+        } else if (stack.is(ModItems.FIBER_ROPE.get())) {
+            burnTime = 200;
+        } else if (stack.is(ModItems.GRASS_BASKET.get())) {
+            burnTime = 300;
+        } else if (stack.is(ModItems.WOODEN_CLAMP.get())) {
+            burnTime = 400;
+        } else if (stack.is(ModItems.SIMPLE_BOW.get())) {
+            burnTime = 400;
+        } else if (stack.is(ModItems.SIMPLE_FISHING_ROD.get())) {
+            burnTime = 300;
+        } else if (stack.is(ModItems.COPPER_FISHING_ROD.get())) {
+            burnTime = 300;
         }
 
         if (burnTime > 0) {
@@ -446,13 +467,36 @@ public class ModEventHandlers {
             return;
         }
 
-        if (state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)) {
+        if (state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)
+                && held.is(TagKey.create(Registries.ITEM, new ResourceLocation("forge", "tools/knives")))) {
             if (event.getLevel().getRandom().nextFloat() < 0.30F) {
                 ItemStack riceHusk = new ItemStack(ModItems.RICE_HUSK.get());
                 if (!player.getInventory().add(riceHusk)) {
                     player.drop(riceHusk, false);
                 }
             }
+            held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+            event.getLevel().playSound(null, pos, SoundEvents.CROP_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+            useBlock(event.getLevel(), pos, MAX_USAGE);
+
+            if (event.getLevel() instanceof ServerLevel serverLevel) {
+                ItemStack displayStack = new ItemStack(ModItems.RICE_HUSK.get());
+                for (int i = 0; i < 8; i++) {
+                    double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    double offsetY = serverLevel.random.nextDouble() * 0.5;
+                    double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    serverLevel.sendParticles(
+                        new ItemParticleOption(ParticleTypes.ITEM, displayStack),
+                        pos.getX() + 0.5 + offsetX,
+                        pos.getY() + 0.5 + offsetY,
+                        pos.getZ() + 0.5 + offsetZ,
+                        1, 0.0, 0.0, 0.0, 0.0);
+                }
+            }
+
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
         }
     }
 
@@ -652,6 +696,46 @@ public class ModEventHandlers {
             }
         }
         return removed;
+    }
+
+    /**
+     * 生物死亡时生成尸体实体
+     */
+    @SubscribeEvent
+    public static void onLivingDeath(LivingDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.level().isClientSide) return;
+        if (entity instanceof net.minecraft.world.entity.player.Player) return;
+
+        CorpseEntity corpse = ModEntities.CORPSE.get().create(entity.level());
+        if (corpse == null) return;
+
+        CompoundTag nbt = new CompoundTag();
+        entity.saveWithoutId(nbt);
+        nbt.putInt("CorpseStoredXp", entity.getExperienceReward());
+        nbt.putFloat("CorpseOrigWidth", entity.getBbWidth());
+        nbt.putFloat("CorpseOrigHeight", entity.getBbHeight());
+
+        corpse.setPos(entity.getX(), entity.getY(), entity.getZ());
+        corpse.setYRot(entity.getYRot());
+        corpse.setDeadEntityData(entity.getType(), nbt);
+        corpse.setSpawnDeathYRot(entity.getYRot());
+        corpse.setSpawnTick(entity.level().getGameTime());
+
+        entity.level().addFreshEntity(corpse);
+
+        if (!entity.level().isClientSide) {
+            entity.discard();
+        }
+    }
+
+    /**
+     * 阻止非玩家生物死亡掉落，掉落物改为通过尸体交互获取
+     */
+    @SubscribeEvent
+    public static void onLivingDrops(LivingDropsEvent event) {
+        if (event.getEntity() instanceof net.minecraft.world.entity.player.Player) return;
+        event.getDrops().clear();
     }
 
     }

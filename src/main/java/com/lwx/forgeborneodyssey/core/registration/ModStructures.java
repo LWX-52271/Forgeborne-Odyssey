@@ -9,6 +9,8 @@ import com.lwx.forgeborneodyssey.world.ShaftMineRuinPiece;
 import com.lwx.forgeborneodyssey.world.ShaftMineRuinStructure;
 import com.lwx.forgeborneodyssey.world.SkarnDepositPiece;
 import com.lwx.forgeborneodyssey.world.SkarnDepositStructure;
+import com.lwx.forgeborneodyssey.world.StoneWorkshopRemainsPiece;
+import com.lwx.forgeborneodyssey.world.StoneWorkshopRemainsStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -54,4 +56,12 @@ public class ModStructures {
     public static final RegistryObject<StructurePieceType> CASSITERITE_PLACER_PIECE =
             STRUCTURE_PIECE_TYPES.register("cassiterite_placer_piece",
                     () -> (context, tag) -> new CassiteritePlacerPiece(tag));
+
+    public static final RegistryObject<StructureType<StoneWorkshopRemainsStructure>> STONE_WORKSHOP_REMAINS =
+            STRUCTURE_TYPES.register("stone_workshop_remains",
+                    () -> () -> StoneWorkshopRemainsStructure.CODEC);
+
+    public static final RegistryObject<StructurePieceType> STONE_WORKSHOP_REMAINS_PIECE =
+            STRUCTURE_PIECE_TYPES.register("stone_workshop_remains_piece",
+                    () -> (context, tag) -> new StoneWorkshopRemainsPiece(context, tag));
 }

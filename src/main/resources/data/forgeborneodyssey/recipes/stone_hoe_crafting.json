@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "H",
+    "R",
+    "S"
+  ],
+  "key": {
+    "H": {
+      "item": "forgeborneodyssey:stone_hoe_head"
+    },
+    "R": {
+      "item": "forgeborneodyssey:fiber_rope"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:stone_hoe",
+    "count": 1
+  }
+}

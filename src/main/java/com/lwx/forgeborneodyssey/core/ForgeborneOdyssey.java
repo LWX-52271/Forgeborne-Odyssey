@@ -3,6 +3,8 @@ package com.lwx.forgeborneodyssey.core;
 import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
 import com.lwx.forgeborneodyssey.core.registration.*;
 import com.lwx.forgeborneodyssey.loot.GradeLootModifier;
+import com.lwx.forgeborneodyssey.loot.AnimalFatLootModifier;
+import com.lwx.forgeborneodyssey.loot.RawhideLootModifier;
 import com.lwx.forgeborneodyssey.world.*;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.renderer.BiomeColors;
@@ -69,6 +71,12 @@ public class ForgeborneOdyssey {
         DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, MOD_ID);
     public static final RegistryObject<Codec<GradeLootModifier>> GRADE_LOOT_MODIFIER = 
         LOOT_MODIFIERS.register("grade_loot_modifier", () -> GradeLootModifier.CODEC);
+    
+    public static final RegistryObject<Codec<AnimalFatLootModifier>> ANIMAL_FAT_LOOT_MODIFIER = 
+        LOOT_MODIFIERS.register("animal_fat_loot_modifier", () -> AnimalFatLootModifier.CODEC);
+
+    public static final RegistryObject<Codec<RawhideLootModifier>> RAWHIDE_LOOT_MODIFIER = 
+        LOOT_MODIFIERS.register("rawhide_loot_modifier", () -> RawhideLootModifier.CODEC);
     
     // 注册地表圆石特征
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> SURFACE_COBBLESTONE_FEATURE = 
@@ -138,8 +146,7 @@ public class ForgeborneOdyssey {
             modEventBus.addListener(this::registerBlockColors);
         }
         
-        // 注册命令监听器
-        MinecraftForge.EVENT_BUS.register(com.lwx.forgeborneodyssey.core.registration.ModCommands.class);
+        // 注册命令监听器（ModEventHandlers 已通过 @Mod.EventBusSubscriber 自动注册，无需显式注册）
 
         LOGGER.info("Forgeborne Odyssey v1.0 已加载");
     }
@@ -215,12 +222,14 @@ public class ForgeborneOdyssey {
                         com.lwx.forgeborneodyssey.world.ShaftMineRuinGeneration.bootstrapStructure(context);
                         com.lwx.forgeborneodyssey.world.SkarnDepositGeneration.bootstrapStructure(context);
                         com.lwx.forgeborneodyssey.world.CassiteritePlacerGeneration.bootstrapStructure(context);
+                        com.lwx.forgeborneodyssey.world.StoneWorkshopRemainsGeneration.bootstrapStructure(context);
                     })
                     .add(Registries.STRUCTURE_SET, context -> {
                         com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration.bootstrapStructureSet(context);
                         com.lwx.forgeborneodyssey.world.ShaftMineRuinGeneration.bootstrapStructureSet(context);
                         com.lwx.forgeborneodyssey.world.SkarnDepositGeneration.bootstrapStructureSet(context);
                         com.lwx.forgeborneodyssey.world.CassiteritePlacerGeneration.bootstrapStructureSet(context);
+                        com.lwx.forgeborneodyssey.world.StoneWorkshopRemainsGeneration.bootstrapStructureSet(context);
                     });
 
             // 添加单一的数据包提供者

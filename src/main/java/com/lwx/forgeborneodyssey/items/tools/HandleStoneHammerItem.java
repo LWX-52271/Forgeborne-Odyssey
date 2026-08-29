@@ -18,7 +18,7 @@ import java.util.List;
 public class HandleStoneHammerItem extends SwordItem {
     
     public HandleStoneHammerItem() {
-        super(Tiers.STONE, 4, -2.6F, new Item.Properties()
+        super(Tiers.STONE, 5, -2.8F, new Item.Properties()
             .stacksTo(1)  // 只能持有一个
             .durability(256)); // 耐久度设置为256
     }

@@ -1,0 +1,23 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Fire-Crack Mining",
+  "icon": "forgeborneodyssey:fire_pit_block",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "What is Fire-Crack Mining?",
+      "text": "Since you cannot mine ores with a pickaxe, you need §4fire-crack mining§r to extract ore chunks from ore blocks.$(br2)This ancient technique uses thermal stress: heat the rock with fire, then shock it with water to crack it open.$(br2)For a complete guide, read the §bFire-Crack Mining Guide§r (obtainable separately)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Basic Steps",
+      "text": "$(li)Find an ore block you want to mine$(br)$(li)Place a fire source near the ore block$(br)$(li)Wait for the heat to spread$(br)$(li)Pour water on the heated rock$(br)$(li)The thermal shock cracks the rock, dropping ore chunks$(br2)§4Tip:§r Different rock types respond differently to heat."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Ore Processing",
+      "text": "Ore chunks are the raw material you get from fire-crack mining.$(br2)You can crush them into grains, then further process them to extract metals.$(br2)§4Tip:§r Ore quality (grade) affects how much metal you can extract."
+    }
+  ],
+  "sortnum": 3
+}

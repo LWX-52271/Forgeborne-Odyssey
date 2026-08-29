@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "lit=false,facing=down": {
+      "model": "forgeborneodyssey:block/grease_torch_standing_unlit"
+    },
+    "lit=true,facing=down": {
+      "model": "forgeborneodyssey:block/grease_torch_standing_lit"
+    },
+    "lit=false,facing=north": {
+      "model": "forgeborneodyssey:block/grease_torch_wall_unlit"
+    },
+    "lit=true,facing=north": {
+      "model": "forgeborneodyssey:block/grease_torch_wall_lit"
+    },
+    "lit=false,facing=south": {
+      "model": "forgeborneodyssey:block/grease_torch_wall_unlit",
+      "y": 180
+    },
+    "lit=true,facing=south": {
+      "model": "forgeborneodyssey:block/grease_torch_wall_lit",
+      "y": 180
+    },
+    "lit=false,facing=east": {
+      "model": "forgeborneodyssey:block/grease_torch_wall_unlit",
+      "y": 90
+    },
+    "lit=true,facing=east": {
+      "model": "forgeborneodyssey:block/grease_torch_wall_lit",
+      "y": 90
+    },
+    "lit=false,facing=west": {
+      "model": "forgeborneodyssey:block/grease_torch_wall_unlit",
+      "y": 270
+    },
+    "lit=true,facing=west": {
+      "model": "forgeborneodyssey:block/grease_torch_wall_lit",
+      "y": 270
+    }
+  }
+}

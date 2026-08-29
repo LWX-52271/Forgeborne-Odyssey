@@ -1,0 +1,53 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "石器工具",
+  "icon": "forgeborneodyssey:cobblestone_hammer",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "你的第一批工具",
+      "text": "在加工金属之前，你需要基本的石器工具。$(br2)首先在地面寻找散落的§4地表圆石块§r。它们看起来像地表的小石头。$(br2)捡起它们，在合成台中制作你的第一批工具。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
+      "text": "§b圆石锤§r$(br)基础锻造工具。$(br)用于在石砧上锻打金属。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
+      "text": "§b带柄石锤§r$(br)更高效的锻造工具。$(br)升级版锤子，有手柄更耐用。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:stone_chisel_crafting",
+      "text": "§b石凿§r$(br)用于精细雕刻。$(br)用于雕刻金属成品。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:flint_knife_crafting",
+      "text": "§b燧石刀§r$(br)用于割草获取草纤维，以及各种合成任务。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:flint_shovel_crafting",
+      "text": "§b燧石铲§r$(br)右键沙子/砂砾获取黏土，右键泥土挖窑坑。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:flint_sickle_crafting",
+      "text": "§b燧石镰§r$(br)用于右键草获取草纤维，效率与燧石刀相同。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:wooden_clamp_crafting",
+      "text": "§b木钳§r$(br)§c关键：§r必须使用木钳从火塘中取出高温物品！空手取物会被烫伤着火。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "工具使用技巧",
+      "text": "$(li)§4锤子+石砧：§r左键在石砧上锻打金属$(br)$(li)§4斧头+石砧：§r右键在石砧上弯曲金属片$(br)$(li)§4石凿+石砧：§r左键在石砧上雕刻成品$(br)$(li)§4燧石铲：§r右键沙子获取黏土，右键泥土挖窑坑$(br)$(li)§4燧石刀：§r右键草获取草纤维$(br)$(li)§4木钳：§r处理高温物品的必备工具！"
+    }
+  ],
+  "sortnum": 0
+}

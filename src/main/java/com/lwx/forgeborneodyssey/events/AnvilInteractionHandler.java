@@ -46,7 +46,7 @@ public class AnvilInteractionHandler {
                 double offsetZ = hitResult.getLocation().z - pos.getZ() - 0.5;
                 
                 com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.sendToServer(
-                    new com.lwx.forgeborneodyssey.network.ForgingHitPacket(pos, (float)offsetX, (float)offsetZ)
+                    new com.lwx.forgeborneodyssey.network.ForgingHitPacket(pos, (float)offsetX, (float)offsetZ, player.isShiftKeyDown())
                 );
             }
             

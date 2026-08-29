@@ -203,5 +203,25 @@
         "pitch": 1.0
       }
     ]
+  },
+  "sling.spin": {
+    "subtitle": "sounds.forgeborneodyssey.sling.spin",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:sling_spin",
+        "volume": 0.8,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "sling.release": {
+    "subtitle": "sounds.forgeborneodyssey.sling.release",
+    "sounds": [
+      {
+        "name": "forgeborneodyssey:sling_release",
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ]
   }
 }

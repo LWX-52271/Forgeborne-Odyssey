@@ -11,17 +11,17 @@
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§b圆石锤§r——攻击力3，耐久32。这是你最早的锻打工具，用于在石砧上敲击金属坯料。"
+      "text": "§b圆石锤§r——基础锻造工具。用于在石砧上敲击金属坯料。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
-      "text": "§b带柄石锤§r——攻击力4，耐久256。装上木柄后更耐用，是主要的锻造工具。"
+      "text": "§b带柄石锤§r——更高效的锻造工具。装上木柄后更耐用，是主要的锻造工具。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:stone_chisel_crafting",
-      "text": "§b石凿§r——攻击力2，用于精细雕刻。金属成品需要用石凿雕刻才能完成。"
+      "text": "§b石凿§r——用于精细雕刻。金属成品需要用石凿雕刻才能完成。"
     },
     {
       "type": "patchouli:text",

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "H",
+    "R"
+  ],
+  "key": {
+    "H": {
+      "item": "forgeborneodyssey:flint_knife_head"
+    },
+    "R": {
+      "item": "forgeborneodyssey:fiber_rope"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:scraper"
+  }
+}

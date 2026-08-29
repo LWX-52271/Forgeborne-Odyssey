@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "forgeborneodyssey:cassiterite_placer",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 20,
+    "separation": 8,
+    "spread_type": "linear",
+    "salt": 91450276
+  }
+}

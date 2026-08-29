@@ -1,0 +1,38 @@
+{
+  "parent": "forgeborneodyssey:stone_age",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:herb_poultice"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.herb_poultice.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.herb_poultice.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_herb_poultice": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:herb_poultice"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_herb_poultice"
+    ]
+  ]
+}

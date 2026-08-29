@@ -921,6 +921,7 @@ public class FireCrackMiningHandler {
         float breakChance = heatRatio * heatRatio * 0.9f * splashFactor;
         if (RANDOM.nextFloat() < breakChance) {
             breakingBlocks.add(pos);
+            ForgeborneAPI.resetStress(level, pos);
             boolean destroyed = level.destroyBlock(pos, true);
             breakingBlocks.remove(pos);
             if (destroyed) {
@@ -1202,6 +1203,7 @@ public class FireCrackMiningHandler {
                     float breakChance = heatRatio * heatRatio * 0.9f * stressRatio;
                     if (RANDOM.nextFloat() < breakChance) {
                         breakingBlocks.add(neighborPos);
+                        ForgeborneAPI.resetStress(level, neighborPos);
                         boolean destroyed = level.destroyBlock(neighborPos, true);
                         breakingBlocks.remove(neighborPos);
                         if (destroyed) {

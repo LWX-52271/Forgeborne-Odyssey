@@ -9,6 +9,7 @@ public class ConfigManager {
     public static final ConfigManager INSTANCE = new ConfigManager();
 
     public ForgeConfigSpec.IntValue maxStrengthLevel;
+    public ForgeConfigSpec.DoubleValue baseCarryCapacity;
     public ForgeConfigSpec.DoubleValue strengthBonusPerLevel;
     public ForgeConfigSpec.DoubleValue baseTrainingRate;
     public ForgeConfigSpec.DoubleValue trainingActivationRatio;
@@ -24,9 +25,13 @@ public class ConfigManager {
                 .comment("Maximum achievable strength level")
                 .defineInRange("maxStrengthLevel", 50, 1, 100);
 
+        INSTANCE.baseCarryCapacity = BUILDER
+                .comment("Base carry capacity (grams) at strength level 0")
+                .defineInRange("baseCarryCapacity", 10000.0, 1000.0, 100000.0);
+
         INSTANCE.strengthBonusPerLevel = BUILDER
                 .comment("Additional carry capacity (grams) per strength level")
-                .defineInRange("strengthBonusPerLevel", 800.0, 100.0, 5000.0);
+                .defineInRange("strengthBonusPerLevel", 300.0, 100.0, 5000.0);
 
         INSTANCE.baseTrainingRate = BUILDER
                 .comment("Base training progress per tick when fully loaded (lower = slower)")

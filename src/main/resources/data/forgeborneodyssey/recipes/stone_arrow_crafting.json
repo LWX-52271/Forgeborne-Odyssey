@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "H  ",
+    "R  ",
+    "F  "
+  ],
+  "key": {
+    "H": {
+      "item": "forgeborneodyssey:flint_arrowhead"
+    },
+    "R": {
+      "item": "forgeborneodyssey:fiber_rope"
+    },
+    "F": {
+      "item": "forgeborneodyssey:grass_fiber"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:stone_arrow",
+    "count": 4
+  }
+}

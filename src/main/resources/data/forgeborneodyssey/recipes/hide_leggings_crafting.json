@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LLL",
+    "L L",
+    "L L"
+  ],
+  "key": {
+    "L": {
+      "item": "forgeborneodyssey:tanned_leather"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:hide_leggings"
+  }
+}

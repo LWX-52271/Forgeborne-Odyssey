@@ -1195,7 +1195,7 @@ public class ShaftMineRuinPiece extends StructurePiece {
             if (random.nextFloat() < 0.35f) {
                 ItemStack damagedHammer = createDamagedTool(
                         random.nextBoolean()
-                                ? ModItems.STONE_HAMMER.get()
+                                ? ModItems.HANDLE_STONE_HAMMER.get()
                                 : ModItems.COBBLESTONE_HAMMER.get(),
                         random, 0.10f, 0.35f);
                 ItemEntity itemEntity = new ItemEntity(level.getLevel(),
@@ -1343,7 +1343,6 @@ public class ShaftMineRuinPiece extends StructurePiece {
 
         Item[] toolPool = {
             ModItems.COBBLESTONE_HAMMER.get(),
-            ModItems.STONE_HAMMER.get(),
             ModItems.FLINT_KNIFE.get(),
             ModItems.STONE_CHISEL.get(),
             ModItems.FLINT_SHOVEL.get(),
@@ -1429,7 +1428,6 @@ public class ShaftMineRuinPiece extends StructurePiece {
 
         Item[] toolPool = {
             ModItems.COBBLESTONE_HAMMER.get(),
-            ModItems.STONE_HAMMER.get(),
             ModItems.FLINT_KNIFE.get(),
             ModItems.STONE_CHISEL.get()
         };

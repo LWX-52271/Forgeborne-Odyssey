@@ -1,0 +1,10 @@
+{
+  "type": "forgeborneodyssey:rawhide_loot_modifier",
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "killer",
+      "predicate": {}
+    }
+  ]
+}

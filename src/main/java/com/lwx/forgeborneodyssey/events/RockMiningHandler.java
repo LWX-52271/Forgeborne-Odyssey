@@ -159,7 +159,6 @@ public class RockMiningHandler {
         boolean isFlintShovel = !heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.FLINT_SHOVEL.get());
         if (!heldItem.isEmpty()
                 && !heldItem.is(Items.STONE_PICKAXE)
-                && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.STONE_HAMMER.get())
                 && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.COBBLESTONE_HAMMER.get())
                 && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.HANDLE_STONE_HAMMER.get())
                 && !isFlintShovel) {
@@ -271,8 +270,6 @@ public class RockMiningHandler {
         // 如果手持石镐或石锤，增加6
         if (!heldItem.isEmpty() && heldItem.is(Items.STONE_PICKAXE)) {
             increaseAmount = 6.0f;
-        } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.STONE_HAMMER.get())) {
-            increaseAmount = 6.0f;
         } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.COBBLESTONE_HAMMER.get())) {
             increaseAmount = 4.0f;
         } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.HANDLE_STONE_HAMMER.get())) {
@@ -363,6 +360,7 @@ public class RockMiningHandler {
 
                 // 检查相邻方块是否达到最大应力值
                 if (neighborNewStress >= neighborMaxStress) {
+                    ForgeborneAPI.resetStress(level, neighborPos);
                     level.playSound(null, neighborPos, com.lwx.forgeborneodyssey.core.registration.ModSounds.ROCK_BREAK.get(), net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
                     level.destroyBlock(neighborPos, true);
 
@@ -413,6 +411,7 @@ public class RockMiningHandler {
             }
             
             // 播放破坏音效和粒子效果
+            ForgeborneAPI.resetStress(level, pos);
             level.destroyBlock(pos, true);
 
             // 同步清零应力值，确保客户端裂纹消失

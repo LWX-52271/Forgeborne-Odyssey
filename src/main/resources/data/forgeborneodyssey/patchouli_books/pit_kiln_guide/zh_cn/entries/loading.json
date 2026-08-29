@@ -11,17 +11,17 @@
     {
       "type": "patchouli:text",
       "title": "生坯类型",
-      "text": "§0可放入窑炉的生坯共有三种：$(br2)$(li)§b§l坩埚生坯§r §0→ 烧制成功获得 §b§l灰陶坩埚$(br)$(li)§6§l陶范生坯§r §0→ 烧制成功获得 §6§l红陶范$(br)$(li)§0§l耐火砖生坯§r §0→ 烧制成功获得 §0§l烧制砖$(br2)§0每种生坯需要不同的烧制条件，失败则产出§c窑渣碎片§0。"
+      "text": "§0可放入窑炉的生坯共有三种：$(br2)$(li)§b§l坩埚生坯§r §0→ 烧制成功获得 §b§l灰陶坩埚$(br)$(li)§4§l陶范生坯§r §0→ 烧制成功获得 §4§l红陶范$(br)$(li)§0§l耐火砖生坯§r §0→ 烧制成功获得 §0§l烧制砖$(br2)§0每种生坯需要不同的烧制条件，失败则产出§c窑渣碎片§0。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:greenware_crucible_crafting",
-      "text": "§b坩埚生坯§0的合成配方。需要先在晾坯架上晾干再使用。"
+      "text": "§b坩埚生坯§0的合成配方。需要先在晾晒架上晾干再使用。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:greenware_mold_crafting",
-      "text": "§6陶范生坯§0的合成配方。"
+      "text": "§4陶范生坯§0的合成配方。"
     },
     {
       "type": "patchouli:crafting",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "添加燃料与封顶",
-      "text": "§0生坯放好后，在火门处右击添加燃料。支持的燃料类型：$(br2)$(li)§6§l木柴§r §0—— 每根燃烧 §d90秒§0$(br)$(li)§d§l稻草捆§r §0—— 燃烧时间较短$(br)$(li)§8§l稻壳炭§r §0—— §a最佳燃料§0，燃烧时间最长$(br)$(li)§0§l木炭块§r §0—— 燃烧时间较短$(br2)§0添加燃料后，手持§d窑顶盖§0右击窑顶封顶，即可准备点火。"
+      "text": "§0生坯放好后，在火门处右击添加燃料。支持的燃料类型：$(br2)$(li)§4§l木柴§r §0—— 每根燃烧 §d90秒§0$(br)$(li)§d§l稻草捆§r §0—— 燃烧时间较短$(br)$(li)§8§l稻壳炭§r §0—— §a最佳燃料§0，燃烧时间最长$(br)$(li)§0§l木炭块§r §0—— 燃烧时间较短$(br2)§0添加燃料后，手持§d窑顶盖§0右击窑顶封顶，即可准备点火。"
     },
     {
       "type": "patchouli:crafting",
@@ -41,7 +41,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:firewood_crafting",
-      "text": "§6木柴§0的合成配方。"
+      "text": "§4木柴§0的合成配方。"
     },
     {
       "type": "patchouli:crafting",

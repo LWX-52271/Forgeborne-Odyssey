@@ -2,7 +2,7 @@
   "parent": "forgeborneodyssey:stone_age",
   "display": {
     "icon": {
-      "item": "forgeborneodyssey:stone_hammer"
+      "item": "forgeborneodyssey:cobblestone_hammer"
     },
     "title": {
       "translate": "advancement.forgeborneodyssey.stone_hammer.title"
@@ -24,7 +24,6 @@
           {
             "items": [
               "forgeborneodyssey:cobblestone_hammer",
-              "forgeborneodyssey:stone_hammer",
               "forgeborneodyssey:handle_stone_hammer"
             ]
           }

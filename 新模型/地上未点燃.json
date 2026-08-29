@@ -1,0 +1,202 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/template_fire_up",
+	"textures": {
+		"0": "forgeborneodyssey:item/grease_torch",
+		"particle": "forgeborneodyssey:item/grease_torch"
+	},
+	"elements": [
+		{
+			"name": "grease_torch_0",
+			"from": [13.64, 3.64, 7.75],
+			"to": [15.05, 5.05, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [15, 1, 12, 4], "texture": "#0"},
+				"east": {"uv": [14, 1, 15, 4], "texture": "#0"},
+				"south": {"uv": [12, 1, 15, 4], "texture": "#0"},
+				"west": {"uv": [12, 1, 13, 4], "texture": "#0"},
+				"up": {"uv": [12, 1, 15, 2], "texture": "#0"},
+				"down": {"uv": [12, 3, 15, 4], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_1",
+			"from": [12.7, 2.23, 7.75],
+			"to": [13.64, 4.58, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [12, 2, 10, 7], "texture": "#0"},
+				"east": {"uv": [11, 2, 12, 7], "texture": "#0"},
+				"south": {"uv": [10, 2, 12, 7], "texture": "#0"},
+				"west": {"uv": [10, 2, 11, 7], "texture": "#0"},
+				"up": {"uv": [10, 2, 12, 3], "texture": "#0"},
+				"down": {"uv": [10, 6, 12, 7], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_2",
+			"from": [12.23, 1.76, 7.75],
+			"to": [12.7, 3.64, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [10, 4, 9, 8], "texture": "#0"},
+				"east": {"uv": [9, 4, 10, 8], "texture": "#0"},
+				"south": {"uv": [9, 4, 10, 8], "texture": "#0"},
+				"west": {"uv": [9, 4, 10, 8], "texture": "#0"},
+				"up": {"uv": [9, 4, 10, 5], "texture": "#0"},
+				"down": {"uv": [9, 7, 10, 8], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_3",
+			"from": [13.64, 3.17, 7.75],
+			"to": [14.58, 3.64, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [14, 4, 12, 5], "texture": "#0"},
+				"east": {"uv": [13, 4, 14, 5], "texture": "#0"},
+				"south": {"uv": [12, 4, 14, 5], "texture": "#0"},
+				"west": {"uv": [12, 4, 13, 5], "texture": "#0"},
+				"up": {"uv": [12, 4, 14, 5], "texture": "#0"},
+				"down": {"uv": [12, 4, 14, 5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_4",
+			"from": [13.64, 2.7, 7.75],
+			"to": [14.11, 3.17, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [13, 5, 12, 6], "texture": "#0"},
+				"east": {"uv": [12, 5, 13, 6], "texture": "#0"},
+				"south": {"uv": [12, 5, 13, 6], "texture": "#0"},
+				"west": {"uv": [12, 5, 13, 6], "texture": "#0"},
+				"up": {"uv": [12, 5, 13, 6], "texture": "#0"},
+				"down": {"uv": [12, 5, 13, 6], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_5",
+			"from": [11.76, 1.29, 7.75],
+			"to": [12.23, 2.7, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [9, 6, 8, 9], "texture": "#0"},
+				"east": {"uv": [8, 6, 9, 9], "texture": "#0"},
+				"south": {"uv": [8, 6, 9, 9], "texture": "#0"},
+				"west": {"uv": [8, 6, 9, 9], "texture": "#0"},
+				"up": {"uv": [8, 6, 9, 7], "texture": "#0"},
+				"down": {"uv": [8, 8, 9, 9], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_6",
+			"from": [11.29, 0.82, 7.75],
+			"to": [11.76, 2.23, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [8, 7, 7, 10], "texture": "#0"},
+				"east": {"uv": [7, 7, 8, 10], "texture": "#0"},
+				"south": {"uv": [7, 7, 8, 10], "texture": "#0"},
+				"west": {"uv": [7, 7, 8, 10], "texture": "#0"},
+				"up": {"uv": [7, 7, 8, 8], "texture": "#0"},
+				"down": {"uv": [7, 9, 8, 10], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_7",
+			"from": [10.82, 0.35, 7.75],
+			"to": [11.29, 1.76, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [7, 8, 6, 11], "texture": "#0"},
+				"east": {"uv": [6, 8, 7, 11], "texture": "#0"},
+				"south": {"uv": [6, 8, 7, 11], "texture": "#0"},
+				"west": {"uv": [6, 8, 7, 11], "texture": "#0"},
+				"up": {"uv": [6, 8, 7, 9], "texture": "#0"},
+				"down": {"uv": [6, 10, 7, 11], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_8",
+			"from": [10.35, -0.12, 7.75],
+			"to": [10.82, 1.29, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [6, 9, 5, 12], "texture": "#0"},
+				"east": {"uv": [5, 9, 6, 12], "texture": "#0"},
+				"south": {"uv": [5, 9, 6, 12], "texture": "#0"},
+				"west": {"uv": [5, 9, 6, 12], "texture": "#0"},
+				"up": {"uv": [5, 9, 6, 10], "texture": "#0"},
+				"down": {"uv": [5, 11, 6, 12], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_9",
+			"from": [9.88, -0.59, 7.75],
+			"to": [10.35, 0.82, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [5, 10, 4, 13], "texture": "#0"},
+				"east": {"uv": [4, 10, 5, 13], "texture": "#0"},
+				"south": {"uv": [4, 10, 5, 13], "texture": "#0"},
+				"west": {"uv": [4, 10, 5, 13], "texture": "#0"},
+				"up": {"uv": [4, 10, 5, 11], "texture": "#0"},
+				"down": {"uv": [4, 12, 5, 13], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_10",
+			"from": [9.41, -1.06, 7.75],
+			"to": [9.88, 0.35, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [4, 11, 3, 14], "texture": "#0"},
+				"east": {"uv": [3, 11, 4, 14], "texture": "#0"},
+				"south": {"uv": [3, 11, 4, 14], "texture": "#0"},
+				"west": {"uv": [3, 11, 4, 14], "texture": "#0"},
+				"up": {"uv": [3, 11, 4, 12], "texture": "#0"},
+				"down": {"uv": [3, 13, 4, 14], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_11",
+			"from": [8.94, -1.53, 7.75],
+			"to": [9.41, -0.12, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [3, 12, 2, 15], "texture": "#0"},
+				"east": {"uv": [2, 12, 3, 15], "texture": "#0"},
+				"south": {"uv": [2, 12, 3, 15], "texture": "#0"},
+				"west": {"uv": [2, 12, 3, 15], "texture": "#0"},
+				"up": {"uv": [2, 12, 3, 13], "texture": "#0"},
+				"down": {"uv": [2, 14, 3, 15], "texture": "#0"}
+			}
+		},
+		{
+			"name": "grease_torch_12",
+			"from": [8.47, -1.53, 7.75],
+			"to": [8.94, -0.59, 8.22],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, -2, 7.75]},
+			"faces": {
+				"north": {"uv": [2, 13, 1, 15], "texture": "#0"},
+				"east": {"uv": [1, 13, 2, 15], "texture": "#0"},
+				"south": {"uv": [1, 13, 2, 15], "texture": "#0"},
+				"west": {"uv": [1, 13, 2, 15], "texture": "#0"},
+				"up": {"uv": [1, 13, 2, 14], "texture": "#0"},
+				"down": {"uv": [1, 14, 2, 15], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "grease_torch",
+			"origin": [8, 8, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		}
+	]
+}

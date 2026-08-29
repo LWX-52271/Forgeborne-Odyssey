@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "forgeborneodyssey:stone_workshop_remains",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 22,
+    "separation": 8,
+    "spread_type": "linear",
+    "salt": 18493027
+  }
+}

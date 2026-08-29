@@ -51,6 +51,16 @@ public enum ModArmorMaterials implements ArmorMaterial {
         0.0f,
         0.0f,
         () -> Ingredient.of(net.minecraft.world.item.Items.WHEAT)
+    ),
+    HIDE(
+        "forgeborneodyssey:hide",
+        5,
+        new int[]{1, 2, 3, 1},
+        12,
+        SoundEvents.ARMOR_EQUIP_LEATHER,
+        0.0f,
+        0.0f,
+        () -> Ingredient.of(com.lwx.forgeborneodyssey.core.registration.ModItems.TANNED_LEATHER.get())
     );
     
     private final String name;

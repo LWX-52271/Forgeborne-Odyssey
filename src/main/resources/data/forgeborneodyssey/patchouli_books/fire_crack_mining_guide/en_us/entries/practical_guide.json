@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Basic Procedure",
-      "text": "§0Using copper ore mining as an example:$(br2)§6[1. Locate Target]$(br) Find rock blocks to mine (e.g., chalcopyrite, bornite).$(br2)§6[2. Build Flame]$(br) Place fuel adjacent to target rocks and ignite with flint and steel.$(br2)§6[3. Wait for Heating]$(br) The flame gradually heats adjacent rocks. Be patient.$(br2)§6[4. Quench with Water]$(br) Right-click heated rocks with a water bucket.$(br2)§6[5. Collect Products]$(br) Rocks crack and drop minerals automatically."
+      "text": "§0Using copper ore mining as an example:$(br2)§4[1. Locate Target]$(br) Find rock blocks to mine (e.g., chalcopyrite, bornite).$(br2)§4[2. Build Flame]$(br) Place fuel adjacent to target rocks and ignite with flint and steel.$(br2)§4[3. Wait for Heating]$(br) The flame gradually heats adjacent rocks. Be patient.$(br2)§4[4. Quench with Water]$(br) Right-click heated rocks with a water bucket.$(br2)§4[5. Collect Products]$(br) Rocks crack and drop minerals automatically."
     },
     {
       "type": "patchouli:text",

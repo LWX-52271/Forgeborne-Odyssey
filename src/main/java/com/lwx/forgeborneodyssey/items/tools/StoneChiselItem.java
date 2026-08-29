@@ -18,7 +18,7 @@ import java.util.List;
 public class StoneChiselItem extends SwordItem {
     
     public StoneChiselItem() {
-        super(Tiers.STONE, 2, -1.8F, new Item.Properties()
+        super(Tiers.STONE, 1, -1.2F, new Item.Properties()
             .stacksTo(1)  // 只能持有一个
             .durability(48)); // 耐久度设置为48
     }

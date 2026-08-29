@@ -27,7 +27,7 @@ import java.util.UUID;
 public class WroughtSilverAxeItem extends AxeItem {
     
     public WroughtSilverAxeItem() {
-        super(Tiers.STONE, 5.5F, -2.8F, new Item.Properties()
+        super(Tiers.STONE, 5.0F, -3.1F, new Item.Properties()
             .stacksTo(1)  // 只能持有一个
             .durability(48)); // 耐久度设置为48，比铜斧低，银质较软
     }
@@ -49,7 +49,7 @@ public class WroughtSilverAxeItem extends AxeItem {
             
             // 显示实际伤害值
             float modifier = getDamageModifierFromWeight(stack);
-            float actualDamage = 5.5F + modifier;
+            float actualDamage = 5.0F + modifier;
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.base_damage", String.format("%.1f", actualDamage)));;
             
             // 显示基于纯度的耐久度

@@ -55,26 +55,6 @@ public class PitKilnRenderer implements BlockEntityRenderer<PitKilnBlockEntity> 
                        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
         BlockState blockState = blockEntity.getBlockState();
-
-        BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState);
-        RandomSource random = RandomSource.create();
-
-        for (RenderType renderType : model.getRenderTypes(blockState, random, ModelData.EMPTY)) {
-            VertexConsumer consumer = bufferSource.getBuffer(renderType);
-
-            List<BakedQuad> generalQuads = model.getQuads(blockState, null, random, ModelData.EMPTY, renderType);
-            for (BakedQuad quad : generalQuads) {
-                consumer.putBulkData(poseStack.last(), quad, 1.0F, 1.0F, 1.0F, packedLight, packedOverlay);
-            }
-
-            for (Direction dir : Direction.values()) {
-                List<BakedQuad> faceQuads = model.getQuads(blockState, dir, random, ModelData.EMPTY, renderType);
-                for (BakedQuad quad : faceQuads) {
-                    consumer.putBulkData(poseStack.last(), quad, 1.0F, 1.0F, 1.0F, packedLight, packedOverlay);
-                }
-            }
-        }
-
         int stage = blockState.getValue(PitKilnBlock.STAGE);
 
         if (stage < 1 || stage > 6) {

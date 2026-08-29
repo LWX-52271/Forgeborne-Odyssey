@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "entries": [
+    "forgeborneodyssey:grade_loot_modifier",
+    "forgeborneodyssey:animal_fat_loot_modifier",
+    "forgeborneodyssey:rawhide_loot_modifier"
+  ]
+}

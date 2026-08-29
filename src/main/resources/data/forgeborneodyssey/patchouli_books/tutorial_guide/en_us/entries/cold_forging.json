@@ -1,0 +1,38 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Cold Forging",
+  "icon": "forgeborneodyssey:granite_anvil",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Cold Forging Basics",
+      "text": "Cold forging is the core crafting system of this mod. Instead of smelting metal in a furnace, you use a §4stone anvil§r and various tools to shape metal into useful items.$(br2)For a complete guide, read the §bCold Forge Manual§r (obtainable separately). This chapter covers the essentials."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 1: Make Billets",
+      "text": "$(li)Craft a §4Granite Anvil§r or §4Limestone Anvil§r$(br)$(li)Combine natural metal block + water bucket = billet$(br)$(li)Each billet has random weight and quality$(br2)§4Tip:§r You can craft multiple times to get a higher weight billet."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 2: Heat the Billet",
+      "text": "$(li)Craft and place a §4Fire Pit§r$(br)$(li)Add fuel (firewood, straw bale) to the fire pit$(br)$(li)Right-click the fire pit to ignite it$(br)$(li)Put the billet in the fire pit to heat$(br)$(li)Wait for it to become a §dsoftened billet§r$(br2)§cWARNING:§r Use wooden clamp to retrieve hot items!"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 3: Forge on Anvil",
+      "text": "Place the softened billet on the anvil, then:$(br2)$(li)§4Hammer§r (left-click): Forges billet into metal sheet$(br)$(li)§4Axe§r (right-click): Bends sheet into curve$(br)$(li)§4Axe§r (right-click): Bends curve into slot$(br)$(li)§4Chisel§r (left-click): Carves slot into knife$(br)$(li)§4Hammer§r (left-click): Forges curve into axe head$(br)$(li)§4Hammer§r (left-click): Forges slot into sword blade"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 4: Final Products",
+      "text": "From the basic forging process, you can create:$(br2)$(li)§cPrimitive Knife§r - from slot + chisel carving$(br)$(li)§cAxe Head§r - from curve + hammer forging$(br)$(li)§cSword Blade§r - from slot + hammer forging$(br)$(li)§cCopper:§r Slot → Ring → Hook → Pin (axe, progressive)$(br)$(li)§cSilver/Gold:§r Slot → Pin directly (no ring or hook stage)$(br)$(li)§cCopper Fishing Rod§r - copper ring + copper hook + line + stick$(br2)§4Tip:§r The §bCold Forge Manual§r has detailed recipes for all products."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Billet Cooling",
+      "text": "Softened billets will eventually cool down:$(br2)$(li)§bWater Cooling:§r Drop in water to cool instantly$(br)$(li)§bNatural Cooling:§r Soft copper billets cool after a period of time in inventory$(br)$(li)§bGold/Silver:§r Do not cool naturally (only water cooling)$(br2)Once cooled, billets return to hard state and must be reheated."
+    }
+  ],
+  "sortnum": 2
+}

@@ -162,7 +162,7 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
+        return RenderShape.MODEL;
     }
 
     @Override

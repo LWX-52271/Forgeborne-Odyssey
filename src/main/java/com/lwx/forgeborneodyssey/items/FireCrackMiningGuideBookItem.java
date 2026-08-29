@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.items;
 
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -33,7 +34,11 @@ public class FireCrackMiningGuideBookItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
+        if (Screen.hasShiftDown()) {
+            tooltip.add(Component.translatable("item.forgeborneodyssey.fire_crack_mining_guide.tooltip"));
+        } else {
+            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
+        }
     }
 
     private static void openPatchouliBook(Player player) {

@@ -391,7 +391,6 @@ public class OpenPitMineRuinPiece extends StructurePiece {
 
         Item[] toolPool = {
             ModItems.COBBLESTONE_HAMMER.get(),
-            ModItems.STONE_HAMMER.get(),
             ModItems.FLINT_KNIFE.get(),
             ModItems.STONE_CHISEL.get(),
             ModItems.FLINT_SHOVEL.get(),
@@ -481,7 +480,6 @@ public class OpenPitMineRuinPiece extends StructurePiece {
 
         Item[] toolPool = {
             ModItems.COBBLESTONE_HAMMER.get(),
-            ModItems.STONE_HAMMER.get(),
             ModItems.FLINT_KNIFE.get(),
             ModItems.STONE_CHISEL.get()
         };

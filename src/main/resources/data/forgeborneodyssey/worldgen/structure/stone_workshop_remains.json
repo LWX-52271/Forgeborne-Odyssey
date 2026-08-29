@@ -1,0 +1,7 @@
+{
+  "type": "forgeborneodyssey:stone_workshop_remains",
+  "biomes": "#forgeborneodyssey:has_stone_workshop",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

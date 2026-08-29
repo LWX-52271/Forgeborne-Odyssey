@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:dried_hide"
+    },
+    {
+      "item": "forgeborneodyssey:scraper"
+    },
+    {
+      "item": "forgeborneodyssey:plant_ash"
+    },
+    {
+      "item": "forgeborneodyssey:plant_ash"
+    },
+    {
+      "item": "forgeborneodyssey:plant_ash"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:potion",
+      "nbt": {
+        "Potion": "minecraft:water"
+      }
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:tanned_leather"
+  }
+}

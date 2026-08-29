@@ -79,6 +79,14 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> BLOWPIPE_BLOW = SOUND_EVENTS.register("blowpipe.blow",
         () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "blowpipe.blow")));
 
+    // 投石索甩动音效
+    public static final RegistryObject<SoundEvent> SLING_SPIN = SOUND_EVENTS.register("sling.spin",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "sling.spin")));
+
+    // 投石索释放音效
+    public static final RegistryObject<SoundEvent> SLING_RELEASE = SOUND_EVENTS.register("sling.release",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "sling.release")));
+
     /**
      * 注册音效到事件总线
      */

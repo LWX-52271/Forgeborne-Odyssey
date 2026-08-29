@@ -110,18 +110,15 @@ public abstract class AbstractAnvilBlock extends HorizontalDirectionalBlock impl
         return RenderShape.MODEL;   // 使用自定义非立方体模型
     }
 
+    private static final VoxelShape SHAPE = Shapes.or(
+        Block.box(0, 10, 0, 16, 16, 16),   // 顶部平台 (完整16x16)
+        Block.box(2, 4, 2, 14, 10, 14),     // 中部柱体
+        Block.box(0, 0, 0, 16, 4, 16)       // 底部基座 (完整16x16)
+    );
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        // 根据模型实际尺寸定义碰撞箱，并根据朝向旋转
-        // 模型边界: minX=2, minY=0, minZ=0, maxX=14, maxY=16, maxZ=16
-        Direction direction = state.getValue(FACING);
-        return switch (direction) {
-            case NORTH -> Block.box(2.0D, 0.0D, 0.0D, 14.0D, 16.0D, 16.0D);
-            case SOUTH -> Block.box(2.0D, 0.0D, 0.0D, 14.0D, 16.0D, 16.0D);
-            case WEST -> Block.box(0.0D, 0.0D, 2.0D, 16.0D, 16.0D, 14.0D);
-            case EAST -> Block.box(0.0D, 0.0D, 2.0D, 16.0D, 16.0D, 14.0D);
-            default -> Shapes.block();
-        };
+        return SHAPE;
     }
 
     // EntityBlock 接口实现
@@ -138,6 +135,7 @@ public abstract class AbstractAnvilBlock extends HorizontalDirectionalBlock impl
         return (lvl, pos, st, blockEntity) -> {
             if (blockEntity instanceof AnvilBlockEntity anvilBE) {
                 anvilBE.tickAmbientSounds();
+                anvilBE.tickKnappingPhase();
             }
         };
     }
@@ -241,10 +239,22 @@ public abstract class AbstractAnvilBlock extends HorizontalDirectionalBlock impl
                     // 播放放置物品音效
                     level.playSound(null, pos, net.minecraft.sounds.SoundEvents.ITEM_FRAME_ADD_ITEM, net.minecraft.sounds.SoundSource.BLOCKS, 0.5f, 1.0f);
                     
-                    player.displayClientMessage(
-                            net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.place_item"),
-                            true
-                    );
+                    if (placedItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
+                        player.displayClientMessage(
+                                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.place_cobblestone"),
+                                true
+                        );
+                    } else if (placedItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.FLINT_PEBBLE.get())) {
+                        player.displayClientMessage(
+                                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.place_pebble"),
+                                true
+                        );
+                    } else {
+                        player.displayClientMessage(
+                                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.anvil.place_item"),
+                                true
+                        );
+                    }
                     return InteractionResult.SUCCESS;
                 }
             }

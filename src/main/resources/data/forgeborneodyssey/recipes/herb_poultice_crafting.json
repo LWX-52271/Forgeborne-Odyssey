@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:grass_fiber"
+    },
+    {
+      "item": "forgeborneodyssey:grass_fiber"
+    },
+    {
+      "tag": "minecraft:small_flowers"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:herb_poultice",
+    "count": 1
+  }
+}

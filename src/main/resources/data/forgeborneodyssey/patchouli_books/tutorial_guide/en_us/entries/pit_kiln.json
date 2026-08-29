@@ -1,0 +1,28 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Pottery Making",
+  "icon": "forgeborneodyssey:pit_kiln",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Pottery Basics",
+      "text": "Pottery is essential for making crucibles, molds, and other ceramic tools.$(br2)The process involves multiple steps: gathering clay, shaping greenware, building a kiln, and firing.$(br2)For a complete guide, read the §bPit Kiln Firing Guide§r (obtainable separately)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 1: Gather Raw Materials",
+      "text": "$(li)Use §4Flint Shovel§r on sand/gravel to get §4Raw Clay§r$(br)$(li)Use §4Flint Knife§r on grass to get §4Grass Fiber§r$(br)$(li)Harvest wheat for §4Rice Husk§r (30% chance)$(br2)These are the basic materials for pottery."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 2: Make Greenware",
+      "text": "Combine raw clay with temper (grog) and fiber to make mixed clay. Then shape it into greenware:$(br2)$(li)§4Crucible§r - for melting metals$(br)$(li)§4Mold§r - for casting shapes$(br)$(li)§4Brick§r - for construction$(br)$(li)§4Blowpipe§r - for metalworking$(br2)Greenware must be fired in a kiln to become usable."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 3: Build and Fire Kiln",
+      "text": "$(li)Use §4Flint Shovel§r on dirt to dig a kiln pit$(br)$(li)Place greenware items in the kiln$(br)$(li)Add fuel through the fire mouth$(br)$(li)Seal with kiln lid and ignite$(br)$(li)Control temperature and atmosphere$(br)$(li)Wait for firing to complete, then collect$(br2)§4Tip:§r Different products need different firing conditions."
+    }
+  ],
+  "sortnum": 4
+}

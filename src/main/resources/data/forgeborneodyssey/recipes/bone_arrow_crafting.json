@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "N  ",
+    "R  ",
+    "F  "
+  ],
+  "key": {
+    "N": {
+      "item": "forgeborneodyssey:bone_needle"
+    },
+    "R": {
+      "item": "forgeborneodyssey:fiber_rope"
+    },
+    "F": {
+      "item": "forgeborneodyssey:grass_fiber"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:bone_arrow",
+    "count": 2
+  }
+}

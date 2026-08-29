@@ -1,7 +1,7 @@
 package com.lwx.forgeborneodyssey.items.tools;
 
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -21,7 +21,7 @@ public class FlintShovelItem extends ShovelItem {
 
         @Override
         public float getAttackDamageBonus() {
-            return 0.5F;
+            return 1.5F;
         }
 
         @Override
@@ -36,12 +36,12 @@ public class FlintShovelItem extends ShovelItem {
 
         @Override
         public Ingredient getRepairIngredient() {
-            return Ingredient.of(Items.FLINT);
+            return Ingredient.of(ModItems.FLINT_SHOVEL_HEAD.get());
         }
     };
 
     public FlintShovelItem() {
-        super(FLINT_TIER, 0.0F, -3.0F, new Item.Properties()
+        super(FLINT_TIER, 1.5F, -2.6F, new Item.Properties()
                 .stacksTo(1)
                 .durability(60));
     }

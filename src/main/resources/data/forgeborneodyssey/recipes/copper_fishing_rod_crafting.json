@@ -1,16 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "  #",
-    " #X",
-    "#RH"
+    "  S",
+    " SR",
+    "SRH"
   ],
   "key": {
-    "#": {
+    "S": {
       "item": "minecraft:stick"
-    },
-    "X": {
-      "item": "minecraft:string"
     },
     "R": {
       "item": "forgeborneodyssey:copper_ring"

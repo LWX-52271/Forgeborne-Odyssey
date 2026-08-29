@@ -1,0 +1,38 @@
+{
+  "parent": "forgeborneodyssey:bone_fish_hook",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:simple_fishing_rod"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.simple_fishing_rod.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.simple_fishing_rod.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_simple_fishing_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:simple_fishing_rod"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_simple_fishing_rod"
+    ]
+  ]
+}

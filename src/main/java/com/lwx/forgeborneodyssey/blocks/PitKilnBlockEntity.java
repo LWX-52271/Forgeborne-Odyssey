@@ -61,6 +61,7 @@ public class PitKilnBlockEntity extends BlockEntity {
     public static final int OXYGEN_MIN = -100;
     public static final int OXYGEN_MAX = 100;
     public static final int COOL_DOWN_REQUIRED = 1200;
+    public static final int MAX_FUEL_STACK = 24;
 
     public int blowBoostTicks = 0;
 

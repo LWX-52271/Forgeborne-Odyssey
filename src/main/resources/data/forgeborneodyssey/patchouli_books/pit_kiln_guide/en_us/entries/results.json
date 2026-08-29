@@ -16,7 +16,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:red_mold",
-      "text": "§6Red Mold§r$(br2)Conditions:$(br)$(li)Oxygen > 30 (oxidizing atmosphere)$(br)$(li)Peak temperature > 850℃$(br2)Failure: Produces 1 kiln waste shard. §dUndried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br2)Red mold is used for casting metal ingots and tools."
+      "text": "§4Red Mold§r$(br2)Conditions:$(br)$(li)Oxygen > 30 (oxidizing atmosphere)$(br)$(li)Peak temperature > 850℃$(br2)Failure: Produces 1 kiln waste shard. §dUndried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br2)Red mold is used for casting metal ingots and tools."
     },
     {
       "type": "patchouli:spotlight",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "Firing Strategy Tips",
-      "text": "$(li)§bGray Crucible§r: Seal fire mouth + fully close vents, maintain reducing atmosphere until oxygen<-30, ensure temp>900℃.$(br)$(li)§6Red Mold§r: Open fire mouth + fully open vents, maintain oxidizing atmosphere until oxygen>30, temp>850℃.$(br)$(li)§7Fire Brick§r: Requires highest temperature and sustained high heat, suggest 4-sided insulation + grate + fully closed vents."
+      "text": "$(li)§bGray Crucible§r: Seal fire mouth + fully close vents, maintain reducing atmosphere until oxygen<-30, ensure temp>900℃.$(br)$(li)§4Red Mold§r: Open fire mouth + fully open vents, maintain oxidizing atmosphere until oxygen>30, temp>850℃.$(br)$(li)§7Fire Brick§r: Requires highest temperature and sustained high heat, suggest 4-sided insulation + grate + fully closed vents."
     }
   ],
   "sortnum": 4

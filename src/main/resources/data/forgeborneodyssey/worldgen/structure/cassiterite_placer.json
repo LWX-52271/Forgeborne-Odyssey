@@ -1,0 +1,7 @@
+{
+  "type": "forgeborneodyssey:cassiterite_placer",
+  "biomes": "#forgeborneodyssey:has_cassiterite_placer",
+  "step": "underground_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

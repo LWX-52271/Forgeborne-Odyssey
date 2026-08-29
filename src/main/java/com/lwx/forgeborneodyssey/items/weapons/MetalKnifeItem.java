@@ -37,23 +37,23 @@ public class MetalKnifeItem extends SwordItem {
      */
     public static MetalKnifeItem createCopperKnife() {
         Tier copperTier = new ForgeTier(0, 59, 1.0F, 1.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
-        return new MetalKnifeItem(copperTier, 2, -2.4F);
+        return new MetalKnifeItem(copperTier, 1, -1.8F);
     }
     
     /**
      * 创建银刀
      */
     public static MetalKnifeItem createSilverKnife() {
-        Tier silverTier = new ForgeTier(0, 29, 0.5F, 0.5F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
-        return new MetalKnifeItem(silverTier, 1, -2.4F);
+        Tier silverTier = new ForgeTier(0, 29, 0.5F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
+        return new MetalKnifeItem(silverTier, 1, -1.8F);
     }
     
     /**
      * 创建金刀
      */
     public static MetalKnifeItem createGoldKnife() {
-        Tier goldTier = new ForgeTier(0, 29, 0.5F, 0.5F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
-        return new MetalKnifeItem(goldTier, 1, -2.4F);
+        Tier goldTier = new ForgeTier(0, 29, 0.5F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
+        return new MetalKnifeItem(goldTier, 1, -1.8F);
     }
     
     /**

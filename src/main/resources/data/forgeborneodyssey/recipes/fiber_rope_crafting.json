@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "F  ",
+    "F  ",
+    "F  "
+  ],
+  "key": {
+    "F": {
+      "item": "forgeborneodyssey:grass_fiber"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:fiber_rope",
+    "count": 1
+  }
+}

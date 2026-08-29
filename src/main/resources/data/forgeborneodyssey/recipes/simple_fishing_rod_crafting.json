@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  S",
+    " SR",
+    "SH "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "R": {
+      "item": "forgeborneodyssey:fiber_rope"
+    },
+    "H": {
+      "item": "forgeborneodyssey:bone_fish_hook"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:simple_fishing_rod",
+    "count": 1
+  }
+}

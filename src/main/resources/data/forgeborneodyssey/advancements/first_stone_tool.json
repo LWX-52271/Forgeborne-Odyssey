@@ -1,0 +1,52 @@
+{
+  "parent": "forgeborneodyssey:stone_hammer",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:flint_knife"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.first_stone_tool.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.first_stone_tool.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_stone_tool": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:flint_knife_head",
+              "forgeborneodyssey:flint_arrowhead",
+              "forgeborneodyssey:flint_spearhead",
+              "forgeborneodyssey:flint_shovel_head",
+              "forgeborneodyssey:flint_sickle_head",
+              "forgeborneodyssey:stone_axe_head",
+              "forgeborneodyssey:polished_axe_head",
+              "forgeborneodyssey:stone_hoe_head",
+              "forgeborneodyssey:flint_knife",
+              "forgeborneodyssey:flint_shovel",
+              "forgeborneodyssey:flint_sickle",
+              "forgeborneodyssey:stone_spear",
+              "forgeborneodyssey:polished_stone_axe",
+              "forgeborneodyssey:stone_hoe",
+              "forgeborneodyssey:stone_arrow"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_stone_tool"
+    ]
+  ]
+}

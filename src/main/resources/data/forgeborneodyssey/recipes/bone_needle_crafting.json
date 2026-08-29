@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "B  ",
+    "H  "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "H": {
+      "item": "forgeborneodyssey:flint_knife_head"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:bone_needle",
+    "count": 2
+  }
+}

@@ -33,6 +33,10 @@ public class AnvilRenderer implements BlockEntityRenderer<AnvilBlockEntity> {
         ItemStack stack = blockEntity.getStoredItem();
         if (stack.isEmpty()) return;
 
+        // 获取打制状态
+        boolean isKnapping = blockEntity.isKnappingInProgress();
+        int fragility = blockEntity.getKnappingFragility();
+
         poseStack.pushPose();
         // 移动到砧顶中心
         poseStack.translate(0.5D, 1.05D, 0.5D);
@@ -65,25 +69,46 @@ public class AnvilRenderer implements BlockEntityRenderer<AnvilBlockEntity> {
         // 除金属片外的锻打过程物品随锻打次数缩小
         if (isCurveOrSlot) {
             int hitCount = blockEntity.getHitCount();
-            // 弯片最大6次，槽片最大7次，计算缩小比例
             boolean isCurve = stack.is(com.lwx.forgeborneodyssey.core.registration.ModItems.COPPER_CURVE.get()) ||
                              stack.is(com.lwx.forgeborneodyssey.core.registration.ModItems.SILVER_CURVE.get()) ||
                              stack.is(com.lwx.forgeborneodyssey.core.registration.ModItems.GOLD_CURVE.get());
             int maxHits = isCurve ? 6 : 7;
             
-            // 从1.0逐渐缩小到0.6（最小60%）
             float shrinkFactor = 1.0f - ((float) hitCount / maxHits * 0.4f);
             poseStack.scale(shrinkFactor, shrinkFactor, shrinkFactor);
         }
         
-        // 应用锻造敲击的拉伸效果：XY轴拉伸变大，Z轴压缩变小
+        // 应用锻造敲击的拉伸效果
         float stretchFactor = blockEntity.getStretchFactor();
         if (stretchFactor > 0.0f) {
-            // 限制拉伸因子在0-1之间，避免过度变形
             float normalizedStretch = Math.min(stretchFactor, 1.0f);
-            float xyScale = 1.0f + (normalizedStretch * 0.4f);    // XY轴拉伸变大，最大40%
-            float zScale = 1.0f - (normalizedStretch * 0.25f);    // Z轴压缩变小，最小75%
+            float xyScale = 1.0f + (normalizedStretch * 0.4f);
+            float zScale = 1.0f - (normalizedStretch * 0.25f);
             poseStack.scale(xyScale, xyScale, zScale);
+        }
+
+        // 打制进度的视觉反馈
+        float knappingProgress = blockEntity.getKnappingProgress();
+        boolean platformCreated = blockEntity.isKnappingPlatformCreated();
+        boolean coreShaping = blockEntity.isCoreShaping();
+        if (knappingProgress > 0.0f) {
+            if (coreShaping) {
+                float shrinkFactor = 1.0f - knappingProgress * 0.50f;
+                poseStack.scale(shrinkFactor, shrinkFactor, shrinkFactor);
+            } else {
+                float shrinkFactor = 1.0f - knappingProgress * 0.35f;
+                poseStack.scale(shrinkFactor, shrinkFactor, shrinkFactor);
+            }
+        } else if (platformCreated) {
+            // 台面已打出但尚未开始剥片：轻微缩小表示已制成石核
+            poseStack.scale(0.92f, 0.92f, 0.92f);
+        }
+
+        // 脆弱度警告：高脆弱度时圆石抖动
+        if (isKnapping && fragility >= 60) {
+            net.minecraft.world.level.Level level = blockEntity.getLevel();
+            float wobble = 1.0f - 0.04f * (float) Math.sin((level != null ? level.getGameTime() : 0) * 0.5f);
+            poseStack.scale(wobble, wobble, wobble);
         }
 
         // 渲染物品本体

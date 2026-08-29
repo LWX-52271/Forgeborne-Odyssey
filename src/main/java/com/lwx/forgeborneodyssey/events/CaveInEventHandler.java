@@ -111,7 +111,7 @@ public class CaveInEventHandler {
         chance += PlayerStrengthManager.getCaveInChanceBonus(event.getPlayer());
 
         if (level.random.nextDouble() < chance) {
-            triggerCaveIn((ServerLevel) level, pos, event.getPlayer(), inShaft, inTunnel);
+            triggerCaveIn((ServerLevel) level, pos, event.getPlayer(), state, inShaft, inTunnel);
         }
     }
 
@@ -310,11 +310,11 @@ public class CaveInEventHandler {
         return count;
     }
 
-    private static void triggerCaveIn(ServerLevel level, BlockPos pos, @Nullable Player player, boolean inShaft, boolean inTunnel) {
+    private static void triggerCaveIn(ServerLevel level, BlockPos pos, @Nullable Player player, BlockState triggerState, boolean inShaft, boolean inTunnel) {
         if (inShaft) {
-            triggerShaftCaveIn(level, pos, player);
+            triggerShaftCaveIn(level, pos, player, triggerState);
         } else if (inTunnel) {
-            triggerTunnelCaveIn(level, pos, player);
+            triggerTunnelCaveIn(level, pos, player, triggerState);
         } else {
             for (int dx = -1; dx <= 1; dx++) {
                 for (int dz = -1; dz <= 1; dz++) {
@@ -333,11 +333,11 @@ public class CaveInEventHandler {
                 }
             }
 
-            playCaveInSound(level, pos);
+            playCaveInSound(level, pos, triggerState);
         }
     }
 
-    private static void triggerShaftCaveIn(ServerLevel level, BlockPos pos, @Nullable Player player) {
+    private static void triggerShaftCaveIn(ServerLevel level, BlockPos pos, @Nullable Player player, BlockState triggerState) {
         int shaftTop = pos.getY();
         int shaftBottom = pos.getY();
         for (int dy = 1; dy <= 10; dy++) {
@@ -391,10 +391,10 @@ public class CaveInEventHandler {
             }
         }
 
-        playCaveInSound(level, pos);
+        playCaveInSound(level, pos, triggerState);
     }
 
-    private static void triggerTunnelCaveIn(ServerLevel level, BlockPos pos, @Nullable Player player) {
+    private static void triggerTunnelCaveIn(ServerLevel level, BlockPos pos, @Nullable Player player, BlockState triggerState) {
         int fallCount = 2 + level.random.nextInt(3);
         for (int i = 0; i < fallCount; i++) {
             int dx = level.random.nextInt(3) - 1;
@@ -415,7 +415,7 @@ public class CaveInEventHandler {
             }
         }
 
-        playCaveInSound(level, pos);
+        playCaveInSound(level, pos, triggerState);
     }
 
     private static BlockState getFallingBlockState(BlockState original) {
@@ -428,11 +428,41 @@ public class CaveInEventHandler {
         return original;
     }
 
-    private static void playCaveInSound(Level level, BlockPos pos) {
+    private static boolean isRockBlock(BlockState state) {
+        Block block = state.getBlock();
+        return block == Blocks.STONE
+                || block == Blocks.DEEPSLATE
+                || block == Blocks.GRANITE
+                || block == Blocks.DIORITE
+                || block == Blocks.ANDESITE
+                || block == Blocks.COBBLESTONE
+                || block == Blocks.COBBLED_DEEPSLATE
+                || block == Blocks.INFESTED_STONE
+                || block == Blocks.MOSSY_COBBLESTONE
+                || block == Blocks.SMOOTH_STONE
+                || block == Blocks.CHISELED_STONE_BRICKS
+                || block == Blocks.STONE_BRICKS
+                || block == Blocks.DEEPSLATE_BRICKS
+                || block == Blocks.DEEPSLATE_TILES
+                || block == Blocks.POLISHED_DEEPSLATE
+                || block == Blocks.POLISHED_ANDESITE
+                || block == Blocks.POLISHED_DIORITE
+                || block == Blocks.POLISHED_GRANITE
+                || block == Blocks.MOSSY_STONE_BRICKS
+                || block == Blocks.CRACKED_STONE_BRICKS;
+    }
+
+    private static void playCaveInSound(Level level, BlockPos pos, BlockState state) {
         long currentTick = level.getGameTime();
         if (currentTick - lastCaveInSoundTick >= CAVE_IN_SOUND_COOLDOWN) {
             lastCaveInSoundTick = currentTick;
-            level.playSound(null, pos, ModSounds.ROCK_CAVE_IN.get(), SoundSource.BLOCKS, 1.0f, 0.9f + level.random.nextFloat() * 0.2f);
+            if (isRockBlock(state)) {
+                level.playSound(null, pos, ModSounds.ROCK_CAVE_IN.get(), SoundSource.BLOCKS, 1.0f, 0.9f + level.random.nextFloat() * 0.2f);
+            } else {
+                level.playSound(null, pos,
+                        state.getBlock().getSoundType(state).getBreakSound(),
+                        SoundSource.BLOCKS, 1.0f, 0.9f + level.random.nextFloat() * 0.2f);
+            }
         }
     }
 }

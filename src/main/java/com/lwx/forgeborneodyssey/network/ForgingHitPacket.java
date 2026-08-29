@@ -20,23 +20,27 @@ public class ForgingHitPacket {
     private final BlockPos pos;
     private final float offsetX;
     private final float offsetZ;
+    private final boolean sneaking; // Shift+右键 = 石核修整路线
     
-    public ForgingHitPacket(BlockPos pos, float offsetX, float offsetZ) {
+    public ForgingHitPacket(BlockPos pos, float offsetX, float offsetZ, boolean sneaking) {
         this.pos = pos;
         this.offsetX = offsetX;
         this.offsetZ = offsetZ;
+        this.sneaking = sneaking;
     }
     
     public ForgingHitPacket(FriendlyByteBuf buffer) {
         this.pos = buffer.readBlockPos();
         this.offsetX = buffer.readFloat();
         this.offsetZ = buffer.readFloat();
+        this.sneaking = buffer.readBoolean();
     }
     
     public void toBytes(FriendlyByteBuf buffer) {
         buffer.writeBlockPos(pos);
         buffer.writeFloat(offsetX);
         buffer.writeFloat(offsetZ);
+        buffer.writeBoolean(sneaking);
     }
     
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
@@ -55,7 +59,7 @@ public class ForgingHitPacket {
                 }
                 var level = player.level();
                 if (level.getBlockEntity(pos) instanceof AnvilBlockEntity anvilBE) {
-                    anvilBE.handleForgingHit(player, hammer, offsetX, offsetZ);
+                    anvilBE.handleForgingHit(player, hammer, offsetX, offsetZ, sneaking);
                     com.lwx.forgeborneodyssey.util.PlayerStrengthManager.rewardForgingTraining(player);
                 }
             }

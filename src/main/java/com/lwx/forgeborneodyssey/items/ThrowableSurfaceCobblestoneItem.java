@@ -1,7 +1,9 @@
 package com.lwx.forgeborneodyssey.items;
 
 import com.lwx.forgeborneodyssey.entities.ThrownSurfaceCobblestone;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -11,10 +13,13 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.BlockHitResult;
+import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * 可投掷的地表圆石物品
@@ -24,7 +29,17 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
     public ThrowableSurfaceCobblestoneItem(Block block) {
         super(block, new Properties().stacksTo(64));
     }
-    
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+        if (Screen.hasShiftDown()) {
+            tooltipComponents.add(Component.translatable("block.forgeborneodyssey.surface_cobblestone_block.tooltip"));
+        } else {
+            tooltipComponents.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
+        }
+    }
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);

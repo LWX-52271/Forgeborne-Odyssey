@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "FFF",
+    "FFF"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:straw_bale"
+    },
+    "F": {
+      "item": "forgeborneodyssey:fiber_rope"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:grass_chestplate",
+    "count": 1
+  }
+}

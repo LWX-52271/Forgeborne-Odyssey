@@ -16,7 +16,8 @@
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:greenware_crucible_crafting",
-      "text": "§b坩埚生坯§0的合成配方。需要先在晾坯架上晾干再使用。"
+      "text": "§b坩埚生坯§0的合成配方。需要先在晾晒架上晾干再使用。
+
     },
     {
       "type": "patchouli:crafting",

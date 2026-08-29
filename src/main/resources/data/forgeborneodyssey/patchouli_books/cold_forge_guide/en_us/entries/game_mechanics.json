@@ -6,12 +6,12 @@
     {
       "type": "patchouli:text",
       "title": "Chapter 6: Important Game Mechanics",
-      "text": "§7[Weight Tier System]$(br2)Forged metal products have three weight tiers that affect weight and attributes:$(br2)$(li)§8Light Tier§7 (Smaller): Weight ~75% of normal, lower damage$(br)$(li)§aMedium Tier§7 (Normal): Standard size, normal attributes$(br)$(li)§6Heavy Tier§7 (Larger): Weight ~125% of normal, higher damage$(br2)Weight tier is determined by the billet, randomly generated during crafting. Damage is based on weight: +0.1 damage per 100g, up to +2.0 max."
+      "text": "§7[Weight Tier System]$(br2)Forged metal products have three weight tiers:$(br2)$(li)§8Light Tier§7: Weight ~75% of normal$(br)$(li)§aMedium Tier§7: Standard size$(br)$(li)§4Heavy Tier§7: Weight ~125% of normal$(br2)Weight tier is determined by the billet, randomly generated during crafting. Damage is based on weight: +1.0 damage per 100g, up to +2.0 max."
     },
     {
       "type": "patchouli:text",
       "title": "§7[Cooling Mechanism]",
-      "text": "Softened billet cooling methods:$(br2)$(li)§6Water Cooling§r: Place softened billet in water to instantly cool it back to hard billet$(br)$(li)§6Inventory Cooling§r: Softened copper billet auto-cools after 1.5 minutes in inventory$(br2)Cooled billets lose their softened state and need re-heating for forging. Note: Only softened copper billets have a cooling mechanism."
+      "text": "Softened billet cooling methods:$(br2)$(li)§4Water Cooling§r: Place softened billet in water to instantly cool it back to hard billet$(br)$(li)§4Inventory Cooling§r: Softened copper billet auto-cools after a period of time in inventory$(br2)Cooled billets lose their softened state and need re-heating for forging. Note: Only softened copper billets have a cooling mechanism."
     },
     {
       "type": "patchouli:text",

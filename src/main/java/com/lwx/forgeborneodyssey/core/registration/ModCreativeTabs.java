@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModCreativeTabs {
@@ -26,20 +27,27 @@ public class ModCreativeTabs {
             .build()
     );
 
-    // 物品创造模式标签页（除方块外的所有物品）
+    // 物品创造模式标签页（除方块外的所有物品，矿石碎块/颗粒除外）
     public static final RegistryObject<CreativeModeTab> ITEMS_TAB = CREATIVE_MODE_TABS.register("items_tab", () ->
         CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.forgeborneodyssey.items"))
             .displayItems((parameters, output) -> {
-                // 添加所有模组物品到创造模式标签页（排除BlockItem）
                 ModItems.ITEMS.getEntries().forEach(itemRegistryObject -> {
                     var item = itemRegistryObject.get();
-                    if (!(item instanceof net.minecraft.world.item.BlockItem)) {
-                        output.accept(item);
+                    if (item instanceof net.minecraft.world.item.BlockItem) {
+                        return;
                     }
+                    var key = ForgeRegistries.ITEMS.getKey(item);
+                    if (key != null) {
+                        var path = key.getPath();
+                        if (path.startsWith("raw_") || path.endsWith("_grain")) {
+                            return;
+                        }
+                    }
+                    output.accept(item);
                 });
             })
-            .icon(() -> new ItemStack(ModItems.COPPER_BILLET.get()))  // 使用铜坯料作为图标
+            .icon(() -> new ItemStack(ModItems.COPPER_BILLET.get()))
             .build()
     );
 
