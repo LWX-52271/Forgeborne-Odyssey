@@ -6,7 +6,7 @@
     {
       "type": "patchouli:text",
       "title": "What is Fire-Crack Mining?",
-      "text": "Since you cannot mine ores with a pickaxe, you need §6fire-crack mining§r to extract ore chunks from ore blocks.$(br2)This ancient technique uses thermal stress: heat the rock with fire, then shock it with water to crack it open.$(br2)For a complete guide, read the §bFire-Crack Mining Guide§r (obtainable separately)."
+      "text": "Since you cannot mine ores with a pickaxe, you need §6fire-crack mining§r to extract ore chunks from ore blocks.$(br2)This ancient technique uses thermal stress: heat the rock with fire, then shock it with water to crack it open.$(br2)For a complete guide, read the §3Fire-Crack Mining Guide§r (obtainable separately)."
     },
     {
       "type": "patchouli:text",

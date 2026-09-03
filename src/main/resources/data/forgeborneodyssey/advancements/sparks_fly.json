@@ -2,7 +2,7 @@
   "parent": "forgeborneodyssey:light_fire",
   "display": {
     "icon": {
-      "item": "minecraft:flint_and_steel"
+      "item": "forgeborneodyssey:fire_drill"
     },
     "title": {
       "translate": "advancement.forgeborneodyssey.sparks_fly.title"

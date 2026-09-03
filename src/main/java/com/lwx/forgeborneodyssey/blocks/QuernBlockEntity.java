@@ -142,7 +142,7 @@ public class QuernBlockEntity extends BlockEntity {
         if (stack.is(Items.WHEAT)) return new ItemStack(ModItems.FLOUR.get(), 2);
         if (stack.is(Items.BONE)) return new ItemStack(Items.BONE_MEAL, 4);
         if (stack.is(Items.BONE_BLOCK)) return new ItemStack(Items.BONE_MEAL, 9);
-        if (stack.is(Items.FLINT)) return new ItemStack(ModItems.POLISHED_AXE_HEAD.get(), 1);
+        if (stack.is(Items.FLINT) || stack.is(ModItems.FLINT_PEBBLE.get())) return new ItemStack(ModItems.POLISHED_AXE_HEAD.get(), 1);
         return null;
     }
 

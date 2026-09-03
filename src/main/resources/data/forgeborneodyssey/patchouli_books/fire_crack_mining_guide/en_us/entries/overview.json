@@ -1,36 +1,36 @@
-{
+﻿{
   "category": "forgeborneodyssey:basics",
   "name": "Overview",
-  "icon": "minecraft:flint_and_steel",
+  "icon": "forgeborneodyssey:fire_drill",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "§4§lFire-Crack Mining Technique§r$(br2)§0Fire-crack mining is an ancient extraction method that uses fire to heat rocks, causing them to expand, then rapidly cools them with water to create thermal stress that cracks and shatters the rock.$(br2)This system simulates real-world heat conduction and thermal stress physics, featuring a §dmulti-layer heat transfer model§r, §doxygen concentration mechanics§r, and §dflame decay system§r."
+      "text": "§4§lFire-Crack Mining Technique§r$(br2)§0Fire-crack mining is an ancient extraction method that uses fire to heat rocks, causing them to expand, then rapidly cools them with water to create thermal stress that cracks and shatters the rock.$(br2)This system simulates real-world heat conduction and thermal stress physics, featuring a §5multi-layer heat transfer model§r, §5oxygen concentration mechanics§r, and §5flame decay system§r."
     },
     {
       "type": "patchouli:text",
       "title": "Heat Conduction Model",
-      "text": "$(li)§b§lDirect Contact Heating§r §0 — Fire blocks directly heat adjacent rock blocks$(br)$(li)§b§lThermal Conduction§r §0 — Heat spreads along temperature gradients up to 3 blocks away$(br)$(li)§b§lAmbient Heat Radiation§r §0 — Surrounding fire blocks gradually raise ambient temperature$(br2)§0All heating processes follow §dNewton's Law of Cooling§r — the greater the temperature difference, the faster the cooling."
+      "text": "$(li)§3§lDirect Contact Heating§r §0 — Fire blocks directly heat adjacent rock blocks$(br)$(li)§3§lThermal Conduction§r §0 — Heat spreads along temperature gradients up to 3 blocks away$(br)$(li)§3§lAmbient Heat Radiation§r §0 — Surrounding fire blocks gradually raise ambient temperature$(br2)§0All heating processes follow §5Newton's Law of Cooling§r — the greater the temperature difference, the faster the cooling."
     },
     {
       "type": "patchouli:text",
       "title": "Fire and Fuel",
-      "text": "$(li)§bIgnition Method§r §0 — Use flint and steel on burnable blocks to ignite flames$(br)$(li)§bFuel Consumption§r §0 — Fire requires fuel to maintain; it extinguishes automatically without fuel$(br)$(li)§bFlame Duration§r §0 — Flame burn time varies by oxygen concentration:$(br)  §d- Sufficient oxygen§0: Normal burn (decay ×1)$(br)  §d- Insufficient oxygen§0: Accelerated consumption (decay ×2)$(br)  §d- Enclosed space§0: Extreme oxygen depletion (decay ×4)"
+      "text": "$(li)§3Ignition Method§r §0 — Use Bow Drill on burnable blocks to ignite flames$(br)$(li)§3Fuel Consumption§r §0 — Fire requires fuel to maintain; it extinguishes automatically without fuel$(br)$(li)§3Flame Duration§r §0 — Flame burn time varies by oxygen concentration:$(br)  §5- Sufficient oxygen§0: Normal burn (decay ×1)$(br)  §5- Insufficient oxygen§0: Accelerated consumption (decay ×2)$(br)  §5- Enclosed space§0: Extreme oxygen depletion (decay ×4)"
     },
     {
       "type": "patchouli:text",
       "title": "Mining Process",
-      "text": "§0The complete fire-crack mining process:$(br2)§4[Step 1: Build Campfire]$(br) Place fuel items (torches, planks, etc.) near target rocks and ignite with flint and steel.$(br2)§4[Step 2: Heat Rocks]$(br) The fire heats adjacent rocks through thermal conduction, gradually raising their temperature.$(br2)§4[Step 3: Quench with Water]$(br) When rocks are sufficiently heated, douse them with a water bucket to trigger violent thermal stress.$(br2)§4[Step 4: Collect Minerals]$(br) Cracked rocks automatically drop their corresponding mineral items."
+      "text": "§0The complete fire-crack mining process:$(br2)§4[Step 1: Build Campfire]$(br) Place fuel items (torches, planks, etc.) near target rocks and ignite with Bow Drill.$(br2)§4[Step 2: Heat Rocks]$(br) The fire heats adjacent rocks through thermal conduction, gradually raising their temperature.$(br2)§4[Step 3: Quench with Water]$(br) When rocks are sufficiently heated, douse them with a water bucket to trigger violent thermal stress.$(br2)§4[Step 4: Collect Minerals]$(br) Cracked rocks automatically drop their corresponding mineral items."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "minecraft:flint_and_steel",
-      "text": "§b§lFlint and Steel§r$(br2)§0The core tool for fire-crack mining. Right-click on fire positions to ignite flames. Vanilla functionality for igniting TNT and other flammable blocks is preserved."
+      "item": "forgeborneodyssey:fire_drill",
+      "text": "§3§lBow Drill§r$(br2)§0The core tool for fire-crack mining. Right-click on fire positions to ignite flames. Vanilla functionality for igniting TNT and other flammable blocks is preserved."
     },
     {
       "type": "patchouli:spotlight",
       "item": "minecraft:water_bucket",
-      "text": "§b§lWater Bucket§r$(br2)§0Used to quench heated rocks with water. When water contacts high-temperature rocks, it creates violent thermal shock that shatters the rock."
+      "text": "§3§lWater Bucket§r$(br2)§0Used to quench heated rocks with water. When water contacts high-temperature rocks, it creates violent thermal shock that shatters the rock."
     }
   ],
   "sortnum": -1

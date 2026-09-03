@@ -5,17 +5,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "§bWelcome to the world of Forgeborne Odyssey!§r$(br2)This tutorial will guide you through the §dcountless wisdom of human ingenuity§r — from §dChalcolithic§r stone tool crafting, to cold forging, fire-crack mining, and pottery firing, witnessing how our ancestors worked alongside nature with their own hands.$(br2)Follow these steps carefully; these ancient crafts may save your life when it matters most."
+      "text": "§3Welcome to the world of Forgeborne Odyssey!§r$(br2)This tutorial will guide you through the §5countless wisdom of human ingenuity§r — from §5Chalcolithic§r stone tool crafting, to cold forging, fire-crack mining, and pottery firing, witnessing how our ancestors worked alongside nature with their own hands.$(br2)Follow these steps carefully; these ancient crafts may save your life when it matters most."
     },
     {
       "type": "patchouli:text",
       "title": "What You Will Learn",
-      "text": "$(li)§4Chapter 1§r: Crafting Stone Tools - Your first tools$(br)$(li)§4Chapter 2§r: Finding Natural Metals - Copper, Silver, Gold$(br)$(li)§4Chapter 3§r: Cold Forging Basics - From billet to blade$(br)$(li)§4Chapter 4§r: Fire-Crack Mining - Efficient ore extraction$(br)$(li)§4Chapter 5§r: Pottery Making - Kiln building and firing"
+      "text": "$(li)§4Prologue§r: Survival Basics - Getting started & core tools$(br)$(li)§4Chapter 1§r: Crafting Stone Tools - Your first tools$(br)$(li)§4Chapter 2§r: Finding Natural Metals - Copper, Silver, Gold$(br)$(li)§4Chapter 3§r: Cold Forging Basics - From billet to blade$(br)$(li)§4Chapter 4§r: Fire-Crack Mining - Efficient ore extraction$(br)$(li)§4Chapter 5§r: Pottery Making - Kiln building and firing"
     },
     {
       "type": "patchouli:text",
       "title": "Before You Begin",
-      "text": "This mod completely changes the early game progression.$(br2)$(li)§cNo wooden/stone pickaxe can mine ores!§r$(br)$(li)You must find §4natural metal blocks§r on the surface$(br)$(li)Cold forging replaces traditional smelting$(br)$(li)Fire-crack mining is the only way to get ore chunks$(br)$(li)Pottery requires building and managing a kiln$(br2)$(4)Tip:§r Hold §aShift§r to view detailed item information."
+      "text": "This mod completely changes the early game progression.$(br2)$(li)§cNo wooden/stone pickaxe can mine ores!§r$(br)$(li)You must find §4natural metal blocks§r on the surface$(br)$(li)Cold forging replaces traditional smelting$(br)$(li)Fire-crack mining is the only way to get ore chunks$(br)$(li)Pottery requires building and managing a kiln$(br2)$(4)Tip:§r Hold §2Shift§r to view detailed item information."
     }
   ],
   "sortnum": -1

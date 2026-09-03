@@ -6,7 +6,7 @@
     {
       "type": "patchouli:text",
       "title": "Finding Metal in the Wild",
-      "text": "In this world, you cannot mine ores with a pickaxe. Instead, you must find §6natural metal blocks§r on the surface. These are native metal deposits that can be used directly.$(br2)There are three types of natural metals:$(br)$(li)§cCopper§r - Most common$(br)$(li)§fSilver§r - Quite rare$(br)$(li)§eGold§r - Very rare"
+      "text": "In this world, you cannot mine ores with a pickaxe. Instead, you must find §6natural metal blocks§r on the surface. These are native metal deposits that can be used directly.$(br2)There are three types of natural metals:$(br)$(li)§cCopper§r - Most common$(br)$(li)§8Silver§r - Quite rare$(br)$(li)§6Gold§r - Very rare"
     },
     {
       "type": "patchouli:text",
@@ -15,18 +15,18 @@
     },
     {
       "type": "patchouli:text",
-      "title": "§fNatural Silver",
-      "text": "§fNatural Silver Block§r$(br)$(li)Spawn: High altitude mountains & any surface$(br)$(li)Height: Surface layer (Y=55~180)$(br)$(li)Feature: Andesite, Granite or Stone surface$(br)$(li)Rarity: Quite rare$(br2)§6Tip:§r Silver has excellent forging properties for fine accessories."
+      "title": "§8Natural Silver",
+      "text": "§8Natural Silver Block§r$(br)$(li)Spawn: High altitude mountains & any surface$(br)$(li)Height: Surface layer (Y=55~180)$(br)$(li)Feature: Andesite, Granite or Stone surface$(br)$(li)Rarity: Quite rare$(br2)§6Tip:§r Silver has excellent forging properties for fine accessories."
     },
     {
       "type": "patchouli:text",
-      "title": "§eNatural Gold",
-      "text": "§eNatural Gold Block§r$(br)$(li)Spawn: River banks, Beaches & any surface$(br)$(li)Height: Surface layer (Y=55~180)$(br)$(li)Feature: Sand, Sandstone or Gravel surface$(br)$(li)Rarity: Very rare$(br2)§6Tip:§r Gold is the most precious metal for high-end decorations."
+      "title": "§6Natural Gold",
+      "text": "§6Natural Gold Block§r$(br)$(li)Spawn: River banks, Beaches & any surface$(br)$(li)Height: Surface layer (Y=55~180)$(br)$(li)Feature: Sand, Sandstone or Gravel surface$(br)$(li)Rarity: Very rare$(br2)§6Tip:§r Gold is the most precious metal for high-end decorations."
     },
     {
       "type": "patchouli:text",
       "title": "§6Copper Grass Flower",
-      "text": "Nature provides a compass!$(br2)§bCopper Grass Flowers§r are natural indicators of copper ore deposits nearby.$(br)$(li)Look for these distinctive blue-green flowers$(br)$(li)They grow in areas where copper ore is underground$(br2)Follow the flowers to find rich copper deposits!"
+      "text": "Nature provides a compass!$(br2)§3Copper Grass Flowers§r are natural indicators of copper ore deposits nearby.$(br)$(li)Look for these distinctive blue-green flowers$(br)$(li)They grow in areas where copper ore is underground$(br2)Follow the flowers to find rich copper deposits!"
     }
   ],
   "sortnum": 1

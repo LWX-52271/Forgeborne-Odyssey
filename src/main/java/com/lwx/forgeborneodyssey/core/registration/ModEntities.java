@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.core.registration;
 
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
+import com.lwx.forgeborneodyssey.entities.ThrownCrudeStoneSpear;
 import com.lwx.forgeborneodyssey.entities.ThrownStoneSpear;
 import com.lwx.forgeborneodyssey.entities.ThrownSlingStone;
 import com.lwx.forgeborneodyssey.entities.ThrownMetalBead;
@@ -45,6 +46,16 @@ public class ModEntities {
             .clientTrackingRange(4)
             .updateInterval(10)
             .build(ForgeborneOdyssey.MOD_ID + ":stone_spear_thrown")
+    );
+
+    // 投掷粗制石矛实体
+    public static final RegistryObject<EntityType<ThrownCrudeStoneSpear>> CRUDE_STONE_SPEAR_THROWN = ENTITY_TYPES.register(
+        "crude_stone_spear_thrown",
+        () -> EntityType.Builder.<ThrownCrudeStoneSpear>of(ThrownCrudeStoneSpear::new, MobCategory.MISC)
+            .sized(0.25f, 0.25f)
+            .clientTrackingRange(4)
+            .updateInterval(10)
+            .build(ForgeborneOdyssey.MOD_ID + ":crude_stone_spear_thrown")
     );
 
     // 投石索弹丸实体

@@ -1101,60 +1101,8 @@ public class FireCrackMiningHandler {
     }
 
     /**
-     * 弓钻/打火石点燃：仅当地上有燃料掉落物时才能生火
+     * 弓钻点火已移至FireDrillItem.releaseUsing()统一处理（含蓄力机制）
      */
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onIgniteWithFlint(PlayerInteractEvent.RightClickBlock event) {
-        Level level = event.getLevel();
-        Player player = event.getEntity();
-        ItemStack heldItem = player.getItemInHand(event.getHand());
-
-        if (!heldItem.is(Items.FLINT_AND_STEEL)) return;
-
-        BlockPos clickedPos = event.getPos();
-        BlockState clickedState = level.getBlockState(clickedPos);
-
-        BlockPos firePos = clickedPos.above();
-        BlockState fireState = level.getBlockState(firePos);
-        if (!fireState.isAir() && !fireState.canBeReplaced()) return;
-        if (!clickedState.isFaceSturdy(level, clickedPos, Direction.UP)) return;
-
-        if (level.isClientSide) {
-            player.swing(InteractionHand.MAIN_HAND, true);
-            return;
-        }
-
-        ServerLevel serverLevel = (ServerLevel) level;
-
-        AABB scanArea = new AABB(
-            clickedPos.getX() - 1.5, clickedPos.getY() - 1.0, clickedPos.getZ() - 1.5,
-            clickedPos.getX() + 2.5, clickedPos.getY() + 2.5, clickedPos.getZ() + 2.5
-        );
-        List<ItemEntity> items = serverLevel.getEntitiesOfClass(ItemEntity.class, scanArea,
-            e -> getFuelBurnTime(e.getItem()) > 0);
-
-        if (items.isEmpty()) {
-            return;
-        }
-
-        ItemEntity fuelItem = items.get(0);
-        int burnTime = getFuelBurnTime(fuelItem.getItem());
-        fuelItem.getItem().shrink(1);
-        if (fuelItem.getItem().isEmpty()) {
-            fuelItem.discard();
-        }
-
-        serverLevel.setBlock(firePos, Blocks.FIRE.defaultBlockState(), 11);
-        putFireDuration(serverLevel, firePos.immutable(), burnTime);
-        serverLevel.playSound(null, firePos, net.minecraft.sounds.SoundEvents.FLINTANDSTEEL_USE,
-            SoundSource.BLOCKS, 1.0F, serverLevel.getRandom().nextFloat() * 0.4F + 0.8F);
-
-        if (!player.isCreative()) {
-            heldItem.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
-        }
-
-        event.setCanceled(true);
-    }
 
     /**
      * 触发热裂连锁反应：热量越高，连锁破碎几率越大

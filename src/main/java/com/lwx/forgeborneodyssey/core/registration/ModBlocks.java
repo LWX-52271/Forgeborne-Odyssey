@@ -20,6 +20,9 @@ import com.lwx.forgeborneodyssey.blocks.GrateBlock;
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.KilnAshPileBlock;
+import com.lwx.forgeborneodyssey.blocks.TarKilnBlock;
+import com.lwx.forgeborneodyssey.blocks.TarKilnBlockEntity;
+import com.lwx.forgeborneodyssey.blocks.CharcoalRingBlock;
 
 import com.lwx.forgeborneodyssey.blocks.GreaseTorchBlock;
 import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
@@ -335,6 +338,30 @@ public class ModBlocks {
     // 竖穴窑方块实体类型
     public static final RegistryObject<BlockEntityType<PitKilnBlockEntity>> PIT_KILN_BLOCK_ENTITY = BLOCK_ENTITIES.register("pit_kiln_block_entity",
             () -> BlockEntityType.Builder.of(PitKilnBlockEntity::new, PIT_KILN.get()).build(null));
+
+    // 焦油窑方块
+    public static final RegistryObject<Block> TAR_KILN = BLOCKS.register("tar_kiln",
+            () -> new TarKilnBlock(Block.Properties.of()
+                    .mapColor(MapColor.TERRACOTTA_BROWN)
+                    .strength(0.6F)
+                    .sound(SoundType.GRAVEL)
+                    .noOcclusion()
+                    .isViewBlocking((s, l, p) -> false)
+            ));
+
+    // 焦油窑方块实体类型
+    public static final RegistryObject<BlockEntityType<TarKilnBlockEntity>> TAR_KILN_BLOCK_ENTITY = BLOCK_ENTITIES.register("tar_kiln_block_entity",
+            () -> BlockEntityType.Builder.of(TarKilnBlockEntity::new, TAR_KILN.get()).build(null));
+
+    // 外围炭火环方块
+    public static final RegistryObject<Block> CHARCOAL_RING = BLOCKS.register("charcoal_ring",
+            () -> new CharcoalRingBlock(Block.Properties.of()
+                    .mapColor(MapColor.TERRACOTTA_BLACK)
+                    .strength(0.3F)
+                    .sound(SoundType.GRAVEL)
+                    .noOcclusion()
+                    .lightLevel(state -> state.getValue(CharcoalRingBlock.LIT) ? 13 : 0)
+            ));
 
     // 窑顶盖方块实体类型
     public static final RegistryObject<BlockEntityType<KilnLidBlockEntity>> KILN_LID_BLOCK_ENTITY = BLOCK_ENTITIES.register("kiln_lid_block_entity",

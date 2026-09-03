@@ -40,7 +40,10 @@ public class ModCreativeTabs {
                     var key = ForgeRegistries.ITEMS.getKey(item);
                     if (key != null) {
                         var path = key.getPath();
-                        if (path.startsWith("raw_") || path.endsWith("_grain")) {
+                        if (path.startsWith("raw_") && !path.equals("raw_clay")) {
+                            return;
+                        }
+                        if (path.endsWith("_grain")) {
                             return;
                         }
                     }
@@ -111,6 +114,17 @@ public class ModCreativeTabs {
                 output.accept(ModItems.GALENA_GRAIN.get());
                 output.accept(ModItems.SPHALERITE_GRAIN.get());
                 output.accept(ModItems.MOLYBDENITE_GRAIN.get());
+
+                // 岩石碎片（9种）
+                output.accept(ModItems.SHALE_RUBBLE.get());
+                output.accept(ModItems.SANDSTONE_RUBBLE.get());
+                output.accept(ModItems.LIMESTONE_RUBBLE.get());
+                output.accept(ModItems.MARBLE_RUBBLE.get());
+                output.accept(ModItems.QUARTZITE_RUBBLE.get());
+                output.accept(ModItems.GABBRO_RUBBLE.get());
+                output.accept(ModItems.QUARTZ_VEIN_RUBBLE.get());
+                output.accept(ModItems.SERICITIZED_RUBBLE.get());
+                output.accept(ModItems.CHLORITE_RUBBLE.get());
             })
             .icon(() -> new ItemStack(ModItems.RAW_CHALCOPYRITE.get()))  // 使用黄铜矿碎块作为图标
             .build()

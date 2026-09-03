@@ -6,27 +6,27 @@
     {
       "type": "patchouli:text",
       "title": "Oxygen and Combustion",
-      "text": "§0The efficiency of flame combustion depends on the surrounding oxygen concentration. The system calculates an oxygen coefficient for each fire block in real-time, affecting:$(br2)$(li)§bHeating Efficiency§r §0 — More oxygen = faster rock heating$(br)$(li)§bFuel Consumption Rate§r §0 — Oxygen deficiency accelerates fuel consumption$(br)$(li)§bFlame Duration§r §0 — Flames extinguish faster in low-oxygen environments"
+      "text": "§0The efficiency of flame combustion depends on the surrounding oxygen concentration. The system calculates an oxygen coefficient for each fire block in real-time, affecting:$(br2)$(li)§3Heating Efficiency§r §0 — More oxygen = faster rock heating$(br)$(li)§3Fuel Consumption Rate§r §0 — Oxygen deficiency accelerates fuel consumption$(br)$(li)§3Flame Duration§r §0 — Flames extinguish faster in low-oxygen environments"
     },
     {
       "type": "patchouli:text",
       "title": "Oxygen Levels",
-      "text": "§0The system divides oxygen concentration into five levels:$(br2)$(li)§c§lSufficient (1.0)§r §0 — Open sky, ≤2 enclosed faces, no water$(br)$(li)§a§lGood (0.7)§r §0 — Open sky with 3-5 enclosed faces$(br)$(li)§4§lPartial (0.5)§r §0 — Some sky access but many enclosed faces$(br)$(li)§4§lNear Water (0.8)§r §0 — Adjacent to water sources$(br)$(li)§c§lEnclosed (0.3)§r §0 — Completely sealed space (all 6 faces covered)"
+      "text": "§0The system divides oxygen concentration into five levels:$(br2)$(li)§c§lSufficient (1.0)§r §0 — Open sky, ≤2 enclosed faces, no water$(br)$(li)§2§lGood (0.7)§r §0 — Open sky with 3-5 enclosed faces$(br)$(li)§4§lPartial (0.5)§r §0 — Some sky access but many enclosed faces$(br)$(li)§4§lNear Water (0.8)§r §0 — Adjacent to water sources$(br)$(li)§c§lEnclosed (0.3)§r §0 — Completely sealed space (all 6 faces covered)"
     },
     {
       "type": "patchouli:text",
       "title": "Environmental Factors",
-      "text": "§0The system determines oxygen concentration by checking:$(br2)$(li)§bSky Access§r §0 — Scans up to 20 blocks upward for sky visibility$(br)$(li)§bWater Adjacency§r §0 — Checks all 6 surrounding faces for water or waterlogged blocks$(br)$(li)§bEnclosed Face Count§r §0 — Counts solid block faces around the fire$(br2)§0The combination of these factors determines the final oxygen coefficient."
+      "text": "§0The system determines oxygen concentration by checking:$(br2)$(li)§3Sky Access§r §0 — Scans up to 20 blocks upward for sky visibility$(br)$(li)§3Water Adjacency§r §0 — Checks all 6 surrounding faces for water or waterlogged blocks$(br)$(li)§3Enclosed Face Count§r §0 — Counts solid block faces around the fire$(br2)§0The combination of these factors determines the final oxygen coefficient."
     },
     {
       "type": "patchouli:text",
       "title": "Flame Decay Rates",
-      "text": "§0Flame decay multipliers by oxygen level:$(br2)$(li)§aSufficient oxygen§0 (coeff ≥0.8): Decay ×1, normal combustion$(br)$(li)§4Good/Partial oxygen§0 (coeff 0.3~0.8): Decay ×2, doubled consumption$(br)$(li)§cEnclosed space§0 (coeff <0.3): Decay ×4, rapid extinction$(br2)§0Actual burn time = Base duration ÷ Decay multiplier.$(br2)§aTip: Build campfires in open areas for maximum efficiency!"
+      "text": "§0Flame decay multipliers by oxygen level:$(br2)$(li)§2Sufficient oxygen§0 (coeff ≥0.8): Decay ×1, normal combustion$(br)$(li)§4Good/Partial oxygen§0 (coeff 0.3~0.8): Decay ×2, doubled consumption$(br)$(li)§cEnclosed space§0 (coeff <0.3): Decay ×4, rapid extinction$(br2)§0Actual burn time = Base duration ÷ Decay multiplier.$(br2)§2Tip: Build campfires in open areas for maximum efficiency!"
     },
     {
       "type": "patchouli:text",
       "title": "Performance Optimization",
-      "text": "§0To ensure smooth gameplay, oxygen calculations use these optimizations:$(br2)$(li)§bCaching Mechanism§r §0 — Oxygen coefficients refresh every 20 ticks (1 second), not every tick$(br)$(li)§bBatch Scanning§r §0 — All fire oxygen checks execute in a single frame$(br)$(li)§bThread Safety§r §0 — Uses concurrent data structures for multiplayer$(br2)§aTip: The system remains stable even with many fires burning simultaneously."
+      "text": "§0To ensure smooth gameplay, oxygen calculations use these optimizations:$(br2)$(li)§3Caching Mechanism§r §0 — Oxygen coefficients refresh every 20 ticks (1 second), not every tick$(br)$(li)§3Batch Scanning§r §0 — All fire oxygen checks execute in a single frame$(br)$(li)§3Thread Safety§r §0 — Uses concurrent data structures for multiplayer$(br2)§2Tip: The system remains stable even with many fires burning simultaneously."
     }
   ],
   "sortnum": 0

@@ -6,7 +6,7 @@
     {
       "type": "patchouli:text",
       "title": "Chapter 5: Advanced Crafting",
-      "text": "§7[Continue from Copper Slot]$(br2)After mastering the basic cold forging, you can make more complex products. Starting from copper slot, you can craft various items."
+      "text": "§8[Continue from Copper Slot]$(br2)After mastering the basic cold forging, you can make more complex products. Starting from copper slot, you can craft various items."
     },
     {
       "type": "patchouli:text",
@@ -25,13 +25,13 @@
     },
     {
       "type": "patchouli:text",
-      "title": "§7[Final Products You Can Make]",
+      "title": "§8[Final Products You Can Make]",
       "text": "$(li)§cWeapons: Primitive copper knife, wrought copper sword (needs assembly)$(br)$(li)§cTools: Wrought copper axe (forged from curve)$(br)$(li)§cArmor: Pin chestplate (decorative)$(br)$(li)§cAccessories: Rings, hooks, beads, bars and more$(br)$(li)§cFunctional: Copper fishing rod and more"
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:copper_fishing_rod",
-      "text": "§aCopper Fishing Rod - Copper Ring + Copper Hook + String + Stick. Craft the ring and hook first, then assemble at the crafting table."
+      "text": "§2Copper Fishing Rod - Copper Ring + Copper Hook + String + Stick. Craft the ring and hook first, then assemble at the crafting table."
     },
     {
       "type": "patchouli:text",

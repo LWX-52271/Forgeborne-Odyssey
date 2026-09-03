@@ -319,7 +319,7 @@ public class GuideBookScreen extends Screen {
      */
     private int getTitleColor(String line) {
         if (line.contains("§b")) {
-            return 0x2F4F4F; // 深石板灰（替代天蓝色）
+            return 0x000055; // 深蓝色（替代天蓝色）
         } else if (line.contains("§4")) {
             return 0x8B0000; // 深红色（章节标题）
         }

@@ -27,6 +27,9 @@ import com.lwx.forgeborneodyssey.items.softmetalbillets.SoftCopperBilletItem;
 import com.lwx.forgeborneodyssey.items.softmetalstrips.SoftCopperStripItem;
 import com.lwx.forgeborneodyssey.items.tools.CobblestoneHammerItem;
 import com.lwx.forgeborneodyssey.items.tools.FlintShovelItem;
+import com.lwx.forgeborneodyssey.items.tools.CrudeFlintKnifeItem;
+import com.lwx.forgeborneodyssey.items.tools.CrudeFlintShovelItem;
+import com.lwx.forgeborneodyssey.items.tools.CrudeFlintSickleItem;
 
 import com.lwx.forgeborneodyssey.items.tools.FlintKnifeItem;
 import com.lwx.forgeborneodyssey.items.tools.FlintSickleItem;
@@ -49,6 +52,7 @@ import com.lwx.forgeborneodyssey.items.weapons.MetalSwordBladeItem;
 import com.lwx.forgeborneodyssey.items.weapons.SlingItem;
 import com.lwx.forgeborneodyssey.items.weapons.PolishedStoneAxeItem;
 import com.lwx.forgeborneodyssey.items.weapons.StoneSpearItem;
+import com.lwx.forgeborneodyssey.items.weapons.CrudeStoneSpearItem;
 import com.lwx.forgeborneodyssey.items.weapons.WroughtMetalSwordItem;
 import com.lwx.forgeborneodyssey.items.weapons.SimpleBowItem;
 import com.lwx.forgeborneodyssey.items.weapons.StoneArrowItem;
@@ -208,6 +212,10 @@ public class ModItems {
     public static final RegistryObject<Item> FLINT_SHOVEL = ITEMS.register("flint_shovel", FlintShovelItem::new);
     public static final RegistryObject<Item> FLINT_KNIFE = ITEMS.register("flint_knife", FlintKnifeItem::new);
     public static final RegistryObject<Item> FLINT_SICKLE = ITEMS.register("flint_sickle", FlintSickleItem::new);
+
+    public static final RegistryObject<Item> CRUDE_FLINT_KNIFE = ITEMS.register("crude_flint_knife", CrudeFlintKnifeItem::new);
+    public static final RegistryObject<Item> CRUDE_FLINT_SHOVEL = ITEMS.register("crude_flint_shovel", CrudeFlintShovelItem::new);
+    public static final RegistryObject<Item> CRUDE_FLINT_SICKLE = ITEMS.register("crude_flint_sickle", CrudeFlintSickleItem::new);
     public static final RegistryObject<Item> FIRE_DRILL = ITEMS.register("fire_drill", FireDrillItem::new);
     public static final RegistryObject<Item> HANDLE_STONE_HAMMER = ITEMS.register("handle_stone_hammer", HandleStoneHammerItem::new);
     public static final RegistryObject<Item> STONE_CHISEL = ITEMS.register("stone_chisel", StoneChiselItem::new);
@@ -218,6 +226,7 @@ public class ModItems {
 
     // 石器武器
     public static final RegistryObject<Item> STONE_SPEAR = ITEMS.register("stone_spear", StoneSpearItem::new);
+    public static final RegistryObject<Item> CRUDE_STONE_SPEAR = ITEMS.register("crude_stone_spear", CrudeStoneSpearItem::new);
     public static final RegistryObject<Item> POLISHED_STONE_AXE = ITEMS.register("polished_stone_axe", PolishedStoneAxeItem::new);
     public static final RegistryObject<Item> STONE_HOE = ITEMS.register("stone_hoe", StoneHoeItem::new);
     public static final RegistryObject<Item> SLING = ITEMS.register("sling", SlingItem::new);
@@ -230,6 +239,10 @@ public class ModItems {
     // 材料物品
     public static final RegistryObject<Item> ANIMAL_FAT = ITEMS.register("animal_fat", AnimalFatItem::new);
     public static final RegistryObject<Item> BONE_NEEDLE = ITEMS.register("bone_needle", BoneNeedleItem::new);
+
+    // 桦树皮与桦木焦油
+    public static final RegistryObject<Item> BIRCH_BARK = simpleItem("birch_bark");
+    public static final RegistryObject<Item> BIRCH_TAR = simpleItem("birch_tar");
 
     // 草编护甲
     public static final RegistryObject<Item> GRASS_HELMET = ITEMS.register("grass_helmet",
@@ -294,6 +307,12 @@ public class ModItems {
 
     // 竖穴窑物品
     public static final RegistryObject<Item> PIT_KILN_ITEM = ITEMS.register("pit_kiln", () -> new BlockItem(ModBlocks.PIT_KILN.get(), new Item.Properties()));
+
+    // 焦油窑物品
+    public static final RegistryObject<Item> TAR_KILN_ITEM = ITEMS.register("tar_kiln", () -> new BlockItem(ModBlocks.TAR_KILN.get(), new Item.Properties()));
+
+    // 外围炭火环物品
+    public static final RegistryObject<Item> CHARCOAL_RING_ITEM = ITEMS.register("charcoal_ring", () -> new BlockItem(ModBlocks.CHARCOAL_RING.get(), new Item.Properties()));
 
     // 火门物品
     public static final RegistryObject<Item> FIRE_MOUTH_ITEM = ITEMS.register("fire_mouth", () -> new FireMouthItem(ModBlocks.FIRE_MOUTH.get()));

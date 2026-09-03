@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:book"
+      "item": "forgeborneodyssey:rawhide"
     },
     {
       "item": "forgeborneodyssey:fire_drill"

@@ -24,7 +24,7 @@
     {
       "type": "patchouli:text",
       "title": "Insulation Grade",
-      "text": "The number of dirt blocks surrounding the pit kiln directly affects insulation and maximum temperature:$(br2)$(li)4 sides dirt: §aExcellent§r — Max 1200℃$(br)$(li)3 sides dirt: §eGood§r — Max 1000℃$(br)$(li)2 sides dirt: §6Fair§r — Max 800℃$(br)$(li)1 side dirt: §cPoor§r — Max 550℃$(br)$(li)0 sides dirt: §4Very Poor§r — Max 350℃$(br2)Better insulation means faster heating and higher max temperature. Aim for at least 3 sides."
+      "text": "The number of dirt blocks surrounding the pit kiln directly affects insulation and maximum temperature:$(br2)$(li)4 sides dirt: §2Excellent§r — Max 1200℃$(br)$(li)3 sides dirt: §6Good§r — Max 1000℃$(br)$(li)2 sides dirt: §6Fair§r — Max 800℃$(br)$(li)1 side dirt: §cPoor§r — Max 550℃$(br)$(li)0 sides dirt: §4Very Poor§r — Max 350℃$(br2)Better insulation means faster heating and higher max temperature. Aim for at least 3 sides."
     },
     {
       "type": "patchouli:text",

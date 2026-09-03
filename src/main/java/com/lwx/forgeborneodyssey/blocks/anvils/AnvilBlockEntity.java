@@ -541,12 +541,15 @@ public class AnvilBlockEntity extends BlockEntity {
         level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.STONE_BREAK,
             net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, breakPitch);
         
-        // 生成矿物颗粒——继承原矿的纯度和品质
+        // 质量守恒：总重量均分给所有产出物（颗粒 + 掺和料）
+        float perItemQuality = quality / (grainCount + temperCount);
+
+        // 生成矿物颗粒——继承原矿的纯度，质量按产出数量均分
         for (int i = 0; i < grainCount; i++) {
             ItemStack grainStack = new ItemStack(grainItem);
             CompoundTag grainTag = grainStack.getOrCreateTag();
             grainTag.putFloat("ore_purity", purity);
-            grainTag.putFloat("ore_quality", quality);
+            grainTag.putFloat("ore_quality", perItemQuality);
             
             net.minecraft.world.entity.item.ItemEntity grainEntity = 
                 new net.minecraft.world.entity.item.ItemEntity(
@@ -560,11 +563,11 @@ public class AnvilBlockEntity extends BlockEntity {
             level.addFreshEntity(grainEntity);
         }
         
-        // 生成掺和料（废石）——继承原矿品质，无纯度
+        // 生成掺和料（废石）——无纯度，质量按产出数量均分
         for (int i = 0; i < temperCount; i++) {
             ItemStack temperStack = new ItemStack(ModItems.TEMPER_GROG.get());
             CompoundTag temperTag = temperStack.getOrCreateTag();
-            temperTag.putFloat("ore_quality", quality);
+            temperTag.putFloat("ore_quality", perItemQuality);
             
             net.minecraft.world.entity.item.ItemEntity temperEntity = 
                 new net.minecraft.world.entity.item.ItemEntity(

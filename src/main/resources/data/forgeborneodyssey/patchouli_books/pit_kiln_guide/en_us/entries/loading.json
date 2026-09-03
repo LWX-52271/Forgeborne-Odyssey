@@ -6,12 +6,12 @@
     {
       "type": "patchouli:text",
       "title": "Step 2: Loading Greenware",
-      "text": "When the kiln enters Stage 1, right-click the top of the pit kiln with greenware to load it. Up to 4 greenware items can be loaded.$(br2)§cNote: No items can be placed without the grate installed! You must install the grate first (Stage 0 → Stage 1) before loading.$(br2)Greenware items are placed/retrieved by the §dclick position§0: the kiln top is divided into §dfront-left, front-right, back-left, back-right§0 four slots. Click the corresponding position to operate. When the target slot is occupied, it automatically fills the remaining empty slots.$(br2)To remove loaded items, right-click the top at the slot location with an empty hand (non-Shift mode)."
+      "text": "When the kiln enters Stage 1, right-click the top of the pit kiln with greenware to load it. Up to 4 greenware items can be loaded.$(br2)§cNote: No items can be placed without the grate installed! You must install the grate first (Stage 0 → Stage 1) before loading.$(br2)Greenware items are placed/retrieved by the §5click position§0: the kiln top is divided into §5front-left, front-right, back-left, back-right§0 four slots. Click the corresponding position to operate. When the target slot is occupied, it automatically fills the remaining empty slots.$(br2)To remove loaded items, right-click the top at the slot location with an empty hand (non-Shift mode)."
     },
     {
       "type": "patchouli:text",
       "title": "Greenware Types",
-      "text": "Three types of greenware can be loaded:$(br)$(li)§bCrucible Greenware§r → §bGray Crucible§r$(br)$(li)§4Mold Greenware§r → §4Red Mold§r$(br)$(li)§7Brick Greenware§r → §7Fired Brick§r$(br)Each requires different firing conditions. Failure produces kiln waste shards."
+      "text": "Three types of greenware can be loaded:$(br)$(li)§3Crucible Greenware§r → §3Gray Crucible§r$(br)$(li)§4Mold Greenware§r → §4Red Mold§r$(br)$(li)§8Brick Greenware§r → §8Fired Brick§r$(br)Each requires different firing conditions. Failure produces kiln waste shards."
     },
     {
       "type": "patchouli:crafting",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "Adding Fuel & Sealing",
-      "text": "After loading, right-click the fire mouth with fuel to add it. Supported fuel types:$(br2)$(li)§4Firewood§r: fuel value 4 (1800 ticks/90 seconds each)$(br)$(li)§4Straw Bale§r: fuel value 1$(br)$(li)§8Rice Husk Char§r: fuel value 6 (best fuel)$(br)$(li)§7Charcoal Block§r: fuel value 1$(br2)After adding fuel, right-click the top with a kiln lid to seal. The kiln enters Stage 2."
+      "text": "After loading, right-click the fire mouth with fuel to add it. Supported fuel types:$(br2)$(li)§4Firewood§r: fuel value 4 (1800 ticks/90 seconds each)$(br)$(li)§4Straw Bale§r: fuel value 1$(br)$(li)§8Rice Husk Char§r: fuel value 6 (best fuel)$(br)$(li)§8Charcoal Block§r: fuel value 1$(br2)After adding fuel, right-click the top with a kiln lid to seal. The kiln enters Stage 2."
     },
     {
       "type": "patchouli:crafting",

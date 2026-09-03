@@ -1,4 +1,4 @@
-{
+﻿{
   "category": "forgeborneodyssey:basics",
   "name": "Practical Guide",
   "icon": "minecraft:cobblestone",
@@ -6,22 +6,22 @@
     {
       "type": "patchouli:text",
       "title": "Preparation",
-      "text": "§0Before starting fire-crack mining, prepare the following:$(br2)$(li)§dFlint and Steel§r ×1 — Core tool for igniting flames$(br)$(li)§dWater Bucket§r ×1 — Quench heated rocks$(br)$(li)§dFuel Items§r — Torches, planks, sticks to maintain flame$(br)$(li)§dPickaxe§r — Collect cracked minerals and rocks$(br)$(li)§dShelter (Optional)§r — May be needed in enclosed spaces"
+      "text": "§0Before starting fire-crack mining, prepare the following:$(br2)$(li)§5Bow Drill§r ×1 — Core tool for igniting flames$(br)$(li)§5Water Bucket§r ×1 — Quench heated rocks$(br)$(li)§5Fuel Items§r — Torches, planks, sticks to maintain flame$(br)$(li)§5Pickaxe§r — Collect cracked minerals and rocks$(br)$(li)§5Shelter (Optional)§r — May be needed in enclosed spaces"
     },
     {
       "type": "patchouli:text",
       "title": "Basic Procedure",
-      "text": "§0Using copper ore mining as an example:$(br2)§6[1. Locate Target]$(br) Find rock blocks to mine (e.g., chalcopyrite, bornite).$(br2)§6[2. Build Flame]$(br) Place fuel adjacent to target rocks and ignite with flint and steel.$(br2)§6[3. Wait for Heating]$(br) The flame gradually heats adjacent rocks. Be patient.$(br2)§6[4. Quench with Water]$(br) Right-click heated rocks with a water bucket.$(br2)§6[5. Collect Products]$(br) Rocks crack and drop minerals automatically."
+      "text": "§0Using copper ore mining as an example:$(br2)§6[1. Locate Target]$(br) Find rock blocks to mine (e.g., chalcopyrite, bornite).$(br2)§6[2. Build Flame]$(br) Place fuel adjacent to target rocks and ignite with Bow Drill.$(br2)§6[3. Wait for Heating]$(br) The flame gradually heats adjacent rocks. Be patient.$(br2)§6[4. Quench with Water]$(br) Right-click heated rocks with a water bucket.$(br2)§6[5. Collect Products]$(br) Rocks crack and drop minerals automatically."
     },
     {
       "type": "patchouli:text",
       "title": "Heat Management",
-      "text": "§0Follow these tips for optimal heating efficiency:$(br2)$(li)§bKeep Flame Burning§r — Refuel before it depletes$(br)$(li)§bStrategic Placement§r — Place flames next to rocks for best heating$(br)$(li)§bCooling Rate§r — Hot rocks cool quickly without active heating (cool factor 0.25/s)$(br)$(li)§bConduction Distance§r — Heat travels up to 3 blocks; use multiple flames for distant rocks$(br)$(li)§bDirection-Independent§r — Modern model conducts heat uniformly in all directions"
+      "text": "§0Follow these tips for optimal heating efficiency:$(br2)$(li)§3Keep Flame Burning§r — Refuel before it depletes$(br)$(li)§3Strategic Placement§r — Place flames next to rocks for best heating$(br)$(li)§3Cooling Rate§r — Hot rocks cool quickly without active heating (cool factor 0.25/s)$(br)$(li)§3Conduction Distance§r — Heat travels up to 3 blocks; use multiple flames for distant rocks$(br)$(li)§3Direction-Independent§r — Modern model conducts heat uniformly in all directions"
     },
     {
       "type": "patchouli:text",
       "title": "Efficient Mining",
-      "text": "§0Master these techniques for maximum efficiency:$(br2)§a§lChain Thermal Cracking§r $(br) When one rock cracks, heat spreads to adjacent rocks, potentially triggering chain reactions. Best in dense ore veins.$(br2)§a§lMulti-Source Heating§r $(br) Light multiple flames around the target area to accelerate heating. Ideal for hard rock layers.$(br2)§a§lOpen Area Advantage§r $(br) Build in open areas for maximum oxygen (1.0 coefficient), maximizing combustion efficiency.$(br2)§a§lCycle Operation§r $(br) Quench before fuel runs out, then re-ignite and repeat."
+      "text": "§0Master these techniques for maximum efficiency:$(br2)§2§lChain Thermal Cracking§r $(br) When one rock cracks, heat spreads to adjacent rocks, potentially triggering chain reactions. Best in dense ore veins.$(br2)§2§lMulti-Source Heating§r $(br) Light multiple flames around the target area to accelerate heating. Ideal for hard rock layers.$(br2)§2§lOpen Area Advantage§r $(br) Build in open areas for maximum oxygen (1.0 coefficient), maximizing combustion efficiency.$(br2)§2§lCycle Operation§r $(br) Quench before fuel runs out, then re-ignite and repeat."
     },
     {
       "type": "patchouli:text",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "Safety Notes",
-      "text": "§0Follow these safety guidelines:$(br2)$(li)§cFire Damage§r — Standing near active flames causes continuous burn damage$(br)$(li)§cTNT Compatibility§r — Flint and steel retains vanilla functionality for TNT and other flammables$(br)$(li)§cOverworld Only§r — Fire-crack system only works in the Overworld; disabled in other dimensions$(br)$(li)§cMultiplayer Support§r — Thermal operations are independent per player in multiplayer$(br)$(li)§cPersistent Data§r — Flame and heat data saves with the world; no loss on restart"
+      "text": "§0Follow these safety guidelines:$(br2)$(li)§cFire Damage§r — Standing near active flames causes continuous burn damage$(br)$(li)§cTNT Compatibility§r — Bow Drill retains vanilla functionality for TNT and other flammables$(br)$(li)§cOverworld Only§r — Fire-crack system only works in the Overworld; disabled in other dimensions$(br)$(li)§cMultiplayer Support§r — Thermal operations are independent per player in multiplayer$(br)$(li)§cPersistent Data§r — Flame and heat data saves with the world; no loss on restart"
     }
   ],
   "sortnum": 1

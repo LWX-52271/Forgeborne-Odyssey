@@ -11,12 +11,12 @@
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:copper_billet_crafting",
-      "text": "§b铜坯料合成配方$(br2)自然铜块 + 水桶 = 铜坯料$(br)银和金的坯料合成方式相同。"
+      "text": "§3铜坯料合成配方$(br2)自然铜块 + 水桶 = 铜坯料$(br)银和金的坯料合成方式相同。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:fire_pit_crafting",
-      "text": "§b火塘合成配方$(br2)火塘是加热坯料的设施，用8个地表圆石围成环形合成。"
+      "text": "§3火塘合成配方$(br2)火塘是加热坯料的设施，用8个地表圆石围成环形合成。"
     },
     {
       "type": "patchouli:text",
@@ -26,17 +26,17 @@
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:firewood_crafting",
-      "text": "§b硬木柴——火塘的基础燃料。由任意原木合成。"
+      "text": "§3硬木柴——火塘的基础燃料。由任意原木合成。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:wooden_clamp",
-      "text": "§c⚠ 警告：高温物品必须用§b木钳§r取！$(br2)空手取物会被烫伤并着火。木钳可以安全地取走加热后的物品。"
+      "text": "§c⚠ 警告：高温物品必须用§3木钳§r取！$(br2)空手取物会被烫伤并着火。木钳可以安全地取走加热后的物品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:soft_copper_billet",
-      "text": "§b软化铜坯料$(br2)在火塘中加热后获得，颜色变深，质地变软，可立即在石砧上锻造。注意：软化铜坯料在背包中1.5分钟后会自动冷却变回普通坯料。"
+      "text": "§3软化铜坯料$(br2)在火塘中加热后获得，颜色变深，质地变软，可立即在石砧上锻造。注意：软化铜坯料在背包中1.5分钟后会自动冷却变回普通坯料。"
     }
   ],
   "sortnum": 2

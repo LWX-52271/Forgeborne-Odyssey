@@ -6,22 +6,22 @@
     {
       "type": "patchouli:text",
       "title": "Chapter 1: Craft Stone Tools",
-      "text": "§7[Start Your Adventure]$(br2)In Forgeborne Odyssey, your first tools will be made from cobblestone. Surface cobblestone is the most basic resource, found everywhere on the surface.$(br)Look for surface cobblestone and use it to craft hammers and chisels to begin your forging journey."
+      "text": "§8[Start Your Adventure]$(br2)In Forgeborne Odyssey, your first tools will be made from cobblestone. Surface cobblestone is the most basic resource, found everywhere on the surface.$(br)Look for surface cobblestone and use it to craft hammers and chisels to begin your forging journey."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§bCobblestone Hammer§r - Basic forging tool. Strike metal billets on the anvil."
+      "text": "§3Cobblestone Hammer§r - Basic forging tool. Strike metal billets on the anvil."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
-      "text": "§bHandle Hammer§r - More efficient forging tool. More durable with a wooden handle."
+      "text": "§3Handle Hammer§r - More efficient forging tool. More durable with a wooden handle."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:stone_chisel_crafting",
-      "text": "§bStone Chisel§r - For fine carving. Final metal products need chisel carving to complete."
+      "text": "§3Stone Chisel§r - For fine carving. Final metal products need chisel carving to complete."
     },
     {
       "type": "patchouli:text",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "Tip",
-      "text": "§aTip: Craft hammer and chisel first!$(br2)Hammers are the core forging tool, and chisels are the key to carving final products. Craft enough hammers and chisels before looking for metals."
+      "text": "§2Tip: Craft hammer and chisel first!$(br2)Hammers are the core forging tool, and chisels are the key to carving final products. Craft enough hammers and chisels before looking for metals."
     }
   ],
   "sortnum": 0

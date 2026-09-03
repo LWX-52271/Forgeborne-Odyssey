@@ -11,22 +11,22 @@
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:gray_crucible",
-      "text": "§bGray Crucible§r$(br2)Conditions:$(br)$(li)Oxygen < -30 (reducing atmosphere)$(br)$(li)Peak temperature > 900℃$(br2)Failure: Produces 2 kiln waste shards. §dUndried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br2)Gray crucible is heat-resistant and the basic tool for metal smelting."
+      "text": "§3Gray Crucible§r$(br2)Conditions:$(br)$(li)Oxygen < -30 (reducing atmosphere)$(br)$(li)Peak temperature > 900℃$(br2)Failure: Produces 2 kiln waste shards. §5Undried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br2)Gray crucible is heat-resistant and the basic tool for metal smelting."
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:red_mold",
-      "text": "§6Red Mold§r$(br2)Conditions:$(br)$(li)Oxygen > 30 (oxidizing atmosphere)$(br)$(li)Peak temperature > 850℃$(br2)Failure: Produces 1 kiln waste shard. §dUndried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br2)Red mold is used for casting metal ingots and tools."
+      "text": "§6Red Mold§r$(br2)Conditions:$(br)$(li)Oxygen > 30 (oxidizing atmosphere)$(br)$(li)Peak temperature > 850℃$(br2)Failure: Produces 1 kiln waste shard. §5Undried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br2)Red mold is used for casting metal ingots and tools."
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:fired_brick",
-      "text": "§7Fired Brick§r$(br2)Conditions:$(br)$(li)Peak temperature > 1000℃$(br)$(li)Time above 900℃ > 300 ticks (15 seconds)$(br2)Failure: Produces 4 kiln waste shards. §dUndried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br)Success: Produces §d2§0 fired bricks$(br2)Fired brick is a building material that requires sustained high heat."
+      "text": "§8Fired Brick§r$(br2)Conditions:$(br)$(li)Peak temperature > 1000℃$(br)$(li)Time above 900℃ > 300 ticks (15 seconds)$(br2)Failure: Produces 4 kiln waste shards. §5Undried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br)Success: Produces §52§0 fired bricks$(br2)Fired brick is a building material that requires sustained high heat."
     },
     {
       "type": "patchouli:text",
       "title": "Firing Strategy Tips",
-      "text": "$(li)§bGray Crucible§r: Seal fire mouth + fully close vents, maintain reducing atmosphere until oxygen<-30, ensure temp>900℃.$(br)$(li)§6Red Mold§r: Open fire mouth + fully open vents, maintain oxidizing atmosphere until oxygen>30, temp>850℃.$(br)$(li)§7Fired Brick§r: Requires highest temperature and sustained high heat, suggest 4-sided insulation + grate + fully closed vents."
+      "text": "$(li)§3Gray Crucible§r: Seal fire mouth + fully close vents, maintain reducing atmosphere until oxygen<-30, ensure temp>900℃.$(br)$(li)§6Red Mold§r: Open fire mouth + fully open vents, maintain oxidizing atmosphere until oxygen>30, temp>850℃.$(br)$(li)§8Fired Brick§r: Requires highest temperature and sustained high heat, suggest 4-sided insulation + grate + fully closed vents."
     }
   ],
   "sortnum": 4

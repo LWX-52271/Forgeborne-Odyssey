@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "§bPit Kiln§r is the core facility for ancient pottery firing. It uses a dirt-walled pit structure, burning fuel through the fire mouth to produce high temperatures, combined with vents to control the kiln atmosphere, transforming greenware into different ceramic products.$(br2)This guide will walk you step by step through the construction and firing process of the pit kiln."
+      "text": "§3Pit Kiln§r is the core facility for ancient pottery firing. It uses a dirt-walled pit structure, burning fuel through the fire mouth to produce high temperatures, combined with vents to control the kiln atmosphere, transforming greenware into different ceramic products.$(br2)This guide will walk you step by step through the construction and firing process of the pit kiln."
     },
     {
       "type": "patchouli:text",
@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "title": "Key Concepts",
-      "text": "$(li)§bTemperature§r: Determined by fuel, grate efficiency, and insulation grade, max 900℃ (1200℃ with blowpipe)$(br)$(li)§bOxygen Content§r: Range -100 to +100, controlled by fire mouth and vents$(br)$(li)§bOxidizing Atmosphere§r: High oxygen, suitable for redware$(br)$(li)§bReducing Atmosphere§r: Low oxygen, suitable for gray ware and black ware$(br)$(li)§bInsulation Grade§r: Determined by surrounding dirt blocks (0-4 sides)"
+      "text": "$(li)§3Temperature§r: Determined by fuel, grate efficiency, and insulation grade, max 900℃ (1200℃ with blowpipe)$(br)$(li)§3Oxygen Content§r: Range -100 to +100, controlled by fire mouth and vents$(br)$(li)§3Oxidizing Atmosphere§r: High oxygen, suitable for redware$(br)$(li)§3Reducing Atmosphere§r: Low oxygen, suitable for gray ware and black ware$(br)$(li)§3Insulation Grade§r: Determined by surrounding dirt blocks (0-4 sides)"
     },
     {
       "type": "patchouli:text",
@@ -25,7 +25,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:gray_crucible",
-      "text": "§bGray Crucible§r is one of the key successful products. Fired in a reducing atmosphere, it has high temperature resistance and is the basic tool for metal smelting."
+      "text": "§3Gray Crucible§r is one of the key successful products. Fired in a reducing atmosphere, it has high temperature resistance and is the basic tool for metal smelting."
     },
     {
       "type": "patchouli:spotlight",

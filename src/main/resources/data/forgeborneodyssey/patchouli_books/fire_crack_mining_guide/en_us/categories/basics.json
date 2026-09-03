@@ -1,6 +1,6 @@
-{
+﻿{
   "name": "Fire-Crack Mining",
   "description": "Mining rocks using thermal expansion and contraction",
-  "icon": "minecraft:flint_and_steel",
+  "icon": "forgeborneodyssey:fire_drill",
   "sortnum": 0
 }

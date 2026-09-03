@@ -200,14 +200,15 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
             // 客户端只对有效交互返回 SUCCESS
             boolean valid = false;
             if (stage == 0 && !hasGrate) {
-                // Stage 0: 只允许安装窑箅，其他物品一律阻止
-                if (isTop && held.is(ModItems.GRATE_BLOCK_ITEM.get())) valid = true;
+                // Stage 0: 允许安装窑箅或直接装填陶坯（无窑箅）
+                if (isTop && (held.is(ModItems.GRATE_BLOCK_ITEM.get()) || kiln.isGreenware(held))) valid = true;
                 return valid ? InteractionResult.SUCCESS : InteractionResult.FAIL;
             }
             if (stage >= 2 && stage <= 4 && held.is(Items.WATER_BUCKET)) valid = true;
-            if (stage == 1 && hasGrate && isTop && kiln.isGreenware(held)) valid = true;
+            if ((stage == 0 || stage == 1) && isTop && kiln.isGreenware(held)) valid = true;
             if (stage == 1 && isTop && held.isEmpty() && !player.isShiftKeyDown() && kiln.getGreenwareCount() > 0) valid = true;
             if (stage == 1 && isTop && held.is(ModItems.KILN_LID_ITEM.get())) valid = true;
+            if (stage == 1 && !hasGrate && isTop && held.is(ModItems.GRATE_BLOCK_ITEM.get())) valid = true;
             if (stage == 3 && isTop && held.isEmpty() && !player.isShiftKeyDown()) valid = true;
             if ((stage >= 2 && stage <= 4) && player.isShiftKeyDown() && held.isEmpty()) valid = true;
             return valid ? InteractionResult.SUCCESS : InteractionResult.PASS;
@@ -233,10 +234,12 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
             return InteractionResult.SUCCESS;
         }
 
-        // ========== Stage 0 (无窑箅): 只允许放置窑箅 ==========
+        // ========== Stage 0 (无窑箅): 允许放置窑箅或直接装填陶坯 ==========
         if (stage == 0 && !hasGrate) {
             if (isTop && held.is(ModItems.GRATE_BLOCK_ITEM.get())) {
                 // 允许安装窑箅，继续执行下方逻辑
+            } else if (isTop && kiln.isGreenware(held)) {
+                // 允许直接装填陶坯（无窑箅），继续执行下方逻辑
             } else {
                 return InteractionResult.FAIL;
             }
@@ -251,8 +254,39 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
             return InteractionResult.SUCCESS;
         }
 
+        // ========== Stage 0: 直接装填陶坯（无窑箅）→ Stage 1 ==========
+        if (stage == 0 && !hasGrate && isTop && kiln.isGreenware(held)) {
+            int slot = getHitSlot(hit.getLocation().x - pos.getX(), hit.getLocation().z - pos.getZ());
+            if (kiln.getInventory().getStackInSlot(slot).isEmpty()) {
+                kiln.getInventory().setStackInSlot(slot, held.split(1));
+                level.setBlock(pos, state.setValue(STAGE, 1), 3);
+                level.playSound(null, pos, SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 0.8F, 1.0F);
+                player.displayClientMessage(Component.translatable("message.forgeborneodyssey.kiln.greenware_placed", kiln.getGreenwareCount()), true);
+                return InteractionResult.SUCCESS;
+            }
+            int fallback = kiln.getEmptySlot();
+            if (fallback >= 0) {
+                kiln.getInventory().setStackInSlot(fallback, held.split(1));
+                level.setBlock(pos, state.setValue(STAGE, 1), 3);
+                level.playSound(null, pos, SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 0.8F, 1.0F);
+                player.displayClientMessage(Component.translatable("message.forgeborneodyssey.kiln.greenware_placed", kiln.getGreenwareCount()), true);
+                return InteractionResult.SUCCESS;
+            }
+            player.displayClientMessage(Component.translatable("message.forgeborneodyssey.kiln.kiln_full"), true);
+            return InteractionResult.SUCCESS;
+        }
+
+        // ========== Stage 1: 安装窑箅（如果尚未安装） ==========
+        if (stage == 1 && !hasGrate && isTop && held.is(ModItems.GRATE_BLOCK_ITEM.get())) {
+            level.setBlock(pos, state.setValue(HAS_GRATE, true), 3);
+            held.shrink(1);
+            level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 0.8F, 1.0F);
+            player.displayClientMessage(Component.translatable("message.forgeborneodyssey.kiln.grate_installed"), true);
+            return InteractionResult.SUCCESS;
+        }
+
         // ========== Stage 1: 装填陶坯 ==========
-        if (stage == 1 && hasGrate && isTop && kiln.isGreenware(held)) {
+        if (stage == 1 && isTop && kiln.isGreenware(held)) {
             int slot = getHitSlot(hit.getLocation().x - pos.getX(), hit.getLocation().z - pos.getZ());
             if (kiln.getInventory().getStackInSlot(slot).isEmpty()) {
                 kiln.getInventory().setStackInSlot(slot, held.split(1));

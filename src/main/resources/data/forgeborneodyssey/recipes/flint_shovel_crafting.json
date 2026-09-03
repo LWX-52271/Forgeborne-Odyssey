@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "H",
-    "R",
-    "S"
+    "HT ",
+    "R  ",
+    "S  "
   ],
   "key": {
     "H": {
       "item": "forgeborneodyssey:flint_shovel_head"
+    },
+    "T": {
+      "item": "forgeborneodyssey:birch_tar"
     },
     "R": {
       "item": "forgeborneodyssey:fiber_rope"

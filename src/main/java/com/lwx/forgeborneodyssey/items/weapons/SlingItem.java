@@ -139,8 +139,15 @@ public class SlingItem extends Item {
         if (isLightRubble(item)) return AmmoQuality.LIGHT;
         if (item == ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get()) return AmmoQuality.HEAVY;
         if (isHeavyOre(item)) return AmmoQuality.HEAVY;
+        if (isMetalBead(item)) return AmmoQuality.HEAVY;
         if (isRubble(item) || isRawOreChunk(item)) return AmmoQuality.MEDIUM;
         return null;
+    }
+
+    private static boolean isMetalBead(Item item) {
+        return item == ModItems.COPPER_BEAD.get()
+                || item == ModItems.SILVER_BEAD.get()
+                || item == ModItems.GOLD_BEAD.get();
     }
 
     private static AmmoQuality getAmmoQualityFromNBT(ItemStack stack) {

@@ -3,8 +3,10 @@ package com.lwx.forgeborneodyssey.blocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -118,6 +120,24 @@ public class GreaseTorchBlock extends Block {
         if (!level.isClientSide && projectile.isOnFire() && !state.getValue(LIT)) {
             level.setBlock(blockpos, state.setValue(LIT, true), 11);
             level.playSound(null, blockpos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 0.5F, 1.0F);
+        }
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (state.getValue(LIT)) {
+            if (random.nextInt(15) == 0) {
+                level.playLocalSound(
+                    (double)pos.getX() + 0.5D,
+                    (double)pos.getY() + 0.5D,
+                    (double)pos.getZ() + 0.5D,
+                    SoundEvents.FIRE_AMBIENT,
+                    SoundSource.BLOCKS,
+                    0.3F + random.nextFloat() * 0.2F,
+                    random.nextFloat() * 0.4F + 0.8F,
+                    false
+                );
+            }
         }
     }
 

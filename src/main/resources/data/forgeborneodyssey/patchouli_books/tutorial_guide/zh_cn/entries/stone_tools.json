@@ -6,42 +6,47 @@
     {
       "type": "patchouli:text",
       "title": "你的第一批工具",
-      "text": "在加工金属之前，你需要基本的石器工具。$(br2)首先在地面寻找散落的§4地表圆石块§r。它们看起来像地表的小石头。$(br2)捡起它们，在合成台中制作你的第一批工具。"
+      "text": "在加工金属之前，你需要基本的石器工具。$(br2)首先在地面寻找散落的§4地表圆石块§r。它们看起来像地表的小石头。$(br2)捡起它们，用这些石头敲击制作你的第一批工具。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "旧石器敲击法",
+      "text": "将§4地表圆石§r放在双手（主手和副手各一个），然后右键将它们互相敲击。$(br2)敲击有概率获得：$(br)$(li)§3燧石片§r（30%概率）$(br)$(li)§3粗制燧石刀§r（12.5%概率）$(br)$(li)§3粗制燧石铲§r（12.5%概率）$(br)$(li)§3粗制燧石镰§r（12.5%概率）$(br)$(li)§3粗制石矛§r（12.5%概率）$(br)$(li)§4什么也没有§r（20%概率）"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§b圆石锤§r$(br)基础锻造工具。$(br)用于在石砧上锻打金属。"
+      "text": "§3圆石锤§r$(br)基础锻造工具。$(br)用于在石砧上锻打金属。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
-      "text": "§b带柄石锤§r$(br)更高效的锻造工具。$(br)升级版锤子，有手柄更耐用。"
+      "text": "§3带柄石锤§r$(br)更高效的锻造工具。$(br)升级版锤子，有手柄更耐用。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:stone_chisel_crafting",
-      "text": "§b石凿§r$(br)用于精细雕刻。$(br)用于雕刻金属成品。"
+      "text": "§3石凿§r$(br)用于精细雕刻。$(br)用于雕刻金属成品。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:flint_knife_crafting",
-      "text": "§b燧石刀§r$(br)用于割草获取草纤维，以及各种合成任务。"
+      "text": "§3燧石刀§r$(br)用于割草获取草纤维，以及各种合成任务。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:flint_shovel_crafting",
-      "text": "§b燧石铲§r$(br)右键沙子/砂砾获取黏土，右键泥土挖窑坑。"
+      "text": "§3燧石铲§r$(br)右键沙子/砂砾获取黏土，右键泥土挖窑坑。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:flint_sickle_crafting",
-      "text": "§b燧石镰§r$(br)用于右键草获取草纤维，效率与燧石刀相同。"
+      "text": "§3燧石镰§r$(br)用于右键草获取草纤维，效率与燧石刀相同。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:wooden_clamp_crafting",
-      "text": "§b木钳§r$(br)§c关键：§r必须使用木钳从火塘中取出高温物品！空手取物会被烫伤着火。"
+      "text": "§3木钳§r$(br)§c关键：§r必须使用木钳从火塘中取出高温物品！空手取物会被烫伤着火。"
     },
     {
       "type": "patchouli:text",

@@ -1,10 +1,16 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "minecraft:bone"
-    }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BF"
   ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "F": {
+      "item": "forgeborneodyssey:flint_flake"
+    }
+  },
   "result": {
     "item": "forgeborneodyssey:bone_fish_hook",
     "count": 2

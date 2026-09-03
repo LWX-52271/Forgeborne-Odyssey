@@ -1,16 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "HR ",
-    "   ",
-    "   "
+    "  H",
+    " RT",
+    "A  "
   ],
   "key": {
     "H": {
       "item": "forgeborneodyssey:flint_knife_head"
     },
+    "T": {
+      "item": "forgeborneodyssey:birch_tar"
+    },
     "R": {
       "item": "forgeborneodyssey:fiber_rope"
+    },
+    "A": {
+      "item": "minecraft:stick"
     }
   },
   "result": {

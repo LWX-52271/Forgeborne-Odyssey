@@ -11,17 +11,17 @@
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§b圆石锤§r——基础锻造工具。用于在石砧上敲击金属坯料。"
+      "text": "§3圆石锤§r——基础锻造工具。用于在石砧上敲击金属坯料。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
-      "text": "§b带柄石锤§r——更高效的锻造工具。装上木柄后更耐用，是主要的锻造工具。"
+      "text": "§3带柄石锤§r——更高效的锻造工具。装上木柄后更耐用，是主要的锻造工具。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:stone_chisel_crafting",
-      "text": "§b石凿§r——用于精细雕刻。金属成品需要用石凿雕刻才能完成。"
+      "text": "§3石凿§r——用于精细雕刻。金属成品需要用石凿雕刻才能完成。"
     },
     {
       "type": "patchouli:text",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "提示",
-      "text": "§a提示：先用圆石制作石锤和石凿！$(br2)锤子是锻造的核心工具，石凿是雕刻成品的关键。建议先制作足够数量的锤子和石凿，再开始寻找金属。"
+      "text": "§2提示：先用圆石制作石锤和石凿！$(br2)锤子是锻造的核心工具，石凿是雕刻成品的关键。建议先制作足够数量的锤子和石凿，再开始寻找金属。"
     }
   ],
   "sortnum": 0

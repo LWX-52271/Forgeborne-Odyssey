@@ -176,45 +176,8 @@ public class FirePitBlock extends Block implements EntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(hand);
         
-        // 优先处理点燃/熄灭逻辑（使用打火石、火球、水桶、铲子）
-        if (!state.getValue(LIT)) {
-            // 点燃火塘
-            if (heldItem.is(Items.FLINT_AND_STEEL) || heldItem.is(Items.FIRE_CHARGE)) {
-                // 检查是否有燃料
-                BlockEntity blockEntity = level.getBlockEntity(pos);
-                boolean hasFuel = blockEntity instanceof FirePitBlockEntity firePitBE && firePitBE.hasFuel();
-                
-                if (!hasFuel) {
-                    if (!level.isClientSide) {
-                        player.displayClientMessage(
-                                net.minecraft.network.chat.Component.translatable("message.forgeborneodyssey.firepit.no_fuel"),
-                                true
-                        );
-                    }
-                    return InteractionResult.sidedSuccess(level.isClientSide);
-                }
-                
-                if (!level.isClientSide) {
-                    level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
-                    // 点燃时同时设置 HAS_FUEL=true 和 LIT=true
-                    BlockState newState = state.setValue(HAS_FUEL, Boolean.valueOf(true)).setValue(LIT, Boolean.valueOf(true));
-                    level.setBlock(pos, newState, 11);
-                    level.sendBlockUpdated(pos, state, newState, 3);
-                    level.gameEvent(player, net.minecraft.world.level.gameevent.GameEvent.BLOCK_CHANGE, pos);
-                    if (!player.isCreative()) {
-                        if (heldItem.is(Items.FLINT_AND_STEEL)) {
-                            heldItem.hurtAndBreak(1, player, (p) -> {
-                                p.broadcastBreakEvent(hand);
-                            });
-                        } else {
-                            heldItem.shrink(1);
-                        }
-                    }
-                }
-                return InteractionResult.sidedSuccess(level.isClientSide);
-            }
-        } else {
-            // 熄灭火塘
+        // 处理熄灭火塘（已点燃状态）
+        if (state.getValue(LIT)) {
             if (heldItem.is(Items.WATER_BUCKET)) {
                 if (!level.isClientSide) {
                     level.playSound(player, pos, SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.BLOCKS, 1.0F, 1.0F);

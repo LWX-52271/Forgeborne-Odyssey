@@ -6,27 +6,27 @@
     {
       "type": "patchouli:text",
       "title": "Chapter 6: Important Game Mechanics",
-      "text": "§7[Weight Tier System]$(br2)Forged metal products have three weight tiers that affect weight and attributes:$(br2)$(li)§8Light Tier§7 (Smaller): Weight ~75% of normal, lower damage$(br)$(li)§aMedium Tier§7 (Normal): Standard size, normal attributes$(br)$(li)§6Heavy Tier§7 (Larger): Weight ~125% of normal, higher damage$(br2)Weight tier is determined by the billet, randomly generated during crafting. Damage is based on weight: +0.1 damage per 100g, up to +2.0 max."
+      "text": "§8[Weight Tier System]$(br2)Forged metal products have three weight tiers that affect weight and attributes:$(br2)$(li)§8Light Tier§8 (Smaller): Weight ~75% of normal, lower damage$(br)$(li)§2Medium Tier§8 (Normal): Standard size, normal attributes$(br)$(li)§6Heavy Tier§8 (Larger): Weight ~125% of normal, higher damage$(br2)Weight tier is determined by the billet, randomly generated during crafting. Damage is based on weight: +0.1 damage per 100g, up to +2.0 max."
     },
     {
       "type": "patchouli:text",
-      "title": "§7[Cooling Mechanism]",
+      "title": "§8[Cooling Mechanism]",
       "text": "Softened billet cooling methods:$(br2)$(li)§6Water Cooling§r: Place softened billet in water to instantly cool it back to hard billet$(br)$(li)§6Inventory Cooling§r: Softened copper billet auto-cools after 1.5 minutes in inventory$(br2)Cooled billets lose their softened state and need re-heating for forging. Note: Only softened copper billets have a cooling mechanism."
     },
     {
       "type": "patchouli:text",
-      "title": "§7[Other Useful Features]",
-      "text": "$(li)§bCooking Food§r: Fire pit can cook food and provide light$(br)$(li)§bAsh Fertilizer§r: Ash works as fertilizer to ripen plants$(br)$(li)§bRock Building§r: 9 rock types can make stairs, slabs and walls$(br)$(li)§bShift Tip§r: Hold Shift to view item details"
+      "title": "§8[Other Useful Features]",
+      "text": "$(li)§3Cooking Food§r: Fire pit can cook food and provide light$(br)$(li)§3Ash Fertilizer§r: Ash works as fertilizer to ripen plants$(br)$(li)§3Rock Building§r: 9 rock types can make stairs, slabs and walls$(br)$(li)§3Shift Tip§r: Hold Shift to view item details"
     },
     {
       "type": "patchouli:text",
-      "title": "§7[Forging Safety Tips]",
-      "text": "$(li)§bHeat Protection§r: Use wooden clamp for hot items to avoid burns$(br)$(li)§bMaterial Match§r: Use the correct metal type's softened strip for carving$(br)$(li)§bDurability§r: Hammers and chisels wear out with use, keep spares"
+      "title": "§8[Forging Safety Tips]",
+      "text": "$(li)§3Heat Protection§r: Use wooden clamp for hot items to avoid burns$(br)$(li)§3Material Match§r: Use the correct metal type's softened strip for carving$(br)$(li)§3Durability§r: Hammers and chisels wear out with use, keep spares"
     },
     {
       "type": "patchouli:text",
-      "title": "§7[Advanced Tips]",
-      "text": "$(li)§bBatch Preparation§r: Heat multiple billets at once for efficiency$(br)$(li)§bWeight Selection§r: Re-craft billets until you get heavy tier$(br)$(li)§bQuick Find§r: Use /forgeodyssey find commands to locate resources$(br)$(li)§bTime Management§r: Watch for softened copper billet cooling time, forge promptly"
+      "title": "§8[Advanced Tips]",
+      "text": "$(li)§3Batch Preparation§r: Heat multiple billets at once for efficiency$(br)$(li)§3Weight Selection§r: Re-craft billets until you get heavy tier$(br)$(li)§3Quick Find§r: Use /forgeodyssey find commands to locate resources$(br)$(li)§3Time Management§r: Watch for softened copper billet cooling time, forge promptly"
     }
   ],
   "sortnum": 5

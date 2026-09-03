@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.items;
 
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.entities.ThrownSurfaceCobblestone;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -7,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.BlockHitResult;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 /**
  * 可投掷的地表圆石物品
@@ -43,7 +46,16 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        
+
+        // 检查副手是否也持有地表圆石，是则进行敲击
+        ItemStack offhandStack = player.getOffhandItem();
+        if (!offhandStack.isEmpty() && offhandStack.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
+            if (!level.isClientSide) {
+                performKnapping(level, player, stack, offhandStack);
+            }
+            return InteractionResultHolder.success(stack);
+        }
+
         // 检查玩家是否对准了方块（使用 BlockHitResult）
         var hitResult = player.pick(5.0, 0.0F, false);
         
@@ -86,5 +98,51 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
         
         player.awardStat(Stats.ITEM_USED.get(this));
         return InteractionResultHolder.success(stack);
+    }
+
+    private static final Random KNAPPING_RANDOM = new Random();
+
+    private void performKnapping(Level level, Player player, ItemStack mainHandStack, ItemStack offhandStack) {
+        // 消耗双手各一个地表圆石
+        if (!player.getAbilities().instabuild) {
+            mainHandStack.shrink(1);
+            offhandStack.shrink(1);
+        }
+
+        // 播放敲击音效
+        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.STONE_BREAK, SoundSource.PLAYERS, 0.8f, 0.8f + KNAPPING_RANDOM.nextFloat() * 0.4f);
+
+        // 有概率获得产物
+        float roll = KNAPPING_RANDOM.nextFloat();
+        ItemStack result = ItemStack.EMPTY;
+
+        if (roll < 0.20f) {
+            // 20%: 什么都没有，两个石头都碎了
+            result = ItemStack.EMPTY;
+        } else if (roll < 0.50f) {
+            // 30%: 获得 1-2 个燧石片
+            int count = 1 + KNAPPING_RANDOM.nextInt(2);
+            result = new ItemStack(ModItems.FLINT_FLAKE.get(), count);
+        } else if (roll < 0.625f) {
+            // 12.5%: 粗制燧石刀
+            result = new ItemStack(ModItems.CRUDE_FLINT_KNIFE.get());
+        } else if (roll < 0.75f) {
+            // 12.5%: 粗制燧石铲
+            result = new ItemStack(ModItems.CRUDE_FLINT_SHOVEL.get());
+        } else if (roll < 0.875f) {
+            // 12.5%: 粗制燧石镰
+            result = new ItemStack(ModItems.CRUDE_FLINT_SICKLE.get());
+        } else {
+            // 12.5%: 粗制石矛
+            result = new ItemStack(ModItems.CRUDE_STONE_SPEAR.get());
+        }
+
+        if (!result.isEmpty()) {
+            // 尝试放入背包，放不下则掉落在玩家位置
+            if (!player.getInventory().add(result)) {
+                Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), result);
+            }
+        }
     }
 }

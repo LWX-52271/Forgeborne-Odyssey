@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " H ",
+    " HT",
     " R ",
     " S "
   ],
   "key": {
     "H": {
       "item": "forgeborneodyssey:polished_axe_head"
+    },
+    "T": {
+      "item": "forgeborneodyssey:birch_tar"
     },
     "R": {
       "item": "forgeborneodyssey:fiber_rope"

@@ -16,12 +16,12 @@
     {
       "type": "patchouli:text",
       "title": "Oxidizing Atmosphere",
-      "text": "§aOxidizing Atmosphere (oxygen-rich firing)§r$(br2)Condition: Fire mouth open + vents fully open$(br)Oxygen change: +2/10 ticks (rapid increase)$(br2)Applicable products:$(br)$(li)§6Red Mold§r: Requires oxygen > 30$(br2)Under oxidizing atmosphere, flames are orange-yellow, with flame particles from vents and fire mouth."
+      "text": "§2Oxidizing Atmosphere (oxygen-rich firing)§r$(br2)Condition: Fire mouth open + vents fully open$(br)Oxygen change: +2/10 ticks (rapid increase)$(br2)Applicable products:$(br)$(li)§6Red Mold§r: Requires oxygen > 30$(br2)Under oxidizing atmosphere, flames are orange-yellow, with flame particles from vents and fire mouth."
     },
     {
       "type": "patchouli:text",
       "title": "Reducing Atmosphere",
-      "text": "§cReducing Atmosphere (oxygen-depleted firing)§r$(br2)Condition: Fire mouth sealed + vents fully closed$(br)Oxygen change: -3/10 ticks (rapid decrease)$(br2)Applicable products:$(br)$(li)§bGray Crucible§r: Requires oxygen < -30$(br2)Under reducing atmosphere, flames take on a soul-fire blue color."
+      "text": "§cReducing Atmosphere (oxygen-depleted firing)§r$(br2)Condition: Fire mouth sealed + vents fully closed$(br)Oxygen change: -3/10 ticks (rapid decrease)$(br2)Applicable products:$(br)$(li)§3Gray Crucible§r: Requires oxygen < -30$(br2)Under reducing atmosphere, flames take on a soul-fire blue color."
     },
     {
       "type": "patchouli:text",

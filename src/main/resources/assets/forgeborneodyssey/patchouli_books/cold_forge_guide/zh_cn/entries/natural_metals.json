@@ -16,17 +16,17 @@
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:natural_silver_block",
-      "text": "§b【自然银】比较稀有$(br2)生成高度：Y=55-180$(br)稀有度：每约20个区块生成1次$(br2)银的锻造性能优良，适合制作精密饰品。"
+      "text": "§3【自然银】比较稀有$(br2)生成高度：Y=55-180$(br)稀有度：每约20个区块生成1次$(br2)银的锻造性能优良，适合制作精密饰品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:natural_gold_block",
-      "text": "§a【自然金】非常稀有$(br2)生成高度：Y=55-180$(br)稀有度：每约40个区块生成1次$(br2)金是最珍贵的金属，适合制作高端饰品和装饰。"
+      "text": "§2【自然金】非常稀有$(br2)生成高度：Y=55-180$(br)稀有度：每约40个区块生成1次$(br2)金是最珍贵的金属，适合制作高端饰品和装饰。"
     },
     {
       "type": "patchouli:text",
       "title": "快速查找",
-      "text": "§b善用以下命令快速定位资源：$(br)$(li)/forgeodyssey find nearest_copper$(br)$(li)/forgeodyssey find nearest_silver$(br)$(li)/forgeodyssey find nearest_gold$(br2)使用这些命令可以快速定位最近的自然金属块，节省探索时间。"
+      "text": "§3善用以下命令快速定位资源：$(br)$(li)/forgeodyssey find nearest_copper$(br)$(li)/forgeodyssey find nearest_silver$(br)$(li)/forgeodyssey find nearest_gold$(br2)使用这些命令可以快速定位最近的自然金属块，节省探索时间。"
     },
     {
       "type": "patchouli:text",

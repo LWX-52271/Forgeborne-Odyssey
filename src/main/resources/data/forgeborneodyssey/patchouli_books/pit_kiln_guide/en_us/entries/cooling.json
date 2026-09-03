@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Important Notes",
-      "text": "$(li)§cRain explosion!§r During Stage 3, if rain is detected above the kiln, it immediately explodes — destroying the kiln lid and contents, while dropping §d2-5§0 kiln waste shards as remnants.$(br2)$(li)§aPlant Ash Usage§r: Ash from firing can be used as fertilizer.$(br2)$(li)§aKiln Waste Shard Usage§r: Byproduct of failed firing, can be recycled."
+      "text": "$(li)§cRain explosion!§r During Stage 3, if rain is detected above the kiln, it immediately explodes — destroying the kiln lid and contents, while dropping §52-5§0 kiln waste shards as remnants.$(br2)$(li)§2Plant Ash Usage§r: Ash from firing can be used as fertilizer.$(br2)$(li)§2Kiln Waste Shard Usage§r: Byproduct of failed firing, can be recycled."
     },
     {
       "type": "patchouli:text",

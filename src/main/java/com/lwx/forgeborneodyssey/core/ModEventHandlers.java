@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.core;
 
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
+import com.lwx.forgeborneodyssey.blocks.TarKilnBlock;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModEntities;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
@@ -26,6 +27,8 @@ import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
@@ -387,14 +390,88 @@ public class ModEventHandlers {
      */
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getLevel().isClientSide()) return;
-
         Player player = event.getEntity();
         BlockPos pos = event.getHitVec().getBlockPos();
         BlockState state = event.getLevel().getBlockState(pos);
         ItemStack held = player.getItemInHand(event.getHand());
 
-        if (held.is(ModItems.FLINT_SHOVEL.get()) && isDirtLike(state)) {
+        if ((held.getItem() instanceof com.lwx.forgeborneodyssey.items.tools.FlintKnifeItem
+                || held.getItem() instanceof com.lwx.forgeborneodyssey.items.tools.CrudeFlintKnifeItem)
+                && state.is(Blocks.BIRCH_LOG)) {
+            if (!event.getLevel().isClientSide()) {
+                BlockState strippedState = Blocks.STRIPPED_BIRCH_LOG.defaultBlockState()
+                        .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS,
+                                state.getValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS));
+                event.getLevel().setBlock(pos, strippedState, 3);
+                ItemStack bark = new ItemStack(ModItems.BIRCH_BARK.get(), 1 + event.getLevel().random.nextInt(2));
+                Containers.dropItemStack(event.getLevel(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, bark);
+                event.getLevel().playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+                player.swing(event.getHand());
+            }
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (isKnappableStone(state) && event.getHand() == InteractionHand.MAIN_HAND) {
+            if (held.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get()) && player.isShiftKeyDown()) {
+                if (!event.getLevel().isClientSide()) {
+                    held.shrink(1);
+                    int flakes = event.getLevel().random.nextFloat() < 0.60f ? 2 : 1;
+                    ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get(), flakes);
+                    Containers.dropItemStack(event.getLevel(), pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, flake);
+                    event.getLevel().playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.PLAYERS, 0.6F, 1.4F);
+                    player.swing(event.getHand());
+                    if (event.getLevel() instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.CRIT,
+                                pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
+                                6, 0.2, 0.1, 0.2, 0.1);
+                    }
+                }
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+                return;
+            }
+
+            if (held.getItem() instanceof com.lwx.forgeborneodyssey.items.tools.CobblestoneHammerItem) {
+                ItemStack cobblestone = findSurfaceCobblestone(player);
+                if (!cobblestone.isEmpty()) {
+                    if (!event.getLevel().isClientSide()) {
+                        cobblestone.shrink(1);
+                        held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+                        int flakes = event.getLevel().random.nextFloat() < 0.80f ? 3 : 2;
+                        ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get(), flakes);
+                        Containers.dropItemStack(event.getLevel(), pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, flake);
+                        event.getLevel().playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.PLAYERS, 0.7F, 1.2F);
+                        player.swing(event.getHand());
+                        if (event.getLevel() instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.CRIT,
+                                    pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
+                                    10, 0.3, 0.1, 0.3, 0.15);
+                        }
+                    }
+                    event.setCanceled(true);
+                    event.setCancellationResult(InteractionResult.SUCCESS);
+                    return;
+                }
+            }
+        }
+
+        if (event.getLevel().isClientSide()) return;
+
+        if (held.isEmpty() && isDirtLike(state) && event.getHand() == InteractionHand.MAIN_HAND) {
+            Direction playerFacing = player.getDirection().getOpposite();
+            BlockState kilnState = ModBlocks.TAR_KILN.get().defaultBlockState()
+                    .setValue(TarKilnBlock.FACING, playerFacing);
+            event.getLevel().setBlock(pos, kilnState, 3);
+            event.getLevel().playSound(null, pos, SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 0.8F, 0.8F);
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if ((held.is(ModItems.FLINT_SHOVEL.get()) || held.is(ModItems.CRUDE_FLINT_SHOVEL.get())) && isDirtLike(state)) {
             // 窑坑方向背向玩家（开口朝向玩家面前）
             Direction playerFacing = player.getDirection().getOpposite();
             BlockState kilnState = ModBlocks.PIT_KILN.get().defaultBlockState()
@@ -407,7 +484,7 @@ public class ModEventHandlers {
             return;
         }
 
-        if (held.is(ModItems.FLINT_SHOVEL.get()) && isSandLike(state)) {
+        if ((held.is(ModItems.FLINT_SHOVEL.get()) || held.is(ModItems.CRUDE_FLINT_SHOVEL.get())) && isSandLike(state)) {
             int count = 1 + event.getLevel().getRandom().nextInt(2);
             ItemStack clay = new ItemStack(ModItems.RAW_CLAY.get(), count);
             if (!player.getInventory().add(clay)) {
@@ -420,6 +497,34 @@ public class ModEventHandlers {
             if (event.getLevel() instanceof ServerLevel serverLevel) {
                 ItemStack displayStack = new ItemStack(ModItems.RAW_CLAY.get());
                 for (int i = 0; i < 8; i++) {
+                    double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    double offsetY = serverLevel.random.nextDouble() * 0.5;
+                    double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                    serverLevel.sendParticles(
+                        new ItemParticleOption(ParticleTypes.ITEM, displayStack),
+                        pos.getX() + 0.5 + offsetX,
+                        pos.getY() + 0.5 + offsetY,
+                        pos.getZ() + 0.5 + offsetZ,
+                        1, 0.0, 0.0, 0.0, 0.0);
+                }
+            }
+
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        if (event.getHand() == InteractionHand.MAIN_HAND && held.isEmpty() && isGrassLike(state)) {
+            ItemStack fiber = new ItemStack(ModItems.GRASS_FIBER.get(), 1);
+            if (!player.getInventory().add(fiber)) {
+                player.drop(fiber, false);
+            }
+            event.getLevel().playSound(null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+            useBlock(event.getLevel(), pos, MAX_USAGE);
+
+            if (event.getLevel() instanceof ServerLevel serverLevel) {
+                ItemStack displayStack = new ItemStack(ModItems.GRASS_FIBER.get());
+                for (int i = 0; i < 4; i++) {
                     double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
                     double offsetY = serverLevel.random.nextDouble() * 0.5;
                     double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
@@ -530,6 +635,31 @@ public class ModEventHandlers {
                 state.is(Blocks.TUFF) ||
                 state.is(Blocks.CALCITE) ||
                 state.is(Blocks.DRIPSTONE_BLOCK);
+    }
+
+    private static boolean isKnappableStone(BlockState state) {
+        return state.is(Blocks.STONE) ||
+                state.is(Blocks.GRANITE) ||
+                state.is(Blocks.ANDESITE) ||
+                state.is(Blocks.DIORITE) ||
+                state.is(Blocks.DEEPSLATE) ||
+                state.is(Blocks.TUFF) ||
+                state.is(Blocks.BASALT) ||
+                state.is(Blocks.SMOOTH_BASALT) ||
+                state.is(Blocks.CALCITE) ||
+                state.is(Blocks.DRIPSTONE_BLOCK) ||
+                state.is(Blocks.SANDSTONE) ||
+                state.is(Blocks.OBSIDIAN);
+    }
+
+    private static ItemStack findSurfaceCobblestone(Player player) {
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (stack.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
     }
 
     /**

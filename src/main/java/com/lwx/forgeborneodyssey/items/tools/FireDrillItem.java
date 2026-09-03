@@ -1,8 +1,11 @@
 package com.lwx.forgeborneodyssey.items.tools;
 
+import com.lwx.forgeborneodyssey.blocks.CharcoalRingBlock;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlockEntity;
+import com.lwx.forgeborneodyssey.blocks.TarKilnBlock;
+import com.lwx.forgeborneodyssey.blocks.TarKilnBlockEntity;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.events.FireCrackMiningHandler;
 import net.minecraft.core.BlockPos;
@@ -134,6 +137,10 @@ public class FireDrillItem extends Item {
             igniteFireMouth(level, pos, state, player, stack);
         } else if (state.is(ModBlocks.GREASE_TORCH.get())) {
             igniteGreaseTorch(level, pos, state, player, stack);
+        } else if (state.is(ModBlocks.CHARCOAL_RING.get())) {
+            igniteCharcoalRing(level, pos, state, player, stack);
+        } else if (state.is(ModBlocks.TAR_KILN.get())) {
+            igniteTarKiln(level, pos, hitResult, state, player, stack);
         } else {
             lightFire(level, pos, state, player, stack);
         }
@@ -282,6 +289,53 @@ public class FireDrillItem extends Item {
             1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
 
         level.setBlock(pos, state.setValue(BlockStateProperties.LIT, true), 11);
+
+        if (!player.isCreative()) {
+            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(
+                player.getUsedItemHand()));
+        }
+    }
+
+    private void igniteCharcoalRing(Level level, BlockPos pos, BlockState state, Player player, ItemStack stack) {
+        if (state.getValue(CharcoalRingBlock.LIT)) return;
+
+        level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+        level.setBlock(pos, state.setValue(CharcoalRingBlock.LIT, true), 3);
+
+        CharcoalRingBlock.notifyTarKilnIfComplete(level, pos);
+
+        if (!player.isCreative()) {
+            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(
+                player.getUsedItemHand()));
+        }
+    }
+
+    private void igniteTarKiln(Level level, BlockPos pos, BlockHitResult hitResult, BlockState state, Player player, ItemStack stack) {
+        if (hitResult.getDirection() != Direction.UP) return;
+
+        int stage = state.getValue(TarKilnBlock.STAGE);
+        if (stage != 8) return;
+
+        if (!CharcoalRingBlock.hasCompleteRing(level, pos)) {
+            player.displayClientMessage(
+                Component.translatable("message.forgeborneodyssey.tar_kiln.need_charcoal_ring"), true);
+            return;
+        }
+
+        TarKilnBlockEntity kiln =
+            level.getBlockEntity(pos) instanceof TarKilnBlockEntity k ? k : null;
+        if (kiln == null) return;
+
+        level.setBlock(pos, state.setValue(TarKilnBlock.STAGE, 9), 3);
+        kiln.ignited = true;
+        kiln.burnTicks = 0;
+
+        level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.5F, 1.0F);
+
+        player.displayClientMessage(
+            Component.translatable("message.forgeborneodyssey.tar_kiln.ignited"), true);
 
         if (!player.isCreative()) {
             stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(

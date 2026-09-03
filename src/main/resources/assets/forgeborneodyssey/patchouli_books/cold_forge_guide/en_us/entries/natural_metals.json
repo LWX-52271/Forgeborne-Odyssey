@@ -6,7 +6,7 @@
     {
       "type": "patchouli:text",
       "title": "Chapter 2: Find Natural Metals",
-      "text": "§7[Resource Exploration]$(br2)Metals in Forgeborne Odyssey generate as natural metal blocks in the world. You need to explore the world to find these valuable resources. All three metals share the same spawn height range but differ in rarity."
+      "text": "§8[Resource Exploration]$(br2)Metals in Forgeborne Odyssey generate as natural metal blocks in the world. You need to explore the world to find these valuable resources. All three metals share the same spawn height range but differ in rarity."
     },
     {
       "type": "patchouli:spotlight",
@@ -16,17 +16,17 @@
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:natural_silver_block",
-      "text": "§b[Natural Silver] Quite Rare$(br2)Spawn Height: Y=55-180$(br)Rarity: Once per ~20 chunks$(br2)Silver has excellent forging properties, ideal for precision decorations."
+      "text": "§3[Natural Silver] Quite Rare$(br2)Spawn Height: Y=55-180$(br)Rarity: Once per ~20 chunks$(br2)Silver has excellent forging properties, ideal for precision decorations."
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:natural_gold_block",
-      "text": "§a[Natural Gold] Very Rare$(br2)Spawn Height: Y=55-180$(br)Rarity: Once per ~40 chunks$(br2)Gold is the most precious metal, perfect for high-end decorations."
+      "text": "§2[Natural Gold] Very Rare$(br2)Spawn Height: Y=55-180$(br)Rarity: Once per ~40 chunks$(br2)Gold is the most precious metal, perfect for high-end decorations."
     },
     {
       "type": "patchouli:text",
       "title": "Quick Find Commands",
-      "text": "§bQuick find commands:$(br)$(li)/forgeodyssey find nearest_copper$(br)$(li)/forgeodyssey find nearest_silver$(br)$(li)/forgeodyssey find nearest_gold$(br2)Use these commands to quickly locate the nearest natural metal block."
+      "text": "§3Quick find commands:$(br)$(li)/forgeodyssey find nearest_copper$(br)$(li)/forgeodyssey find nearest_silver$(br)$(li)/forgeodyssey find nearest_gold$(br2)Use these commands to quickly locate the nearest natural metal block."
     },
     {
       "type": "patchouli:text",

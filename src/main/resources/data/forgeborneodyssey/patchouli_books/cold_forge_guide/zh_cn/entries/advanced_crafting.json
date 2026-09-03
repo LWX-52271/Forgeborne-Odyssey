@@ -31,7 +31,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:copper_fishing_rod",
-      "text": "§a铜鱼竿——铜环 + 铜钩 + 线 + 木棍合成。制作鱼竿需要先制作铜环和铜钩，再在合成台组装。"
+      "text": "§2铜鱼竿——铜环 + 铜钩 + 线 + 木棍合成。制作鱼竿需要先制作铜环和铜钩，再在合成台组装。"
     },
     {
       "type": "patchouli:text",

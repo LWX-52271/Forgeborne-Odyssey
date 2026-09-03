@@ -277,6 +277,10 @@ public class PitKilnBlockEntity extends BlockEntity {
                     spawnFlameParticles(level, pos, vent);
                 }
 
+                if (level.getGameTime() % 40 == 0) {
+                    level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.3F, 0.8F + level.getRandom().nextFloat() * 0.4F);
+                }
+
                 // 氧气累计
                 if (level.getGameTime() % 10 == 0) {
                     Direction facing = state.getValue(PitKilnBlock.FACING);
@@ -373,6 +377,10 @@ public class PitKilnBlockEntity extends BlockEntity {
                         if (entity.blowBoostTicks > 0 && fmOpen) {
                             spawnBlowpipeBoostParticles(level, pos, facing);
                         }
+                    }
+
+                    if (level.getGameTime() % 40 == 0 && entity.temperature > 100) {
+                        level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.3F, 0.8F + level.getRandom().nextFloat() * 0.4F);
                     }
                 }
             } else {

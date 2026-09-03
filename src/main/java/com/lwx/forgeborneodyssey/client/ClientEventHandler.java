@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.client;
 
 import com.lwx.forgeborneodyssey.client.model.BoneArrowModel;
+import com.lwx.forgeborneodyssey.client.model.CrudeStoneSpearModel;
 import com.lwx.forgeborneodyssey.client.model.GrassChestplateModel;
 import com.lwx.forgeborneodyssey.client.model.GrassHelmetModel;
 import com.lwx.forgeborneodyssey.client.model.GrassLeggingsModel;
@@ -16,6 +17,7 @@ import com.lwx.forgeborneodyssey.client.render.PitKilnRenderer;
 import com.lwx.forgeborneodyssey.client.render.QuernRenderer;
 import com.lwx.forgeborneodyssey.client.render.StoneArrowRenderer;
 import com.lwx.forgeborneodyssey.client.render.CorpseRenderer;
+import com.lwx.forgeborneodyssey.client.render.ThrownCrudeStoneSpearRenderer;
 import com.lwx.forgeborneodyssey.client.render.ThrownStoneSpearRenderer;
 import com.lwx.forgeborneodyssey.client.renderer.StressBlockRenderer;
 import com.lwx.forgeborneodyssey.client.screen.AnvilMetalSelectionScreen;
@@ -70,6 +72,7 @@ public class ClientEventHandler {
 
             // 注册透明方块渲染层
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.GREASE_TORCH.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHARCOAL_RING.get(), RenderType.cutout());
             
             // 注册菜单屏幕
             MenuScreens.register(ModMenuTypes.ANVIL_METAL_SELECTION_MENU.get(), AnvilMetalSelectionScreen::new);
@@ -194,6 +197,10 @@ public class ClientEventHandler {
                 ThrownStoneSpearRenderer::new
         );
         event.registerEntityRenderer(
+                com.lwx.forgeborneodyssey.core.registration.ModEntities.CRUDE_STONE_SPEAR_THROWN.get(),
+                ThrownCrudeStoneSpearRenderer::new
+        );
+        event.registerEntityRenderer(
                 com.lwx.forgeborneodyssey.core.registration.ModEntities.CORPSE.get(),
                 CorpseRenderer::new
         );
@@ -208,6 +215,7 @@ public class ClientEventHandler {
         event.registerLayerDefinition(GRASS_CHESTPLATE_LAYER, GrassChestplateModel::createBodyLayer);
         event.registerLayerDefinition(GRASS_LEGGINGS_LAYER, GrassLeggingsModel::createBodyLayer);
         event.registerLayerDefinition(StoneSpearModel.LAYER_LOCATION, StoneSpearModel::createBodyLayer);
+        event.registerLayerDefinition(CrudeStoneSpearModel.LAYER_LOCATION, CrudeStoneSpearModel::createBodyLayer);
         event.registerLayerDefinition(StoneArrowModel.LAYER_LOCATION, StoneArrowModel::createBodyLayer);
         event.registerLayerDefinition(BoneArrowModel.LAYER_LOCATION, BoneArrowModel::createBodyLayer);
     }

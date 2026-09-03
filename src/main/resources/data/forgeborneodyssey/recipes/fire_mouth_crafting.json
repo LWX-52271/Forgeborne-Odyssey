@@ -10,7 +10,7 @@
       "item": "forgeborneodyssey:mixed_clay"
     },
     "A": {
-      "item": "forgeborneodyssey:temper_grog"
+      "tag": "forgeborneodyssey:temper_materials"
     }
   },
   "result": {
