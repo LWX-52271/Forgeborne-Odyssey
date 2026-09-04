@@ -107,6 +107,9 @@ public class CaveInEventHandler {
         int adjacentAir = countAdjacentAir(level, pos);
         chance += adjacentAir * 0.03;
 
+        // 方块松散度：越松软的方块越容易塌方
+        chance *= getBlockLoosenessMultiplier(state);
+
         // 负重影响塌方概率（负重越重，动作越不稳，越容易引发塌方）
         chance += PlayerStrengthManager.getCaveInChanceBonus(event.getPlayer());
 
@@ -308,6 +311,15 @@ public class CaveInEventHandler {
             }
         }
         return count;
+    }
+
+    private static double getBlockLoosenessMultiplier(BlockState state) {
+        float hardness = state.getBlock().defaultDestroyTime();
+        if (hardness <= 0.6F) return 2.0;
+        if (hardness <= 1.0F) return 1.5;
+        if (hardness <= 1.5F) return 1.0;
+        if (hardness <= 3.0F) return 0.7;
+        return 0.5;
     }
 
     private static void triggerCaveIn(ServerLevel level, BlockPos pos, @Nullable Player player, BlockState triggerState, boolean inShaft, boolean inTunnel) {

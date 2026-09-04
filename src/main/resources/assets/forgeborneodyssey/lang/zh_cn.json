@@ -1,4 +1,4 @@
-﻿{
+{
   "itemGroup.forgeborneodyssey.blocks": "冶锻纪行 - 方块",
   "itemGroup.forgeborneodyssey.items": "冶锻纪行 - 物品",
   "itemGroup.forgeborneodyssey.ore_fragments": "冶锻纪行 - 矿石碎块与颗粒",
@@ -34,7 +34,7 @@
   "block.forgeborneodyssey.fire_pit_block": "火塘",
   "block.forgeborneodyssey.pit_kiln": "竖穴升焰窑",
   "block.forgeborneodyssey.kiln_ash_pile": "灰烬堆",
-  "block.forgeborneodyssey.tar_kiln": "焦油窑",
+  "block.forgeborneodyssey.tar_kiln": "窑",
   "block.forgeborneodyssey.charcoal_ring": "炭火环",
   "block.forgeborneodyssey.fire_mouth": "火门",
   "block.forgeborneodyssey.kiln_lid": "窑顶盖",
@@ -212,6 +212,7 @@
   "entity.forgeborneodyssey.stone_arrow": "石箭",
   "entity.forgeborneodyssey.bone_arrow": "骨箭",
   "entity.forgeborneodyssey.stone_spear_thrown": "投掷石矛",
+  "entity.forgeborneodyssey.crude_stone_spear_thrown": "投掷粗制石矛",
   "entity.forgeborneodyssey.corpse": "尸体",
 
   "item.forgeborneodyssey.fiber_rope": "纤维绳",
@@ -807,6 +808,13 @@
   "message.forgeborneodyssey.tar_kiln.status": "§6阶段：%s | 温度：%s℃ | 进度：%s/%s tick",
   "message.forgeborneodyssey.tar_kiln.cooling_progress": "§e冷却进度：%s/%s tick",
   "message.forgeborneodyssey.tar_kiln.harvested": "§a扒开泥土，获得了凝结的桦木焦油！",
+  "message.forgeborneodyssey.charcoal_kiln.wood_placed": "§a已放入木柴（%s/4），可继续添加、取出或用弓钻点燃",
+  "message.forgeborneodyssey.charcoal_kiln.full": "§c炭窑已满（最多4根木柴）",
+  "message.forgeborneodyssey.charcoal_kiln.wood_removed": "§a已取出木柴（剩余%s根）",
+  "message.forgeborneodyssey.charcoal_kiln.sealed": "§a已用湿黏土密封，开始缺氧焖烧木炭...",
+  "message.forgeborneodyssey.charcoal_kiln.need_wood": "§c请先放入木柴",
+  "message.forgeborneodyssey.charcoal_kiln.ignited": "§6炭窑已点燃，木柴表面正在燃烧，请尽快用湿黏土密封",
+  "message.forgeborneodyssey.charcoal_kiln.harvested": "§a扒开覆土，获得了木炭和草木灰！",
   "message.forgeborneodyssey.firemouth.seal_first": "请先封顶再点火",
   "message.forgeborneodyssey.firemouth.add_fuel_first": "请先添加燃料",
   "message.forgeborneodyssey.firemouth.ignited": "窑火已点燃，正在升温",

@@ -46,6 +46,9 @@ public class ModCreativeTabs {
                         if (path.endsWith("_grain")) {
                             return;
                         }
+                        if (path.endsWith("_rubble")) {
+                            return;
+                        }
                     }
                     output.accept(item);
                 });

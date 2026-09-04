@@ -300,6 +300,7 @@ public class FireDrillItem extends Item {
         if (state.getValue(CharcoalRingBlock.LIT)) return;
 
         level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.5F, 1.0F);
 
         level.setBlock(pos, state.setValue(CharcoalRingBlock.LIT, true), 3);
 
@@ -315,7 +316,40 @@ public class FireDrillItem extends Item {
         if (hitResult.getDirection() != Direction.UP) return;
 
         int stage = state.getValue(TarKilnBlock.STAGE);
-        if (stage != 8) return;
+        TarKilnBlock.Mode mode = state.getValue(TarKilnBlock.MODE);
+
+        if (mode == TarKilnBlock.Mode.CHARCOAL && stage == 1) {
+            TarKilnBlockEntity kiln =
+                level.getBlockEntity(pos) instanceof TarKilnBlockEntity k ? k : null;
+            if (kiln == null) return;
+
+            if (kiln.ignited) return;
+
+            kiln.ignited = true;
+            kiln.burnTicks = 0;
+
+            level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.5F, 1.0F);
+
+            if (level instanceof ServerLevel serverLevel) {
+                double x = pos.getX() + 0.5;
+                double y = pos.getY() + 1.1;
+                double z = pos.getZ() + 0.5;
+                serverLevel.sendParticles(ParticleTypes.FLAME, x, y, z, 8, 0.2, 0.05, 0.2, 0.02);
+                serverLevel.sendParticles(ParticleTypes.SMOKE, x, y, z, 5, 0.2, 0.05, 0.2, 0.02);
+            }
+
+            player.displayClientMessage(
+                Component.translatable("message.forgeborneodyssey.charcoal_kiln.ignited"), true);
+
+            if (!player.isCreative()) {
+                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(
+                    player.getUsedItemHand()));
+            }
+            return;
+        }
+
+        if (mode == TarKilnBlock.Mode.TAR && stage != 8) return;
 
         if (!CharcoalRingBlock.hasCompleteRing(level, pos)) {
             player.displayClientMessage(
