@@ -11,22 +11,22 @@
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§3Cobblestone Hammer§r - Attack 3, Durability 32. Your earliest forging tool for striking metal billets on the anvil."
+      "text": "§3Cobblestone Hammer§r - Basic forging tool. Strike metal billets on the anvil."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
-      "text": "§3Handle Hammer§r - Attack 4, Durability 64. More durable with a wooden handle, your primary forging tool."
+      "text": "§3Handle Hammer§r - More efficient forging tool. More durable with a wooden handle."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:stone_chisel_crafting",
-      "text": "§3Stone Chisel§r - Attack 2, for fine carving. Final metal products need chisel carving to complete."
+      "text": "§3Stone Chisel§r - For fine carving. Final metal products need chisel carving to complete."
     },
     {
       "type": "patchouli:text",
       "title": "Flint Tools",
-      "text": "Besides cobblestone tools, you can craft sharper tools from flint:$(br)$(li)Flint Knife - Basic weapon$(br)$(li)Flint Shovel - Digging tool$(br)$(li)Flint Sickle - Crop harvesting"
+      "text": "Besides cobblestone tools, you can craft sharper tools from flint:$(br)$(li)Flint Knife - Basic weapon, right-click birch logs to strip bark$(br)$(li)Flint Shovel - Digging tool, right-click sand/gravel for clay$(br)$(li)Flint Sickle - Crop harvesting$(br2)§4Note:§r Flint knife, flint shovel, and other advanced tools require §3Birch Tar§r as an adhesive. Birch tar is extracted from birch bark using a Tar Kiln."
     },
     {
       "type": "patchouli:text",

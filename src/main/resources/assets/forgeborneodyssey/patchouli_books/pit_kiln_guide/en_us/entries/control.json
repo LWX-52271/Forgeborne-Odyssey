@@ -6,7 +6,7 @@
     {
       "type": "patchouli:text",
       "title": "Step 4: Atmosphere & Temperature Control",
-      "text": "During Stage 3 firing, you can control the kiln atmosphere through two key operations:$(br2)$(li)§6Vents§r: Right-click the kiln top with empty hand to toggle (open → half-closed → fully closed → open)$(br)$(li)§6Fire Mouth§r: Shift+right-click with empty hand to open/close; right-click with dirt to seal$(br2)These operations directly affect oxygen content changes and determine the final product type."
+      "text": "During Stage 3 firing, you can control the kiln atmosphere through two key operations:$(br2)$(li)§4Vents§r: Right-click the kiln top with empty hand to toggle (open → half-closed → fully closed → open)$(br)$(li)§4Fire Mouth§r: Shift+right-click with empty hand to open/close; right-click with dirt to seal$(br2)These operations directly affect oxygen content changes and determine the final product type."
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Oxidizing Atmosphere",
-      "text": "§2Oxidizing Atmosphere (oxygen-rich firing)§r$(br2)Condition: Fire mouth open + vents fully open$(br)Oxygen change: +2/10 ticks (rapid increase)$(br2)Applicable products:$(br)$(li)§6Red Mold§r: Requires oxygen > 30$(br2)Under oxidizing atmosphere, flames are orange-yellow, with flame particles from vents and fire mouth."
+      "text": "§2Oxidizing Atmosphere (oxygen-rich firing)§r$(br2)Condition: Fire mouth open + vents fully open$(br)Oxygen change: +2/10 ticks (rapid increase)$(br2)Applicable products:$(br)$(li)§4Red Mold§r: Requires oxygen > 30$(br2)Under oxidizing atmosphere, flames are orange-yellow, with flame particles from vents and fire mouth."
     },
     {
       "type": "patchouli:text",

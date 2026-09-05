@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Greenware Types",
-      "text": "Three types of greenware can be loaded:$(br)$(li)§3Crucible Greenware§r → §3Gray Crucible§r$(br)$(li)§6Mold Greenware§r → §6Red Mold§r$(br)$(li)§8Brick Greenware§r → §8Fired Brick§r$(br)Each requires different firing conditions. Failure produces kiln waste shards."
+      "text": "Three types of greenware can be loaded:$(br)$(li)§3Crucible Greenware§r → §3Gray Crucible§r$(br)$(li)§4Mold Greenware§r → §4Red Mold§r$(br)$(li)§8Brick Greenware§r → §8Fired Brick§r$(br)Each requires different firing conditions. Failure produces kiln waste shards."
     },
     {
       "type": "patchouli:crafting",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "Adding Fuel & Sealing",
-      "text": "After loading, right-click the fire mouth with fuel to add it. Supported fuel types:$(br2)$(li)§6Firewood§r: fuel value 4 (1800 ticks/90 seconds each)$(br)$(li)§6Straw Bale§r: fuel value 1$(br)$(li)§8Rice Husk Char§r: fuel value 6 (best fuel)$(br)$(li)§8Charcoal Block§r: fuel value 1$(br2)After adding fuel, right-click the top with a kiln lid to seal. The kiln enters Stage 2."
+      "text": "After loading, right-click the fire mouth with fuel to add it. Supported fuel types:$(br2)$(li)§4Firewood§r: fuel value 4 (1800 ticks/90 seconds each)$(br)$(li)§4Straw Bale§r: fuel value 1$(br)$(li)§8Rice Husk Char§r: fuel value 6 (best fuel)$(br)$(li)§8Charcoal Block§r: fuel value 1$(br2)After adding fuel, right-click the top with a kiln lid to seal. The kiln enters Stage 2."
     },
     {
       "type": "patchouli:crafting",

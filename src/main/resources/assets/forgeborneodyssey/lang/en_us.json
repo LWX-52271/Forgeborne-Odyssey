@@ -85,10 +85,8 @@
   "block.forgeborneodyssey.natural_gold_block.tooltip": "§6Natural gold block, spawns in river banks and beaches (Y=55~75)\n§8Features: Sand/Sandstone/Gravel surface, extremely rare\n§6Can be crafted with water bucket to produce gold billet\n§6Tip: Use /forgeodyssey find nearest_gold to locate",
   "block.forgeborneodyssey.natural_silver_block.tooltip": "§8Natural silver block, spawns in high altitude mountains (Y=80~200)\n§8Features: Andesite/Granite/Stone surface, quite rare\n§6Can be crafted with water bucket to produce silver billet\n§6Tip: Use /forgeodyssey find nearest_silver to locate",
   "block.forgeborneodyssey.natural_copper_block.tooltip": "§cNatural copper block, spawns in mountains, plains, river banks (Y=65~180)\n§8Features: Rocky surface or near clay pits, relatively common\n§6Can be crafted with water bucket to produce copper billet\n§6Tip: Use /forgeodyssey find nearest_copper to locate",
-    
   "block.forgeborneodyssey.limestone_block.tooltip": "§8Sedimentary rock formed in warm shallow marine environments, distributed in layers. Common in plains and ocean biomes (Y=50~80), fine texture, bubbles when exposed to acid",
   "block.forgeborneodyssey.granite_block.tooltip": "§cPlutonic intrusive rock formed by slow cooling of magma. Mainly distributed in deep underground of mountains and plateaus (Y=-40~30), forms large batholiths, hard and dense texture",
-    
   "item.forgeborneodyssey.natural_gold.tooltip": "§6Natural gold that can be used directly without smelting",
   "item.forgeborneodyssey.natural_silver.tooltip": "§8Natural silver that can be used directly without smelting",
   "item.forgeborneodyssey.natural_copper.tooltip": "§cNatural copper that can be used directly without smelting",
@@ -111,8 +109,6 @@
   "item.forgeborneodyssey.soft_copper_strip.tooltip": "§cSoftened copper strip, precision material",
   "item.forgeborneodyssey.soft_gold_strip.tooltip": "§6Softened gold strip, premium material",
   "item.forgeborneodyssey.soft_silver_strip.tooltip": "§8Softened silver strip, precision material",
-  
-  "item.forgeborneodyssey.soft_copper_billet": "Softened Copper Billet",
   "block.forgeborneodyssey.granite_anvil": "Granite Anvil",
   "block.forgeborneodyssey.limestone_anvil": "Limestone Anvil",
   "block.forgeborneodyssey.polished_granite_anvil": "Polished Granite Anvil",
@@ -160,7 +156,6 @@
   "item.forgeborneodyssey.flint_sickle": "Flint Sickle",
   "item.forgeborneodyssey.stone_spear": "Stone Spear",
   "item.forgeborneodyssey.polished_stone_axe": "Polished Stone Axe",
-
   "item.forgeborneodyssey.crude_flint_knife": "Crude Flint Knife",
   "item.forgeborneodyssey.crude_flint_knife.tooltip": "§8Paleolithic tool, obtained by knapping two surface cobblestones together",
   "item.forgeborneodyssey.crude_flint_shovel": "Crude Flint Shovel",
@@ -198,27 +193,22 @@
   "item.forgeborneodyssey.stone_core": "Stone Core",
   "item.forgeborneodyssey.flint_flake": "Flint Flake",
   "item.forgeborneodyssey.stone_debitage": "Stone Debitage",
-  
   "block.forgeborneodyssey.grease_torch": "Grease Torch",
   "entity.forgeborneodyssey.stone_arrow": "Stone Arrow",
   "entity.forgeborneodyssey.bone_arrow": "Bone Arrow",
   "entity.forgeborneodyssey.stone_spear_thrown": "Thrown Stone Spear",
   "entity.forgeborneodyssey.crude_stone_spear_thrown": "Thrown Crude Stone Spear",
   "entity.forgeborneodyssey.corpse": "Corpse",
-
   "item.forgeborneodyssey.fiber_rope": "Fiber Rope",
   "item.forgeborneodyssey.fiber_rope.tooltip": "§8Twisted grass fiber cordage, basic crafting material",
-
   "item.forgeborneodyssey.birch_bark": "Birch Bark",
   "item.forgeborneodyssey.birch_bark.tooltip": "§8Bark stripped from birch logs, can be used to extract tar",
   "item.forgeborneodyssey.birch_tar": "Birch Tar",
   "item.forgeborneodyssey.birch_tar.tooltip": "§8Natural adhesive produced by dry-distilling birch bark, used for hafting stone tools",
-
   "item.forgeborneodyssey.grass_helmet": "Grass Hat",
   "item.forgeborneodyssey.grass_chestplate": "Grass Tunic",
   "item.forgeborneodyssey.grass_leggings": "Grass Pants",
   "item.forgeborneodyssey.grass_armor.tooltip": "§8Primitive armor woven from grass fiber, low defense but easy to repair",
-
   "item.forgeborneodyssey.fire_drill": "Fire Drill",
   "item.forgeborneodyssey.cobblestone_hammer.tooltip": "§8Attack 3, Durability 96",
   "item.forgeborneodyssey.handle_stone_hammer": "Handle Stone Hammer",
@@ -235,25 +225,18 @@
   "item.forgeborneodyssey.wrought_gold_axe.tooltip": "§8Attack 4.5",
   "item.forgeborneodyssey.gravel": "Gravel",
   "item.forgeborneodyssey.gravel.tooltip": "§8Rock fragments, building material",
-  
   "item.forgeborneodyssey.copper_sheet": "Copper Sheet",
   "item.forgeborneodyssey.copper_sheet.tooltip": "§cCopper sheet, can be forged further",
-  
   "item.forgeborneodyssey.silver_sheet": "Silver Sheet",
   "item.forgeborneodyssey.silver_sheet.tooltip": "§8Silver sheet, can be forged further",
-  
   "item.forgeborneodyssey.gold_sheet": "Gold Sheet",
   "item.forgeborneodyssey.gold_sheet.tooltip": "§6Gold sheet, can be forged further",
-  
   "item.forgeborneodyssey.copper_fragment": "Copper Fragment",
   "item.forgeborneodyssey.copper_fragment.tooltip": "§cCopper fragment, forging material",
-  
   "item.forgeborneodyssey.silver_fragment": "Silver Fragment",
   "item.forgeborneodyssey.silver_fragment.tooltip": "§8Silver fragment, forging material",
-  
   "item.forgeborneodyssey.gold_fragment": "Gold Fragment",
   "item.forgeborneodyssey.gold_fragment.tooltip": "§6Gold fragment, forging material",
-  
   "item.forgeborneodyssey.ash": "Ash",
   "item.forgeborneodyssey.ash.tooltip": "§8Burning residue, ripens plants",
   "message.forgeborneodyssey.hammer_broken_to_gravel": "§2Hammer worn out, obtained gravel!",
@@ -299,77 +282,55 @@
   "item.forgeborneodyssey.gold_pin_chestplate": "Gold Pin Chestplate",
   "item.forgeborneodyssey.silver_pin_chestplate": "Silver Pin Chestplate",
   "item.forgeborneodyssey.copper_pin_chestplate": "Copper Pin Chestplate",
-  "item.forgeborneodyssey.gold_pin.tooltip": "§6Beautiful golden ornamental pin, sparkling decorative item",
-  "item.forgeborneodyssey.silver_pin.tooltip": "§8Beautiful silver ornamental pin, elegant decorative item",
-  "item.forgeborneodyssey.copper_pin.tooltip": "§cBeautiful copper ornamental pin, rustic decorative item",
+  "item.forgeborneodyssey.gold_pin.tooltip": "§6Gold pin, luxurious decoration",
+  "item.forgeborneodyssey.silver_pin.tooltip": "§8Silver pin, elegant decoration",
+  "item.forgeborneodyssey.copper_pin.tooltip": "§cCopper pin, decoration or connector",
   "message.forgeborneodyssey.accessory.equipped": "§2Equipped ornamental pin on chest",
   "message.forgeborneodyssey.accessory.removed": "§2Removed ornamental pin from chest",
-  
-
   "item.forgeborneodyssey.gold_bead": "Gold Bead",
   "item.forgeborneodyssey.silver_bead": "Silver Bead",
   "item.forgeborneodyssey.copper_bead": "Copper Bead",
-  
   "item.forgeborneodyssey.copper_hook": "Copper Hook",
   "item.forgeborneodyssey.copper_hook.tooltip": "§cCopper hook, hanging or decoration",
-  
   "item.forgeborneodyssey.copper_ring": "Copper Ring",
-  
   "item.forgeborneodyssey.copper_ring_curio": "Copper Ring (Curio)",
   "item.forgeborneodyssey.copper_bead_curio": "Copper Bead (Curio)",
-  
   "item.forgeborneodyssey.gold_bar": "Gold Bar",
   "item.forgeborneodyssey.silver_bar": "Silver Bar",
-  
   "item.forgeborneodyssey.copper_curve": "Copper Curve",
   "item.forgeborneodyssey.silver_curve": "Silver Curve",
   "item.forgeborneodyssey.gold_curve": "Gold Curve",
-  
   "item.forgeborneodyssey.copper_curve.tooltip": "§cCopper curve, ornament and connector",
   "item.forgeborneodyssey.silver_curve.tooltip": "§8Silver curve, precision connector",
   "item.forgeborneodyssey.gold_curve.tooltip": "§6Gold curve, premium connector",
-  
   "item.forgeborneodyssey.copper_slot": "Copper Slot",
   "item.forgeborneodyssey.silver_slot": "Silver Slot",
   "item.forgeborneodyssey.gold_slot": "Gold Slot",
-  
   "item.forgeborneodyssey.copper_slot.tooltip": "§cCopper slot, mechanical part",
   "item.forgeborneodyssey.silver_slot.tooltip": "§8Silver slot, instrument part",
   "item.forgeborneodyssey.gold_slot.tooltip": "§6Gold slot, advanced part",
-  
   "item.forgeborneodyssey.copper_pin": "Copper Pin",
   "item.forgeborneodyssey.silver_pin": "Silver Pin",
   "item.forgeborneodyssey.gold_pin": "Gold Pin",
-  
-  "item.forgeborneodyssey.copper_pin.tooltip": "§cCopper pin, decoration or connector",
-  "item.forgeborneodyssey.silver_pin.tooltip": "§8Silver pin, elegant decoration",
-  "item.forgeborneodyssey.gold_pin.tooltip": "§6Gold pin, luxurious decoration",
-  
   "item.forgeborneodyssey.primitive_copper_knife": "Primitive Copper Knife",
   "item.forgeborneodyssey.primitive_silver_knife": "Primitive Silver Knife",
   "item.forgeborneodyssey.primitive_gold_knife": "Primitive Gold Knife",
-  
   "item.forgeborneodyssey.copper_sword_blade": "Copper Sword Blade",
   "item.forgeborneodyssey.silver_sword_blade": "Silver Sword Blade",
   "item.forgeborneodyssey.gold_sword_blade": "Gold Sword Blade",
-  
   "item.forgeborneodyssey.wrought_copper_sword": "Wrought Copper Sword",
   "item.forgeborneodyssey.wrought_silver_sword": "Wrought Silver Sword",
   "item.forgeborneodyssey.wrought_gold_sword": "Wrought Gold Sword",
-  
   "item.forgeborneodyssey.copper_axe": "Copper Axe Head",
   "item.forgeborneodyssey.silver_axe": "Silver Axe Head",
   "item.forgeborneodyssey.gold_axe": "Gold Axe Head",
-  
   "item.forgeborneodyssey.copper_fishing_rod": "Copper Fishing Rod",
-
   "item.forgeborneodyssey.bone_fish_hook": "Bone Fish Hook",
   "item.forgeborneodyssey.bone_fish_hook.tooltip": "§8A simple fish hook carved from bone",
   "item.forgeborneodyssey.simple_fishing_rod": "Simple Fishing Rod",
   "item.forgeborneodyssey.simple_fishing_rod.tooltip": "§8A Stone Age fishing tool, prone to breaking",
   "item.forgeborneodyssey.herb_poultice": "Herb Poultice",
   "item.forgeborneodyssey.herb_poultice.tooltip": "§8A primitive wound dressing made of grass fiber and flowers, restores 4 HP",
-
   "item.forgeborneodyssey.forgeborne_guide_book": "Primitive Cold Forge Manual",
   "item.forgeborneodyssey.forgeborne_guide_book.tooltip": "§6A guidebook recording the basics of primitive cold forging\n§8Right-click to view detailed content",
   "item.forgeborneodyssey.tutorial_guide_book": "Forgeborne Odyssey Tutorial",
@@ -382,16 +343,11 @@
   "guidebook.forgeborneodyssey.landing": "A complete manual of primitive cold forging from stone to metal, guiding you through every step.",
   "guidebook.forgeborneodyssey.tutorial.landing": "Complete Forgeborne Odyssey tutorial - from stone to metal, from mining to pottery, nothing left out.",
   "guidebook.forgeborneodyssey.fire_crack.landing": "Complete fire-crack mining manual - from heat conduction to oxygen mechanics, master every detail of thermal stress mining.",
-  
   "item.forgeborneodyssey.copper_axe.tooltip": "§cCopper axe head, decoration material",
   "item.forgeborneodyssey.silver_axe.tooltip": "§8Silver axe head, decoration material",
   "item.forgeborneodyssey.gold_axe.tooltip": "§6Gold axe head, decoration material",
-  
-  
   "tooltip.forgeborneodyssey.shift_for_details": "Hold §6[Shift]§r for details",
   "tooltip.forgeborneodyssey.inherited_properties": "§8§oProperties inherited from initial billet",
-  
-  
   "sounds.forgeborneodyssey.anvil.hit": "Hammer Strike",
   "sounds.forgeborneodyssey.anvil.stretch_start": "Start Forging",
   "sounds.forgeborneodyssey.anvil.stretch_complete": "Forging Complete",
@@ -409,7 +365,6 @@
   "sounds.forgeborneodyssey.blowpipe.blow": "Blowpipe Blowing",
   "sounds.forgeborneodyssey.sling.spin": "Sling Spinning",
   "sounds.forgeborneodyssey.sling.release": "Sling Release",
-  
   "message.forgeborneodyssey.fire_crack.quenched": "§cThe rock is quenched by water, cracking violently!",
   "message.forgeborneodyssey.fire_crack.chain_reaction": "§6Thermal chain reaction!",
   "message.forgeborneodyssey.fire_crack.need_heat": "§8The rock is not hot enough, keep heating",
@@ -418,58 +373,40 @@
   "message.forgeborneodyssey.fire_crack.need_fuel": "§cYou need to place fuel items on the ground to start a fire!",
   "message.forgeborneodyssey.fire_crack.blocked": "§cFire position is blocked, clear the block above",
   "message.forgeborneodyssey.fire_crack.not_solid": "§cBlock surface is not solid enough to support fire",
-  
   "advancement.forgeborneodyssey.root.title": "Forgeborne Odyssey",
   "advancement.forgeborneodyssey.root.description": "Explore the world of Forgeborne Odyssey",
-  
   "advancement.forgeborneodyssey.stone_age.title": "Stone Age",
   "advancement.forgeborneodyssey.stone_age.description": "Obtain surface cobblestone",
-  
   "advancement.forgeborneodyssey.gold_digger.title": "Gold Digger",
   "advancement.forgeborneodyssey.gold_digger.description": "Obtain any natural metal block",
-  
   "advancement.forgeborneodyssey.light_fire.title": "Kindling the Flame",
   "advancement.forgeborneodyssey.light_fire.description": "Light a fire pit",
-  
   "advancement.forgeborneodyssey.sparks_fly.title": "Sparks Fly",
   "advancement.forgeborneodyssey.sparks_fly.description": "Forge a metal sheet on an anvil",
-  
   "advancement.forgeborneodyssey.love_of_beauty.title": "Love of Beauty",
   "advancement.forgeborneodyssey.love_of_beauty.description": "Craft an ornamental pin chestplate",
-  
   "advancement.forgeborneodyssey.weapons_and_armor.title": "Arms and Armor",
   "advancement.forgeborneodyssey.weapons_and_armor.description": "Craft a metal weapon (knife or sword)",
-  
   "advancement.forgeborneodyssey.cold_forge_master.title": "Cold Forge Master",
   "advancement.forgeborneodyssey.cold_forge_master.description": "Craft a wrought metal sword",
-
   "advancement.forgeborneodyssey.stone_hammer.title": "Hammer and Tongs",
   "advancement.forgeborneodyssey.stone_hammer.description": "Craft a stone hammer",
-
   "advancement.forgeborneodyssey.first_stone_tool.title": "Edge of Stone",
   "advancement.forgeborneodyssey.first_stone_tool.description": "Craft your first stone tool",
-
   "advancement.forgeborneodyssey.purification.title": "Panning for Gold",
   "advancement.forgeborneodyssey.purification.description": "Wash a natural metal block to obtain a metal billet",
-
   "advancement.forgeborneodyssey.pit_kiln.title": "Kiln Fire",
   "advancement.forgeborneodyssey.pit_kiln.description": "Fire your first ceramic product",
-
   "advancement.forgeborneodyssey.copper_tool.title": "Copper Age",
   "advancement.forgeborneodyssey.copper_tool.description": "Craft a wrought copper axe",
-
   "advancement.forgeborneodyssey.master_potter.title": "Master Potter",
   "advancement.forgeborneodyssey.master_potter.description": "Fire all three ceramic products (brick, crucible, mold)",
-
   "advancement.forgeborneodyssey.birch_tar.title": "The Adhesive Way",
   "advancement.forgeborneodyssey.birch_tar.description": "Successfully extract birch tar",
-  
   "gui.forgeborneodyssey.guide_book.title": "Primitive Cold Forge Manual",
   "gui.forgeborneodyssey.guide_book.close": "Close",
-  
   "guidebook.forgeborneodyssey.title": "§3§lPrimitive Cold Forge Manual",
   "guidebook.forgeborneodyssey.subtitle": "Game Flow Guide",
-  
   "guidebook.forgeborneodyssey.chapter1.title": "Chapter 1: Craft Stone Tools",
   "guidebook.forgeborneodyssey.chapter1.preparation": "§8[Start Your Adventure]",
   "guidebook.forgeborneodyssey.chapter1.cobblestone": "§3• Find cobblestone on surface",
@@ -477,7 +414,6 @@
   "guidebook.forgeborneodyssey.chapter1.handle_hammer": "§3• Handle Hammer: More efficient forging tool",
   "guidebook.forgeborneodyssey.chapter1.chisel": "§3• Chisel: For fine carving",
   "guidebook.forgeborneodyssey.chapter1.tip": "§2Tip: Craft hammer & chisel first!",
-  
   "guidebook.forgeborneodyssey.chapter2.title": "Chapter 2: Find Natural Metals",
   "guidebook.forgeborneodyssey.chapter2.copper_title": "§c[Copper] Most Common",
   "guidebook.forgeborneodyssey.chapter2.copper_spawn": "Spawn: Mountains or Rivers",
@@ -489,7 +425,6 @@
   "guidebook.forgeborneodyssey.chapter2.gold_spawn": "Spawn: River Banks or Beaches",
   "guidebook.forgeborneodyssey.chapter2.gold_feature": "Look for: Sand, Sandstone or Gravel",
   "guidebook.forgeborneodyssey.chapter2.command": "§3Quick Find: /forgeodyssey find",
-  
   "guidebook.forgeborneodyssey.chapter3.title": "Chapter 3: Prepare Soft Billets",
   "guidebook.forgeborneodyssey.chapter3.get_billet": "§8[Step 1: Craft Billets]",
   "guidebook.forgeborneodyssey.chapter3.craft_billet": "Crafting Table: Natural Metal + Bucket = Billet",
@@ -500,7 +435,6 @@
   "guidebook.forgeborneodyssey.chapter3.step4": "4.Wait to get softened billet",
   "guidebook.forgeborneodyssey.chapter3.warning": "§c⚠ WARNING: Use wooden clamp for hot items!",
   "guidebook.forgeborneodyssey.chapter3.burn_tip": "Bare hands will burn and catch fire",
-  
   "guidebook.forgeborneodyssey.chapter4.title": "Chapter 4: Cold Forging Process",
   "guidebook.forgeborneodyssey.chapter4.stage1": "§8[Step 1: Stretch Billet to Sheet]",
   "guidebook.forgeborneodyssey.chapter4.billet_to_sheet": "Soft billet on anvil, hit repeatedly with hammer → Metal sheet",
@@ -512,7 +446,6 @@
   "guidebook.forgeborneodyssey.chapter4.curve_to_axe": "Left-click curved piece with hammer → Axe head",
   "guidebook.forgeborneodyssey.chapter4.slot_to_sword": "Left-click slotted piece with hammer → Blade",
   "guidebook.forgeborneodyssey.chapter4.tool_tip": "§2How to: Left-click with hammer to forge, right-click with axe to process, left-click with chisel to carve",
-  
   "guidebook.forgeborneodyssey.chapter5.title": "Chapter 5: Advanced Crafting",
   "guidebook.forgeborneodyssey.chapter5.processing": "§8[Continue from Copper Slot]",
   "guidebook.forgeborneodyssey.chapter5.slot_to_ring": "Right-click copper slot with axe → Copper ring",
@@ -524,7 +457,6 @@
   "guidebook.forgeborneodyssey.chapter5.armor": "• Armor: Pin chestplate (decorative)",
   "guidebook.forgeborneodyssey.chapter5.accessories": "• Accessories: Rings, hooks, beads, bars & more",
   "guidebook.forgeborneodyssey.chapter5.fishing_rod": "§2Copper Rod: Ring + Hook + Line + Stick",
-  
   "guidebook.forgeborneodyssey.chapter6.title": "Chapter 6: Important Game Mechanics",
   "guidebook.forgeborneodyssey.chapter6.quality": "§8[Billet Weight Grades]",
   "guidebook.forgeborneodyssey.chapter6.rough": "§8Light§8: Weight <100g",
@@ -538,7 +470,6 @@
   "guidebook.forgeborneodyssey.chapter6.ash": "• Ash works as fertilizer to ripen plants",
   "guidebook.forgeborneodyssey.chapter6.building": "• 9 rock types can make stairs, slabs & walls",
   "guidebook.forgeborneodyssey.chapter6.shift_tip": "§2Hold Shift key to see item details",
-
   "pit_kiln_guide.forgeborneodyssey.title": "§3§lPit Kiln Firing Guide",
   "pit_kiln_guide.forgeborneodyssey.subtitle": "Complete Pottery Firing Manual",
   "pit_kiln_guide.forgeborneodyssey.overview": "§8[Pit Kiln Overview]",
@@ -578,7 +509,6 @@
   "pit_kiln_guide.forgeborneodyssey.cool_3": "§3After cooling, kiln automatically becomes ash pile",
   "pit_kiln_guide.forgeborneodyssey.cool_4": "§c⚠ Rain during firing causes kiln explosion!",
   "pit_kiln_guide.forgeborneodyssey.tip": "§2Tip: Shift+empty hand right-click for detailed status",
-
   "jei.forgeborneodyssey.forging": "Forging",
   "jei.forgeborneodyssey.ore_crushing": "Ore Crushing",
   "jei.forgeborneodyssey.knapping": "Knapping",
@@ -587,7 +517,6 @@
   "jei.forgeborneodyssey.knapping.stone_core_desc": "Shift+Right-click Core -> Large Tool Heads",
   "jei.forgeborneodyssey.knapping.hits": "hits",
   "jei.forgeborneodyssey.knapping.desc": "§8Place the material in the knapping table, hold a hammer and click the light squares in the 5x5 grid.\n§8Patterns match in all 8 rotations & mirrors. When all target squares are removed, output is produced.\n§8Shift+Right-click empty-handed or click the GUI Reset button to reclaim the material.",
-
   "jei.forgeborneodyssey.fire_pit_cooking": "Fire Pit Cooking",
   "jei.forgeborneodyssey.fire_pit_smelting": "Fire Pit Smelting",
   "jei.forgeborneodyssey.fire_pit_smelting.requires_fuel": "Requires Fuel",
@@ -595,10 +524,10 @@
   "jei.forgeborneodyssey.quern_grinding": "Quern Grinding",
   "jei.forgeborneodyssey.drying": "Drying Rack",
   "jei.forgeborneodyssey.anvil_usage.desc": "§8The Anvil is the core crafting station of the mod:\n\n§61. Forging (right-click with hammer):\n  §8- Billet 8 hits → Metal Sheet (1% chance to fail into fragment)\n  §8- Metal Curve 6 hits → Metal Axe\n  §8- Metal Slot 7 hits → Metal Blade\n  §8- Softened Billet → Softened Metal Strip\n\n§62. Ore Crushing (place ore chunk then hammer):\n  §8- 23 types of ore chunks → Ore Grain + Grog\n  §8- Higher quality ore requires more hits, yields more grains\n  §8- ~10% dust loss during crushing\n\n§63. Knapping (place cobblestone/flint pebble then hammer):\n  §8Stage 1: Create Platform → 1 hit to make Stone Core\n  §8Stage 2: Flaking → Strike core to detach flint flakes (60% success, 40% waste)\n  §8  Note: Rapid hits (interval < 0.5s) accumulate fragility, 100% = shatter\n  §8Stage 3: Retouch → Fine-tune flake into tool head\n  §8  (Flint Knife Head 40%, Arrowhead 25%, Spearhead 15%, Shovel Head 10%, Sickle Head 5%, Axe Head 5%)\n\n§64. Core Shaping (Shift+right-click stone core):\n  §8- 3-5 hits to shape directly into large tool head\n  §8- Output: Stone Axe Head 40%, Flint Shovel Head 30%, Stone Hoe Head 30%\n\n§65. Carving (Shift+right-click with empty hand to retrieve):\n  §8- Use a stone chisel on the anvil item for carving",
-  "jei.forgeborneodyssey.pit_kiln.desc": "§8The Shaft Updraft Kiln is a complex firing system:\n\n§61. Construction:§8 Dig a pit, place a kiln grate (optional), attach a fire mouth to the side, and cover with a kiln lid.\n\n§62. Loading:§8 Shift+Right-click to open the kiln and insert dried greenware.\n\n§63. Ignition:§8 Add fuel (firewood, straw bale, rice husk char, etc.) to the fire mouth and ignite with a bow drill.\n\n§64. Temperature Control:§8 Use a ceramic blowpipe on the fire mouth to boost heating rate and max temperature (up to 1200\u2103).\n\n§65. Atmosphere:§8 Vent state affects oxygen levels:\n  §8- Open: Increases oxygen, oxidizing atmosphere\n  §8- Half: Balanced state\n  §8- Closed: Decreases oxygen, reducing atmosphere\n\n§66. Firing Results:\n  §8- Crucible Greenware \u2192 Low oxygen (< -30) + High temp (>900\u2103) \u2192 Gray Crucible\n  §8- Mold Greenware \u2192 High oxygen (>30) + High temp (>850\u2103) \u2192 Red Mold\n  §8- Brick Greenware \u2192 Very high temp (>1000\u2103) + Sustained heat (>300 ticks) \u2192 Fired Brick\n  §8- Blowpipe Greenware \u2192 Strong reduction (oxygen < -50) + High temp (>950\u2103) \u2192 Ceramic Blowpipe\n\n§8§cWarning: Firing in rain will cause the kiln to explode! Undried greenware will likely shatter into kiln waste shards.",
+  "jei.forgeborneodyssey.pit_kiln.desc": "§8The Shaft Updraft Kiln is a complex firing system:\n\n§61. Construction:§8 Dig a pit, place a kiln grate (optional), attach a fire mouth to the side, and cover with a kiln lid.\n\n§62. Loading:§8 Shift+Right-click to open the kiln and insert dried greenware.\n\n§63. Ignition:§8 Add fuel (firewood, straw bale, rice husk char, etc.) to the fire mouth and ignite with a bow drill.\n\n§64. Temperature Control:§8 Use a ceramic blowpipe on the fire mouth to boost heating rate and max temperature (up to 1200℃).\n\n§65. Atmosphere:§8 Vent state affects oxygen levels:\n  §8- Open: Increases oxygen, oxidizing atmosphere\n  §8- Half: Balanced state\n  §8- Closed: Decreases oxygen, reducing atmosphere\n\n§66. Firing Results:\n  §8- Crucible Greenware → Low oxygen (< -30) + High temp (>900℃) → Gray Crucible\n  §8- Mold Greenware → High oxygen (>30) + High temp (>850℃) → Red Mold\n  §8- Brick Greenware → Very high temp (>1000℃) + Sustained heat (>300 ticks) → Fired Brick\n  §8- Blowpipe Greenware → Strong reduction (oxygen < -50) + High temp (>950℃) → Ceramic Blowpipe\n\n§8§cWarning: Firing in rain will cause the kiln to explode! Undried greenware will likely shatter into kiln waste shards.",
   "jei.forgeborneodyssey.fire_pit_usage.desc": "§8The Fire Pit is a basic heating and cooking device:\n\n§61. Add Fuel:§8 Right-click with coal, charcoal, firewood, charred clump, etc.\n  §8- Coal/Charcoal: 80s burn, drops 2-3 ash\n  §8- Firewood: 30s burn, drops 1-2 ash\n  §8- Stick: 1s burn, drops 1 ash\n  §8- Blaze Rod: 120s burn, drops 1-2 ash\n  §8- Other wooden items: burn time / 4, drops 1-2 ash\n\n§62. Ignite:§8 Use a bow drill to light the fire pit.\n\n§63. Cooking:§8 Place raw food (pork, beef, chicken, mutton, rabbit, salmon, cod, potato, etc.) to cook.\n  §8- Meat: 10s (200 ticks), Chicken/Rabbit: 8s, Fish: 6s, Potato: 12s\n\n§64. Billet Smelting:§8 Place copper billet to smelt into softened copper billet (10s/200 ticks).\n  §8- Gold and silver billets cannot be smelted in a fire pit\n\n§65. Ash Output:§8 Ash drops when fuel is exhausted. Ash can be used to accelerate crop growth (equivalent to bone meal).\n\n§cNote: Fire is extinguished in rain. Avoid picking up hot items bare-handed, use wooden tongs.",
-  "jei.forgeborneodyssey.quern_usage.desc": "§8The Quern is used for grinding items:\n\n§61. Install Upper Quern:§8 Right-click with the upper quern stone on the quern base.\n\n§62. Add Material:§8 Right-click to insert grindable items:\n  §8- Wheat \u2192 Flour x2\n  §8- Bone \u2192 Bone Meal x4\n  §8- Bone Block \u2192 Bone Meal x9\n  §8- Flint \u2192 Polished Axe Head\n\n§63. Turn the Quern:§8 Right-click with empty hand to grind. Each turn adds 10% progress, requires 10 turns.\n  §8- Each turn consumes 0.2 hunger\n\n§64. Collect Output:§8 Products drop automatically when grinding completes.\n\n§cNote: Cannot grind without the upper quern installed. Removing the quern drops the upper stone and contents.",
-  "jei.forgeborneodyssey.drying_rack_usage.desc": "§8The Drying Rack has 4 independent slots for drying items:\n\n§61. Place Items:§8 Right-click to place dryable items into a slot.\n\n§62. Dryable Items & Times:\n  §8- Greenware (Crucible/Mold/Brick): 300s \u2192 marked as \"Dried\" (NBT tag, appearance unchanged)\n  §8- Blowpipe Greenware: 100s \u2192 Ceramic Blowpipe\n  §8- Wet Sponge: 100s \u2192 Sponge\n  §8- Kelp: 100s \u2192 Dried Kelp\n  §8- Sugar Cane: 100s \u2192 Paper\n  §8- Leaves (any type): 100s \u2192 Dead Bush\n  §8- Rawhide: 60s \u2192 Dried Hide\n\n§63. Sun Exposure:§8 All greenware (crucible, mold, brick, blowpipe) will crack in direct sunlight, producing kiln waste shards.\n  §8- Other items dry normally in sunlight, unaffected\n\n§64. Rain Effect:§8 Drying progress pauses during rain.\n\n§65. Collect Items:§8 Right-click the slot to retrieve dried items.\n\n§cNote: Undried greenware placed in a pit kiln will likely shatter into kiln waste shards.",
+  "jei.forgeborneodyssey.quern_usage.desc": "§8The Quern is used for grinding items:\n\n§61. Install Upper Quern:§8 Right-click with the upper quern stone on the quern base.\n\n§62. Add Material:§8 Right-click to insert grindable items:\n  §8- Wheat → Flour x2\n  §8- Bone → Bone Meal x4\n  §8- Bone Block → Bone Meal x9\n  §8- Flint → Polished Axe Head\n\n§63. Turn the Quern:§8 Right-click with empty hand to grind. Each turn adds 10% progress, requires 10 turns.\n  §8- Each turn consumes 0.2 hunger\n\n§64. Collect Output:§8 Products drop automatically when grinding completes.\n\n§cNote: Cannot grind without the upper quern installed. Removing the quern drops the upper stone and contents.",
+  "jei.forgeborneodyssey.drying_rack_usage.desc": "§8The Drying Rack has 4 independent slots for drying items:\n\n§61. Place Items:§8 Right-click to place dryable items into a slot.\n\n§62. Dryable Items & Times:\n  §8- Greenware (Crucible/Mold/Brick): 300s → marked as \"Dried\" (NBT tag, appearance unchanged)\n  §8- Blowpipe Greenware: 100s → Ceramic Blowpipe\n  §8- Wet Sponge: 100s → Sponge\n  §8- Kelp: 100s → Dried Kelp\n  §8- Sugar Cane: 100s → Paper\n  §8- Leaves (any type): 100s → Dead Bush\n  §8- Rawhide: 60s → Dried Hide\n\n§63. Sun Exposure:§8 All greenware (crucible, mold, brick, blowpipe) will crack in direct sunlight, producing kiln waste shards.\n  §8- Other items dry normally in sunlight, unaffected\n\n§64. Rain Effect:§8 Drying progress pauses during rain.\n\n§65. Collect Items:§8 Right-click the slot to retrieve dried items.\n\n§cNote: Undried greenware placed in a pit kiln will likely shatter into kiln waste shards.",
   "jei.forgeborneodyssey.pit_kiln_firing": "Pit Kiln Firing",
   "jei.forgeborneodyssey.pit_kiln.requires_dried": "Requires Dried",
   "jei.forgeborneodyssey.pit_kiln.oxygen_any": "Any Atmosphere",
@@ -611,7 +540,6 @@
   "jei.forgeborneodyssey.chisel_carving": "Chisel Carving",
   "jei.forgeborneodyssey.chisel_carving.use_chisel": "Use Chisel on Anvil",
   "jei.forgeborneodyssey.chisel_carving.hits": "carvings",
-
   "item.forgeborneodyssey.raw_clay": "Raw Clay Ball",
   "item.forgeborneodyssey.raw_clay.tooltip": "§8Right-click sand-like blocks with Flint Shovel\n§8Base material for pottery crafting",
   "item.forgeborneodyssey.temper_grog": "Grog (Temper)",
@@ -651,9 +579,7 @@
   "item.forgeborneodyssey.plant_ash.tooltip": "§8Residue from burning plants\n§8Fuel or crafting material",
   "item.forgeborneodyssey.charcoal_clump": "Charcoal Clump",
   "item.forgeborneodyssey.charcoal_clump.tooltip": "§8Fire pit fuel, low burn value",
-
   "message.forgeborneodyssey.patchouli_not_loaded": "§cPatchouli mod is required to read this book! Please install Patchouli in your mods folder.",
-
   "tooltip.forgeborneodyssey.weight_kg": "§3Weight: %.3fkg",
   "tooltip.forgeborneodyssey.weight_g": "§3Weight: %.2fg",
   "tooltip.forgeborneodyssey.purity": "§3Purity: %.2f%%",
@@ -661,11 +587,11 @@
   "tooltip.forgeborneodyssey.durability": "§8Durability: %s",
   "tooltip.forgeborneodyssey.fishing_status.active": "§2Status: Fishing",
   "tooltip.forgeborneodyssey.fishing_status.inactive": "§8Status: Not Fishing",
-
   "message.forgeborneodyssey.kiln.explosion": "§cKiln exploded due to thermal shock!",
   "message.forgeborneodyssey.kiln.water_cool": "§3Water cooling, kiln entering cooling phase",
   "message.forgeborneodyssey.kiln.water_cooled": "Water cooling applied, kiln cooling down",
   "message.forgeborneodyssey.kiln.grate_installed": "Grate installed",
+  "message.forgeborneodyssey.kiln.grate_required": "§cInstall grate first",
   "message.forgeborneodyssey.kiln.greenware_placed": "Greenware placed (%s/4)",
   "message.forgeborneodyssey.kiln.kiln_full": "Kiln is full (max 4)",
   "message.forgeborneodyssey.kiln.greenware_removed": "Removed, remaining %s/4",
@@ -674,25 +600,24 @@
   "message.forgeborneodyssey.kiln.vent_half": "Vent: Half Closed",
   "message.forgeborneodyssey.kiln.vent_closed": "Vent: Fully Closed (Reducing Atmosphere)",
   "message.forgeborneodyssey.kiln.status_header": "§6===== Kiln Status =====",
-
-  "message.forgeborneodyssey.kiln.status_line1": "Stage: %s | Temperature: %s\u2103 (Peak: %s\u2103)",
+  "message.forgeborneodyssey.kiln.status_line1": "Stage: %s | Temperature: %s℃ (Peak: %s℃)",
   "message.forgeborneodyssey.kiln.status_line2": "Fuel: %s | Oxygen: %s %s | High Temp Ticks: %s tick",
   "message.forgeborneodyssey.kiln.status_line2_simple": "Fuel: %s | Oxygen: %s | High Temp Ticks: %s tick",
-  "message.forgeborneodyssey.kiln.status_line3": "Fire Mouth: %s | Vent: %s | Insulation: %s/4 %s | Heat Multiplier: \u00d7%s%% | Max Temp: %s\u2103",
+  "message.forgeborneodyssey.kiln.status_line3": "Fire Mouth: %s | Vent: %s | Insulation: %s/4 %s | Heat Multiplier: ×%s%% | Max Temp: %s℃",
   "message.forgeborneodyssey.kiln.stage_heating": "Heating",
   "message.forgeborneodyssey.kiln.stage_high_temp": "High Temperature",
   "message.forgeborneodyssey.kiln.stage_cooling": "Cooling",
   "message.forgeborneodyssey.kiln.stage_unknown": "Unknown",
   "message.forgeborneodyssey.kiln.status_stage": "Stage: %s",
-  "message.forgeborneodyssey.kiln.status_temp": "Temperature: %s\u2103 (Peak: %s\u2103)",
+  "message.forgeborneodyssey.kiln.status_temp": "Temperature: %s℃ (Peak: %s℃)",
   "message.forgeborneodyssey.kiln.status_fuel": "Fuel: %s",
   "message.forgeborneodyssey.kiln.status_oxygen": "Oxygen: %s %s",
   "message.forgeborneodyssey.kiln.status_high_temp_ticks": "High Temp Ticks: %s tick",
   "message.forgeborneodyssey.kiln.status_firemouth": "Fire Mouth: %s",
   "message.forgeborneodyssey.kiln.status_vent": "Vent: %s",
   "message.forgeborneodyssey.kiln.status_insulation": "Insulation: %s/4 %s",
-  "message.forgeborneodyssey.kiln.status_heat_mult": "Heat Multiplier: \u00d7%s",
-  "message.forgeborneodyssey.kiln.status_max_temp": "Max Temp: %s\u2103",
+  "message.forgeborneodyssey.kiln.status_heat_mult": "Heat Multiplier: ×%s",
+  "message.forgeborneodyssey.kiln.status_max_temp": "Max Temp: %s℃",
   "message.forgeborneodyssey.kiln.status_cooling_progress": "§6Cooling Progress: %s/%s tick §8(Cooling complete will auto-extract)",
   "message.forgeborneodyssey.kiln.insulation_excellent": "§2Excellent",
   "message.forgeborneodyssey.kiln.insulation_good": "§6Good",
@@ -704,7 +629,6 @@
   "message.forgeborneodyssey.kiln.vent_full_open": "§2Fully Open",
   "message.forgeborneodyssey.kiln.vent_half_closed": "§6Half Closed",
   "message.forgeborneodyssey.kiln.vent_fully_closed": "§cFully Closed",
-
   "message.forgeborneodyssey.firemouth.blocked": "Fire mouth blocked",
   "message.forgeborneodyssey.firemouth.opened": "Fire mouth opened",
   "message.forgeborneodyssey.firemouth.not_fuel_stage": "Kiln is not in fuel-adding stage",
@@ -712,11 +636,9 @@
   "message.forgeborneodyssey.firemouth.fuel_insufficient": "Not enough fuel to extract",
   "message.forgeborneodyssey.firemouth.fuel_removed": "Fuel removed, remaining %s",
   "message.forgeborneodyssey.firemouth.fuel_full": "Kiln fuel is full",
-
   "message.forgeborneodyssey.kiln.stage_empty": "Empty",
   "message.forgeborneodyssey.kiln.stage_loaded": "Loaded",
   "message.forgeborneodyssey.kiln.stage_finished": "Finished",
-
   "message.forgeborneodyssey.tar_kiln.clay_lined": "§aPit walls coated with wet clay to prevent seepage, now place pebble supports and stone slab",
   "message.forgeborneodyssey.tar_kiln.stone_placed": "§aPebble supports and stone slab placed, now add birch bark rolls",
   "message.forgeborneodyssey.tar_kiln.bark_placed": "§aBirch bark roll placed (%s/4)",
@@ -744,7 +666,6 @@
   "message.forgeborneodyssey.firemouth.seal_first": "Seal the kiln first before igniting",
   "message.forgeborneodyssey.firemouth.add_fuel_first": "Add fuel first",
   "message.forgeborneodyssey.firemouth.ignited": "Kiln fire ignited, heating up",
-
   "command.forgeborneodyssey.test.loaded": "Forgeborne Odyssey mod loaded!",
   "command.forgeborneodyssey.player_only": "§cOnly players can execute this command",
   "command.forgeborneodyssey.copper_grass.target": "§cPlease aim at a Copper Grass Flower block",
@@ -756,14 +677,12 @@
   "command.forgeborneodyssey.copper_grass.set": "§2Set Copper Grass Flower to %s",
   "command.forgeborneodyssey.stress.not_stress_block": "§cTarget block is not a stress block! Stand on a stress block and execute the command.",
   "command.forgeborneodyssey.surface_cobblestone.generated": "Generated surface cobblestone at %s",
-
   "command.forgeborneodyssey.search.natural_gold": "§6Searching for natural gold blocks...\n§8Search radius: 128 blocks, Height: Y=55~75\n§8Target biomes: River, Beach",
   "command.forgeborneodyssey.search.natural_silver": "§8Searching for natural silver blocks...\n§8Search radius: 128 blocks, Height: Y=80~200\n§8Target biomes: Mountains",
   "command.forgeborneodyssey.search.natural_copper": "§cSearching for natural copper blocks...\n§8Search radius: 128 blocks, Height: Y=65~180\n§8Target biomes: Mountains, Plains, near clay pits",
   "command.forgeborneodyssey.search.hint_gold": "§6Tips:\n§8- Go to River or Beach biomes\n§8- Search near sea level (Y=55~75)\n§8- Look for sand/sandstone/gravel surfaces",
   "command.forgeborneodyssey.search.hint_silver": "§8Tips:\n§8- Go to high mountain areas\n§8- Search above Y=80\n§8- Look for andesite/granite/stone surfaces",
   "command.forgeborneodyssey.search.hint_copper": "§cTips:\n§8- Go to Mountain or Plains biomes\n§8- Search between Y=65~180\n§8- Look for stone surfaces or near clay pits",
-
   "message.forgeborneodyssey.anvil.weight_too_low": "§cBillet weight is less than 50g, cannot be forged!",
   "command.forgeborneodyssey.find.searching_gold": "§6Searching for natural gold blocks...",
   "command.forgeborneodyssey.find.searching_silver": "§8Searching for natural silver blocks...",
@@ -774,68 +693,51 @@
   "command.forgeborneodyssey.find.suggestion_silver": "§8Suggestion: %s",
   "command.forgeborneodyssey.find.suggestion_copper": "§cSuggestion: %s",
   "command.forgeborneodyssey.find.navigate": "§2Navigate: From current position to %s",
-
   "jei.forgeborneodyssey.heat_shock.title": "Fire-Roasting & Water-Shock Quarrying",
   "jei.forgeborneodyssey.heat_shock.desc1": "1. Use fire, campfire, or fire pit to heat rocks until red-hot.",
   "jei.forgeborneodyssey.heat_shock.desc2": "2. Quench with cold water to create internal cracks, making the rock brittle.",
   "jei.forgeborneodyssey.heat_shock.desc3": "3. Wait for cracks to fully open, then mine with a pickaxe for greatly increased speed.",
   "jei.forgeborneodyssey.heat_shock.warn_lime": "§c⚠ Do not overheat limestone - it will calcine into quicklime and be destroyed.",
-
   "tag.forgeborneodyssey.heat_shock.immune": "Heat Shock Immune",
   "tag.forgeborneodyssey.heat_shock.hard": "Hard Heat-Shock Rock",
   "tag.forgeborneodyssey.heat_shock.soft": "Soft Heat-Shock Rock",
   "tag.forgeborneodyssey.heat_shock.lime_bearing": "Lime-Bearing Rock",
-
   "advancement.forgeborneodyssey.heat_shock.title": "Fire-Crack Mining",
   "advancement.forgeborneodyssey.heat_shock.description": "Use fire-roasting and water-shock to embrittle rock for faster mining",
-
   "advancement.forgeborneodyssey.clay_collector.title": "Digging for Clay",
   "advancement.forgeborneodyssey.clay_collector.description": "Use a flint shovel to extract raw clay from sandy blocks",
-
   "advancement.forgeborneodyssey.first_greenware.title": "First Shaping",
   "advancement.forgeborneodyssey.first_greenware.description": "Craft your first pottery greenware",
-
   "advancement.forgeborneodyssey.copper_grass.title": "Nature's Compass",
   "advancement.forgeborneodyssey.copper_grass.description": "Discover copper grass flower — a natural indicator of copper ore",
-
   "advancement.forgeborneodyssey.metal_curve.title": "Bending Iron",
   "advancement.forgeborneodyssey.metal_curve.description": "Use an axe to bend a metal sheet into a curve",
-
   "advancement.forgeborneodyssey.metal_slot.title": "Grooving Metal",
   "advancement.forgeborneodyssey.metal_slot.description": "Process a metal curve into a slotted piece",
-
   "advancement.forgeborneodyssey.metal_pin.title": "Grinding a Needle",
   "advancement.forgeborneodyssey.metal_pin.description": "Craft a metal pin",
-
   "advancement.forgeborneodyssey.copper_ring_and_hook.title": "Linked Together",
   "advancement.forgeborneodyssey.copper_ring_and_hook.description": "Craft a copper ring and a copper hook",
-
   "advancement.forgeborneodyssey.metal_bead.title": "Precious Beads",
   "advancement.forgeborneodyssey.metal_bead.description": "Craft a metal bead",
-
   "advancement.forgeborneodyssey.metal_bar.title": "Casting Bars",
   "advancement.forgeborneodyssey.metal_bar.description": "Craft a precious metal bar",
-
   "advancement.forgeborneodyssey.copper_fishing_rod.title": "Gone Fishing",
   "advancement.forgeborneodyssey.copper_fishing_rod.description": "Assemble a copper fishing rod with ring, hook and line",
-
   "advancement.forgeborneodyssey.guide_book.title": "Well Read",
   "advancement.forgeborneodyssey.guide_book.description": "Obtain a crafting guide book",
-
   "advancement.forgeborneodyssey.bone_fish_hook.title": "First Bone Hook",
   "advancement.forgeborneodyssey.bone_fish_hook.description": "Carve your first fish hook from bone",
   "advancement.forgeborneodyssey.simple_fishing_rod.title": "Primitive Angler",
   "advancement.forgeborneodyssey.simple_fishing_rod.description": "Assemble a simple fishing rod and start fishing",
   "advancement.forgeborneodyssey.herb_poultice.title": "Herbal Remedy",
   "advancement.forgeborneodyssey.herb_poultice.description": "Craft a herb poultice from grass fiber and flowers",
-
   "block.forgeborneodyssey.shaft_frame": "Shaft Frame",
   "block.forgeborneodyssey.shaft_frame.tooltip": "§8Stack vertically, climbable\n§8Adjacent frames auto-connect, forming shaft support",
   "block.forgeborneodyssey.tunnel_support": "Tunnel Support",
   "block.forgeborneodyssey.tunnel_support.tooltip": "§8Place in tunnels to prevent cave-ins\n§8Protects 3×3×3 area around it",
   "message.forgeborneodyssey.cave_in": "§cRocks above you come loose and collapse!",
   "message.forgeborneodyssey.crawl_hint": "§6Right-click  to crawl",
-
   "item.forgeborneodyssey.raw_chalcopyrite": "Chalcopyrite Chunk",
   "item.forgeborneodyssey.raw_bornite": "Bornite Chunk",
   "item.forgeborneodyssey.raw_chalcocite": "Chalcocite Chunk",
@@ -854,7 +756,6 @@
   "item.forgeborneodyssey.raw_torbernite": "Torbernite Chunk",
   "item.forgeborneodyssey.raw_cuprovanadite": "Cuprovanadite Chunk",
   "item.forgeborneodyssey.raw_chrysocolla": "Chrysocolla Chunk",
-
   "item.forgeborneodyssey.raw_magnetite": "Magnetite Chunk",
   "item.forgeborneodyssey.raw_scheelite": "Scheelite Chunk",
   "item.forgeborneodyssey.raw_galena": "Galena Chunk",
@@ -862,7 +763,6 @@
   "item.forgeborneodyssey.raw_molybdenite": "Molybdenite Chunk",
   "item.forgeborneodyssey.raw_cassiterite": "Cassiterite Grain",
   "item.forgeborneodyssey.raw_cassiterite_sand": "Tin-bearing Sandy Soil",
-
   "item.forgeborneodyssey.chalcopyrite_grain": "Chalcopyrite Grain",
   "item.forgeborneodyssey.bornite_grain": "Bornite Grain",
   "item.forgeborneodyssey.chalcocite_grain": "Chalcocite Grain",
@@ -886,7 +786,6 @@
   "item.forgeborneodyssey.galena_grain": "Galena Grain",
   "item.forgeborneodyssey.sphalerite_grain": "Sphalerite Grain",
   "item.forgeborneodyssey.molybdenite_grain": "Molybdenite Grain",
-
   "item.forgeborneodyssey.shale_rubble": "Shale Fragment",
   "item.forgeborneodyssey.sandstone_rubble": "Sandstone Fragment",
   "item.forgeborneodyssey.limestone_rubble": "Limestone Fragment",
@@ -896,8 +795,6 @@
   "item.forgeborneodyssey.quartz_vein_rubble": "Quartz Vein Fragment",
   "item.forgeborneodyssey.sericitized_rubble": "Sericitized Rock Fragment",
   "item.forgeborneodyssey.chlorite_rubble": "Chlorite Rock Fragment",
-  
-
   "block.forgeborneodyssey.endoskarn_block": "Endoskarn",
   "block.forgeborneodyssey.garnet_skarn_block": "Garnet Skarn",
   "block.forgeborneodyssey.pyroxene_skarn_block": "Pyroxene Skarn",
@@ -926,27 +823,35 @@
   "block.forgeborneodyssey.sphalerite_ore.tooltip": "§6Sulfide stage zinc mineralization, commonly intergrown with galena, forming skarn-type lead-zinc ore bodies",
   "block.forgeborneodyssey.molybdenite_ore.tooltip": "§8Sulfide stage molybdenum mineralization, occurring as scaly aggregates, primary ore mineral of skarn-type molybdenum deposits",
   "block.forgeborneodyssey.cassiterite_placer_block.tooltip": "§6Eluvial-alluvial placer tin deposit, cassiterite concentrated in river valleys after weathering and transport\n§8Features: Shallow underground in river/beach biomes, lens-shaped ore body (aspect ratio 3:1~7:1), containing black cassiterite grains\n§6The earliest tin ore type mined during the Xia Dynasty, accessible from surface or shallow depths",
-
   "jade.forgeborneodyssey.ore_grade.poor": "§8Grade: §cPoor",
   "jade.forgeborneodyssey.ore_grade.low": "§8Grade: §6Low",
   "jade.forgeborneodyssey.ore_grade.medium": "§8Grade: §2Medium",
   "jade.forgeborneodyssey.ore_grade.high": "§8Grade: §3High",
   "jade.forgeborneodyssey.ore_grade.rich": "§8Grade: §6§lRich",
-
+  "jade.forgeborneodyssey.tar_kiln.empty_pit": "§6Empty Dirt Pit",
+  "jade.forgeborneodyssey.tar_kiln.tar.clay_lined": "§6Tar Kiln - Clay Lined",
+  "jade.forgeborneodyssey.tar_kiln.tar.stone_frame": "§6Tar Kiln - Stone Frame",
+  "jade.forgeborneodyssey.tar_kiln.tar.bark": "§6Tar Kiln - Birch Bark %s/4",
+  "jade.forgeborneodyssey.tar_kiln.tar.grass": "§6Tar Kiln - Grass Fiber",
+  "jade.forgeborneodyssey.tar_kiln.tar.sealed": "§6Tar Kiln - Sealed",
+  "jade.forgeborneodyssey.tar_kiln.tar.burning": "§6Tar Kiln - Burning",
+  "jade.forgeborneodyssey.tar_kiln.tar.cooling": "§6Tar Kiln - Cooling",
+  "jade.forgeborneodyssey.tar_kiln.tar.ready": "§6Tar Kiln - Ready",
+  "jade.forgeborneodyssey.tar_kiln.charcoal.wood": "§6Charcoal Kiln - Wood %s/4",
+  "jade.forgeborneodyssey.tar_kiln.charcoal.burning": "§6Charcoal Kiln - Burning",
+  "jade.forgeborneodyssey.tar_kiln.charcoal.cooling": "§6Charcoal Kiln - Cooling",
+  "jade.forgeborneodyssey.tar_kiln.charcoal.ready": "§6Charcoal Kiln - Ready",
   "tooltip.forgeborneodyssey.ore_purity.very_impure": "§8Purity: §8Very Impure",
   "tooltip.forgeborneodyssey.ore_purity.impure": "§8Purity: §8Impure",
   "tooltip.forgeborneodyssey.ore_purity.normal": "§8Purity: §8Normal",
   "tooltip.forgeborneodyssey.ore_purity.pure": "§8Purity: §2Pure",
   "tooltip.forgeborneodyssey.ore_purity.very_pure": "§8Purity: §3§lVery Pure",
-
   "tooltip.forgeborneodyssey.ore_quality.fractured": "§8Quality: §8Fractured",
   "tooltip.forgeborneodyssey.ore_quality.rough": "§8Quality: §8Rough",
   "tooltip.forgeborneodyssey.ore_quality.intact": "§8Quality: §8Intact",
   "tooltip.forgeborneodyssey.ore_quality.dense": "§8Quality: §2Dense",
   "tooltip.forgeborneodyssey.ore_quality.perfect": "§8Quality: §3§lPerfect",
-
   "message.forgeborneodyssey.strength.level_up": "§6Your strength has increased! Level: §6%s §8(%s)",
-
   "item.forgeborneodyssey.rawhide": "Rawhide",
   "item.forgeborneodyssey.dried_hide": "Dried Hide",
   "item.forgeborneodyssey.scraper": "Scraper",
@@ -958,7 +863,6 @@
   "item.forgeborneodyssey.hide_boots": "Hide Boots",
   "item.forgeborneodyssey.grass_basket": "Grass Basket",
   "item.forgeborneodyssey.hide_armor.tooltip": "§8Tanned leather armor, better than grass but worse than iron",
-
   "message.forgeborneodyssey.knapping.no_material": "§cPlace a knapping material first!",
   "message.forgeborneodyssey.knapping.no_hammer": "§cNeed a hammer to knap!",
   "message.forgeborneodyssey.knapping.pattern_matched": "§2Pattern matched!",
@@ -970,10 +874,8 @@
   "message.forgeborneodyssey.knapping.status_no_material": "§8Place surface cobblestone to begin",
   "message.forgeborneodyssey.knapping.status_knapping": "§8Use a stone hammer to remove cells",
   "message.forgeborneodyssey.knapping.status_output_ready": "§2Click the output slot to take the result",
-
   "gui.forgeborneodyssey.knapping.reset": "Reset",
   "container.forgeborneodyssey.knapping_table": "Knapping Table",
-
   "block.forgeborneodyssey.surface_cobblestone_block.tooltip": "§8A stone containing flint pebbles. Hold one in each hand and right-click to knap, with a chance to obtain Paleolithic tools",
   "item.forgeborneodyssey.billet.quality.low": "§8Quality: §cLow",
   "item.forgeborneodyssey.billet.quality.medium": "§8Quality: §6Medium",
@@ -996,5 +898,7 @@
   "message.forgeborneodyssey.anvil.knapping_shatter": "§cCore shattered!",
   "message.forgeborneodyssey.anvil.place_cobblestone": "§2Placed surface cobblestone",
   "message.forgeborneodyssey.anvil.place_pebble": "§2Placed flint pebble",
-  "message.forgeborneodyssey.anvil.platform_created": "§2Anvil platform created"
+  "message.forgeborneodyssey.anvil.platform_created": "§2Anvil platform created",
+  "jade.forgeborneodyssey.drying_rack.done": "%s - Done",
+  "jade.forgeborneodyssey.drying_rack.drying": "%s - %s remaining"
 }

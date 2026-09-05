@@ -403,7 +403,7 @@ public class ModEventHandlers {
                         .setValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS,
                                 state.getValue(net.minecraft.world.level.block.RotatedPillarBlock.AXIS));
                 event.getLevel().setBlock(pos, strippedState, 3);
-                ItemStack bark = new ItemStack(ModItems.BIRCH_BARK.get(), 1 + event.getLevel().random.nextInt(2));
+                ItemStack bark = new ItemStack(ModItems.BIRCH_BARK.get(), 4);
                 Containers.dropItemStack(event.getLevel(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, bark);
                 event.getLevel().playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
                 held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
@@ -460,7 +460,7 @@ public class ModEventHandlers {
 
         if (event.getLevel().isClientSide()) return;
 
-        if (held.isEmpty() && isDirtLike(state) && event.getHand() == InteractionHand.MAIN_HAND) {
+        if (held.isEmpty() && isDirtLike(state) && event.getHand() == InteractionHand.MAIN_HAND && player.isShiftKeyDown()) {
             Direction playerFacing = player.getDirection().getOpposite();
             BlockState kilnState = ModBlocks.TAR_KILN.get().defaultBlockState()
                     .setValue(TarKilnBlock.FACING, playerFacing);

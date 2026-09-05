@@ -20,7 +20,7 @@
     {
       "type": "patchouli:text",
       "title": "Required Materials",
-      "text": "Building a complete pit kiln requires the following materials:$(br2)$(li)Pit kiln block ×1 (see crafting recipe in Building the Kiln chapter)$(br)$(li)Dirt blocks ×8 (for kiln body)$(br)$(li)Fire mouth block ×1$(br)$(li)Grate block ×1$(br)$(li)Kiln lid ×1$(br)$(li)Fire drill ×1 (ignition tool)$(br)$(li)Fuel (firewood, straw, rice husk char, etc.)$(br)$(li)Greenware items (crucible, mold, brick, blowpipe greenware, etc.)"
+      "text": "Building a complete pit kiln requires the following materials:$(br2)$(li)Pit kiln block ×1 (see crafting recipe in Building the Kiln chapter)$(br)$(li)Dirt blocks ×8 (for kiln body)$(br)$(li)Fire mouth block ×1$(br)$(li)Grate block ×1$(br)$(li)Kiln lid ×1$(br)$(li)Fire drill ×1 (ignition tool)$(br)$(li)Fuel (firewood, straw, rice husk char, etc.)$(br)$(li)Greenware items (crucible, mold, brick, blowpipe greenware, etc.)$(br2)§4Tip:§r The temper (grog) in greenware recipes can be substituted with §3Sand§r or §3Red Sand§r — no need to obtain specialized temper grog."
     },
     {
       "type": "patchouli:spotlight",

@@ -10,17 +10,17 @@
     {
       "type": "patchouli:text",
       "title": "Firing Principles",
-      "text": "The pit kiln operates in five stages:$(br)$(li)§6Stage 0§r: Basic structure - Place pit kiln block, §cno items can be placed without grate$(br)$(li)§6Stage 1§r: Install grate, load greenware$(br)$(li)§6Stage 2§r: Seal and heat - Temperature rises from room temp to 100℃$(br)$(li)§6Stage 3§r: High-temp firing - Formal firing stage$(br)$(li)§6Stage 4§r: Cooling - Natural cooling, products and ash automatically drop when complete"
+      "text": "The pit kiln operates in five stages:$(br)$(li)§4Stage 0§r: Basic structure - Place pit kiln block, §cno items can be placed without grate$(br)$(li)§4Stage 1§r: Install grate, load greenware$(br)$(li)§4Stage 2§r: Seal and heat - Temperature rises from room temp to 100℃$(br)$(li)§4Stage 3§r: High-temp firing - Formal firing stage$(br)$(li)§4Stage 4§r: Cooling - Natural cooling, products and ash automatically drop when complete"
     },
     {
       "type": "patchouli:text",
       "title": "Key Concepts",
-      "text": "$(li)§3Temperature§r: Determined by fuel, grate efficiency, and insulation grade, max 1200℃$(br)$(li)§3Oxygen Content§r: Range -100 to +100, controlled by fire mouth and vents$(br)$(li)§3Oxidizing Atmosphere§r: High oxygen, suitable for redware$(br)$(li)§3Reducing Atmosphere§r: Low oxygen, suitable for gray ware and black ware$(br)$(li)§3Insulation Grade§r: Determined by surrounding dirt blocks (0-4 sides)"
+      "text": "$(li)§3Temperature§r: Determined by fuel, grate efficiency, and insulation grade, max 900℃ (1200℃ with blowpipe)$(br)$(li)§3Oxygen Content§r: Range -100 to +100, controlled by fire mouth and vents$(br)$(li)§3Oxidizing Atmosphere§r: High oxygen, suitable for redware$(br)$(li)§3Reducing Atmosphere§r: Low oxygen, suitable for gray ware and black ware$(br)$(li)§3Insulation Grade§r: Determined by surrounding dirt blocks (0-4 sides)"
     },
     {
       "type": "patchouli:text",
       "title": "Required Materials",
-      "text": "Building a complete pit kiln requires the following materials:$(br2)$(li)Dirt blocks ×8 (for kiln body)$(br)$(li)Fire mouth block ×1$(br)$(li)Grate block ×1$(br)$(li)Kiln lid ×1$(br)$(li)Fire drill ×1 (ignition tool)$(br)$(li)Fuel (firewood, straw, rice husk char, etc.)$(br)$(li)Greenware items (crucible greenware, mold greenware, etc.)"
+      "text": "Building a complete pit kiln requires the following materials:$(br2)$(li)Pit kiln block ×1 (see crafting recipe in Building the Kiln chapter)$(br)$(li)Dirt blocks ×8 (for kiln body)$(br)$(li)Fire mouth block ×1$(br)$(li)Grate block ×1$(br)$(li)Kiln lid ×1$(br)$(li)Fire drill ×1 (ignition tool)$(br)$(li)Fuel (firewood, straw, rice husk char, etc.)$(br)$(li)Greenware items (crucible, mold, brick, blowpipe greenware, etc.)$(br2)§4Tip:§r The temper (grog) in greenware recipes can be substituted with §3Sand§r or §3Red Sand§r — no need to obtain specialized temper grog."
     },
     {
       "type": "patchouli:spotlight",
@@ -30,7 +30,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:red_mold",
-      "text": "§6Red Mold§r is fired in an oxidizing atmosphere, used for casting metal ingots and tools."
+      "text": "§4Red Mold§r is fired in an oxidizing atmosphere, used for casting metal ingots and tools."
     }
   ],
   "sortnum": -1

@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Heating Speed Breakdown",
-      "text": "Factors affecting heating speed:$(br2)$(li)§6Grate§r: Yes=100%, No=30%$(br)$(li)§6Vents§r: Fully closed×1.2, other×0.8$(br)$(li)§6Insulation§r: 4 sides×1.0, 3×0.75, 2×0.5, 1×0.3, 0×0.15$(br2)Optimal combo (grate+fully closed vents+4-sided insulation): Fastest heat, up to 1200℃.$(br2)Auto-enters Stage 3 when temperature exceeds 100℃."
+      "text": "Factors affecting heating speed:$(br2)$(li)§4Grate§r: Yes=100%, No=30%$(br)$(li)§4Vents§r: Fully closed×1.2, other×0.8$(br)$(li)§4Insulation§r: 4 sides×1.0, 3×0.75, 2×0.5, 1×0.3, 0×0.15$(br2)Optimal combo (grate+fully closed vents+4-sided insulation): Fastest heat, up to 1200℃.$(br2)Auto-enters Stage 3 when temperature exceeds 100℃."
     },
     {
       "type": "patchouli:text",

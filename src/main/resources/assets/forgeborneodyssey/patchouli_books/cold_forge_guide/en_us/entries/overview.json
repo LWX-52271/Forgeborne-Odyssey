@@ -10,12 +10,12 @@
     {
       "type": "patchouli:text",
       "title": "Game Flow Overview",
-      "text": "$(li)§6Chapter 1§r: Craft Stone Tools - Create your basic tools$(br)$(li)§6Chapter 2§r: Find Natural Metals - Explore the world for resources$(br)$(li)§6Chapter 3§r: Prepare Soft Billets - Craft billets and heat them$(br)$(li)§6Chapter 4§r: Cold Forging Process - Forge on the anvil$(br)$(li)§6Chapter 5§r: Advanced Crafting - Weapons, tools, and accessories$(br)$(li)§6Chapter 6§r: Important Mechanics - Weight tiers, cooling, and more"
+      "text": "$(li)§4Chapter 1§r: Craft Stone Tools - Create your basic tools$(br)$(li)§4Chapter 2§r: Find Natural Metals - Explore the world for resources$(br)$(li)§4Chapter 3§r: Prepare Soft Billets - Craft billets and heat them$(br)$(li)§4Chapter 4§r: Cold Forging Process - Forge on the anvil$(br)$(li)§4Chapter 5§r: Advanced Crafting - Weapons, tools, and accessories$(br)$(li)§4Chapter 6§r: Important Mechanics - Weight tiers, cooling, and more"
     },
     {
       "type": "patchouli:text",
       "title": "Controls Tip",
-      "text": "$(li)Left-click with hammer to forge metal on anvil$(br)$(li)Right-click with axe to process metal on anvil$(br)$(li)Left-click with chisel to carve final products$(br)$(li)Hold §2Shift§r to view item details$(br)$(li)Use §6/forgeodyssey find§r to locate natural metals$(br)$(li)Use §3wooden clamp§r for hot items to avoid burns"
+      "text": "$(li)Left-click with hammer to forge metal on anvil$(br)$(li)Right-click with axe to process metal on anvil$(br)$(li)Left-click with chisel to carve final products$(br)$(li)Hold §2Shift§r to view item details$(br)$(li)Use §4/forgeodyssey find§r to locate natural metals$(br)$(li)Use §3wooden clamp§r for hot items to avoid burns"
     }
   ],
   "sortnum": -1

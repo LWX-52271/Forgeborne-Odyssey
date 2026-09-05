@@ -6,22 +6,22 @@
     {
       "type": "patchouli:text",
       "title": "探索与发现",
-      "text": "§0冶锻纪行中的金属以自然金属块的形式散布于世界各地。你需要探索世界来寻找这些珍贵的资源。三种金属的生成高度相同，但稀有度不同。"
+      "text": "§0冶锻纪行中的金属以自然金属块的形式散布于世界各地。你需要探索世界来寻找这些珍贵的资源。三种金属的生成高度不同，稀有度也不同。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:natural_copper_block",
-      "text": "§c【自然铜】最常见$(br2)生成高度：Y=55-180$(br)稀有度：每约5个区块生成1次$(br2)铜是最基础的锻造金属，建议优先寻找。"
+      "text": "§c【自然铜】最常见$(br2)生成位置：山地、河流附近$(br)铜是最基础的锻造金属，建议优先寻找。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:natural_silver_block",
-      "text": "§3【自然银】比较稀有$(br2)生成高度：Y=55-180$(br)稀有度：每约20个区块生成1次$(br2)银的锻造性能优良，适合制作精密饰品。"
+      "text": "§3【自然银】比较稀有$(br2)生成位置：高海拔山区$(br)银的锻造性能优良，适合制作精密饰品。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:natural_gold_block",
-      "text": "§2【自然金】非常稀有$(br2)生成高度：Y=55-180$(br)稀有度：每约40个区块生成1次$(br2)金是最珍贵的金属，适合制作高端饰品和装饰。"
+      "text": "§2【自然金】非常稀有$(br2)生成位置：河滩、沙滩$(br)金是最珍贵的金属，适合制作高端饰品和装饰。"
     },
     {
       "type": "patchouli:text",

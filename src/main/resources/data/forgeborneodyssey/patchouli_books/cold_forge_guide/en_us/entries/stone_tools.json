@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Flint Tools",
-      "text": "Besides cobblestone tools, you can craft sharper tools from flint:$(br)$(li)Flint Knife - Basic weapon$(br)$(li)Flint Shovel - Digging tool$(br)$(li)Flint Sickle - Crop harvesting"
+      "text": "Besides cobblestone tools, you can craft sharper tools from flint:$(br)$(li)Flint Knife - Basic weapon, right-click birch logs to strip bark$(br)$(li)Flint Shovel - Digging tool, right-click sand/gravel for clay$(br)$(li)Flint Sickle - Crop harvesting$(br2)§4Note:§r Flint knife, flint shovel, and other advanced tools require §3Birch Tar§r as an adhesive. Birch tar is extracted from birch bark using a Tar Kiln."
     },
     {
       "type": "patchouli:text",

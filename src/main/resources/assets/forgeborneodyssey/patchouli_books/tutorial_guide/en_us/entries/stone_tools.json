@@ -6,22 +6,22 @@
     {
       "type": "patchouli:text",
       "title": "Your First Tools",
-      "text": "Before you can work with metal, you need basic stone tools.$(br2)Start by finding §6surface cobblestone blocks§r scattered on the ground. They look like small rocks on the surface.$(br2)Pick them up and use them in the crafting table to make your first tools."
+      "text": "Before you can work with metal, you need basic stone tools.$(br2)Start by finding §4surface cobblestone blocks§r scattered on the ground. They look like small rocks on the surface.$(br2)Pick them up and use them in the crafting table to make your first tools."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§3Cobblestone Hammer§r$(br)Attack: 3, Durability: 96$(br)Used for forging metal on anvils."
+      "text": "§3Cobblestone Hammer§r$(br)Basic forging tool.$(br)Used for forging metal on anvils."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:handle_stone_hammer_crafting",
-      "text": "§3Handle Stone Hammer§r$(br)Attack: 4, Durability: 256$(br)An upgraded hammer with a handle."
+      "text": "§3Handle Stone Hammer§r$(br)More efficient forging tool.$(br)An upgraded hammer with a handle."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:stone_chisel_crafting",
-      "text": "§3Stone Chisel§r$(br)Attack: 2, Durability: 48$(br)Used for carving finished products from metal."
+      "text": "§3Stone Chisel§r$(br)For fine carving.$(br)Used for carving finished products from metal."
     },
     {
       "type": "patchouli:crafting",
@@ -45,8 +45,13 @@
     },
     {
       "type": "patchouli:text",
+      "title": "About Birch Tar",
+      "text": "§4Note:§r Advanced tools like the flint knife, flint shovel, flint sickle, and stone spear require §4Birch Tar§r as an adhesive.$(br2)Birch tar is extracted from birch bark using a §4Tar Kiln§r:$(br)$(li)Right-click §3Birch Logs§r with a crude flint knife to strip bark$(br)$(li)Place birch bark in a tar kiln and fire it$(br)$(li)Obtain birch tar for crafting$(br2)For detailed steps, read §3Chapter 6: Tar Kiln & Birch Tar§r."
+    },
+    {
+      "type": "patchouli:text",
       "title": "Tool Usage Tips",
-      "text": "$(li)§6Hammer + Anvil:§r Left-click on anvil to forge metal$(br)$(li)§6Axe + Anvil:§r Right-click on anvil to bend metal sheets$(br)$(li)§6Chisel + Anvil:§r Left-click on anvil to carve finished products$(br)$(li)§6Flint Shovel:§r Right-click sand for clay, dirt for kiln pit$(br)$(li)§6Flint Knife:§r Right-click grass for grass fiber$(br)$(li)§6Wooden Clamp:§r Always use for hot items!"
+      "text": "$(li)§4Hammer + Anvil:§r Left-click on anvil to forge metal$(br)$(li)§4Axe + Anvil:§r Right-click on anvil to bend metal sheets$(br)$(li)§4Chisel + Anvil:§r Left-click on anvil to carve finished products$(br)$(li)§4Flint Shovel:§r Right-click sand for clay, dirt for kiln pit$(br)$(li)§4Flint Knife:§r Right-click grass for grass fiber, birch logs for bark$(br)$(li)§4Wooden Clamp:§r Always use for hot items!"
     }
   ],
   "sortnum": 0

@@ -10,13 +10,13 @@
     {
       "type": "patchouli:text",
       "title": "What You Will Learn",
-      "text": "$(li)§6Prologue§r: Survival Basics - Getting started & core tools$(br)$(li)§6Chapter 1§r: Crafting Stone Tools - Your first tools$(br)$(li)§6Chapter 2§r: Finding Natural Metals - Copper, Silver, Gold$(br)$(li)§6Chapter 3§r: Cold Forging Basics - From billet to blade$(br)$(li)§6Chapter 4§r: Fire-Crack Mining - Efficient ore extraction$(br)$(li)§6Chapter 5§r: Pottery Making - Kiln building and firing"
+      "text": "$(li)§4Prologue§r: Survival Basics - Getting started & core tools$(br)$(li)§4Chapter 1§r: Crafting Stone Tools - Your first tools$(br)$(li)§4Chapter 2§r: Finding Natural Metals - Copper, Silver, Gold$(br)$(li)§4Chapter 3§r: Cold Forging Basics - From billet to blade$(br)$(li)§4Chapter 4§r: Fire-Crack Mining - Efficient ore extraction$(br)$(li)§4Chapter 5§r: Pottery Making - Kiln building and firing$(br)$(li)§4Chapter 6§r: Tar Kiln & Birch Tar - Making natural adhesive$(br)$(li)§4Chapter 7§r: Quern & Ore Processing - Crushing ore to extract metal"
     },
     {
       "type": "patchouli:text",
       "title": "Before You Begin",
-      "text": "This mod completely changes the early game progression.$(br2)$(li)§cNo wooden/stone pickaxe can mine ores!§r$(br)$(li)You must find §6natural metal blocks§r on the surface$(br)$(li)Cold forging replaces traditional smelting$(br)$(li)Fire-crack mining is the only way to get ore chunks$(br)$(li)Pottery requires building and managing a kiln$(br2)$(4)Tip:§r Hold §2Shift§r to view detailed item information."
+      "text": "This mod completely changes the early game progression.$(br2)$(li)§cNo wooden/stone pickaxe can mine ores!§r$(br)$(li)You must find §4natural metal blocks§r on the surface$(br)$(li)Cold forging replaces traditional smelting$(br)$(li)Fire-crack mining is the only way to get ore chunks$(br)$(li)Pottery requires building and managing a kiln$(br2)$(4)Tip:§r Hold §2Shift§r to view detailed item information."
     }
   ],
-  "sortnum": -1
+  "sortnum": -2
 }

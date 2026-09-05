@@ -36,7 +36,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:soft_copper_billet",
-      "text": "§3Softened Copper Billet$(br2)Obtained after heating in fire pit. Darker color, softer texture, ready for forging on the anvil. Note: Soft copper billet auto-cools after 1.5 minutes in inventory."
+      "text": "§3Softened Copper Billet$(br2)Obtained after heating in fire pit. Darker color, softer texture, ready for forging on the anvil. Note: Soft copper billet auto-cools after a period of time in inventory."
     }
   ],
   "sortnum": 2

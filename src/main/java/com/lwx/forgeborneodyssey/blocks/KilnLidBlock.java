@@ -40,7 +40,7 @@ import java.util.List;
 public class KilnLidBlock extends Block implements EntityBlock {
     public static final IntegerProperty SMOKE_HOLE = IntegerProperty.create("smoke_hole", 0, 2);
 
-    protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
+    protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D);
 
     public KilnLidBlock() {
         super(Properties.of()

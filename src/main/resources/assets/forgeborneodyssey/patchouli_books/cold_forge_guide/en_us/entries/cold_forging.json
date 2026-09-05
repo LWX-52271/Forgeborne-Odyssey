@@ -11,17 +11,17 @@
     {
       "type": "patchouli:text",
       "title": "§8[Step 1: Stretch Billet to Sheet]",
-      "text": "Place softened billet on anvil and left-click with stone hammer 8 times. The billet will be stretched into a metal sheet.$(br2)Action: Hold stone hammer, aim at softened billet on anvil, left-click repeatedly. Progress bar shows forging progress.$(br2)§lNote: There is a 1% chance of forging failure, dropping metal fragments instead of a sheet."
+      "text": "Place softened billet on anvil and left-click with stone hammer repeatedly. The billet will be stretched into a metal sheet.$(br2)Action: Hold stone hammer, aim at softened billet on anvil, left-click repeatedly. Progress bar shows forging progress.$(br2)§lNote: There is a 1% chance of forging failure, dropping metal fragments instead of a sheet."
     },
     {
       "type": "patchouli:spotlight",
       "item": "forgeborneodyssey:copper_sheet",
-      "text": "§3Copper Sheet$(br2)Forged from copper billet by 8 hammer strikes on the anvil. An intermediate product for further processing. Silver and gold sheets follow the same process."
+      "text": "§3Copper Sheet$(br2)Forged from copper billet by hammering on the anvil. An intermediate product for further processing. Silver and gold sheets follow the same process."
     },
     {
       "type": "patchouli:text",
       "title": "§8[Step 2: Process the Sheet]",
-      "text": "Metal sheets need two processing steps to become carveable:$(br2)$(li)Sheet → §6Curve§r: Right-click sheet on anvil with axe 1 time$(br)$(li)Curve → §6Slot§r: Right-click curve on anvil with axe 1 time$(br2)Curves are for forging axes, slots are for forging blades, carving knives, or further processing into rings, hooks, pins."
+      "text": "Metal sheets need two processing steps to become carveable:$(br2)$(li)Sheet → §4Curve§r: Right-click sheet on anvil with axe$(br)$(li)Curve → §4Slot§r: Right-click curve on anvil with axe$(br2)Curves are for forging axes, slots are for forging blades, carving knives, or further processing into rings, hooks, pins."
     },
     {
       "type": "patchouli:spotlight",
@@ -36,7 +36,7 @@
     {
       "type": "patchouli:text",
       "title": "§8[Step 3: Forge and Carve Final Products]",
-      "text": "Different products use different tools and methods:$(br2)§6Forging (Hammer Left-click):$(br)$(li)Curve + Hammer 6 clicks → §6Axe Head$(br)$(li)Slot + Hammer 7 clicks → §6Sword Blade$(br2)§5Carving (Chisel Left-click):$(br)$(li)Slot + Chisel 6 clicks → §6Primitive Knife$(br)$(li)Metal Pin + Chisel 10 clicks → §6Pin Chestplate"
+      "text": "Different products use different tools and methods:$(br2)§4Forging (Hammer Left-click):$(br)$(li)Curve + Hammer → §4Axe Head$(br)$(li)Slot + Hammer → §4Sword Blade$(br2)§5Carving (Chisel Left-click):$(br)$(li)Slot + Chisel → §4Primitive Knife$(br)$(li)Metal Pin + Chisel → §4Pin Chestplate"
     },
     {
       "type": "patchouli:text",

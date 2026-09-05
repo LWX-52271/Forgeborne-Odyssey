@@ -45,8 +45,13 @@
     },
     {
       "type": "patchouli:text",
+      "title": "About Birch Tar",
+      "text": "§4Note:§r Advanced tools like the flint knife, flint shovel, flint sickle, and stone spear require §4Birch Tar§r as an adhesive.$(br2)Birch tar is extracted from birch bark using a §4Tar Kiln§r:$(br)$(li)Right-click §3Birch Logs§r with a crude flint knife to strip bark$(br)$(li)Place birch bark in a tar kiln and fire it$(br)$(li)Obtain birch tar for crafting$(br2)For detailed steps, read §3Chapter 6: Tar Kiln & Birch Tar§r."
+    },
+    {
+      "type": "patchouli:text",
       "title": "Tool Usage Tips",
-      "text": "$(li)§4Hammer + Anvil:§r Left-click on anvil to forge metal$(br)$(li)§4Axe + Anvil:§r Right-click on anvil to bend metal sheets$(br)$(li)§4Chisel + Anvil:§r Left-click on anvil to carve finished products$(br)$(li)§4Flint Shovel:§r Right-click sand for clay, dirt for kiln pit$(br)$(li)§4Flint Knife:§r Right-click grass for grass fiber$(br)$(li)§4Wooden Clamp:§r Always use for hot items!"
+      "text": "$(li)§4Hammer + Anvil:§r Left-click on anvil to forge metal$(br)$(li)§4Axe + Anvil:§r Right-click on anvil to bend metal sheets$(br)$(li)§4Chisel + Anvil:§r Left-click on anvil to carve finished products$(br)$(li)§4Flint Shovel:§r Right-click sand for clay, dirt for kiln pit$(br)$(li)§4Flint Knife:§r Right-click grass for grass fiber, birch logs for bark$(br)$(li)§4Wooden Clamp:§r Always use for hot items!"
     }
   ],
   "sortnum": 0
