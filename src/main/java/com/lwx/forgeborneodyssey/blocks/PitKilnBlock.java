@@ -2,6 +2,7 @@ package com.lwx.forgeborneodyssey.blocks;
 
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import com.lwx.forgeborneodyssey.util.FluidHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -196,8 +197,8 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
                 if (isTop && held.is(ModItems.GRATE_BLOCK_ITEM.get())) valid = true;
                 return valid ? InteractionResult.SUCCESS : InteractionResult.FAIL;
             }
-            if (stage >= 2 && stage <= 4 && held.is(Items.WATER_BUCKET)) valid = true;
-            if (stage == 1 && hasGrate && isTop && kiln.isGreenware(held)) valid = true;
+            if (stage >= 2 && stage <= 4 && FluidHelper.isWaterContainer(held)) valid = true;
+            if (stage == 1 && hasGrate && isTop && kiln.isKilnLoadable(held)) valid = true;
             if (stage == 1 && hasGrate && isTop && held.isEmpty() && !player.isShiftKeyDown() && kiln.getGreenwareCount() > 0) valid = true;
             if (stage == 1 && hasGrate && isTop && held.is(ModItems.KILN_LID_ITEM.get())) valid = true;
             if (stage == 1 && !hasGrate && isTop && held.is(ModItems.GRATE_BLOCK_ITEM.get())) valid = true;
@@ -207,19 +208,13 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
         }
 
         // ========== 浇水冷却（优先级高于放置水方块） ==========
-        if (stage >= 2 && stage <= 4 && kiln.ignited && held.is(Items.WATER_BUCKET)) {
+        if (stage >= 2 && stage <= 4 && kiln.ignited && FluidHelper.isWaterContainer(held)) {
             if (stage < 4) {
                 level.setBlock(pos, state.setValue(STAGE, 4), 3);
             }
             kiln.coolDownTicks = Math.max(kiln.coolDownTicks, PitKilnBlockEntity.COOL_DOWN_REQUIRED - 200);
             kiln.temperature = Math.max(PitKilnBlockEntity.ROOM_TEMPERATURE, kiln.temperature - 300);
-            if (!player.isCreative()) {
-                held.shrink(1);
-                ItemStack emptyBucket = new ItemStack(Items.BUCKET);
-                if (!player.getInventory().add(emptyBucket)) {
-                    player.drop(emptyBucket, false);
-                }
-            }
+            FluidHelper.drainWaterAndReturnContainer(held, player, hand);
             level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.8F, 1.2F);
             player.displayClientMessage(Component.translatable("message.forgeborneodyssey.kiln.water_cooled"), true);
@@ -254,8 +249,8 @@ public class PitKilnBlock extends HorizontalDirectionalBlock implements EntityBl
             return InteractionResult.SUCCESS;
         }
 
-        // ========== Stage 1: 装填陶坯 ==========
-        if (stage == 1 && isTop && kiln.isGreenware(held)) {
+        // ========== Stage 1: 装填陶坯/石灰岩 ==========
+        if (stage == 1 && isTop && kiln.isKilnLoadable(held)) {
             if (!hasGrate) {
                 player.displayClientMessage(Component.translatable("message.forgeborneodyssey.kiln.grate_required"), true);
                 return InteractionResult.FAIL;

@@ -29,6 +29,11 @@
       "text": "§8Ceramic Blowpipe§r$(br2)Conditions:$(br)$(li)Oxygen < -50 (strong reducing atmosphere)$(br)$(li)Peak temperature > 950℃$(br2)Failure: Produces 1 kiln waste shard. §5Undried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br2)Ceramic blowpipe is used to boost heating rate and max kiln temperature by blowing air."
     },
     {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:storage_pot",
+      "text": "§6Storage Pot§r$(br2)Conditions:$(br)$(li)Atmosphere: §2Any§0 (oxidizing or reducing)$(br)$(li)Peak temperature > 600℃$(br2)Failure: Produces 2 kiln waste shard. §5Undried§0 greenware has a §c15%§0 chance to fail even when conditions are met.$(br2)Storage pot has 9 slots of storage space, an early Stone Age storage solution. §5Only 2 sides of earth insulation needed to reach 600℃§0, serving as an introduction to the insulation system."
+    },
+    {
       "type": "patchouli:text",
       "title": "Firing Strategy Tips",
       "text": "$(li)§3Gray Crucible§r: Seal fire mouth + fully close vents, maintain reducing atmosphere until oxygen<-30, ensure temp>900℃.$(br)$(li)§4Red Mold§r: Open fire mouth + fully open vents, maintain oxidizing atmosphere until oxygen>30, temp>850℃.$(br)$(li)§8Fire Brick§r: Requires highest temperature and sustained high heat, suggest 4-sided insulation + grate + fully closed vents."

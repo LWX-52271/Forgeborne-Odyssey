@@ -6,6 +6,8 @@ import com.lwx.forgeborneodyssey.events.FireCrackMiningHandler;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.core.registration.ModSounds;
 import com.lwx.forgeborneodyssey.items.weapons.SlingItem;
+import com.lwx.forgeborneodyssey.network.ModMessages;
+import com.lwx.forgeborneodyssey.network.PitDiggingInputPacket;
 import com.lwx.forgeborneodyssey.util.VanillaBlockStressManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -27,6 +29,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -37,6 +40,8 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.joml.Matrix4f;
@@ -49,6 +54,67 @@ import java.util.Set;
 public class ClientForgeEventHandler {
 
     private static int slingSoundCooldown = 0;
+
+    private static long pitDigStartTime = 0;
+    private static final int PIT_DIG_DURATION_MS = 2000;
+    private static int pitDigSendCooldown = 0;
+
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || mc.level == null) return;
+
+        if (pitDigSendCooldown > 0) {
+            pitDigSendCooldown--;
+            return;
+        }
+
+        if (!mc.options.keyUse.isDown()) return;
+        if (!mc.player.isShiftKeyDown()) return;
+
+        ItemStack held = mc.player.getMainHandItem();
+        if (!(held.is(ModItems.FLINT_SHOVEL.get()) || held.is(ModItems.CRUDE_FLINT_SHOVEL.get()))) return;
+
+        HitResult hit = mc.hitResult;
+        if (hit == null || hit.getType() != HitResult.Type.BLOCK) return;
+
+        BlockState state = mc.level.getBlockState(((BlockHitResult) hit).getBlockPos());
+        if (!isDirtLike(state)) return;
+
+        ModMessages.CHANNEL.sendToServer(new PitDiggingInputPacket());
+        pitDigSendCooldown = 2;
+    }
+
+    @SubscribeEvent
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (!event.getLevel().isClientSide()) return;
+
+        Player player = event.getEntity();
+        ItemStack held = player.getItemInHand(event.getHand());
+        BlockPos pos = event.getHitVec().getBlockPos();
+        BlockState state = event.getLevel().getBlockState(pos);
+
+        if ((held.is(ModItems.FLINT_SHOVEL.get()) || held.is(ModItems.CRUDE_FLINT_SHOVEL.get()))
+                && player.isShiftKeyDown()
+                && isDirtLike(state)) {
+            if (pitDigStartTime == 0) {
+                pitDigStartTime = System.currentTimeMillis();
+            }
+        } else {
+            pitDigStartTime = 0;
+        }
+    }
+
+    private static boolean isDirtLike(BlockState state) {
+        return state.is(Blocks.DIRT) ||
+                state.is(Blocks.GRASS_BLOCK) ||
+                state.is(Blocks.COARSE_DIRT) ||
+                state.is(Blocks.PODZOL) ||
+                state.is(Blocks.MYCELIUM) ||
+                state.is(Blocks.ROOTED_DIRT);
+    }
 
     @SubscribeEvent
     public static void onRenderHand(RenderHandEvent event) {
@@ -279,22 +345,47 @@ public class ClientForgeEventHandler {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null) return;
 
-        HitResult hit = mc.hitResult;
-        if (hit == null || hit.getType() != HitResult.Type.BLOCK) return;
-
-        BlockHitResult blockHit = (BlockHitResult) hit;
-        BlockState state = mc.level.getBlockState(blockHit.getBlockPos());
-        if (!(state.getBlock() instanceof TunnelSupportBlock)) return;
-
-        Component text = Component.translatable("message.forgeborneodyssey.crawl_hint");
         GuiGraphics guiGraphics = event.getGuiGraphics();
         int screenWidth = event.getWindow().getGuiScaledWidth();
         int screenHeight = event.getWindow().getGuiScaledHeight();
-        int textWidth = mc.font.width(text);
-        int x = (screenWidth - textWidth) / 2;
-        int y = screenHeight / 2 + 14;
 
-        guiGraphics.drawString(mc.font, text, x, y, 0xFFFFFF);
+        HitResult hit = mc.hitResult;
+        if (hit != null && hit.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockHit = (BlockHitResult) hit;
+            BlockState state = mc.level.getBlockState(blockHit.getBlockPos());
+            if (state.getBlock() instanceof TunnelSupportBlock) {
+                Component text = Component.translatable("message.forgeborneodyssey.crawl_hint");
+                int textWidth = mc.font.width(text);
+                int x = (screenWidth - textWidth) / 2;
+                int y = screenHeight / 2 + 14;
+                guiGraphics.drawString(mc.font, text, x, y, 0xFFFFFF);
+            }
+        }
+
+        if (pitDigStartTime > 0) {
+            if (!mc.options.keyUse.isDown()) {
+                pitDigStartTime = 0;
+                return;
+            }
+
+            long elapsed = System.currentTimeMillis() - pitDigStartTime;
+            float progress = Math.min(1.0f, (float) elapsed / PIT_DIG_DURATION_MS);
+
+            int barWidth = 40;
+            int barHeight = 4;
+            int x = (screenWidth - barWidth) / 2;
+            int y = screenHeight / 2 + 10;
+
+            guiGraphics.fill(x, y, x + barWidth, y + barHeight, 0x55000000);
+            int fillWidth = (int) (barWidth * progress);
+            if (fillWidth > 0) {
+                guiGraphics.fill(x, y, x + fillWidth, y + barHeight, 0xFFCCAA00);
+            }
+
+            if (progress >= 1.0f) {
+                pitDigStartTime = 0;
+            }
+        }
     }
 
     private static void renderHeatOverlay(PoseStack poseStack, BlockPos pos, float heat, float stress, Level level) {

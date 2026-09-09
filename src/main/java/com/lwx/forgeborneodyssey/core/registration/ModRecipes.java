@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.core.registration;
 
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
+import com.lwx.forgeborneodyssey.recipe.FluidContainerShapelessRecipe;
 import com.lwx.forgeborneodyssey.recipe.ForgingRecipe;
 import com.lwx.forgeborneodyssey.recipe.ToolShapedRecipe;
 import com.lwx.forgeborneodyssey.recipe.ToolShapelessRecipe;
@@ -63,6 +64,19 @@ public class ModRecipes {
     // 工具不消耗的无序合成配方序列化器
     public static final RegistryObject<RecipeSerializer<ToolShapelessRecipe>> TOOL_SHAPELESS_RECIPE_SERIALIZER = 
         RECIPE_SERIALIZERS.register("tool_shapeless", ToolShapelessRecipe.Serializer::new);
+    
+    // 流体容器不消耗的无序合成配方类型
+    public static final RegistryObject<RecipeType<FluidContainerShapelessRecipe>> FLUID_CONTAINER_SHAPELESS_RECIPE_TYPE = 
+        RECIPE_TYPES.register("fluid_container_shapeless", () -> new RecipeType<FluidContainerShapelessRecipe>() {
+            @Override
+            public String toString() {
+                return "fluid_container_shapeless";
+            }
+        });
+    
+    // 流体容器不消耗的无序合成配方序列化器
+    public static final RegistryObject<RecipeSerializer<FluidContainerShapelessRecipe>> FLUID_CONTAINER_SHAPELESS_RECIPE_SERIALIZER = 
+        RECIPE_SERIALIZERS.register("fluid_container_shapeless", FluidContainerShapelessRecipe.Serializer::new);
     
     /**
      * 注册到事件总线

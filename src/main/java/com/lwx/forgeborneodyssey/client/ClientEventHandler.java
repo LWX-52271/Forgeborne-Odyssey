@@ -15,6 +15,7 @@ import com.lwx.forgeborneodyssey.client.render.FirePitRenderer;
 import com.lwx.forgeborneodyssey.client.render.KilnLidRenderer;
 import com.lwx.forgeborneodyssey.client.render.PitKilnRenderer;
 import com.lwx.forgeborneodyssey.client.render.QuernRenderer;
+import com.lwx.forgeborneodyssey.client.render.StoragePotRenderer;
 import com.lwx.forgeborneodyssey.client.render.StoneArrowRenderer;
 import com.lwx.forgeborneodyssey.client.render.CorpseRenderer;
 import com.lwx.forgeborneodyssey.client.render.ThrownCrudeStoneSpearRenderer;
@@ -22,6 +23,7 @@ import com.lwx.forgeborneodyssey.client.render.ThrownStoneSpearRenderer;
 import com.lwx.forgeborneodyssey.client.renderer.StressBlockRenderer;
 import com.lwx.forgeborneodyssey.client.screen.AnvilMetalSelectionScreen;
 import com.lwx.forgeborneodyssey.client.screen.GrassBasketScreen;
+import com.lwx.forgeborneodyssey.client.screen.StoragePotScreen;
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
@@ -69,6 +71,7 @@ public class ClientEventHandler {
             BlockEntityRenderers.register(ModBlocks.STRESS_BLOCK_ENTITY.get(), StressBlockRenderer::new);
             BlockEntityRenderers.register(ModBlocks.DRYING_RACK_BLOCK_ENTITY.get(), DryingRackRenderer::new);
             BlockEntityRenderers.register(ModBlocks.QUERN_BLOCK_ENTITY.get(), QuernRenderer::new);
+            BlockEntityRenderers.register(ModBlocks.STORAGE_POT_BLOCK_ENTITY.get(), StoragePotRenderer::new);
 
             // 注册透明方块渲染层
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.GREASE_TORCH.get(), RenderType.cutout());
@@ -77,6 +80,7 @@ public class ClientEventHandler {
             // 注册菜单屏幕
             MenuScreens.register(ModMenuTypes.ANVIL_METAL_SELECTION_MENU.get(), AnvilMetalSelectionScreen::new);
             MenuScreens.register(ModMenuTypes.GRASS_BASKET_MENU.get(), GrassBasketScreen::new);
+            MenuScreens.register(ModMenuTypes.STORAGE_POT_MENU.get(), StoragePotScreen::new);
 
             // 注册铜鱼竿的钓鱼状态predicate
             ItemProperties.register(
@@ -150,6 +154,54 @@ public class ClientEventHandler {
                     return (float)(stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
                 }
             );
+
+            // 注册皮水袋的 filled 属性（装水/空袋切换贴图）
+            ItemProperties.register(
+                ModItems.WATERSKIN.get(),
+                new ResourceLocation(ForgeborneOdyssey.MOD_ID, "filled"),
+                (stack, level, entity, seed) -> {
+                    net.minecraft.nbt.CompoundTag tag = stack.getTag();
+                    if (tag != null && tag.contains("Fluid")) {
+                        return 1.0F;
+                    }
+                    return 0.0F;
+                }
+            );
+
+            // 注册陶水罐的 filled 属性（按水位切换贴图）
+            ItemProperties.register(
+                ModItems.CERAMIC_WATER_JUG.get(),
+                new ResourceLocation(ForgeborneOdyssey.MOD_ID, "filled"),
+                (stack, level, entity, seed) -> {
+                    net.minecraft.nbt.CompoundTag tag = stack.getTag();
+                    if (tag != null && tag.contains("Fluid")) {
+                        net.minecraftforge.fluids.FluidStack fluid = net.minecraftforge.fluids.FluidStack.loadFluidStackFromNBT(tag.getCompound("Fluid"));
+                        return (float) fluid.getAmount() / com.lwx.forgeborneodyssey.items.CeramicWaterJugItem.CAPACITY;
+                    }
+                    return 0.0F;
+                }
+            );
+
+            // 注册陶罐颜色
+            net.minecraft.client.color.block.BlockColors blockColors = Minecraft.getInstance().getBlockColors();
+            blockColors.register((state, level, pos, tintIndex) -> {
+                if (level != null && pos != null) {
+                    net.minecraft.world.level.block.entity.BlockEntity be = level.getBlockEntity(pos);
+                    if (be instanceof com.lwx.forgeborneodyssey.blocks.StoragePotBlockEntity pot) {
+                        return pot.getColor();
+                    }
+                }
+                return com.lwx.forgeborneodyssey.blocks.StoragePotBlockEntity.DEFAULT_COLOR;
+            }, ModBlocks.STORAGE_POT_BLOCK.get());
+
+            net.minecraft.client.color.item.ItemColors itemColors = Minecraft.getInstance().getItemColors();
+            itemColors.register((stack, tintIndex) -> {
+                net.minecraft.nbt.CompoundTag blockEntityTag = stack.getTagElement("BlockEntityTag");
+                if (blockEntityTag != null && blockEntityTag.contains("Color")) {
+                    return blockEntityTag.getInt("Color");
+                }
+                return com.lwx.forgeborneodyssey.blocks.StoragePotBlockEntity.DEFAULT_COLOR;
+            }, ModItems.STORAGE_POT.get());
 
         });
         

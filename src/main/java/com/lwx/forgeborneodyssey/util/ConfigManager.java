@@ -16,6 +16,13 @@ public class ConfigManager {
     public ForgeConfigSpec.DoubleValue progressPerLevelBase;
     public ForgeConfigSpec.DoubleValue progressPerLevelIncrement;
 
+    public ForgeConfigSpec.DoubleValue wildAnimalDamageMultiplier;
+    public ForgeConfigSpec.DoubleValue wildAnimalHealthMultiplier;
+    public ForgeConfigSpec.DoubleValue wildAnimalSpeedMultiplier;
+    public ForgeConfigSpec.BooleanValue enableAggressivePig;
+    public ForgeConfigSpec.BooleanValue enableAggressiveCow;
+    public ForgeConfigSpec.BooleanValue enableAggressiveSheep;
+
     static {
         final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
@@ -48,6 +55,34 @@ public class ConfigManager {
         INSTANCE.progressPerLevelIncrement = BUILDER
                 .comment("Additional ticks per level added to level-up requirement")
                 .defineInRange("progressPerLevelIncrement", 60.0, 0.0, 1000.0);
+
+        BUILDER.pop();
+
+        BUILDER.comment("Wild Animal Settings").push("wildAnimals");
+
+        INSTANCE.wildAnimalDamageMultiplier = BUILDER
+                .comment("Multiplier for wild animal attack damage (1.0 = vanilla)")
+                .defineInRange("wildAnimalDamageMultiplier", 1.5, 0.1, 10.0);
+
+        INSTANCE.wildAnimalHealthMultiplier = BUILDER
+                .comment("Multiplier for wild animal max health (1.0 = vanilla)")
+                .defineInRange("wildAnimalHealthMultiplier", 1.5, 0.1, 10.0);
+
+        INSTANCE.wildAnimalSpeedMultiplier = BUILDER
+                .comment("Multiplier for wild animal movement speed (1.0 = vanilla)")
+                .defineInRange("wildAnimalSpeedMultiplier", 1.2, 0.1, 5.0);
+
+        INSTANCE.enableAggressivePig = BUILDER
+                .comment("If true, pigs (wild boars) will actively attack players")
+                .define("enableAggressivePig", true);
+
+        INSTANCE.enableAggressiveCow = BUILDER
+                .comment("If true, cows (bulls) will actively attack players")
+                .define("enableAggressiveCow", true);
+
+        INSTANCE.enableAggressiveSheep = BUILDER
+                .comment("If true, sheep (rams) will actively attack players")
+                .define("enableAggressiveSheep", true);
 
         BUILDER.pop();
 

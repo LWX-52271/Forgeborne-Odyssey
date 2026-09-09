@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.blocks;
 
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import com.lwx.forgeborneodyssey.util.FluidHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,7 +13,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -100,13 +100,11 @@ public class GreaseTorchBlock extends Block {
             return InteractionResult.PASS;
         }
 
-        if (state.getValue(LIT) && heldItem.is(Items.WATER_BUCKET)) {
+        if (state.getValue(LIT) && FluidHelper.isWaterContainer(heldItem)) {
             if (!level.isClientSide) {
                 level.setBlock(pos, state.setValue(LIT, false), 11);
                 level.playSound(null, pos, SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                if (!player.isCreative()) {
-                    player.setItemInHand(hand, Items.BUCKET.getDefaultInstance());
-                }
+                FluidHelper.drainWaterAndReturnContainer(heldItem, player, hand);
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }

@@ -217,6 +217,8 @@
 
   "item.forgeborneodyssey.fiber_rope": "纤维绳",
   "item.forgeborneodyssey.fiber_rope.tooltip": "§8草茎纤维搓成的绳索，基础合成材料",
+  "item.forgeborneodyssey.waterskin": "皮水袋",
+  "item.forgeborneodyssey.waterskin.tooltip": "§8用干皮和纤维绳缝制的原始水容器。右键水源装水，右键地面倒水。",
 
   "item.forgeborneodyssey.birch_bark": "桦树皮",
   "item.forgeborneodyssey.birch_bark.tooltip": "§8从白桦原木上剥取的树皮，可用于提取焦油",
@@ -386,6 +388,7 @@
   "item.forgeborneodyssey.bone_fish_hook.tooltip": "§8用骨头打磨而成的简易鱼钩",
   "item.forgeborneodyssey.simple_fishing_rod": "简易钓鱼竿",
   "item.forgeborneodyssey.simple_fishing_rod.tooltip": "§8石器时代的钓鱼工具，易损坏",
+  "item.forgeborneodyssey.earthworm": "蚯蚓",
   "item.forgeborneodyssey.herb_poultice": "草药敷料",
   "item.forgeborneodyssey.herb_poultice.tooltip": "§8草茎纤维与花朵制成的原始伤口敷料，恢复4点生命值",
 
@@ -408,6 +411,8 @@
   
   
   "tooltip.forgeborneodyssey.shift_for_details": "按住 §6[Shift]§r 查看详情",
+  "tooltip.forgeborneodyssey.greenware.dried": "§a✔ 已晾干",
+  "tooltip.forgeborneodyssey.greenware.undried": "§c✘ 未晾干",
   "tooltip.forgeborneodyssey.inherited_properties": "§8§o属性继承自初始胚料",
   
   
@@ -650,6 +655,10 @@
   "item.forgeborneodyssey.greenware_brick.tooltip": "§8在晾晒架上晾干后放入窑中烧制\n§8烧成后获得耐火红砖",
   "item.forgeborneodyssey.greenware_blowpipe": "冶炼陶吹管生坯",
   "item.forgeborneodyssey.greenware_blowpipe.tooltip": "§8在晾晒架上晾干后放入窑中烧制\n§8烧成后获得冶炼陶吹管",
+  "item.forgeborneodyssey.greenware_storage_pot": "陶罐生坯",
+  "item.forgeborneodyssey.greenware_storage_pot.tooltip": "§8在晾晒架上晾干后放入窑中烧制\n§8烧成后获得陶罐",
+  "item.forgeborneodyssey.greenware_water_jug": "陶水罐生坯",
+  "item.forgeborneodyssey.greenware_water_jug.tooltip": "§8在晾晒架上晾干后放入窑中烧制\n§8烧成后获得陶水罐，容量4桶水",
   "item.forgeborneodyssey.firewood": "硬木柴",
   "item.forgeborneodyssey.firewood.tooltip": "§8原木与石刀合成（石刀不消耗）\n§8窑炉和火塘的基础燃料，燃烧持久",
   "item.forgeborneodyssey.straw_bale": "干草捆",
@@ -664,12 +673,24 @@
   "item.forgeborneodyssey.fired_brick.tooltip": "§8由耐火砖生坯烧制而成\n§8建筑与装饰材料",
   "item.forgeborneodyssey.ceramic_blowpipe": "冶炼陶吹管",
   "item.forgeborneodyssey.ceramic_blowpipe.tooltip": "§8由陶瓷吹管生坯烧制而成\n§8向火门吹气，提升升温速度并提高窑温上限",
+  "item.forgeborneodyssey.ceramic_water_jug": "陶水罐",
+  "item.forgeborneodyssey.ceramic_water_jug.tooltip": "§8由陶水罐生坯烧制而成\n§8可存储4桶水（4000mB），右键水源装水，右键地面倒水",
+  "item.forgeborneodyssey.storage_pot": "陶罐",
+  "item.forgeborneodyssey.storage_pot.tooltip": "§8由陶罐生坯烧制而成\n§8可存储9格物品的早期存储容器",
+  "block.forgeborneodyssey.storage_pot": "陶罐",
+  "tooltip.forgeborneodyssey.storage_pot.water": "§9储水：%s / %s mB",
   "item.forgeborneodyssey.kiln_waste_shard": "碎陶片",
   "item.forgeborneodyssey.kiln_waste_shard.tooltip": "§8烧制生坯失败或未晾干的产物",
   "item.forgeborneodyssey.plant_ash": "草木灰",
   "item.forgeborneodyssey.plant_ash.tooltip": "§8植物燃烧后的残留物\n§8燃料或合成材料",
   "item.forgeborneodyssey.charcoal_clump": "炭化结块",
   "item.forgeborneodyssey.charcoal_clump.tooltip": "§8火塘燃料，燃烧值较低",
+  "item.forgeborneodyssey.quicklime": "生石灰",
+  "item.forgeborneodyssey.quicklime.tooltip": "§8石灰岩高温煅烧产物（CaO）\n§8遇水剧烈放热",
+  "item.forgeborneodyssey.slaked_lime": "熟石灰",
+  "item.forgeborneodyssey.slaked_lime.tooltip": "§8生石灰加水消解后产物（Ca(OH)₂）\n§8建筑粘合材料",
+  "item.forgeborneodyssey.lime_mortar": "石灰砂浆",
+  "item.forgeborneodyssey.lime_mortar.tooltip": "§8熟石灰与沙混合的建筑粘合剂\n§8用于石质建筑",
 
   "message.forgeborneodyssey.patchouli_not_loaded": "§c需要安装 Patchouli 模组才能阅读手册！请在 mods 文件夹放入 Patchouli。",
 
@@ -686,7 +707,7 @@
   "message.forgeborneodyssey.kiln.water_cooled": "已浇水冷却，窑炉正在降温",
   "message.forgeborneodyssey.kiln.grate_installed": "已安装窑箅",
   "message.forgeborneodyssey.kiln.grate_required": "§c需要先安装窑箅",
-  "message.forgeborneodyssey.kiln.greenware_placed": "已放入生坯（%s/4）",
+  "message.forgeborneodyssey.kiln.greenware_placed": "已放入窑料（%s/4）",
   "message.forgeborneodyssey.kiln.kiln_full": "窑内已满（最多4个）",
   "message.forgeborneodyssey.kiln.greenware_removed": "已取出，剩余 %s/4",
   "message.forgeborneodyssey.kiln.sealed": "已封顶，请用弓钻点火",
@@ -1034,5 +1055,13 @@
   "message.forgeborneodyssey.anvil.knapping_shatter": "§c石核碎裂了！",
   "message.forgeborneodyssey.anvil.place_cobblestone": "§2已放置地表圆石",
   "message.forgeborneodyssey.anvil.place_pebble": "§2已放置燧石砾",
-  "message.forgeborneodyssey.anvil.platform_created": "§2石砧平台已创建"
+  "message.forgeborneodyssey.anvil.platform_created": "§2石砧平台已创建",
+
+  "tooltip.forgeborneodyssey.item_weight": "§7重量",
+  "tooltip.forgeborneodyssey.item_quality.crude": "§8质量: §8粗糙",
+  "tooltip.forgeborneodyssey.item_quality.poor": "§8质量: §7低劣",
+  "tooltip.forgeborneodyssey.item_quality.common": "§8质量: §f普通",
+  "tooltip.forgeborneodyssey.item_quality.fine": "§8质量: §2精良",
+  "tooltip.forgeborneodyssey.item_quality.excellent": "§8质量: §6§l卓越",
+  "message.forgeborneodyssey.knapping_proficiency_milestone": "§6打制熟练度已达到 %s 级！"
 }

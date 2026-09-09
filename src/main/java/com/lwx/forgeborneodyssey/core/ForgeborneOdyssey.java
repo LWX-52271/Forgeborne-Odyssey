@@ -24,11 +24,14 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -146,6 +149,9 @@ public class ForgeborneOdyssey {
             modEventBus.addListener(this::registerBlockColors);
         }
         
+        // 初始化配置文件
+        com.lwx.forgeborneodyssey.util.ConfigManager.initialize();
+
         // 注册命令监听器（ModEventHandlers 已通过 @Mod.EventBusSubscriber 自动注册，无需显式注册）
 
         LOGGER.info("Forgeborne Odyssey v1.0 已加载");
@@ -181,6 +187,20 @@ public class ForgeborneOdyssey {
             int copperCount = CopperGrassFlowerBlock.countCopperOresBelow(level, pos);
             return CopperGrassFlowerBlock.getColorForCopperCount(copperCount);
         }, ModBlocks.COPPER_GRASS_FLOWER.get());
+
+        event.register((state, level, pos, tintIndex) -> {
+            if (level != null && pos != null) {
+                return BiomeColors.getAverageWaterColor(level, pos);
+            }
+            return 0x3F76E4;
+        }, ModBlocks.STORAGE_POT_BLOCK.get());
+    }
+
+    @SubscribeEvent
+    public static void onEntityAttributeModification(EntityAttributeModificationEvent event) {
+        event.add(EntityType.PIG, Attributes.ATTACK_DAMAGE);
+        event.add(EntityType.COW, Attributes.ATTACK_DAMAGE);
+        event.add(EntityType.SHEEP, Attributes.ATTACK_DAMAGE);
     }
 
     @SubscribeEvent

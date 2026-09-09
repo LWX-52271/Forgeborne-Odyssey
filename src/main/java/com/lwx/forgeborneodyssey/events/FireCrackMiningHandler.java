@@ -4,11 +4,13 @@ import com.lwx.forgeborneodyssey.api.ForgeborneAPI;
 import com.lwx.forgeborneodyssey.blocks.FireMouthBlock;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlock;
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.core.registration.ModSounds;
 import com.lwx.forgeborneodyssey.network.FireCrackBatchSyncPacket;
 import com.lwx.forgeborneodyssey.network.FireCrackSyncPacket;
 import com.lwx.forgeborneodyssey.network.ModMessages;
 import com.lwx.forgeborneodyssey.network.SyncStressPacket;
+import com.lwx.forgeborneodyssey.util.FluidHelper;
 import com.lwx.forgeborneodyssey.util.HeatSavedData;
 import com.lwx.forgeborneodyssey.util.VanillaBlockStressManager;
 import net.minecraft.core.BlockPos;
@@ -22,6 +24,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -83,6 +88,9 @@ public class FireCrackMiningHandler {
     private static final float CHAIN_STRESS_RATIO_NEAR = 0.60f;
     private static final float CHAIN_STRESS_RATIO_FAR = 0.30f;
     private static final int MAX_CHAIN_DEPTH = 3;
+    private static final float CALCINATION_HEAT_THRESHOLD = 90.0f;
+    private static final TagKey<Block> LIME_BEARING = BlockTags.create(
+            new ResourceLocation("forgeborneodyssey", "heat_shock/lime_bearing"));
     private static final long QUENCH_BONUS_DURATION = 1200;
     private static final long QUENCH_COOLDOWN = 40;
     private static final float QUENCH_BONUS_MULTIPLIER = 1.5f;
@@ -922,17 +930,23 @@ public class FireCrackMiningHandler {
         if (RANDOM.nextFloat() < breakChance) {
             breakingBlocks.add(pos);
             ForgeborneAPI.resetStress(level, pos);
-            boolean destroyed = level.destroyBlock(pos, true);
-            breakingBlocks.remove(pos);
-            if (destroyed) {
-                level.playSound(null, pos, ModSounds.ROCK_THERMAL_CRACK.get(), SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
-                level.playSound(null, pos, ModSounds.ROCK_BREAK.get(), SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
-                spawnCrackSteamParticles(level, pos);
-                sendStressSync(level, pos, 0f);
-                heatMap.remove(pos);
-                quenchedMap.remove(pos);
-                return;
+
+            if (state.is(LIME_BEARING) && currentHeat >= CALCINATION_HEAT_THRESHOLD) {
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                        new ItemStack(ModItems.QUICKLIME.get(), 2 + RANDOM.nextInt(3)));
+            } else {
+                level.destroyBlock(pos, true);
             }
+
+            breakingBlocks.remove(pos);
+            level.playSound(null, pos, ModSounds.ROCK_THERMAL_CRACK.get(), SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
+            level.playSound(null, pos, ModSounds.ROCK_BREAK.get(), SoundSource.BLOCKS, 1.0f, 0.9f + RANDOM.nextFloat() * 0.2f);
+            spawnCrackSteamParticles(level, pos);
+            sendStressSync(level, pos, 0f);
+            heatMap.remove(pos);
+            quenchedMap.remove(pos);
+            return;
         }
 
         // 未破坏则将热量归零，让客户端同步更新渲染
@@ -947,10 +961,9 @@ public class FireCrackMiningHandler {
      */
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (!handleWaterBucketQuench(event, event.getLevel(), event.getPos(), event.getEntity(), event.getHand())) {
+        if (!handleWaterQuench(event, event.getLevel(), event.getPos(), event.getEntity(), event.getHand())) {
             return;
         }
-        // 服务端额外处理：同步水方块状态，防止客户端预测显示错误的水
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             BlockPos waterPos = event.getPos().relative(event.getFace());
             BlockState actualWaterState = ((ServerLevel) event.getLevel()).getBlockState(waterPos);
@@ -958,22 +971,15 @@ public class FireCrackMiningHandler {
         }
     }
 
-    /**
-     * 处理水桶左键淬火交互（模拟泼水）
-     */
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        handleWaterBucketQuench(event, event.getLevel(), event.getPos(), event.getEntity(), event.getHand());
+        handleWaterQuench(event, event.getLevel(), event.getPos(), event.getEntity(), event.getHand());
     }
 
-    /**
-     * 水桶淬火公共处理逻辑：检查是否为水桶、目标是否为应力方块、执行泼水淬火
-     * @return true 表示淬火成功，事件已被取消
-     */
-    private static boolean handleWaterBucketQuench(net.minecraftforge.eventbus.api.Event event, Level level, BlockPos pos, Player player, InteractionHand hand) {
+    private static boolean handleWaterQuench(net.minecraftforge.eventbus.api.Event event, Level level, BlockPos pos, Player player, InteractionHand hand) {
         ItemStack heldItem = player.getItemInHand(hand);
 
-        if (!heldItem.is(Items.WATER_BUCKET)) return false;
+        if (!FluidHelper.isWaterContainer(heldItem)) return false;
 
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
@@ -1001,11 +1007,7 @@ public class FireCrackMiningHandler {
         }
 
         if (!player.isCreative()) {
-            heldItem.shrink(1);
-            ItemStack emptyBucket = new ItemStack(Items.BUCKET);
-            if (!player.getInventory().add(emptyBucket)) {
-                player.drop(emptyBucket, false);
-            }
+            FluidHelper.drainWaterAndReturnContainer(heldItem, player, hand);
         }
 
         player.displayClientMessage(

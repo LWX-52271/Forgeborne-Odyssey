@@ -113,5 +113,12 @@ public class ModMessages {
             .decoder(SyncStrengthPacket::new)
             .consumerMainThread(SyncStrengthPacket::handle)
             .add();
+
+        // 挖空土坑持续输入（客户端 -> 服务端）
+        CHANNEL.messageBuilder(PitDiggingInputPacket.class, messageID++)
+            .encoder(PitDiggingInputPacket::toBytes)
+            .decoder(PitDiggingInputPacket::new)
+            .consumerMainThread(PitDiggingInputPacket::handle)
+            .add();
     }
 }

@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "生坯类型",
-      "text": "§0可放入窑炉的生坯共有三种：$(br2)$(li)§3§l坩埚生坯§r §0→ 烧制成功获得 §3§l灰陶坩埚$(br)$(li)§4§l陶范生坯§r §0→ 烧制成功获得 §4§l红陶范$(br)$(li)§0§l耐火砖生坯§r §0→ 烧制成功获得 §0§l烧制砖$(br2)§0每种生坯需要不同的烧制条件，失败则产出§c窑渣碎片§0。"
+      "text": "§0可放入窑炉的生坯共有四种：$(br2)$(li)§3§l坩埚生坯§r §0→ 烧制成功获得 §3§l灰陶坩埚$(br)$(li)§4§l陶范生坯§r §0→ 烧制成功获得 §4§l红陶范$(br)$(li)§0§l耐火砖生坯§r §0→ 烧制成功获得 §0§l烧制砖$(br)$(li)§6§l陶罐生坯§r §0→ 烧制成功获得 §6§l陶罐$(br2)§0每种生坯需要不同的烧制条件，失败则产出§c窑渣碎片§0。"
     },
     {
       "type": "patchouli:crafting",
@@ -27,6 +27,11 @@
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:greenware_brick_crafting",
       "text": "§0耐火砖生坯§0的合成配方。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_storage_pot_crafting",
+      "text": "§6陶罐生坯§0的合成配方。§0石器时代的早期存储方案。"
     },
     {
       "type": "patchouli:text",

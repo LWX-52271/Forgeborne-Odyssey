@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.blocks;
 
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -101,17 +102,16 @@ public class SurfaceCobblestoneBlock extends FallingBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide) {
-            // 播放拾取音效
             level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.5f, 1.0f);
             
-            // 给玩家方块物品
             ItemStack blockItem = new ItemStack(this);
+            if (!ItemQualityHelper.hasQuality(blockItem)) {
+                ItemQualityHelper.assignRandomQuality(blockItem);
+            }
             if (!player.getInventory().add(blockItem)) {
-                // 如果背包满了，掉落在地上
                 player.drop(blockItem, false);
             }
             
-            // 移除方块
             level.destroyBlock(pos, false);
         }
         return InteractionResult.SUCCESS;

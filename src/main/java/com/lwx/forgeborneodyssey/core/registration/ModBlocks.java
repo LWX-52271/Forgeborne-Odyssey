@@ -31,6 +31,8 @@ import com.lwx.forgeborneodyssey.blocks.DryingRackBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.QuernBlock;
 import com.lwx.forgeborneodyssey.blocks.QuernBlockEntity;
+import com.lwx.forgeborneodyssey.blocks.StoragePotBlock;
+import com.lwx.forgeborneodyssey.blocks.StoragePotBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.*;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.*;
@@ -377,6 +379,13 @@ public class ModBlocks {
     // 石磨盘方块实体类型
     public static final RegistryObject<BlockEntityType<QuernBlockEntity>> QUERN_BLOCK_ENTITY = BLOCK_ENTITIES.register("quern_block_entity",
             () -> BlockEntityType.Builder.of(QuernBlockEntity::new, QUERN.get()).build(null));
+
+    // 陶罐
+    public static final RegistryObject<Block> STORAGE_POT_BLOCK = BLOCKS.register("storage_pot", StoragePotBlock::new);
+
+    // 陶罐方块实体类型
+    public static final RegistryObject<BlockEntityType<StoragePotBlockEntity>> STORAGE_POT_BLOCK_ENTITY = BLOCK_ENTITIES.register("storage_pot_block_entity",
+            () -> BlockEntityType.Builder.of(StoragePotBlockEntity::new, STORAGE_POT_BLOCK.get()).build(null));
 
     // 火塘方块实体类型
     public static final RegistryObject<BlockEntityType<FirePitBlockEntity>> FIRE_PIT_BLOCK_ENTITY = BLOCK_ENTITIES.register("fire_pit_block_entity", 

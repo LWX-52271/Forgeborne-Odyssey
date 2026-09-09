@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.items.tools;
 
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
@@ -63,10 +64,15 @@ public class CopperFishingRodItem extends FishingRodItem {
                     SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1.0F,
                     0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
         } else {
+            ItemStack offhand = pPlayer.getOffhandItem();
+            if (!offhand.is(ModItems.EARTHWORM.get())) {
+                return InteractionResultHolder.fail(itemstack);
+            }
             pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(),
                     SoundEvents.FISHING_BOBBER_THROW, SoundSource.NEUTRAL, 0.5F,
                     0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
             if (!pLevel.isClientSide) {
+                offhand.shrink(1);
                 int j = EnchantmentHelper.getFishingSpeedBonus(itemstack);
                 int k = EnchantmentHelper.getFishingLuckBonus(itemstack);
                 pLevel.addFreshEntity(new FishingHook(pPlayer, pLevel, k, j));

@@ -5,6 +5,7 @@ import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
 import com.lwx.forgeborneodyssey.items.softmetalbillets.AbstractSoftMetalBilletItem;
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -314,7 +315,9 @@ public class FirePitBlockEntity extends BlockEntity {
                         softBilletItemInstance.setPurity(softBillet, purity);
                     }
                 }
-                
+
+                ItemQualityHelper.inheritQuality(softBillet, storedItem);
+
                 setStoredItem(softBillet);
                 
                 // 停止烧制
@@ -332,7 +335,7 @@ public class FirePitBlockEntity extends BlockEntity {
     private void finishCooking() {
         ItemStack cookedItem = FoodCookingRecipes.getCookedResult(storedItem);
         if (!cookedItem.isEmpty()) {
-            // 转换为烹饪后的食物
+            ItemQualityHelper.inheritQuality(cookedItem, storedItem);
             setStoredItem(cookedItem);
             
             // 停止烹饪
@@ -371,6 +374,19 @@ public class FirePitBlockEntity extends BlockEntity {
     }
 
     public void setStoredItem(ItemStack stack) {
+        if (!stack.isEmpty()) {
+            CompoundTag tag = stack.getTag();
+            if (tag != null && tag.contains("ore_quality")) {
+                float oreQuality = tag.getFloat("ore_quality");
+                ItemQualityHelper.setQualityValue(stack, oreQuality * 10.0f);
+                tag.remove("ore_quality");
+                if (tag.isEmpty()) {
+                    stack.setTag(null);
+                }
+            } else if (!ItemQualityHelper.hasQuality(stack)) {
+                ItemQualityHelper.assignRandomQuality(stack, level != null ? level.getRandom() : net.minecraft.util.RandomSource.create());
+            }
+        }
         this.storedItem = stack;
         setChanged();
         if (level != null && !level.isClientSide) {

@@ -3,6 +3,7 @@ package com.lwx.forgeborneodyssey.entities;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -187,15 +188,25 @@ public class CorpseEntity extends Entity {
     @Override
     public net.minecraft.world.entity.EntityDimensions getDimensions(net.minecraft.world.entity.Pose pPose) {
         CompoundTag nbt = getEntityNbt();
-        float w = 1.0f;
-        float h = 0.3f;
+        float origW = 1.0f;
+        float origH = 1.0f;
         if (nbt.contains("CorpseOrigWidth", 5) && nbt.contains("CorpseOrigHeight", 5)) {
-            float origW = nbt.getFloat("CorpseOrigWidth");
-            float origH = nbt.getFloat("CorpseOrigHeight");
-            w = Math.max(origW, origH);
-            h = Math.min(origW, 0.4f);
+            origW = nbt.getFloat("CorpseOrigWidth");
+            origH = nbt.getFloat("CorpseOrigHeight");
         }
+
+        float progress = Math.min(1.0F, (float) this.tickCount / (float) FALL_DURATION_TICKS);
+        float t = easeOutCubic(progress);
+
+        float w = origW + (origH - origW) * t;
+        float h = origH + (origW - origH) * t;
+
         return net.minecraft.world.entity.EntityDimensions.fixed(w, h);
+    }
+
+    private static float easeOutCubic(float t) {
+        float m = t - 1.0F;
+        return m * m * m + 1.0F;
     }
 
     @Override
@@ -267,9 +278,36 @@ public class CorpseEntity extends Entity {
         }
     }
 
+    private void dropEquipment() {
+        CompoundTag nbt = getEntityNbt();
+
+        dropInventoryList(nbt, "HandItems");
+        dropInventoryList(nbt, "ArmorItems");
+    }
+
+    private void dropInventoryList(CompoundTag nbt, String key) {
+        if (!nbt.contains(key, 9)) return;
+        ListTag list = nbt.getList(key, 10);
+        for (int i = 0; i < list.size(); i++) {
+            CompoundTag itemTag = list.getCompound(i);
+            ItemStack stack = ItemStack.of(itemTag);
+            if (!stack.isEmpty()) {
+                if (stack.isDamageableItem() && stack.getDamageValue() == 0) {
+                    int maxDamage = stack.getMaxDamage();
+                    int minDamage = (int)(maxDamage * 0.15);
+                    int maxRandomDamage = (int)(maxDamage * 0.75);
+                    int randomDamage = this.random.nextIntBetweenInclusive(minDamage, maxRandomDamage);
+                    stack.setDamageValue(randomDamage);
+                }
+                this.spawnAtLocation(stack);
+            }
+        }
+    }
+
     private void harvestWithKnife(Player player, ItemStack knife, InteractionHand hand) {
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PUMPKIN_CARVE, SoundSource.PLAYERS, 1.0F, 1.0F);
         dropLootTableItems(player);
+        dropEquipment();
 
         CompoundTag nbt = getEntityNbt();
         if (nbt.contains("CorpseStoredXp", 3)) {

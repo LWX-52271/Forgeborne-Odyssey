@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TooltipItem extends Item {
 
-    private final String tooltipKey;
+    protected final String tooltipKey;
 
     public TooltipItem(Properties properties, String tooltipKey) {
         super(properties);

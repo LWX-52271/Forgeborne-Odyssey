@@ -79,15 +79,7 @@ public class CorpseRenderer extends EntityRenderer<CorpseEntity> {
             rendererCache.put(rl, renderer);
         }
 
-        long spawnTick = corpse.getSpawnTick();
-        long nowTick = level.getGameTime();
-        long elapsed = nowTick - spawnTick;
-        float progress;
-        if (spawnTick <= 0L) {
-            progress = 1.0F;
-        } else {
-            progress = Math.min(1.0F, (elapsed + partialTick) / (float) CorpseEntity.FALL_DURATION_TICKS);
-        }
+        float progress = Math.min(1.0F, (corpse.tickCount + partialTick) / (float) CorpseEntity.FALL_DURATION_TICKS);
 
         float t = easeOutCubic(progress);
         float rotZ = 90.0F * t;

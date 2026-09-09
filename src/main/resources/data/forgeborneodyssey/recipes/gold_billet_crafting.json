@@ -1,13 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "forgeborneodyssey:fluid_container_shapeless",
   "ingredients": [
     {
       "item": "forgeborneodyssey:natural_gold_block"
     },
     {
-      "item": "minecraft:water_bucket"
+      "tag": "forgeborneodyssey:water_containers"
     }
   ],
+  "fluid_ingredient": 1,
   "result": {
     "item": "forgeborneodyssey:gold_billet",
     "count": 1

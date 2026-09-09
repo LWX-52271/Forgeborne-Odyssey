@@ -50,7 +50,7 @@ public enum ModArmorMaterials implements ArmorMaterial {
         SoundEvents.ARMOR_EQUIP_LEATHER,
         0.0f,
         0.0f,
-        () -> Ingredient.of(net.minecraft.world.item.Items.WHEAT)
+        () -> Ingredient.of(com.lwx.forgeborneodyssey.core.registration.ModItems.FIBER_ROPE.get())
     ),
     HIDE(
         "forgeborneodyssey:hide",

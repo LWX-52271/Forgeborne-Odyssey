@@ -2,6 +2,8 @@ package com.lwx.forgeborneodyssey.blocks.anvils;
 
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.util.PlayerStrengthManager;
 import com.lwx.forgeborneodyssey.world.OreQuality;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -204,35 +206,46 @@ public class AnvilBlockEntity extends BlockEntity {
     }
 
     public void setStoredItem(ItemStack stack) {
-        // 检查是否为相同类型的物品，如果是则保留进度
+        if (!stack.isEmpty()) {
+            CompoundTag tag = stack.getTag();
+            if (tag != null && tag.contains("ore_quality")) {
+                float oreQuality = tag.getFloat("ore_quality");
+                ItemQualityHelper.setQualityValue(stack, oreQuality * 10.0f);
+                tag.remove("ore_quality");
+                if (tag.isEmpty()) {
+                    stack.setTag(null);
+                }
+            } else if (!ItemQualityHelper.hasQuality(stack)) {
+                ItemQualityHelper.assignRandomQuality(stack, level != null ? level.getRandom() : net.minecraft.util.RandomSource.create());
+            }
+        }
+
         boolean isSameType = !this.storedItem.isEmpty() && 
                             !stack.isEmpty() &&
                             this.storedItem.getItem() == stack.getItem();
         
         this.storedItem = stack;
         
-        // 只有放置不同类型物品时才重置计数器和拉伸因子
         if (!isSameType) {
-            this.hitCount = 0; // 重置敲击计数
-            this.carveCount = 0; // 重置雕刻计数
-            this.stretchFactor = 0.0f; // 重置拉伸因子
-            this.oreCrushCount = 0; // 重置矿石破碎计数
-            this.oreCrushRequired = 0; // 重置矿石破碎所需次数
-            this.knappingHitCount = 0; // 重置石器打制计数
-            this.knappingRequiredHits = 0; // 重置石器打制所需次数
-            this.knappingPlatformCreated = false; // 重置台面状态
-            this.isCoreShaping = false; // 重置修整石核状态
-            this.knappingFragility = 0; // 重置脆弱度
-            this.knappingLastHitTick = 0; // 重置上次敲击时间
+            this.hitCount = 0;
+            this.carveCount = 0;
+            this.stretchFactor = 0.0f;
+            this.oreCrushCount = 0;
+            this.oreCrushRequired = 0;
+            this.knappingHitCount = 0;
+            this.knappingRequiredHits = 0;
+            this.knappingPlatformCreated = false;
+            this.isCoreShaping = false;
+            this.knappingFragility = 0;
+            this.knappingLastHitTick = 0;
         }
         
         setChanged();
-        // 立即通知世界更新，不区分服务端客户端
         if (level != null) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
-    
+
     /**
      * 处理锻造敲击
      */
@@ -544,13 +557,21 @@ public class AnvilBlockEntity extends BlockEntity {
         // 质量守恒：总重量均分给所有产出物（颗粒 + 掺和料）
         float perItemQuality = quality / (grainCount + temperCount);
 
+        // item_quality：总质量含15%破碎损耗，其中90%分配给矿物颗粒，10%分配给掺和料
+        float sourceItemQuality = ItemQualityHelper.hasQuality(storedItem)
+            ? ItemQualityHelper.getQualityValue(storedItem) : quality * 10.0f;
+        float perItemQualityWithLoss = grainCount > 0
+            ? Math.max(0.01f, sourceItemQuality * 0.85f * 0.90f / grainCount)
+            : 0.01f;
+
         // 生成矿物颗粒——继承原矿的纯度，质量按产出数量均分
         for (int i = 0; i < grainCount; i++) {
             ItemStack grainStack = new ItemStack(grainItem);
             CompoundTag grainTag = grainStack.getOrCreateTag();
             grainTag.putFloat("ore_purity", purity);
             grainTag.putFloat("ore_quality", perItemQuality);
-            
+            ItemQualityHelper.setQualityValue(grainStack, perItemQualityWithLoss);
+
             net.minecraft.world.entity.item.ItemEntity grainEntity = 
                 new net.minecraft.world.entity.item.ItemEntity(
                     level,
@@ -563,12 +584,16 @@ public class AnvilBlockEntity extends BlockEntity {
             level.addFreshEntity(grainEntity);
         }
         
-        // 生成掺和料（废石）——无纯度，质量按产出数量均分
+        // 生成掺和料（废石）——质量极低，仅保留10%的均分质量
+        float temperQuality = temperCount > 0 
+            ? Math.max(0.01f, sourceItemQuality * 0.85f * 0.10f / temperCount) 
+            : 0.01f;
         for (int i = 0; i < temperCount; i++) {
             ItemStack temperStack = new ItemStack(ModItems.TEMPER_GROG.get());
             CompoundTag temperTag = temperStack.getOrCreateTag();
             temperTag.putFloat("ore_quality", perItemQuality);
-            
+            ItemQualityHelper.setQualityValue(temperStack, temperQuality);
+
             net.minecraft.world.entity.item.ItemEntity temperEntity = 
                 new net.minecraft.world.entity.item.ItemEntity(
                     level,
@@ -752,6 +777,7 @@ public class AnvilBlockEntity extends BlockEntity {
         if (result.isEmpty()) {
             result = new ItemStack(ModItems.STONE_AXE_HEAD.get());
         }
+        ItemQualityHelper.inheritQualityWithLoss(result, storedItem, 0.10f);
 
         net.minecraft.world.entity.item.ItemEntity itemEntity =
             new net.minecraft.world.entity.item.ItemEntity(
@@ -800,8 +826,10 @@ public class AnvilBlockEntity extends BlockEntity {
     private void createPlatform(ServerPlayer player, ItemStack hammer, float offsetX, float offsetZ) {
         if (level == null) return;
 
-        // 砾石变为石核
+        // 砾石变为石核，打台面损耗 5%
+        ItemStack oldStoredItem = this.storedItem;
         this.storedItem = new ItemStack(ModItems.STONE_CORE.get());
+        ItemQualityHelper.inheritQualityWithLoss(this.storedItem, oldStoredItem, 0.05f);
         this.knappingPlatformCreated = true;
 
         int strengthLevel = com.lwx.forgeborneodyssey.util.PlayerStrengthManager.getStrengthLevel(player);
@@ -927,11 +955,18 @@ public class AnvilBlockEntity extends BlockEntity {
 
     /**
      * 在石砧周围生成燧石片掉落物
+     * 质量守恒：源品质均分到每个产出物，含10%剥片损耗
      */
     private void spawnFlintFlakes(int count) {
         if (level == null) return;
+        float sourceQuality = ItemQualityHelper.hasQuality(storedItem)
+            ? ItemQualityHelper.getQualityValue(storedItem) : 0.5f;
+        float perFlakeQuality = Math.max(0.01f, sourceQuality * 0.90f / count);
+        float totalConsumed = perFlakeQuality * count;
+
         for (int i = 0; i < count; i++) {
             ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get());
+            ItemQualityHelper.setQualityValue(flake, perFlakeQuality);
             net.minecraft.world.entity.item.ItemEntity flakeEntity =
                 new net.minecraft.world.entity.item.ItemEntity(
                     level,
@@ -947,6 +982,11 @@ public class AnvilBlockEntity extends BlockEntity {
                 (level.random.nextDouble() - 0.5) * 0.2
             );
             level.addFreshEntity(flakeEntity);
+        }
+
+        if (!storedItem.isEmpty() && ItemQualityHelper.hasQuality(storedItem)) {
+            float remaining = Math.max(0.01f, sourceQuality - totalConsumed);
+            ItemQualityHelper.setQualityValue(storedItem, remaining);
         }
     }
 
@@ -1024,6 +1064,7 @@ public class AnvilBlockEntity extends BlockEntity {
         if (result.isEmpty()) {
             result = new ItemStack(ModItems.FLINT_KNIFE_HEAD.get());
         }
+        ItemQualityHelper.inheritQualityWithLoss(result, storedItem, 0.05f);
 
         net.minecraft.world.entity.item.ItemEntity itemEntity =
             new net.minecraft.world.entity.item.ItemEntity(
@@ -1066,6 +1107,7 @@ public class AnvilBlockEntity extends BlockEntity {
         int flakeCount = 1 + level.random.nextInt(2);
         for (int i = 0; i < flakeCount; i++) {
             ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get());
+            ItemQualityHelper.inheritQualityWithLoss(flake, storedItem, 0.10f);
             net.minecraft.world.entity.item.ItemEntity flakeEntity =
                 new net.minecraft.world.entity.item.ItemEntity(
                     level,
@@ -1245,7 +1287,7 @@ public class AnvilBlockEntity extends BlockEntity {
         if (!resultItem.isEmpty()) {
             // 继承原物品的质量和纯度属性
             inheritQualityAndPurity(storedItem, resultItem);
-            
+
             // 替换石砧上的物品
             this.storedItem = resultItem;
             this.hitCount = 0;
@@ -1405,7 +1447,7 @@ public class AnvilBlockEntity extends BlockEntity {
         
         if (!pinArmorItem.isEmpty()) {
             // 继承原物品的质量和纯度属性
-            inheritQualityAndPurity(storedItem, pinArmorItem);
+            inheritQualityAndPurity(storedItem, pinArmorItem, true, player);
             
             // 替换石砧上的物品为饰针胸甲
             this.storedItem = pinArmorItem;
@@ -1498,7 +1540,7 @@ public class AnvilBlockEntity extends BlockEntity {
         
         if (!axeItem.isEmpty()) {
             // 继承原物品的质量和纯度属性
-            inheritQualityAndPurity(storedItem, axeItem);
+            inheritQualityAndPurity(storedItem, axeItem, true, player);
             
             // 替换石砧上的物品为金属斧头
             this.storedItem = axeItem;
@@ -1534,7 +1576,7 @@ public class AnvilBlockEntity extends BlockEntity {
         
         if (!knifeItem.isEmpty()) {
             // 继承原物品的质量和纯度属性
-            inheritQualityAndPurity(storedItem, knifeItem);
+            inheritQualityAndPurity(storedItem, knifeItem, true, player);
             
             // 替换石砧上的物品为金属刀
             this.storedItem = knifeItem;
@@ -1586,7 +1628,7 @@ public class AnvilBlockEntity extends BlockEntity {
         
         if (!bladeItem.isEmpty()) {
             // 继承原物品的质量和纯度属性
-            inheritQualityAndPurity(storedItem, bladeItem);
+            inheritQualityAndPurity(storedItem, bladeItem, true, player);
             
             // 替换石砧上的物品为金属刀刃
             this.storedItem = bladeItem;
@@ -1625,7 +1667,7 @@ public class AnvilBlockEntity extends BlockEntity {
         
         if (!sheetItem.isEmpty()) {
             // 继承原物品的质量和纯度属性，锻打后重量为原来的95%~98%
-            inheritQualityAndPurity(storedItem, sheetItem, true);
+            inheritQualityAndPurity(storedItem, sheetItem, true, player);
             
             // 替换石砧上的物品为金属片
             this.storedItem = sheetItem;
@@ -1672,22 +1714,17 @@ public class AnvilBlockEntity extends BlockEntity {
         }
         
         if (!fragmentItem.isEmpty()) {
-            // 为每个碎片设置重量和质量
             for (int i = 0; i < fragmentCount; i++) {
                 ItemStack fragment = fragmentItem.copy();
                 
-                // 随机分配重量（在40%~50%范围内平均分配）
                 double fragmentWeight = (minFragmentWeight + level.random.nextDouble() * (maxFragmentWeight - minFragmentWeight)) / fragmentCount;
                 
-                // 设置碎片的NBT标签
                 net.minecraft.nbt.CompoundTag tag = fragment.getOrCreateTag();
-                tag.putDouble("Weight", fragmentWeight);
-                
-                // 根据重量设置重量等级
+                ItemQualityHelper.setQualityValue(fragment, (float)(fragmentWeight / 1000.0));
+
                 com.lwx.forgeborneodyssey.items.fragments.AbstractMetalFragmentItem fragmentItemObj = 
                     (com.lwx.forgeborneodyssey.items.fragments.AbstractMetalFragmentItem) fragment.getItem();
                 
-                // 设置随机重量等级（基于重量比例）
                 double weightRatio = fragmentWeight / (originalWeight / fragmentCount);
                 com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem.Quality quality;
                 if (weightRatio < 0.85) {
@@ -1699,13 +1736,12 @@ public class AnvilBlockEntity extends BlockEntity {
                 }
                 tag.putString("Quality", quality.getName());
                 
-                // 继承纯度（稍微降低）
                 if (storedItem.hasTag() && storedItem.getTag().contains("Purity")) {
                     float originalPurity = storedItem.getTag().getFloat("Purity");
                     float fragmentPurity = Math.max(50.0f, originalPurity - level.random.nextFloat() * 10.0f);
                     tag.putFloat("Purity", fragmentPurity);
                 }
-                
+
                 // 在石砧位置生成物品实体
                 net.minecraft.world.entity.item.ItemEntity itemEntity = 
                     new net.minecraft.world.entity.item.ItemEntity(
@@ -1883,44 +1919,38 @@ public class AnvilBlockEntity extends BlockEntity {
      * @param targetItem 目标物品
      */
     private void inheritQualityAndPurity(ItemStack sourceItem, ItemStack targetItem) {
-        inheritQualityAndPurity(sourceItem, targetItem, false);
+        inheritQualityAndPurity(sourceItem, targetItem, false, null);
     }
     
     /**
      * 从源物品继承质量、纯度和重量属性到目标物品
      * @param sourceItem 源物品
      * @param targetItem 目标物品
-     * @param isForging 是否为锻打操作（锻打会损失2%~5%的质量）
+     * @param isForging 是否为锻打操作（锻打会根据力量等级提升质量）
+     * @param player 玩家（锻打时用于获取力量等级）
      */
-    private void inheritQualityAndPurity(ItemStack sourceItem, ItemStack targetItem, boolean isForging) {
+    private void inheritQualityAndPurity(ItemStack sourceItem, ItemStack targetItem, boolean isForging, @Nullable ServerPlayer player) {
         if (sourceItem.isEmpty() || targetItem.isEmpty()) return;
         
-        // 复制 NBT 标签以保留质量、纯度和重量
         if (sourceItem.hasTag()) {
             CompoundTag sourceTag = sourceItem.getTag();
             CompoundTag targetTag = targetItem.getOrCreateTag();
             
-            // 复制质量属性
             if (sourceTag.contains("Quality")) {
                 targetTag.putString("Quality", sourceTag.getString("Quality"));
             }
             
-            // 复制纯度属性
             if (sourceTag.contains("Purity")) {
                 targetTag.putFloat("Purity", sourceTag.getFloat("Purity"));
             }
-            
-            // 复制重量属性，如果是锻打则减少2%~5%
-            if (sourceTag.contains("Weight")) {
-                double originalWeight = sourceTag.getDouble("Weight");
-                if (isForging && level != null) {
-                    // 锻打后重量为原来的95%~98%
-                    double weightRatio = 0.95 + level.random.nextDouble() * 0.03;
-                    targetTag.putDouble("Weight", originalWeight * weightRatio);
-                } else {
-                    targetTag.putDouble("Weight", originalWeight);
-                }
-            }
+        }
+
+        ItemQualityHelper.inheritQuality(targetItem, sourceItem);
+
+        if (isForging && level != null && ItemQualityHelper.hasQuality(targetItem)) {
+            float weightKg = ItemQualityHelper.getQualityValue(targetItem);
+            double weightRatio = 0.95 + level.random.nextDouble() * 0.03;
+            ItemQualityHelper.setQualityValue(targetItem, (float)(weightKg * weightRatio));
         }
     }
 }

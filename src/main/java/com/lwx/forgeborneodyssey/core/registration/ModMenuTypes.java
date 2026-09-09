@@ -4,6 +4,7 @@ import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 
 import com.lwx.forgeborneodyssey.menu.AnvilMetalSelectionMenu;
 import com.lwx.forgeborneodyssey.menu.GrassBasketMenu;
+import com.lwx.forgeborneodyssey.menu.StoragePotMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -31,6 +32,11 @@ public class ModMenuTypes {
             MENUS.register("grass_basket_menu",
                     () -> IForgeMenuType.create((windowId, inv, data) ->
                             new GrassBasketMenu(windowId, inv, data)));
+
+    public static final RegistryObject<MenuType<StoragePotMenu>> STORAGE_POT_MENU =
+            MENUS.register("storage_pot_menu",
+                    () -> IForgeMenuType.create((windowId, inv, data) ->
+                            new StoragePotMenu(windowId, inv, data)));
 
     /**
      * 注册菜单类型

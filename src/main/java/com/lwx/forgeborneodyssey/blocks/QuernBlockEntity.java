@@ -2,6 +2,7 @@ package com.lwx.forgeborneodyssey.blocks;
 
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -43,6 +44,7 @@ public class QuernBlockEntity extends BlockEntity {
                 if (level != null && !level.isClientSide) {
                     ItemStack result = getGrindResult(inputItem);
                     if (result != null && !result.isEmpty()) {
+                        ItemQualityHelper.inheritQualityWithLoss(result, inputItem, 0.05f);
                         Containers.dropItemStack(level,
                                 worldPosition.getX() + 0.5,
                                 worldPosition.getY() + 0.7,

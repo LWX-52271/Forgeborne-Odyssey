@@ -1,9 +1,11 @@
 package com.lwx.forgeborneodyssey.items.tools;
 
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class FlintShovelItem extends ShovelItem {
@@ -44,5 +46,13 @@ public class FlintShovelItem extends ShovelItem {
         super(FLINT_TIER, 1.5F, -2.6F, new Item.Properties()
                 .stacksTo(1)
                 .durability(60));
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
+            return InteractionResult.SUCCESS;
+        }
+        return super.useOn(context);
     }
 }

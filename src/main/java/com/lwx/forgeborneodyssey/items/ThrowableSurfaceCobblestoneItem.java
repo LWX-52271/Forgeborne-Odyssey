@@ -2,6 +2,8 @@ package com.lwx.forgeborneodyssey.items;
 
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.entities.ThrownSurfaceCobblestone;
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.util.KnappingProficiency;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -47,13 +49,15 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // 检查副手是否也持有地表圆石，是则进行敲击
-        ItemStack offhandStack = player.getOffhandItem();
-        if (!offhandStack.isEmpty() && offhandStack.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
-            if (!level.isClientSide) {
-                performKnapping(level, player, stack, offhandStack);
+        // 仅主手使用时才检查副手是否持有地表圆石进行敲击
+        if (hand == InteractionHand.MAIN_HAND) {
+            ItemStack offhandStack = player.getOffhandItem();
+            if (!offhandStack.isEmpty() && offhandStack.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
+                if (!level.isClientSide) {
+                    performKnapping(level, player, stack, offhandStack);
+                }
+                return InteractionResultHolder.success(stack);
             }
-            return InteractionResultHolder.success(stack);
         }
 
         // 检查玩家是否对准了方块（使用 BlockHitResult）
@@ -103,6 +107,12 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
     private static final Random KNAPPING_RANDOM = new Random();
 
     private void performKnapping(Level level, Player player, ItemStack mainHandStack, ItemStack offhandStack) {
+        // 读取双手圆石重量（消耗前）
+        float mainWeight = ItemQualityHelper.hasQuality(mainHandStack)
+                ? ItemQualityHelper.getQualityValue(mainHandStack) : -1f;
+        float offWeight = ItemQualityHelper.hasQuality(offhandStack)
+                ? ItemQualityHelper.getQualityValue(offhandStack) : -1f;
+
         // 消耗双手各一个地表圆石
         if (!player.getAbilities().instabuild) {
             mainHandStack.shrink(1);
@@ -113,36 +123,75 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.STONE_BREAK, SoundSource.PLAYERS, 0.8f, 0.8f + KNAPPING_RANDOM.nextFloat() * 0.4f);
 
-        // 有概率获得产物
+        // 必然获得产物（碎片为主，工具稀有）
         float roll = KNAPPING_RANDOM.nextFloat();
-        ItemStack result = ItemStack.EMPTY;
+        float toolChance = KnappingProficiency.getToolChance(player);
+        KnappingProficiency.addProficiency(player);
 
-        if (roll < 0.20f) {
-            // 20%: 什么都没有，两个石头都碎了
-            result = ItemStack.EMPTY;
-        } else if (roll < 0.50f) {
-            // 30%: 获得 1-2 个燧石片
-            int count = 1 + KNAPPING_RANDOM.nextInt(2);
-            result = new ItemStack(ModItems.FLINT_FLAKE.get(), count);
-        } else if (roll < 0.625f) {
-            // 12.5%: 粗制燧石刀
-            result = new ItemStack(ModItems.CRUDE_FLINT_KNIFE.get());
-        } else if (roll < 0.75f) {
-            // 12.5%: 粗制燧石铲
-            result = new ItemStack(ModItems.CRUDE_FLINT_SHOVEL.get());
-        } else if (roll < 0.875f) {
-            // 12.5%: 粗制燧石镰
-            result = new ItemStack(ModItems.CRUDE_FLINT_SICKLE.get());
-        } else {
-            // 12.5%: 粗制石矛
-            result = new ItemStack(ModItems.CRUDE_STONE_SPEAR.get());
+        if (roll < (1.0f - toolChance)) {
+            // 燧石片：2-3个，各自独立重量
+            int count = 2 + KNAPPING_RANDOM.nextInt(2);
+
+            float totalWeight;
+            if (mainWeight > 0 && offWeight > 0) {
+                totalWeight = (mainWeight + offWeight) * 0.90f;
+            } else if (mainWeight > 0) {
+                totalWeight = mainWeight * 0.90f;
+            } else if (offWeight > 0) {
+                totalWeight = offWeight * 0.90f;
+            } else {
+                totalWeight = -1f;
+            }
+
+            if (totalWeight > 0) {
+                float[] ratios = new float[count];
+                float sum = 0;
+                for (int i = 0; i < count; i++) {
+                    ratios[i] = 0.5f + KNAPPING_RANDOM.nextFloat();
+                    sum += ratios[i];
+                }
+                for (int i = 0; i < count; i++) {
+                    ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get());
+                    ItemQualityHelper.setQualityValue(flake, Math.max(0.01f, totalWeight * ratios[i] / sum));
+                    Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), flake);
+                }
+            } else {
+                for (int i = 0; i < count; i++) {
+                    ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get());
+                    Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), flake);
+                }
+            }
+            return;
         }
 
+        // 工具：按比例分配（刀25% 铲25% 镰20% 矛30%）
+        ItemStack result = rollToolResult();
         if (!result.isEmpty()) {
-            // 尝试放入背包，放不下则掉落在玩家位置
-            if (!player.getInventory().add(result)) {
-                Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), result);
+            float toolWeight = -1f;
+            if (mainWeight > 0 && offWeight > 0) {
+                toolWeight = Math.max(0.01f, (mainWeight + offWeight) * 0.90f);
+            } else if (mainWeight > 0) {
+                toolWeight = Math.max(0.01f, mainWeight * 0.90f);
+            } else if (offWeight > 0) {
+                toolWeight = Math.max(0.01f, offWeight * 0.90f);
             }
+            if (toolWeight > 0) {
+                ItemQualityHelper.setQualityValue(result, toolWeight);
+            }
+            Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), result);
+        }
+    }
+
+    private ItemStack rollToolResult() {
+        float toolRoll = KNAPPING_RANDOM.nextFloat();
+        if (toolRoll < 0.25f) {
+            return new ItemStack(ModItems.CRUDE_FLINT_KNIFE.get());
+        } else if (toolRoll < 0.50f) {
+            return new ItemStack(ModItems.CRUDE_FLINT_SHOVEL.get());
+        } else if (toolRoll < 0.70f) {
+            return new ItemStack(ModItems.CRUDE_FLINT_SICKLE.get());
+        } else {
+            return new ItemStack(ModItems.CRUDE_STONE_SPEAR.get());
         }
     }
 }

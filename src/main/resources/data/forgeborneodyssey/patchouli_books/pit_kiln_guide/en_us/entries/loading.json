@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Greenware Types",
-      "text": "Three types of greenware can be loaded:$(br)$(li)§3Crucible Greenware§r → §3Gray Crucible§r$(br)$(li)§4Mold Greenware§r → §4Red Mold§r$(br)$(li)§8Brick Greenware§r → §8Fired Brick§r$(br)Each requires different firing conditions. Failure produces kiln waste shards."
+      "text": "Three types of greenware can be loaded:$(br)$(li)§3Crucible Greenware§r → §3Gray Crucible§r$(br)$(li)§4Mold Greenware§r → §4Red Mold§r$(br)$(li)§8Brick Greenware§r → §8Fired Brick§r$(br)$(li)§6Storage Pot Greenware§r → §6Storage Pot§r$(br)Each requires different firing conditions. Failure produces kiln waste shards."
     },
     {
       "type": "patchouli:crafting",
@@ -27,6 +27,11 @@
       "type": "patchouli:crafting",
       "recipe": "forgeborneodyssey:greenware_brick_crafting",
       "text": "Crafting recipe for brick greenware."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:greenware_storage_pot_crafting",
+      "text": "Crafting recipe for storage pot greenware. An early storage solution for the Stone Age."
     },
     {
       "type": "patchouli:text",

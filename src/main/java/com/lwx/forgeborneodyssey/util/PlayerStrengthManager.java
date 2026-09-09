@@ -8,6 +8,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+
 import java.util.UUID;
 
 public class PlayerStrengthManager {
@@ -17,7 +19,7 @@ public class PlayerStrengthManager {
 
     public static final int MIN_STRENGTH_LEVEL = 0;
 
-    private static final double QUALITY_TO_WEIGHT = 10000.0;
+    private static final double QUALITY_TO_WEIGHT = 1000.0;
 
     public static int getStrengthLevel(Player player) {
         CompoundTag persistentData = player.getPersistentData();
@@ -209,7 +211,7 @@ public class PlayerStrengthManager {
     }
 
     /**
-     * 遍历背包中所有带 Weight 或 ore_quality 标签的物品，计算总负重（克）
+     * 遍历背包中所有带 Weight 或 item_quality/ore_quality 标签的物品，计算总负重（克）
      */
     public static double calculateTotalWeight(Player player) {
         double total = 0.0;
@@ -233,10 +235,11 @@ public class PlayerStrengthManager {
         double weight = 0.0;
         CompoundTag tag = stack.getTag();
         if (tag != null) {
-            if (tag.contains("ore_quality")) {
+            if (tag.contains(ItemQualityHelper.TAG_ITEM_QUALITY)) {
+                weight += tag.getFloat(ItemQualityHelper.TAG_ITEM_QUALITY) * QUALITY_TO_WEIGHT * stack.getCount();
+            } else if (tag.contains("ore_quality")) {
                 weight += tag.getFloat("ore_quality") * QUALITY_TO_WEIGHT * stack.getCount();
-            }
-            if (tag.contains("Weight")) {
+            } else if (tag.contains("Weight")) {
                 weight += tag.getDouble("Weight") * stack.getCount();
             }
             if (tag.contains("Items")) {

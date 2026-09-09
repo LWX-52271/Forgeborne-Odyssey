@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.events;
 
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
 import com.lwx.forgeborneodyssey.world.OrePurity;
 import com.lwx.forgeborneodyssey.world.OreQuality;
 import net.minecraft.nbt.CompoundTag;
@@ -31,6 +32,18 @@ public class OreQualityTooltipHandler {
                 String qualityKey = "tooltip.forgeborneodyssey.ore_quality." + oreQuality.getName();
                 Component line = Component.translatable(qualityKey)
                         .append(Component.literal(" §7" + String.format("%.1fkg", quality * 10)));
+                event.getToolTip().add(line);
+            }
+            if (tag.contains(ItemQualityHelper.TAG_ITEM_QUALITY)) {
+                float weightKg = tag.getFloat(ItemQualityHelper.TAG_ITEM_QUALITY);
+                String weightStr;
+                if (weightKg >= 1.0f) {
+                    weightStr = String.format("%.1fkg", weightKg);
+                } else {
+                    weightStr = String.format("%.0fg", weightKg * 1000);
+                }
+                Component line = Component.translatable("tooltip.forgeborneodyssey.item_weight")
+                        .append(Component.literal(" §7" + weightStr));
                 event.getToolTip().add(line);
             }
         }

@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.blocks.naturalmetals;
 
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -265,25 +266,19 @@ public abstract class AbstractNaturalMetalBlock extends FallingBlock {
         ItemStack billetItem = this.getBilletItem();
         
         if (!billetItem.isEmpty()) {
-            // 为金属坯料设置随机纯度
+            double weight = 0;
+
             if (billetItem.getItem() instanceof com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem) {
                 com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem billet = 
                     (com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem) billetItem.getItem();
                 
-                // 生成随机重量（根据不同金属类型）
-                double weight = this.generateRandomWeight(level.random);
-                
-                // 根据重量设置重量等级
+                weight = this.generateRandomWeight(level.random);
                 billet.setQualityByWeight(billetItem, weight);
-                
-                // 设置随机纯度
                 billet.setRandomPurity(billetItem, level.random);
-                
-                // 保存重量信息到NBT
-                billetItem.getOrCreateTag().putDouble("Weight", weight);
             }
-            
-            // 先移除自然金属块
+
+            ItemQualityHelper.setQualityValue(billetItem, (float)(weight / 1000.0));
+
             level.destroyBlock(pos, false);
             
             // 延迟1tick后生成物品实体，确保方块已完全移除

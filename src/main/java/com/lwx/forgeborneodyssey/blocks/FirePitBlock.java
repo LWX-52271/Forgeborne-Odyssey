@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.blocks;
 
+import com.lwx.forgeborneodyssey.util.FluidHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,7 +14,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -178,16 +178,14 @@ public class FirePitBlock extends Block implements EntityBlock {
         
         // 处理熄灭火塘（已点燃状态）
         if (state.getValue(LIT)) {
-            if (heldItem.is(Items.WATER_BUCKET)) {
+            if (FluidHelper.isWaterContainer(heldItem)) {
                 if (!level.isClientSide) {
                     level.playSound(player, pos, SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     BlockState newState = state.setValue(LIT, Boolean.valueOf(false));
                     level.setBlock(pos, newState, 11);
                     level.sendBlockUpdated(pos, state, newState, 3);
                     level.gameEvent(player, net.minecraft.world.level.gameevent.GameEvent.BLOCK_CHANGE, pos);
-                    if (!player.isCreative()) {
-                        player.setItemInHand(hand, Items.BUCKET.getDefaultInstance());
-                    }
+                    FluidHelper.drainWaterAndReturnContainer(heldItem, player, hand);
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }

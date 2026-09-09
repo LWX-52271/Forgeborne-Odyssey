@@ -2,6 +2,7 @@ package com.lwx.forgeborneodyssey.blocks;
 
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -69,7 +70,9 @@ public class DryingRackBlockEntity extends BlockEntity {
                             if (isGreenwareBlowpipe(stack) && isSunDrying) {
                                 entity.items[slot] = new ItemStack(ModItems.KILN_WASTE_SHARD.get(), getWasteShardCount(stack));
                             } else {
-                                entity.items[slot] = new ItemStack(driedResult);
+                                ItemStack driedStack = new ItemStack(driedResult);
+                                ItemQualityHelper.inheritQuality(driedStack, stack);
+                                entity.items[slot] = driedStack;
                             }
                         }
                     }
@@ -227,7 +230,9 @@ public class DryingRackBlockEntity extends BlockEntity {
     private static boolean isGreenwareItem(ItemStack stack) {
         return stack.is(ModItems.GREENWARE_CRUCIBLE.get()) ||
                 stack.is(ModItems.GREENWARE_MOLD.get()) ||
-                stack.is(ModItems.GREENWARE_BRICK.get());
+                stack.is(ModItems.GREENWARE_BRICK.get()) ||
+                stack.is(ModItems.GREENWARE_STORAGE_POT.get()) ||
+                stack.is(ModItems.GREENWARE_WATER_JUG.get());
     }
 
     private static boolean isGreenwareBlowpipe(ItemStack stack) {
@@ -239,6 +244,8 @@ public class DryingRackBlockEntity extends BlockEntity {
         if (stack.is(ModItems.GREENWARE_MOLD.get())) return 1;
         if (stack.is(ModItems.GREENWARE_BRICK.get())) return 4;
         if (stack.is(ModItems.GREENWARE_BLOWPIPE.get())) return 1;
+        if (stack.is(ModItems.GREENWARE_STORAGE_POT.get())) return 2;
+        if (stack.is(ModItems.GREENWARE_WATER_JUG.get())) return 2;
         return 1;
     }
 

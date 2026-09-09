@@ -286,10 +286,14 @@ public class ForgeborneAPI {
     public static double getWeight(ItemStack stack) {
         if (stack.isEmpty()) return -1;
         CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Weight")) {
-            return -1;
+        if (tag == null) return -1;
+        if (tag.contains("Weight")) {
+            return tag.getDouble("Weight");
         }
-        return tag.getDouble("Weight");
+        if (tag.contains(com.lwx.forgeborneodyssey.quality.ItemQualityHelper.TAG_ITEM_QUALITY)) {
+            return tag.getFloat(com.lwx.forgeborneodyssey.quality.ItemQualityHelper.TAG_ITEM_QUALITY) * 1000.0;
+        }
+        return -1;
     }
 
     /**
@@ -323,5 +327,6 @@ public class ForgeborneAPI {
         if (stack.isEmpty()) return;
         CompoundTag tag = stack.getOrCreateTag();
         tag.putDouble("Weight", weightInGrams);
+        com.lwx.forgeborneodyssey.quality.ItemQualityHelper.setQualityValue(stack, (float)(weightInGrams / 1000.0));
     }
 }

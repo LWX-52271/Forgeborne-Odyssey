@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.blocks;
 
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
+import com.lwx.forgeborneodyssey.util.FluidHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -90,12 +91,12 @@ public class KilnLidBlock extends Block implements EntityBlock {
         if (level.isClientSide) {
             // 客户端只对有效交互返回 SUCCESS
             if (held.isEmpty()) return InteractionResult.SUCCESS;
-            if (held.is(Items.WATER_BUCKET) && canWaterCool) return InteractionResult.SUCCESS;
+            if (FluidHelper.isWaterContainer(held) && canWaterCool) return InteractionResult.SUCCESS;
             return InteractionResult.PASS;
         }
 
         // ========== 泼水加速冷却 ==========
-        if (held.is(Items.WATER_BUCKET) && canWaterCool) {
+        if (FluidHelper.isWaterContainer(held) && canWaterCool) {
             PitKilnBlockEntity kiln = level.getBlockEntity(below) instanceof PitKilnBlockEntity k ? k : null;
             if (kiln == null) return InteractionResult.PASS;
 
@@ -137,14 +138,7 @@ public class KilnLidBlock extends Block implements EntityBlock {
                 player.displayClientMessage(Component.translatable("message.forgeborneodyssey.kiln.water_cool"), true);
             }
 
-            // 消耗水桶，返还空桶
-            if (!player.getAbilities().instabuild) {
-                held.shrink(1);
-                ItemStack emptyBucket = new ItemStack(Items.BUCKET);
-                if (!player.getInventory().add(emptyBucket)) {
-                    player.drop(emptyBucket, false);
-                }
-            }
+            FluidHelper.drainWaterAndReturnContainer(held, player, hand);
 
             return InteractionResult.SUCCESS;
         }

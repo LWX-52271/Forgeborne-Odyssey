@@ -225,6 +225,16 @@ public class JeiPlugin implements IModPlugin {
                 2000
         ));
         recipes.add(new DryingRecipe(
+                new ItemStack(ModItems.GREENWARE_STORAGE_POT.get()),
+                new ItemStack(ModItems.GREENWARE_STORAGE_POT.get()),
+                6000
+        ));
+        recipes.add(new DryingRecipe(
+                new ItemStack(ModItems.GREENWARE_WATER_JUG.get()),
+                new ItemStack(ModItems.GREENWARE_WATER_JUG.get()),
+                6000
+        ));
+        recipes.add(new DryingRecipe(
                 new ItemStack(Items.WET_SPONGE),
                 new ItemStack(Items.SPONGE),
                 2000
@@ -370,6 +380,36 @@ public class JeiPlugin implements IModPlugin {
                 -50,
                 "jei.forgeborneodyssey.pit_kiln.oxygen_strong_reducing",
                 true,
+                0
+        ));
+
+        recipes.add(new PitKilnFiringRecipe(
+                new ItemStack(ModItems.GREENWARE_STORAGE_POT.get()),
+                new ItemStack(ModItems.STORAGE_POT.get()),
+                600,
+                0,
+                "jei.forgeborneodyssey.pit_kiln.oxygen_any",
+                true,
+                0
+        ));
+
+        recipes.add(new PitKilnFiringRecipe(
+                new ItemStack(ModItems.GREENWARE_WATER_JUG.get()),
+                new ItemStack(ModItems.CERAMIC_WATER_JUG.get()),
+                600,
+                0,
+                "jei.forgeborneodyssey.pit_kiln.oxygen_any",
+                true,
+                0
+        ));
+
+        recipes.add(new PitKilnFiringRecipe(
+                new ItemStack(ModItems.LIMESTONE_RUBBLE.get()),
+                new ItemStack(ModItems.QUICKLIME.get()),
+                900,
+                0,
+                "jei.forgeborneodyssey.pit_kiln.oxygen_any",
+                false,
                 0
         ));
 

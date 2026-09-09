@@ -2,6 +2,7 @@ package com.lwx.forgeborneodyssey.blocks;
 
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -177,7 +178,13 @@ public class PitKilnBlockEntity extends BlockEntity {
         return stack.is(ModItems.GREENWARE_CRUCIBLE.get()) ||
                 stack.is(ModItems.GREENWARE_MOLD.get()) ||
                 stack.is(ModItems.GREENWARE_BRICK.get()) ||
-                stack.is(ModItems.GREENWARE_BLOWPIPE.get());
+                stack.is(ModItems.GREENWARE_BLOWPIPE.get()) ||
+                stack.is(ModItems.GREENWARE_STORAGE_POT.get()) ||
+                stack.is(ModItems.GREENWARE_WATER_JUG.get());
+    }
+
+    public boolean isKilnLoadable(ItemStack stack) {
+        return isGreenware(stack) || stack.is(ModItems.LIMESTONE_RUBBLE.get());
     }
 
     public ItemStack getResultForSlot(ItemStack greenware, RandomSource random) {
@@ -226,7 +233,48 @@ public class PitKilnBlockEntity extends BlockEntity {
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
         }
 
+        if (greenware.is(ModItems.GREENWARE_STORAGE_POT.get())) {
+            if (temp > 600) {
+                if (!isDried && random.nextFloat() > 0.15F) {
+                    return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
+                }
+                ItemStack pot = new ItemStack(ModItems.STORAGE_POT.get());
+                pot.addTagElement("BlockEntityTag", createColorTag(random));
+                return pot;
+            }
+            return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
+        }
+
+        if (greenware.is(ModItems.GREENWARE_WATER_JUG.get())) {
+            if (temp > 600) {
+                if (!isDried && random.nextFloat() > 0.15F) {
+                    return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
+                }
+                return new ItemStack(ModItems.CERAMIC_WATER_JUG.get());
+            }
+            return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
+        }
+
+        if (greenware.is(ModItems.LIMESTONE_RUBBLE.get())) {
+            if (temp > 900) {
+                return new ItemStack(ModItems.QUICKLIME.get(), greenware.getCount());
+            }
+            return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
+        }
+
         return ItemStack.EMPTY;
+    }
+
+    private static final int[] POTTERY_COLORS = {
+        0xC4875D, 0xA0522D, 0xCD5C5C, 0x8B4513,
+        0xD2B48C, 0xBC8F8F, 0xCC7722, 0xE8C07A,
+        0xDA8A67, 0xB5651D, 0xC19A6B, 0x9B6B4F
+    };
+
+    private static CompoundTag createColorTag(RandomSource random) {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("Color", POTTERY_COLORS[random.nextInt(POTTERY_COLORS.length)]);
+        return tag;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PitKilnBlockEntity entity) {
@@ -412,6 +460,13 @@ public class PitKilnBlockEntity extends BlockEntity {
                     ItemStack greenware = entity.getInventory().getStackInSlot(i);
                     if (!greenware.isEmpty()) {
                         ItemStack result = entity.getResultForSlot(greenware, level.getRandom());
+                        if (!result.isEmpty() && !result.is(ModItems.KILN_WASTE_SHARD.get())) {
+                            if (ItemQualityHelper.hasQuality(greenware)) {
+                                ItemQualityHelper.inheritQualityWithLoss(result, greenware, 0.05f);
+                            } else {
+                                ItemQualityHelper.assignRandomQuality(result, level.getRandom());
+                            }
+                        }
                         Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result);
                         entity.getInventory().setStackInSlot(i, ItemStack.EMPTY);
                     }

@@ -42,6 +42,8 @@ import com.lwx.forgeborneodyssey.items.tools.WroughtCopperAxeItem;
 import com.lwx.forgeborneodyssey.items.tools.WroughtSilverAxeItem;
 import com.lwx.forgeborneodyssey.items.tools.WroughtGoldAxeItem;
 import com.lwx.forgeborneodyssey.items.FiberRopeItem;
+import com.lwx.forgeborneodyssey.items.WaterskinItem;
+import com.lwx.forgeborneodyssey.items.CeramicWaterJugItem;
 import com.lwx.forgeborneodyssey.items.TutorialGuideBookItem;
 import com.lwx.forgeborneodyssey.items.tools.CopperFishingRodItem;
 import com.lwx.forgeborneodyssey.items.tools.SimpleFishingRodItem;
@@ -63,6 +65,7 @@ import com.lwx.forgeborneodyssey.items.RawhideItem;
 import com.lwx.forgeborneodyssey.items.DriedHideItem;
 import com.lwx.forgeborneodyssey.items.TannedLeatherItem;
 import com.lwx.forgeborneodyssey.items.GrassBasketItem;
+import com.lwx.forgeborneodyssey.items.StoragePotBlockItem;
 import com.lwx.forgeborneodyssey.items.beads.GoldBeadItem;
 import com.lwx.forgeborneodyssey.items.beads.SilverBeadItem;
 import com.lwx.forgeborneodyssey.items.beads.CopperBeadItem;
@@ -75,13 +78,16 @@ import com.lwx.forgeborneodyssey.items.fragments.CopperFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.SilverFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.GoldFragmentItem;
 // import com.lwx.forgeborneodyssey.items.PitKilnGuideBookItem; // 暂由Patchouli自动生成
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import net.minecraft.network.chat.Component;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ForgeborneOdyssey.MOD_ID);
@@ -478,6 +484,9 @@ public class ModItems {
     public static final RegistryObject<Item> BONE_FISH_HOOK = ITEMS.register("bone_fish_hook", BoneFishHookItem::new);
     public static final RegistryObject<Item> SIMPLE_FISHING_ROD = ITEMS.register("simple_fishing_rod", SimpleFishingRodItem::new);
 
+    // 蚯蚓
+    public static final RegistryObject<Item> EARTHWORM = ITEMS.register("earthworm", EarthwormItem::new);
+
     // 草药敷料
     public static final RegistryObject<Item> HERB_POULTICE = ITEMS.register("herb_poultice", HerbPoulticeItem::new);
 
@@ -498,6 +507,7 @@ public class ModItems {
     public static final RegistryObject<Item> TEMPER_GROG = ITEMS.register("temper_grog", TemperGrogItem::new);
     public static final RegistryObject<Item> GRASS_FIBER = ITEMS.register("grass_fiber", GrassFiberItem::new);
     public static final RegistryObject<Item> FIBER_ROPE = ITEMS.register("fiber_rope", FiberRopeItem::new);
+    public static final RegistryObject<Item> WATERSKIN = ITEMS.register("waterskin", WaterskinItem::new);
     public static final RegistryObject<Item> RICE_HUSK = ITEMS.register("rice_husk",
         () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.rice_husk.tooltip"));
 
@@ -505,13 +515,27 @@ public class ModItems {
     public static final RegistryObject<Item> MIXED_CLAY = ITEMS.register("mixed_clay",
         () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.mixed_clay.tooltip"));
     public static final RegistryObject<Item> GREENWARE_CRUCIBLE = ITEMS.register("greenware_crucible",
-        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_crucible.tooltip"));
+        () -> new GreenwareItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_crucible.tooltip"));
     public static final RegistryObject<Item> GREENWARE_MOLD = ITEMS.register("greenware_mold",
-        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_mold.tooltip"));
+        () -> new GreenwareItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_mold.tooltip"));
     public static final RegistryObject<Item> GREENWARE_BRICK = ITEMS.register("greenware_brick",
-        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_brick.tooltip"));
+        () -> new GreenwareItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_brick.tooltip"));
     public static final RegistryObject<Item> GREENWARE_BLOWPIPE = ITEMS.register("greenware_blowpipe",
         () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_blowpipe.tooltip"));
+    public static final RegistryObject<Item> GREENWARE_STORAGE_POT = ITEMS.register("greenware_storage_pot",
+        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_storage_pot.tooltip") {
+            @Override
+            public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+                super.appendHoverText(stack, level, tooltip, flag);
+                if (stack.hasTag() && stack.getTag().getBoolean("Dried")) {
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.greenware.dried"));
+                } else {
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.greenware.undried"));
+                }
+            }
+        });
+    public static final RegistryObject<Item> GREENWARE_WATER_JUG = ITEMS.register("greenware_water_jug",
+        () -> new GreenwareItem(new Item.Properties().stacksTo(1), "item.forgeborneodyssey.greenware_water_jug.tooltip"));
     // 第五类：燃料与气氛控制物（陶器系统）
     public static final RegistryObject<Item> FIREWOOD = ITEMS.register("firewood",
         () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.firewood.tooltip"));
@@ -528,6 +552,10 @@ public class ModItems {
         () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.fired_brick.tooltip"));
     public static final RegistryObject<Item> CERAMIC_BLOWPIPE = ITEMS.register("ceramic_blowpipe",
         CeramicBlowpipeItem::new);
+    public static final RegistryObject<Item> CERAMIC_WATER_JUG = ITEMS.register("ceramic_water_jug",
+        CeramicWaterJugItem::new);
+    public static final RegistryObject<Item> STORAGE_POT = ITEMS.register("storage_pot",
+        () -> new StoragePotBlockItem(ModBlocks.STORAGE_POT_BLOCK.get(), new Item.Properties().stacksTo(1)));
 
     // 第七类：副产物与失败品（陶器系统）
     public static final RegistryObject<Item> KILN_WASTE_SHARD = ITEMS.register("kiln_waste_shard",
@@ -536,6 +564,14 @@ public class ModItems {
         () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.plant_ash.tooltip"));
     public static final RegistryObject<Item> CHARCOAL_CLUMP = ITEMS.register("charcoal_clump",
         () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.charcoal_clump.tooltip"));
+
+    // 第八类：石灰烧制产物
+    public static final RegistryObject<Item> QUICKLIME = ITEMS.register("quicklime",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.quicklime.tooltip"));
+    public static final RegistryObject<Item> SLAKED_LIME = ITEMS.register("slaked_lime",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.slaked_lime.tooltip"));
+    public static final RegistryObject<Item> LIME_MORTAR = ITEMS.register("lime_mortar",
+        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.lime_mortar.tooltip"));
 
     /**
      * 初始化金属物品容器（在所有物品注册完成后调用）
