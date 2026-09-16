@@ -51,6 +51,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -58,6 +60,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -125,7 +128,8 @@ public class ModEventHandlers {
         if (event.phase != TickEvent.Phase.END || !(event.level instanceof ServerLevel level)) {
             return;
         }
-        
+        if (level.getServer() != null && !level.getServer().isReady()) return;
+
         // 定期清理无效的计时器条目（每10分钟一次）
         cleanupCounter++;
         if (cleanupCounter >= CLEANUP_INTERVAL) {
@@ -251,7 +255,7 @@ public class ModEventHandlers {
                 }
                 if (billetItem.hasTag() && billetItem.getTag().contains("Weight")) {
                     ItemQualityHelper.setQualityValue(billetItem,
-                        (float)(billetItem.getTag().getDouble("Weight") / 1000.0));
+                        (float)(billetItem.getTag().getDouble("Weight") / 10000.0));
                 }
             }
             
@@ -340,16 +344,95 @@ public class ModEventHandlers {
         }
     }
     
+    private static final int[] OCHRE_COLORS = {
+        0xBC4A3C,
+        0x8B2A1F,
+        0x2A1F1A,
+        0xE8C547
+    };
+
+    private static boolean isOchrePigment(ItemStack stack) {
+        return stack.is(ModItems.YELLOW_OCHRE.get())
+            || stack.is(ModItems.RED_OCHRE.get())
+            || stack.is(ModItems.DARK_RED_OCHRE.get())
+            || stack.is(ModItems.BLACK_OCHRE.get());
+    }
+
+    private static int getOchreColor(Item item) {
+        if (item == ModItems.YELLOW_OCHRE.get()) return OCHRE_COLORS[3];
+        if (item == ModItems.RED_OCHRE.get()) return OCHRE_COLORS[0];
+        if (item == ModItems.DARK_RED_OCHRE.get()) return OCHRE_COLORS[1];
+        if (item == ModItems.BLACK_OCHRE.get()) return OCHRE_COLORS[2];
+        return 0;
+    }
+
+    private static String getOchreColorName(int color) {
+        if (color == OCHRE_COLORS[0]) return "red_ochre";
+        if (color == OCHRE_COLORS[1]) return "dark_red_ochre";
+        if (color == OCHRE_COLORS[2]) return "black_ochre";
+        if (color == OCHRE_COLORS[3]) return "yellow_ochre";
+        return "";
+    }
+
+    private static boolean isPaintableItem(ItemStack stack) {
+        Item item = stack.getItem();
+        return item == ModItems.GREENWARE_CRUCIBLE.get()
+            || item == ModItems.GREENWARE_MOLD.get()
+            || item == ModItems.GREENWARE_BRICK.get()
+            || item == ModItems.GREENWARE_BLOWPIPE.get()
+            || item == ModItems.GREENWARE_STORAGE_POT.get()
+            || item == ModItems.GREENWARE_WATER_JUG.get()
+            || item == ModItems.GREENWARE_SPINNING_WHORL.get()
+            || item == ModItems.GREENWARE_SLING_BULLET.get()
+            || item == ModItems.CERAMIC_BLOWPIPE.get()
+            || item == ModItems.CERAMIC_WATER_JUG.get()
+            || item == ModItems.CERAMIC_SPINNING_WHORL.get()
+            || item == ModItems.CERAMIC_SLING_BULLET.get()
+            || item == ModItems.STORAGE_POT.get()
+            || item == ModItems.FIRED_BRICK.get()
+            || item == ModItems.GRAY_CRUCIBLE.get()
+            || item == ModItems.RED_MOLD.get();
+    }
+
     /**
-     * 禁用原版鱼竿
+     * 禁用原版鱼竿 / 赭石颜料为陶器涂色
      */
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
         ItemStack itemStack = event.getItemStack();
-        
-        // 检测是否为鱼竿
+        Player player = event.getEntity();
+        ItemStack offHand = player.getOffhandItem();
+
         if (itemStack.is(Items.FISHING_ROD)) {
             event.setCanceled(true);
+            return;
+        }
+
+        if (isOchrePigment(offHand) && isPaintableItem(itemStack)) {
+            int color = getOchreColor(offHand.getItem());
+            if (color != 0 && !player.level().isClientSide) {
+                CompoundTag tag = itemStack.getOrCreateTag();
+                tag.putInt("OchreColor", color);
+                offHand.shrink(1);
+                player.level().playSound(null, player.blockPosition(),
+                    SoundEvents.HONEYCOMB_WAX_ON, SoundSource.PLAYERS, 0.8F, 1.2F);
+            }
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onItemTooltip(ItemTooltipEvent event) {
+        ItemStack stack = event.getItemStack();
+        if (stack.hasTag() && stack.getTag().contains("OchreColor")) {
+            int color = stack.getTag().getInt("OchreColor");
+            String name = getOchreColorName(color);
+            if (!name.isEmpty()) {
+                Component line = Component.translatable("tooltip.forgeborneodyssey.pigment." + name)
+                    .withStyle(ChatFormatting.GRAY);
+                event.getToolTip().add(line);
+            }
         }
     }
     
@@ -928,18 +1011,39 @@ public class ModEventHandlers {
         try {
             RecipeManager recipeManager = event.getServer().getRecipeManager();
 
-            Field byNameField = RecipeManager.class.getDeclaredField("byName");
-            byNameField.setAccessible(true);
-            @SuppressWarnings("unchecked")
-            Map<ResourceLocation, Recipe<?>> byName = (Map<ResourceLocation, Recipe<?>>) byNameField.get(recipeManager);
+            Map<ResourceLocation, Recipe<?>> byName = null;
+            Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> recipes = null;
 
-            Field recipesField = RecipeManager.class.getDeclaredField("recipes");
-            recipesField.setAccessible(true);
-            @SuppressWarnings("unchecked")
-            Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> recipes =
-                (Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>>) recipesField.get(recipeManager);
+            for (Field field : RecipeManager.class.getDeclaredFields()) {
+                field.setAccessible(true);
+                Class<?> ft = field.getType();
+                if (Map.class.isAssignableFrom(ft)) {
+                    Object val = field.get(recipeManager);
+                    if (val == null) continue;
+                    String cn = ft.getCanonicalName();
+                    if (recipes == null && cn.startsWith("java.util.Map") && field.getGenericType().getTypeName().contains("RecipeType")) {
+                        @SuppressWarnings("unchecked")
+                        Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> casted =
+                                (Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>>) val;
+                        recipes = casted;
+                    } else if (byName == null && cn.startsWith("java.util.Map") && field.getGenericType().getTypeName().contains("ResourceLocation") && !field.getGenericType().getTypeName().contains("RecipeType")) {
+                        @SuppressWarnings("unchecked")
+                        Map<ResourceLocation, Recipe<?>> casted = (Map<ResourceLocation, Recipe<?>>) val;
+                        byName = casted;
+                    }
+                }
+            }
 
-            removeRecipe(byName, recipes, new ResourceLocation("minecraft", "charcoal"));
+            if (recipes == null) {
+                ForgeborneOdyssey.LOGGER.error("Could not locate RecipeManager.recipes via reflection");
+                return;
+            }
+
+            if (byName != null) {
+                removeRecipe(byName, recipes, new ResourceLocation("minecraft", "charcoal"));
+            } else {
+                removeRecipe(null, recipes, new ResourceLocation("minecraft", "charcoal"));
+            }
 
             String[] materials = {"wooden", "stone", "iron", "golden", "diamond", "netherite"};
             String[] tools = {"_pickaxe", "_axe", "_shovel", "_hoe"};
@@ -947,11 +1051,11 @@ public class ModEventHandlers {
             for (String material : materials) {
                 for (String tool : tools) {
                     ResourceLocation toolId = new ResourceLocation("minecraft", material + tool);
-                    if (removeRecipe(byName, recipes, toolId)) {
+                    if (byName != null ? removeRecipe(byName, recipes, toolId) : removeRecipe(null, recipes, toolId)) {
                         removedCount++;
                     }
                     ResourceLocation smithingId = new ResourceLocation("minecraft", "smithing_" + material + tool + "_smithing");
-                    if (removeRecipe(byName, recipes, smithingId)) {
+                    if (byName != null ? removeRecipe(byName, recipes, smithingId) : removeRecipe(null, recipes, smithingId)) {
                         removedCount++;
                     }
                 }
@@ -966,7 +1070,7 @@ public class ModEventHandlers {
                                         Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> recipes,
                                         ResourceLocation id) {
         boolean removed = false;
-        if (byName.remove(id) != null) {
+        if (byName != null && byName.remove(id) != null) {
             removed = true;
         }
         for (Map<ResourceLocation, Recipe<?>> map : recipes.values()) {

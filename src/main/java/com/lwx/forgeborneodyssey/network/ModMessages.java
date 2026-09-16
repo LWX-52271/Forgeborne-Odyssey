@@ -120,5 +120,12 @@ public class ModMessages {
             .decoder(PitDiggingInputPacket::new)
             .consumerMainThread(PitDiggingInputPacket::handle)
             .add();
+
+        // 白灰面同步（服务端 -> 客户端）
+        CHANNEL.messageBuilder(LimePlasterSyncPacket.class, messageID++)
+            .encoder(LimePlasterSyncPacket::toBytes)
+            .decoder(LimePlasterSyncPacket::new)
+            .consumerMainThread(LimePlasterSyncPacket::handle)
+            .add();
     }
 }

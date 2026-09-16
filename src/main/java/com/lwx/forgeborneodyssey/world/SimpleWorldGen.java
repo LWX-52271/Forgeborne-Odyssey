@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers;
@@ -38,6 +39,18 @@ public class SimpleWorldGen {
     public static final ResourceKey<BiomeModifier> ADD_SIMPLE_ORE = 
         ResourceKey.create(net.minecraftforge.registries.ForgeRegistries.Keys.BIOME_MODIFIERS, 
             new ResourceLocation(ForgeborneOdyssey.MOD_ID, "add_simple_test_ore"));
+
+    public static final ResourceKey<ConfiguredFeature<?, ?>> OCHRE_DEPOSIT_KEY = 
+        ResourceKey.create(Registries.CONFIGURED_FEATURE, 
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "ochre_deposit"));
+    
+    public static final ResourceKey<PlacedFeature> OCHRE_DEPOSIT_PLACED_KEY = 
+        ResourceKey.create(Registries.PLACED_FEATURE, 
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "ochre_deposit_placed"));
+    
+    public static final ResourceKey<BiomeModifier> ADD_OCHRE_DEPOSIT = 
+        ResourceKey.create(net.minecraftforge.registries.ForgeRegistries.Keys.BIOME_MODIFIERS, 
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "add_ochre_deposit"));
     
     public static void bootstrapConfigured(BootstapContext<ConfiguredFeature<?, ?>> context) {
         var stoneReplaceables = new TagMatchTest(net.minecraft.tags.BlockTags.STONE_ORE_REPLACEABLES);
@@ -71,6 +84,22 @@ public class SimpleWorldGen {
         context.register(surfaceRockKey, new ConfiguredFeature<>(
             new SurfaceRockFeature(NoneFeatureConfiguration.CODEC),
             NoneFeatureConfiguration.INSTANCE
+        ));
+
+        context.register(OCHRE_DEPOSIT_KEY, new ConfiguredFeature<>(
+            Feature.ORE,
+            new OreConfiguration(
+                List.of(
+                    OreConfiguration.target(new BlockMatchTest(net.minecraft.world.level.block.Blocks.DIRT), ModBlocks.OCHRE_DEPOSIT.get().defaultBlockState()),
+                    OreConfiguration.target(new BlockMatchTest(net.minecraft.world.level.block.Blocks.GRASS_BLOCK), ModBlocks.OCHRE_DEPOSIT.get().defaultBlockState()),
+                    OreConfiguration.target(new BlockMatchTest(net.minecraft.world.level.block.Blocks.COARSE_DIRT), ModBlocks.OCHRE_DEPOSIT.get().defaultBlockState()),
+                    OreConfiguration.target(new BlockMatchTest(net.minecraft.world.level.block.Blocks.RED_SAND), ModBlocks.OCHRE_DEPOSIT.get().defaultBlockState()),
+                    OreConfiguration.target(new BlockMatchTest(net.minecraft.world.level.block.Blocks.SAND), ModBlocks.OCHRE_DEPOSIT.get().defaultBlockState()),
+                    OreConfiguration.target(new BlockMatchTest(net.minecraft.world.level.block.Blocks.CLAY), ModBlocks.OCHRE_DEPOSIT.get().defaultBlockState()),
+                    OreConfiguration.target(new BlockMatchTest(net.minecraft.world.level.block.Blocks.GRAVEL), ModBlocks.OCHRE_DEPOSIT.get().defaultBlockState())
+                ),
+                4
+            )
         ));
     }
     
@@ -133,6 +162,21 @@ public class SimpleWorldGen {
                 BiomeFilter.biome()
             )
         ));
+
+        var ochreFeature = context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(OCHRE_DEPOSIT_KEY);
+        
+        context.register(OCHRE_DEPOSIT_PLACED_KEY, new PlacedFeature(
+            ochreFeature,
+            List.of(
+                CountPlacement.of(8),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.triangle(
+                    VerticalAnchor.absolute(55),
+                    VerticalAnchor.absolute(90)
+                ),
+                BiomeFilter.biome()
+            )
+        ));
     }
     
     public static void bootstrapBiomeModifier(BootstapContext<BiomeModifier> context) {
@@ -171,6 +215,12 @@ public class SimpleWorldGen {
                 ResourceKey.create(Registries.PLACED_FEATURE, 
                     new ResourceLocation(ForgeborneOdyssey.MOD_ID, "surface_rock_placed")))),
             GenerationStep.Decoration.RAW_GENERATION
+        ));
+
+        context.register(ADD_OCHRE_DEPOSIT, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+            overworldBiomes,
+            HolderSet.direct(placedFeatures.getOrThrow(OCHRE_DEPOSIT_PLACED_KEY)),
+            GenerationStep.Decoration.UNDERGROUND_ORES
         ));
     }
 }

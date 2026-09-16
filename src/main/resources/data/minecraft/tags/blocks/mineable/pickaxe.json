@@ -75,6 +75,19 @@
     "forgeborneodyssey:galena_ore",
     "forgeborneodyssey:sphalerite_ore",
     "forgeborneodyssey:molybdenite_ore",
-    "forgeborneodyssey:cassiterite_placer_block"
+    "forgeborneodyssey:cassiterite_placer_block",
+    "forgeborneodyssey:lime_mortar_cobblestone",
+    "forgeborneodyssey:lime_mortar_cobblestone_stairs",
+    "forgeborneodyssey:lime_mortar_cobblestone_slab",
+    "forgeborneodyssey:lime_mortar_cobblestone_wall",
+    "forgeborneodyssey:lime_concrete",
+    "forgeborneodyssey:lime_concrete_stairs",
+    "forgeborneodyssey:lime_concrete_slab",
+    "forgeborneodyssey:lime_concrete_wall",
+    "forgeborneodyssey:lime_mortar_stone_bricks",
+    "forgeborneodyssey:lime_mortar_stone_bricks_stairs",
+    "forgeborneodyssey:lime_mortar_stone_bricks_slab",
+    "forgeborneodyssey:lime_mortar_stone_bricks_wall",
+    "forgeborneodyssey:ochre_deposit"
   ]
 }

@@ -235,6 +235,17 @@ public class JeiPlugin implements IModPlugin {
                 6000
         ));
         recipes.add(new DryingRecipe(
+                new ItemStack(ModItems.GREENWARE_SPINNING_WHORL.get()),
+                new ItemStack(ModItems.GREENWARE_SPINNING_WHORL.get()),
+                6000
+        ));
+
+        recipes.add(new DryingRecipe(
+                new ItemStack(ModItems.GREENWARE_SLING_BULLET.get()),
+                new ItemStack(ModItems.GREENWARE_SLING_BULLET.get()),
+                6000
+        ));
+        recipes.add(new DryingRecipe(
                 new ItemStack(Items.WET_SPONGE),
                 new ItemStack(Items.SPONGE),
                 2000
@@ -253,6 +264,11 @@ public class JeiPlugin implements IModPlugin {
                 new ItemStack(ModItems.RAWHIDE.get()),
                 new ItemStack(ModItems.DRIED_HIDE.get()),
                 1200
+        ));
+        recipes.add(new DryingRecipe(
+                new ItemStack(ModItems.LIMED_HIDE.get()),
+                new ItemStack(ModItems.DRIED_HIDE.get()),
+                400
         ));
         recipes.add(new DryingRecipe(
                 new ItemStack(Items.OAK_LEAVES),
@@ -404,11 +420,61 @@ public class JeiPlugin implements IModPlugin {
         ));
 
         recipes.add(new PitKilnFiringRecipe(
+                new ItemStack(ModItems.GREENWARE_SPINNING_WHORL.get()),
+                new ItemStack(ModItems.CERAMIC_SPINNING_WHORL.get()),
+                600,
+                0,
+                "jei.forgeborneodyssey.pit_kiln.oxygen_any",
+                true,
+                0
+        ));
+
+        recipes.add(new PitKilnFiringRecipe(
+                new ItemStack(ModItems.GREENWARE_SLING_BULLET.get()),
+                new ItemStack(ModItems.CERAMIC_SLING_BULLET.get(), 8),
+                600,
+                0,
+                "jei.forgeborneodyssey.pit_kiln.oxygen_any",
+                true,
+                0
+        ));
+
+        recipes.add(new PitKilnFiringRecipe(
                 new ItemStack(ModItems.LIMESTONE_RUBBLE.get()),
                 new ItemStack(ModItems.QUICKLIME.get()),
                 900,
                 0,
                 "jei.forgeborneodyssey.pit_kiln.oxygen_any",
+                false,
+                0
+        ));
+
+        recipes.add(new PitKilnFiringRecipe(
+                new ItemStack(ModItems.YELLOW_OCHRE.get()),
+                new ItemStack(ModItems.RED_OCHRE.get()),
+                500,
+                0,
+                "jei.forgeborneodyssey.pit_kiln.oxygen_any",
+                false,
+                0
+        ));
+
+        recipes.add(new PitKilnFiringRecipe(
+                new ItemStack(ModItems.RED_OCHRE.get()),
+                new ItemStack(ModItems.DARK_RED_OCHRE.get()),
+                700,
+                0,
+                "jei.forgeborneodyssey.pit_kiln.oxygen_any",
+                false,
+                0
+        ));
+
+        recipes.add(new PitKilnFiringRecipe(
+                new ItemStack(ModItems.RED_OCHRE.get()),
+                new ItemStack(ModItems.BLACK_OCHRE.get()),
+                800,
+                -30,
+                "jei.forgeborneodyssey.pit_kiln.oxygen_strong_reducing",
                 false,
                 0
         ));

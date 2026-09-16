@@ -210,7 +210,7 @@ public class AnvilBlockEntity extends BlockEntity {
             CompoundTag tag = stack.getTag();
             if (tag != null && tag.contains("ore_quality")) {
                 float oreQuality = tag.getFloat("ore_quality");
-                ItemQualityHelper.setQualityValue(stack, oreQuality * 10.0f);
+                ItemQualityHelper.setQualityValue(stack, oreQuality);
                 tag.remove("ore_quality");
                 if (tag.isEmpty()) {
                     stack.setTag(null);
@@ -1720,7 +1720,7 @@ public class AnvilBlockEntity extends BlockEntity {
                 double fragmentWeight = (minFragmentWeight + level.random.nextDouble() * (maxFragmentWeight - minFragmentWeight)) / fragmentCount;
                 
                 net.minecraft.nbt.CompoundTag tag = fragment.getOrCreateTag();
-                ItemQualityHelper.setQualityValue(fragment, (float)(fragmentWeight / 1000.0));
+                ItemQualityHelper.setQualityValue(fragment, (float)(fragmentWeight / 10000.0));
 
                 com.lwx.forgeborneodyssey.items.fragments.AbstractMetalFragmentItem fragmentItemObj = 
                     (com.lwx.forgeborneodyssey.items.fragments.AbstractMetalFragmentItem) fragment.getItem();

@@ -63,6 +63,7 @@ import com.lwx.forgeborneodyssey.items.tools.BoneNeedleItem;
 import com.lwx.forgeborneodyssey.items.AnimalFatItem;
 import com.lwx.forgeborneodyssey.items.RawhideItem;
 import com.lwx.forgeborneodyssey.items.DriedHideItem;
+import com.lwx.forgeborneodyssey.items.LimedHideItem;
 import com.lwx.forgeborneodyssey.items.TannedLeatherItem;
 import com.lwx.forgeborneodyssey.items.GrassBasketItem;
 import com.lwx.forgeborneodyssey.items.StoragePotBlockItem;
@@ -260,6 +261,7 @@ public class ModItems {
 
     // 兽皮加工链
     public static final RegistryObject<Item> RAWHIDE = ITEMS.register("rawhide", RawhideItem::new);
+    public static final RegistryObject<Item> LIMED_HIDE = ITEMS.register("limed_hide", LimedHideItem::new);
     public static final RegistryObject<Item> DRIED_HIDE = ITEMS.register("dried_hide", DriedHideItem::new);
     public static final RegistryObject<Item> SCRAPER = ITEMS.register("scraper", ScraperItem::new);
     public static final RegistryObject<Item> TANNED_LEATHER = ITEMS.register("tanned_leather", TannedLeatherItem::new);
@@ -536,6 +538,10 @@ public class ModItems {
         });
     public static final RegistryObject<Item> GREENWARE_WATER_JUG = ITEMS.register("greenware_water_jug",
         () -> new GreenwareItem(new Item.Properties().stacksTo(1), "item.forgeborneodyssey.greenware_water_jug.tooltip"));
+    public static final RegistryObject<Item> GREENWARE_SPINNING_WHORL = ITEMS.register("greenware_spinning_whorl",
+        () -> new GreenwareItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_spinning_whorl.tooltip"));
+    public static final RegistryObject<Item> GREENWARE_SLING_BULLET = ITEMS.register("greenware_sling_bullet",
+        () -> new GreenwareItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_sling_bullet.tooltip"));
     // 第五类：燃料与气氛控制物（陶器系统）
     public static final RegistryObject<Item> FIREWOOD = ITEMS.register("firewood",
         () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.firewood.tooltip"));
@@ -554,6 +560,10 @@ public class ModItems {
         CeramicBlowpipeItem::new);
     public static final RegistryObject<Item> CERAMIC_WATER_JUG = ITEMS.register("ceramic_water_jug",
         CeramicWaterJugItem::new);
+    public static final RegistryObject<Item> CERAMIC_SPINNING_WHORL = ITEMS.register("ceramic_spinning_whorl",
+        () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> CERAMIC_SLING_BULLET = ITEMS.register("ceramic_sling_bullet",
+        () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<Item> STORAGE_POT = ITEMS.register("storage_pot",
         () -> new StoragePotBlockItem(ModBlocks.STORAGE_POT_BLOCK.get(), new Item.Properties().stacksTo(1)));
 
@@ -567,11 +577,54 @@ public class ModItems {
 
     // 第八类：石灰烧制产物
     public static final RegistryObject<Item> QUICKLIME = ITEMS.register("quicklime",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.quicklime.tooltip"));
+        () -> new QuicklimeItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.quicklime.tooltip"));
     public static final RegistryObject<Item> SLAKED_LIME = ITEMS.register("slaked_lime",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.slaked_lime.tooltip"));
+        () -> new PlasterItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.slaked_lime.tooltip"));
     public static final RegistryObject<Item> LIME_MORTAR = ITEMS.register("lime_mortar",
         () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.lime_mortar.tooltip"));
+
+    // 第九类：赭石颜料
+    public static final RegistryObject<Item> YELLOW_OCHRE = ITEMS.register("yellow_ochre",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.yellow_ochre.tooltip"));
+    public static final RegistryObject<Item> RED_OCHRE = ITEMS.register("red_ochre",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.red_ochre.tooltip"));
+    public static final RegistryObject<Item> BLACK_OCHRE = ITEMS.register("black_ochre",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.black_ochre.tooltip"));
+    public static final RegistryObject<Item> DARK_RED_OCHRE = ITEMS.register("dark_red_ochre",
+        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.dark_red_ochre.tooltip"));
+
+    // 彩色灰泥
+    public static final RegistryObject<Item> RED_PLASTER = ITEMS.register("red_plaster",
+        () -> new PlasterItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.red_plaster.tooltip", 0xFFBC4A3C));
+    public static final RegistryObject<Item> YELLOW_PLASTER = ITEMS.register("yellow_plaster",
+        () -> new PlasterItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.yellow_plaster.tooltip", 0xFFD4A043));
+    public static final RegistryObject<Item> BLACK_PLASTER = ITEMS.register("black_plaster",
+        () -> new PlasterItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.black_plaster.tooltip", 0xFF3D3636));
+    public static final RegistryObject<Item> DARK_RED_PLASTER = ITEMS.register("dark_red_plaster",
+        () -> new PlasterItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.dark_red_plaster.tooltip", 0xFF8B2A1F));
+
+    // 赭石结核方块物品
+    public static final RegistryObject<Item> OCHRE_DEPOSIT_ITEM = createBlockItem("ochre_deposit", ModBlocks.OCHRE_DEPOSIT);
+
+    // 石灰建筑方块对应的物品
+    public static final RegistryObject<Item> LIME_MORTAR_COBBLESTONE_ITEM = createBlockItem("lime_mortar_cobblestone", ModBlocks.LIME_MORTAR_COBBLESTONE);
+    public static final RegistryObject<Item> LIME_CONCRETE_ITEM = createBlockItem("lime_concrete", ModBlocks.LIME_CONCRETE);
+    public static final RegistryObject<Item> LIME_MORTAR_STONE_BRICKS_ITEM = createBlockItem("lime_mortar_stone_bricks", ModBlocks.LIME_MORTAR_STONE_BRICKS);
+
+    // 石灰砂浆砌筑碎石 - 楼梯/半砖/墙
+    public static final RegistryObject<Item> LIME_MORTAR_COBBLESTONE_STAIRS_ITEM = createBlockItem("lime_mortar_cobblestone_stairs", ModBlocks.LIME_MORTAR_COBBLESTONE_STAIRS);
+    public static final RegistryObject<Item> LIME_MORTAR_COBBLESTONE_SLAB_ITEM = createBlockItem("lime_mortar_cobblestone_slab", ModBlocks.LIME_MORTAR_COBBLESTONE_SLAB);
+    public static final RegistryObject<Item> LIME_MORTAR_COBBLESTONE_WALL_ITEM = createBlockItem("lime_mortar_cobblestone_wall", ModBlocks.LIME_MORTAR_COBBLESTONE_WALL);
+
+    // 石灰混凝土 - 楼梯/半砖/墙
+    public static final RegistryObject<Item> LIME_CONCRETE_STAIRS_ITEM = createBlockItem("lime_concrete_stairs", ModBlocks.LIME_CONCRETE_STAIRS);
+    public static final RegistryObject<Item> LIME_CONCRETE_SLAB_ITEM = createBlockItem("lime_concrete_slab", ModBlocks.LIME_CONCRETE_SLAB);
+    public static final RegistryObject<Item> LIME_CONCRETE_WALL_ITEM = createBlockItem("lime_concrete_wall", ModBlocks.LIME_CONCRETE_WALL);
+
+    // 石灰砂浆砌筑石砖 - 楼梯/半砖/墙
+    public static final RegistryObject<Item> LIME_MORTAR_STONE_BRICKS_STAIRS_ITEM = createBlockItem("lime_mortar_stone_bricks_stairs", ModBlocks.LIME_MORTAR_STONE_BRICKS_STAIRS);
+    public static final RegistryObject<Item> LIME_MORTAR_STONE_BRICKS_SLAB_ITEM = createBlockItem("lime_mortar_stone_bricks_slab", ModBlocks.LIME_MORTAR_STONE_BRICKS_SLAB);
+    public static final RegistryObject<Item> LIME_MORTAR_STONE_BRICKS_WALL_ITEM = createBlockItem("lime_mortar_stone_bricks_wall", ModBlocks.LIME_MORTAR_STONE_BRICKS_WALL);
 
     /**
      * 初始化金属物品容器（在所有物品注册完成后调用）

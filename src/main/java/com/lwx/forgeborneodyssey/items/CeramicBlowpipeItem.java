@@ -91,7 +91,7 @@ public class CeramicBlowpipeItem extends Item {
                             && level.getBlockState(hit.getBlockPos()).getValue(FireMouthBlock.OPEN)) {
                         PitKilnBlockEntity kiln = PitKilnBlockEntity.findKilnBehindFireMouth(level, hit.getBlockPos());
                         if (kiln != null && kiln.ignited && kiln.fuelStack > 0) {
-                            kiln.blowBoostTicks = 12;
+                            kiln.blowBoostTicks = 200;
                             kiln.setChanged();
                         }
                     }

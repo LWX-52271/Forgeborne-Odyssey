@@ -225,6 +225,7 @@ public class CaveInEventHandler {
         if (event.level.isClientSide()) return;
 
         ServerLevel level = (ServerLevel) event.level;
+        if (level.getServer() != null && !level.getServer().isReady()) return;
         for (Entity entity : level.getEntities().getAll()) {
             if (entity instanceof FallingBlockEntity falling) {
                 BlockPos pos = falling.blockPosition();

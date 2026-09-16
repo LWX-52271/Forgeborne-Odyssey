@@ -180,11 +180,15 @@ public class PitKilnBlockEntity extends BlockEntity {
                 stack.is(ModItems.GREENWARE_BRICK.get()) ||
                 stack.is(ModItems.GREENWARE_BLOWPIPE.get()) ||
                 stack.is(ModItems.GREENWARE_STORAGE_POT.get()) ||
-                stack.is(ModItems.GREENWARE_WATER_JUG.get());
+                stack.is(ModItems.GREENWARE_WATER_JUG.get()) ||
+                stack.is(ModItems.GREENWARE_SPINNING_WHORL.get()) ||
+                stack.is(ModItems.GREENWARE_SLING_BULLET.get());
     }
 
     public boolean isKilnLoadable(ItemStack stack) {
-        return isGreenware(stack) || stack.is(ModItems.LIMESTONE_RUBBLE.get());
+        return isGreenware(stack) || stack.is(ModItems.LIMESTONE_RUBBLE.get())
+                || stack.is(ModItems.YELLOW_OCHRE.get())
+                || stack.is(ModItems.RED_OCHRE.get());
     }
 
     public ItemStack getResultForSlot(ItemStack greenware, RandomSource random) {
@@ -198,7 +202,9 @@ public class PitKilnBlockEntity extends BlockEntity {
                 if (!isDried && random.nextFloat() > 0.15F) {
                     return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
                 }
-                return new ItemStack(ModItems.GRAY_CRUCIBLE.get());
+                ItemStack result = new ItemStack(ModItems.GRAY_CRUCIBLE.get());
+                transferOchreColor(greenware, result);
+                return result;
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
         }
@@ -208,7 +214,9 @@ public class PitKilnBlockEntity extends BlockEntity {
                 if (!isDried && random.nextFloat() > 0.15F) {
                     return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
                 }
-                return new ItemStack(ModItems.RED_MOLD.get());
+                ItemStack result = new ItemStack(ModItems.RED_MOLD.get());
+                transferOchreColor(greenware, result);
+                return result;
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
         }
@@ -218,7 +226,9 @@ public class PitKilnBlockEntity extends BlockEntity {
                 if (!isDried && random.nextFloat() > 0.15F) {
                     return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 4);
                 }
-                return new ItemStack(ModItems.FIRED_BRICK.get(), 2);
+                ItemStack result = new ItemStack(ModItems.FIRED_BRICK.get(), 2);
+                transferOchreColor(greenware, result);
+                return result;
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 4);
         }
@@ -228,7 +238,9 @@ public class PitKilnBlockEntity extends BlockEntity {
                 if (!isDried && random.nextFloat() > 0.15F) {
                     return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
                 }
-                return new ItemStack(ModItems.CERAMIC_BLOWPIPE.get());
+                ItemStack result = new ItemStack(ModItems.CERAMIC_BLOWPIPE.get());
+                transferOchreColor(greenware, result);
+                return result;
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
         }
@@ -239,7 +251,14 @@ public class PitKilnBlockEntity extends BlockEntity {
                     return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
                 }
                 ItemStack pot = new ItemStack(ModItems.STORAGE_POT.get());
-                pot.addTagElement("BlockEntityTag", createColorTag(random));
+                CompoundTag colorTag;
+                if (greenware.hasTag() && greenware.getTag().contains("OchreColor")) {
+                    colorTag = new CompoundTag();
+                    colorTag.putInt("Color", greenware.getTag().getInt("OchreColor"));
+                } else {
+                    colorTag = createColorTag(random);
+                }
+                pot.addTagElement("BlockEntityTag", colorTag);
                 return pot;
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
@@ -250,9 +269,35 @@ public class PitKilnBlockEntity extends BlockEntity {
                 if (!isDried && random.nextFloat() > 0.15F) {
                     return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
                 }
-                return new ItemStack(ModItems.CERAMIC_WATER_JUG.get());
+                ItemStack result = new ItemStack(ModItems.CERAMIC_WATER_JUG.get());
+                transferOchreColor(greenware, result);
+                return result;
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 2);
+        }
+
+        if (greenware.is(ModItems.GREENWARE_SPINNING_WHORL.get())) {
+            if (temp > 600) {
+                if (!isDried && random.nextFloat() > 0.15F) {
+                    return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
+                }
+                ItemStack result = new ItemStack(ModItems.CERAMIC_SPINNING_WHORL.get());
+                transferOchreColor(greenware, result);
+                return result;
+            }
+            return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
+        }
+
+        if (greenware.is(ModItems.GREENWARE_SLING_BULLET.get())) {
+            if (temp > 600) {
+                if (!isDried && random.nextFloat() > 0.15F) {
+                    return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
+                }
+                ItemStack result = new ItemStack(ModItems.CERAMIC_SLING_BULLET.get(), greenware.getCount());
+                transferOchreColor(greenware, result);
+                return result;
+            }
+            return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
         }
 
         if (greenware.is(ModItems.LIMESTONE_RUBBLE.get())) {
@@ -260,6 +305,22 @@ public class PitKilnBlockEntity extends BlockEntity {
                 return new ItemStack(ModItems.QUICKLIME.get(), greenware.getCount());
             }
             return new ItemStack(ModItems.KILN_WASTE_SHARD.get(), 1);
+        }
+
+        if (greenware.is(ModItems.YELLOW_OCHRE.get())) {
+            if (temp > 500) {
+                return new ItemStack(ModItems.RED_OCHRE.get(), greenware.getCount());
+            }
+            return greenware.copy();
+        }
+
+        if (greenware.is(ModItems.RED_OCHRE.get())) {
+            if (temp > 800 && oxy < -30) {
+                return new ItemStack(ModItems.BLACK_OCHRE.get(), greenware.getCount());
+            } else if (temp > 700) {
+                return new ItemStack(ModItems.DARK_RED_OCHRE.get(), greenware.getCount());
+            }
+            return greenware.copy();
         }
 
         return ItemStack.EMPTY;
@@ -275,6 +336,12 @@ public class PitKilnBlockEntity extends BlockEntity {
         CompoundTag tag = new CompoundTag();
         tag.putInt("Color", POTTERY_COLORS[random.nextInt(POTTERY_COLORS.length)]);
         return tag;
+    }
+
+    private static void transferOchreColor(ItemStack greenware, ItemStack result) {
+        if (greenware.hasTag() && greenware.getTag().contains("OchreColor")) {
+            result.getOrCreateTag().putInt("OchreColor", greenware.getTag().getInt("OchreColor"));
+        }
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PitKilnBlockEntity entity) {

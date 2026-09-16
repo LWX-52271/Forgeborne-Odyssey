@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.UUID;
 
@@ -235,26 +236,33 @@ public class PlayerStrengthManager {
         double weight = 0.0;
         CompoundTag tag = stack.getTag();
         if (tag != null) {
-            if (tag.contains(ItemQualityHelper.TAG_ITEM_QUALITY)) {
+            // 优先使用 Weight 标签（克），由 setQualityValue 统一写入
+            if (tag.contains("Weight")) {
+                weight += tag.getDouble("Weight") * stack.getCount();
+            } else if (tag.contains(ItemQualityHelper.TAG_ITEM_QUALITY)) {
                 weight += tag.getFloat(ItemQualityHelper.TAG_ITEM_QUALITY) * QUALITY_TO_WEIGHT * stack.getCount();
             } else if (tag.contains("ore_quality")) {
                 weight += tag.getFloat("ore_quality") * QUALITY_TO_WEIGHT * stack.getCount();
-            } else if (tag.contains("Weight")) {
-                weight += tag.getDouble("Weight") * stack.getCount();
             }
             if (tag.contains("Items")) {
-                ListTag items = tag.getList("Items", CompoundTag.TAG_COMPOUND);
-                double contentsWeight = 0.0;
-                for (int i = 0; i < items.size(); i++) {
-                    CompoundTag itemTag = items.getCompound(i);
-                    ItemStack containedStack = ItemStack.of(itemTag);
-                    contentsWeight += getStackWeight(containedStack);
-                }
-                weight += contentsWeight * stack.getCount();
+            ListTag items = tag.getList("Items", CompoundTag.TAG_COMPOUND);
+            double contentsWeight = 0.0;
+            for (int i = 0; i < items.size(); i++) {
+                CompoundTag itemTag = items.getCompound(i);
+                ItemStack containedStack = ItemStack.of(itemTag);
+                contentsWeight += getStackWeight(containedStack);
+            }
+            weight += contentsWeight * stack.getCount();
+        }
+        if (tag.contains("Fluid")) {
+            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(tag.getCompound("Fluid"));
+            if (!fluidStack.isEmpty()) {
+                weight += fluidStack.getAmount() * stack.getCount();
             }
         }
-        return weight;
     }
+    return weight;
+}
 
     public static String getStrengthLevelName(int level) {
         if (level >= 45) return "铁人";

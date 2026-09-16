@@ -83,7 +83,7 @@ public class GradeLootModifier extends LootModifier {
         }
         tag.putFloat("ore_purity", purity);
         tag.putFloat("ore_quality", quality);
-        ItemQualityHelper.setQualityValue(stack, quality * 10.0f);
+        ItemQualityHelper.setQualityValue(stack, quality);
         return stack;
     }
 

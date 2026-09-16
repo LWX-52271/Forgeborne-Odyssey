@@ -10,6 +10,8 @@ import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -115,7 +117,7 @@ public class CraftingEventListener {
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("ore_quality")) {
             float oreQuality = tag.getFloat("ore_quality");
-            ItemQualityHelper.setQualityValue(stack, oreQuality * 10.0f);
+            ItemQualityHelper.setQualityValue(stack, oreQuality);
             tag.remove("ore_quality");
             if (tag.isEmpty()) {
                 stack.setTag(null);
@@ -171,6 +173,10 @@ public class CraftingEventListener {
         
         if (craftedItem.isEmpty()) {
             return;
+        }
+
+        if (craftedItem.getItem() == ModItems.SLAKED_LIME.get() && !player.level().isClientSide) {
+            applyExothermicEffect(player);
         }
         
         if (event.getInventory() instanceof CraftingContainer craftMatrix) {
@@ -259,13 +265,114 @@ public class CraftingEventListener {
     }
 
     /**
-     * 根据物品类型分配符合现实的重量值（kg）
+     * 根据物品类型分配符合现实的质量值，统一使用 0~1 质量因子
+     * 对应的实际重量 = 质量因子 × 10 kg
      */
     private static void assignQualityByItemType(ItemStack stack) {
         assignQualityByItemType(stack, RandomSource.create());
     }
 
     private static void assignQualityByItemType(ItemStack stack, RandomSource random) {
+        Item item = stack.getItem();
+
+        // 天然金属块：5~10kg
+        if (item == ModItems.NATURAL_GOLD_BLOCK_ITEM.get()
+            || item == ModItems.NATURAL_SILVER_BLOCK_ITEM.get()
+            || item == ModItems.NATURAL_COPPER_BLOCK_ITEM.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.5f + random.nextFloat() * 0.5f);
+            return;
+        }
+
+        // 皮/脂肪：0.5~4kg
+        if (item == ModItems.RAWHIDE.get()
+            || item == ModItems.ANIMAL_FAT.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.05f + random.nextFloat() * 0.35f);
+            return;
+        }
+
+        // 草纤维/树皮：50~400g
+        if (item == ModItems.GRASS_FIBER.get()
+            || item == ModItems.BIRCH_BARK.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.005f + random.nextFloat() * 0.035f);
+            return;
+        }
+
+        // 蚯蚓：1~5g
+        if (item == ModItems.EARTHWORM.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.0001f + random.nextFloat() * 0.0004f);
+            return;
+        }
+
+        // 铜草花：10~50g
+        if (item == ModItems.COPPER_GRASS_FLOWER_ITEM.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.001f + random.nextFloat() * 0.004f);
+            return;
+        }
+
+        // 灰烬：50~200g
+        if (item == ModItems.ASH.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.005f + random.nextFloat() * 0.015f);
+            return;
+        }
+
+        // 面粉：0.5~2kg
+        if (item == ModItems.FLOUR.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.05f + random.nextFloat() * 0.15f);
+            return;
+        }
+
+        // 碎石：2~6kg
+        if (item == ModItems.STONE_DEBITAGE.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.2f + random.nextFloat() * 0.4f);
+            return;
+        }
+
+        // 小石子：50~200g
+        if (item == ModItems.FLINT_PEBBLE.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.005f + random.nextFloat() * 0.015f);
+            return;
+        }
+
+        // 砾石：200~1000g
+        if (item == ModItems.GRAVEL.get()) {
+            ItemQualityHelper.setQualityValue(stack, 0.02f + random.nextFloat() * 0.08f);
+            return;
+        }
+
+        // 默认：交给 generateWeightForItem 处理
         ItemQualityHelper.assignRandomQuality(stack, random);
+    }
+
+    private static void applyExothermicEffect(Player player) {
+        if (!(player.level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        double x = player.getX();
+        double y = player.getY() + 1.0;
+        double z = player.getZ();
+
+        for (int i = 0; i < 20; i++) {
+            double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.8;
+            double offsetY = serverLevel.random.nextDouble() * 0.6;
+            double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.8;
+            serverLevel.sendParticles(ParticleTypes.CLOUD,
+                    x + offsetX, y + offsetY, z + offsetZ,
+                    1, 0.02, 0.05, 0.02, 0.02);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.6;
+            double offsetY = serverLevel.random.nextDouble() * 0.4;
+            double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.6;
+            serverLevel.sendParticles(ParticleTypes.POOF,
+                    x + offsetX, y + offsetY, z + offsetZ,
+                    1, 0.0, 0.02, 0.0, 0.01);
+        }
+
+        player.level().playSound(null, player.blockPosition(),
+                SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.6F, 1.2F);
+
+        player.hurt(player.level().damageSources().generic(), 1.0F);
     }
 }

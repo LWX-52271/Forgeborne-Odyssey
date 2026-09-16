@@ -277,7 +277,7 @@ public abstract class AbstractNaturalMetalBlock extends FallingBlock {
                 billet.setRandomPurity(billetItem, level.random);
             }
 
-            ItemQualityHelper.setQualityValue(billetItem, (float)(weight / 1000.0));
+            ItemQualityHelper.setQualityValue(billetItem, (float)(weight / 10000.0));
 
             level.destroyBlock(pos, false);
             

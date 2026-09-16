@@ -12,6 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
 
 public class ThrownSlingStone extends ThrowableItemProjectile {
 
@@ -73,7 +74,8 @@ public class ThrownSlingStone extends ThrowableItemProjectile {
                 }
             }
 
-            if (this.random.nextFloat() < 0.6F) {
+            float recoverChance = (this.ammoItem == ModItems.CERAMIC_SLING_BULLET.get()) ? 0.8F : 0.6F;
+            if (this.random.nextFloat() < recoverChance) {
                 this.spawnAtLocation(new ItemStack(this.ammoItem));
             }
 

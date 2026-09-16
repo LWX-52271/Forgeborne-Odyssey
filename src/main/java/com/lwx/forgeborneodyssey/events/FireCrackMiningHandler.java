@@ -506,6 +506,7 @@ public class FireCrackMiningHandler {
     public static void onLevelTick(TickEvent.LevelTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         if (!(event.level instanceof ServerLevel level)) return;
+        if (level.getServer() != null && !level.getServer().isReady()) return;
 
         long gameTime = level.getGameTime();
 
@@ -934,7 +935,7 @@ public class FireCrackMiningHandler {
             if (state.is(LIME_BEARING) && currentHeat >= CALCINATION_HEAT_THRESHOLD) {
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                 Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                        new ItemStack(ModItems.QUICKLIME.get(), 2 + RANDOM.nextInt(3)));
+                        new ItemStack(ModItems.QUICKLIME.get(), 1 + RANDOM.nextInt(2)));
             } else {
                 level.destroyBlock(pos, true);
             }

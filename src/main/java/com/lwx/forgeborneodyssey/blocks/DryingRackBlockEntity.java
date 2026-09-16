@@ -25,6 +25,7 @@ public class DryingRackBlockEntity extends BlockEntity {
     private static final int CLAY_DRYING_TICKS = 6000;
     private static final int VANILLA_DRYING_TICKS = 2000;
     private static final int HIDE_DRYING_TICKS = 1200;
+    private static final int LIMED_HIDE_DRYING_TICKS = 400;
 
     private final ItemStack[] items = new ItemStack[SLOTS];
     private final int[] progress = new int[SLOTS];
@@ -206,6 +207,9 @@ public class DryingRackBlockEntity extends BlockEntity {
         if (isGreenwareItem(stack)) {
             return CLAY_DRYING_TICKS;
         }
+        if (stack.is(ModItems.LIMED_HIDE.get())) {
+            return LIMED_HIDE_DRYING_TICKS;
+        }
         if (stack.is(ModItems.RAWHIDE.get())) {
             return HIDE_DRYING_TICKS;
         }
@@ -224,6 +228,7 @@ public class DryingRackBlockEntity extends BlockEntity {
         if (stack.is(Items.DARK_OAK_LEAVES)) return Items.DEAD_BUSH;
         if (stack.is(ModItems.GREENWARE_BLOWPIPE.get())) return ModItems.CERAMIC_BLOWPIPE.get();
         if (stack.is(ModItems.RAWHIDE.get())) return ModItems.DRIED_HIDE.get();
+        if (stack.is(ModItems.LIMED_HIDE.get())) return ModItems.DRIED_HIDE.get();
         return null;
     }
 
@@ -232,7 +237,9 @@ public class DryingRackBlockEntity extends BlockEntity {
                 stack.is(ModItems.GREENWARE_MOLD.get()) ||
                 stack.is(ModItems.GREENWARE_BRICK.get()) ||
                 stack.is(ModItems.GREENWARE_STORAGE_POT.get()) ||
-                stack.is(ModItems.GREENWARE_WATER_JUG.get());
+                stack.is(ModItems.GREENWARE_WATER_JUG.get()) ||
+                stack.is(ModItems.GREENWARE_SPINNING_WHORL.get()) ||
+                stack.is(ModItems.GREENWARE_SLING_BULLET.get());
     }
 
     private static boolean isGreenwareBlowpipe(ItemStack stack) {
@@ -246,6 +253,8 @@ public class DryingRackBlockEntity extends BlockEntity {
         if (stack.is(ModItems.GREENWARE_BLOWPIPE.get())) return 1;
         if (stack.is(ModItems.GREENWARE_STORAGE_POT.get())) return 2;
         if (stack.is(ModItems.GREENWARE_WATER_JUG.get())) return 2;
+        if (stack.is(ModItems.GREENWARE_SLING_BULLET.get())) return 1;
+        if (stack.is(ModItems.GREENWARE_SPINNING_WHORL.get())) return 1;
         return 1;
     }
 

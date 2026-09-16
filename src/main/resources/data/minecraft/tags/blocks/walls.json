@@ -9,6 +9,9 @@
     "forgeborneodyssey:gabbro_wall",
     "forgeborneodyssey:quartz_vein_wall",
     "forgeborneodyssey:sericitized_rock_wall",
-    "forgeborneodyssey:chlorite_rock_wall"
+    "forgeborneodyssey:chlorite_rock_wall",
+    "forgeborneodyssey:lime_mortar_cobblestone_wall",
+    "forgeborneodyssey:lime_concrete_wall",
+    "forgeborneodyssey:lime_mortar_stone_bricks_wall"
   ]
 }

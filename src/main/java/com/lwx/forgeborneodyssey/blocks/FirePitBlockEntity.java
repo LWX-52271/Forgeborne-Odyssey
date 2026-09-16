@@ -378,7 +378,7 @@ public class FirePitBlockEntity extends BlockEntity {
             CompoundTag tag = stack.getTag();
             if (tag != null && tag.contains("ore_quality")) {
                 float oreQuality = tag.getFloat("ore_quality");
-                ItemQualityHelper.setQualityValue(stack, oreQuality * 10.0f);
+                ItemQualityHelper.setQualityValue(stack, oreQuality);
                 tag.remove("ore_quality");
                 if (tag.isEmpty()) {
                     stack.setTag(null);

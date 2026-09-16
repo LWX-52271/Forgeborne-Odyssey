@@ -10,45 +10,65 @@ import com.lwx.forgeborneodyssey.network.ModMessages;
 import com.lwx.forgeborneodyssey.network.PitDiggingInputPacket;
 import com.lwx.forgeborneodyssey.util.VanillaBlockStressManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = "forgeborneodyssey", bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientForgeEventHandler {
@@ -85,6 +105,46 @@ public class ClientForgeEventHandler {
 
         ModMessages.CHANNEL.sendToServer(new PitDiggingInputPacket());
         pitDigSendCooldown = 2;
+    }
+
+    @SubscribeEvent
+    public static void onPlaySound(PlaySoundEvent event) {
+        SoundInstance sound = event.getSound();
+        if (sound == null) return;
+
+        if (sound.getSource() != SoundSource.PLAYERS) return;
+
+        ResourceLocation loc = sound.getLocation();
+        if (loc.equals(SoundEvents.STONE_STEP.getLocation())) return;
+
+        String path = loc.getPath();
+        if (!path.endsWith(".step")) return;
+
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || !mc.player.onGround()) return;
+
+        BlockPos below = mc.player.blockPosition().below();
+        Map<Direction, Integer> faces = ClientPlasterData.getFaces(below);
+        if (!faces.containsKey(Direction.UP)) return;
+
+        event.setSound(null);
+
+        mc.level.playLocalSound(
+                sound.getX(), sound.getY(), sound.getZ(),
+                SoundEvents.STONE_STEP,
+                SoundSource.PLAYERS,
+                1.0F, 1.0F, false);
+
+        BlockState stoneState = Blocks.STONE.defaultBlockState();
+        RandomSource random = mc.player.getRandom();
+        for (int i = 0; i < 8; i++) {
+            mc.level.addParticle(
+                    new BlockParticleOption(ParticleTypes.BLOCK, stoneState),
+                    mc.player.getX() + random.nextGaussian() * 0.15,
+                    mc.player.getY() + 0.1,
+                    mc.player.getZ() + random.nextGaussian() * 0.15,
+                    0, 0, 0);
+        }
     }
 
     @SubscribeEvent
@@ -192,6 +252,8 @@ public class ClientForgeEventHandler {
                 }
             }
         }
+
+        renderPlasterOverlay(event.getPoseStack(), level);
     }
 
     private static void renderSlingOrbit(RenderLevelStageEvent event) {
@@ -477,6 +539,143 @@ public class ClientForgeEventHandler {
         bufferSource.endBatch();
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        poseStack.popPose();
+    }
+
+    private static final ResourceLocation PLASTER_SPRITE_ID =
+            new ResourceLocation("forgeborneodyssey", "block/lime_plaster_block");
+
+    private static void renderPlasterOverlay(PoseStack poseStack, Level level) {
+        Map<BlockPos, Map<Direction, Integer>> plastered = ClientPlasterData.getAllPlastered();
+        if (plastered.isEmpty()) return;
+
+        Minecraft mc = Minecraft.getInstance();
+        double camX = mc.gameRenderer.getMainCamera().getPosition().x;
+        double camY = mc.gameRenderer.getMainCamera().getPosition().y;
+        double camZ = mc.gameRenderer.getMainCamera().getPosition().z;
+
+        Function<ResourceLocation, TextureAtlasSprite> atlas = mc.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
+        TextureAtlasSprite plasterSprite = atlas.apply(PLASTER_SPRITE_ID);
+        float u0 = plasterSprite.getU0();
+        float u1 = plasterSprite.getU1();
+        float v0 = plasterSprite.getV0();
+        float v1 = plasterSprite.getV1();
+
+        RenderSystem.enablePolygonOffset();
+        RenderSystem.polygonOffset(-1.0F, -1.0F);
+
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder builder = tesselator.getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLOCK);
+
+        RenderType renderType = RenderType.cutout();
+        renderType.setupRenderState();
+
+        for (Map.Entry<BlockPos, Map<Direction, Integer>> entry : plastered.entrySet()) {
+            BlockPos pos = entry.getKey();
+            Map<Direction, Integer> faceMap = entry.getValue();
+
+            BlockState state = level.getBlockState(pos);
+            if (state.isAir()) continue;
+
+            VoxelShape shape = state.getShape(level, pos);
+            AABB shapeAabb = shape.isEmpty() ? new AABB(0, 0, 0, 1, 1, 1) : shape.bounds();
+
+            for (Map.Entry<Direction, Integer> faceEntry : faceMap.entrySet()) {
+                renderPlasterFace(poseStack, builder, pos, faceEntry.getKey(), faceEntry.getValue(),
+                        camX, camY, camZ, level, u0, u1, v0, v1, shapeAabb);
+            }
+        }
+
+        tesselator.end();
+        renderType.clearRenderState();
+
+        RenderSystem.disablePolygonOffset();
+    }
+
+    private static void renderPlasterFace(PoseStack poseStack, VertexConsumer consumer,
+                                           BlockPos pos, Direction face, int plasterColor,
+                                           double camX, double camY, double camZ, Level level,
+                                           float u0, float u1, float v0, float v1, AABB aabb) {
+        poseStack.pushPose();
+        poseStack.translate(pos.getX() - camX, pos.getY() - camY, pos.getZ() - camZ);
+
+        Matrix4f matrix = poseStack.last().pose();
+        float offset = 0.0F;
+
+        BlockPos lightPos = pos.relative(face);
+        int packedLight = LightTexture.pack(
+                level.getBrightness(LightLayer.BLOCK, lightPos),
+                level.getBrightness(LightLayer.SKY, lightPos)
+        );
+
+        float nx = face.getStepX();
+        float ny = face.getStepY();
+        float nz = face.getStepZ();
+
+        float shade = switch (face) {
+            case DOWN -> 0.5F;
+            case UP -> 1.0F;
+            case NORTH, SOUTH -> 0.8F;
+            default -> 0.6F;
+        };
+        int baseR = (plasterColor >> 16) & 0xFF;
+        int baseG = (plasterColor >> 8) & 0xFF;
+        int baseB = plasterColor & 0xFF;
+        int r = (int) (baseR * shade);
+        int g = (int) (baseG * shade);
+        int b = (int) (baseB * shade);
+
+        float ox = nx * offset;
+        float oy = ny * offset;
+        float oz = nz * offset;
+
+        float x0 = (float) aabb.minX;
+        float x1 = (float) aabb.maxX;
+        float y0 = (float) aabb.minY;
+        float y1 = (float) aabb.maxY;
+        float z0 = (float) aabb.minZ;
+        float z1 = (float) aabb.maxZ;
+
+        switch (face) {
+            case DOWN:
+                consumer.vertex(matrix, x0 + ox, y0 + oy, z0 + oz).color(r, g, b, 255).uv(u0, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y0 + oy, z0 + oz).color(r, g, b, 255).uv(u1, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y0 + oy, z1 + oz).color(r, g, b, 255).uv(u1, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x0 + ox, y0 + oy, z1 + oz).color(r, g, b, 255).uv(u0, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                break;
+            case UP:
+                consumer.vertex(matrix, x0 + ox, y1 + oy, z1 + oz).color(r, g, b, 255).uv(u0, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y1 + oy, z1 + oz).color(r, g, b, 255).uv(u1, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y1 + oy, z0 + oz).color(r, g, b, 255).uv(u1, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x0 + ox, y1 + oy, z0 + oz).color(r, g, b, 255).uv(u0, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                break;
+            case NORTH:
+                consumer.vertex(matrix, x1 + ox, y0 + oy, z0 + oz).color(r, g, b, 255).uv(u1, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x0 + ox, y0 + oy, z0 + oz).color(r, g, b, 255).uv(u0, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x0 + ox, y1 + oy, z0 + oz).color(r, g, b, 255).uv(u0, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y1 + oy, z0 + oz).color(r, g, b, 255).uv(u1, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                break;
+            case SOUTH:
+                consumer.vertex(matrix, x0 + ox, y0 + oy, z1 + oz).color(r, g, b, 255).uv(u0, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y0 + oy, z1 + oz).color(r, g, b, 255).uv(u1, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y1 + oy, z1 + oz).color(r, g, b, 255).uv(u1, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x0 + ox, y1 + oy, z1 + oz).color(r, g, b, 255).uv(u0, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                break;
+            case WEST:
+                consumer.vertex(matrix, x0 + ox, y0 + oy, z0 + oz).color(r, g, b, 255).uv(u0, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x0 + ox, y0 + oy, z1 + oz).color(r, g, b, 255).uv(u1, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x0 + ox, y1 + oy, z1 + oz).color(r, g, b, 255).uv(u1, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x0 + ox, y1 + oy, z0 + oz).color(r, g, b, 255).uv(u0, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                break;
+            case EAST:
+                consumer.vertex(matrix, x1 + ox, y0 + oy, z1 + oz).color(r, g, b, 255).uv(u0, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y0 + oy, z0 + oz).color(r, g, b, 255).uv(u1, v1).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y1 + oy, z0 + oz).color(r, g, b, 255).uv(u1, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                consumer.vertex(matrix, x1 + ox, y1 + oy, z1 + oz).color(r, g, b, 255).uv(u0, v0).uv2(packedLight).normal(nx, ny, nz).endVertex();
+                break;
+        }
 
         poseStack.popPose();
     }

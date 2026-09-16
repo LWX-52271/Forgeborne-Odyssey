@@ -33,6 +33,7 @@ import com.lwx.forgeborneodyssey.blocks.QuernBlock;
 import com.lwx.forgeborneodyssey.blocks.QuernBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.StoragePotBlock;
 import com.lwx.forgeborneodyssey.blocks.StoragePotBlockEntity;
+
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.*;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.*;
@@ -131,6 +132,15 @@ public class ModBlocks {
 
     // 地表圆石方块
     public static final RegistryObject<Block> SURFACE_COBBLESTONE_BLOCK = BLOCKS.register("surface_cobblestone_block", SurfaceCobblestoneBlock::new);
+
+    // 赭石结核
+    public static final RegistryObject<Block> OCHRE_DEPOSIT = BLOCKS.register("ochre_deposit", () ->
+        new StressBlock(Block.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_ORANGE)
+            .strength(1.5f, 2.0f)
+            .sound(SoundType.GRAVEL)
+            .requiresCorrectToolForDrops()
+        ));
 
     public static final RegistryObject<Block> BORNITE_ORE = BLOCKS.register("bornite_ore", () ->
         new StressBlock(Block.Properties.of()
@@ -499,6 +509,45 @@ public class ModBlocks {
             .sound(SoundType.SAND)
             .requiresCorrectToolForDrops()));
 
+    // 石灰砂浆砌筑碎石
+    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE = BLOCKS.register("lime_mortar_cobblestone", () ->
+        new Block(Block.Properties.of()
+            .mapColor(MapColor.STONE)
+            .strength(2.5f, 5.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    // 石灰混凝土
+    public static final RegistryObject<Block> LIME_CONCRETE = BLOCKS.register("lime_concrete", () ->
+        new Block(Block.Properties.of()
+            .mapColor(MapColor.SAND)
+            .strength(2.0f, 4.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    // 石灰砂浆砌筑石砖
+    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS = BLOCKS.register("lime_mortar_stone_bricks", () ->
+        new Block(Block.Properties.of()
+            .mapColor(MapColor.STONE)
+            .strength(3.0f, 6.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+
+    // 石灰砂浆砌筑碎石 - 楼梯/半砖/墙
+    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE_STAIRS = BLOCKS.register("lime_mortar_cobblestone_stairs", LimeMortarCobblestoneStairsBlock::new);
+    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE_SLAB = BLOCKS.register("lime_mortar_cobblestone_slab", LimeMortarCobblestoneSlabBlock::new);
+    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE_WALL = BLOCKS.register("lime_mortar_cobblestone_wall", LimeMortarCobblestoneWallBlock::new);
+
+    // 石灰混凝土 - 楼梯/半砖/墙
+    public static final RegistryObject<Block> LIME_CONCRETE_STAIRS = BLOCKS.register("lime_concrete_stairs", LimeConcreteStairsBlock::new);
+    public static final RegistryObject<Block> LIME_CONCRETE_SLAB = BLOCKS.register("lime_concrete_slab", LimeConcreteSlabBlock::new);
+    public static final RegistryObject<Block> LIME_CONCRETE_WALL = BLOCKS.register("lime_concrete_wall", LimeConcreteWallBlock::new);
+
+    // 石灰砂浆砌筑石砖 - 楼梯/半砖/墙
+    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS_STAIRS = BLOCKS.register("lime_mortar_stone_bricks_stairs", LimeMortarStoneBricksStairsBlock::new);
+    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS_SLAB = BLOCKS.register("lime_mortar_stone_bricks_slab", LimeMortarStoneBricksSlabBlock::new);
+    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS_WALL = BLOCKS.register("lime_mortar_stone_bricks_wall", LimeMortarStoneBricksWallBlock::new);
+
     // 应力方块实体类型
     public static final RegistryObject<BlockEntityType<StressBlock.StressBlockEntity>> STRESS_BLOCK_ENTITY = BLOCK_ENTITIES.register("stress_block_entity",
         () -> {
@@ -516,7 +565,8 @@ public class ModBlocks {
                 EPIDOTE_SKARN_BLOCK.get(), ACTINOLITE_SKARN_BLOCK.get(), TREMOLITE_SKARN_BLOCK.get(),
                 MAGNETITE_ORE.get(), SCHEELITE_ORE.get(), GALENA_ORE.get(),
                 SPHALERITE_ORE.get(), MOLYBDENITE_ORE.get(),
-                CASSITERITE_PLACER_BLOCK.get()
+                CASSITERITE_PLACER_BLOCK.get(),
+                OCHRE_DEPOSIT.get()
             };
             return BlockEntityType.Builder.of(StressBlock.StressBlockEntity::new, stressBlocks).build(null);
         });

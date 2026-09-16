@@ -141,6 +141,7 @@ public class SlingItem extends Item {
         if (isHeavyOre(item)) return AmmoQuality.HEAVY;
         if (isMetalBead(item)) return AmmoQuality.HEAVY;
         if (isRubble(item) || isRawOreChunk(item)) return AmmoQuality.MEDIUM;
+        if (item == ModItems.CERAMIC_SLING_BULLET.get()) return AmmoQuality.MEDIUM;
         return null;
     }
 

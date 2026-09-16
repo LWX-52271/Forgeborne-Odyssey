@@ -35,7 +35,7 @@ public class OreQualityTooltipHandler {
                 event.getToolTip().add(line);
             }
             if (tag.contains(ItemQualityHelper.TAG_ITEM_QUALITY)) {
-                float weightKg = tag.getFloat(ItemQualityHelper.TAG_ITEM_QUALITY);
+                float weightKg = tag.getFloat(ItemQualityHelper.TAG_ITEM_QUALITY) * 10.0f;
                 String weightStr;
                 if (weightKg >= 1.0f) {
                     weightStr = String.format("%.1fkg", weightKg);

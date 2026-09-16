@@ -81,6 +81,7 @@ public class ForgeborneAPI {
 
         // 冲积砂锡矿
         STRESS_THRESHOLD_MAP.put(ModBlocks.CASSITERITE_PLACER_BLOCK.get(), 20.0f); // 砂锡矿，疏松砂质
+        STRESS_THRESHOLD_MAP.put(ModBlocks.OCHRE_DEPOSIT.get(), 15.0f); // 赭石结核，粘土质矿物结节
 
         // 原版岩石
         STRESS_THRESHOLD_MAP.put(Blocks.STONE, 85.0f);
@@ -327,6 +328,6 @@ public class ForgeborneAPI {
         if (stack.isEmpty()) return;
         CompoundTag tag = stack.getOrCreateTag();
         tag.putDouble("Weight", weightInGrams);
-        com.lwx.forgeborneodyssey.quality.ItemQualityHelper.setQualityValue(stack, (float)(weightInGrams / 1000.0));
+        com.lwx.forgeborneodyssey.quality.ItemQualityHelper.setQualityValue(stack, (float)(weightInGrams / 10000.0));
     }
 }

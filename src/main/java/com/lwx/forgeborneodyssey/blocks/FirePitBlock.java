@@ -42,8 +42,6 @@ import net.minecraft.world.level.block.RenderShape;
 public class FirePitBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
-    public static final BooleanProperty SIGNAL_FIRE = BlockStateProperties.SIGNAL_FIRE;
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty HAS_FUEL = BlockStateProperties.HAS_BOTTLE_0;
     
     // 火塘的自定义形状 - 根据更新后的模型调整碰撞箱
@@ -60,8 +58,6 @@ public class FirePitBlock extends Block implements EntityBlock {
             .noCollission()); // 允许光线穿透
         this.registerDefaultState(this.stateDefinition.any()
             .setValue(LIT, Boolean.valueOf(false))
-            .setValue(SIGNAL_FIRE, Boolean.valueOf(false))
-            .setValue(WATERLOGGED, Boolean.valueOf(false))
             .setValue(FACING, Direction.NORTH)
             .setValue(HAS_FUEL, Boolean.valueOf(false)));
     }
@@ -77,16 +73,14 @@ public class FirePitBlock extends Block implements EntityBlock {
     @Override
     public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
         BlockPos blockpos = hit.getBlockPos();
-        if (!level.isClientSide && projectile.isOnFire() && projectile.mayInteract(level, blockpos) && !state.getValue(LIT) && !state.getValue(WATERLOGGED)) {
-            level.setBlock(blockpos, state.setValue(BlockStateProperties.LIT, Boolean.valueOf(true)), 11);
+        if (!level.isClientSide && projectile.isOnFire() && projectile.mayInteract(level, blockpos) && !state.getValue(LIT)) {
+            level.setBlock(blockpos, state.setValue(LIT, Boolean.valueOf(true)), 11);
         }
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState()
             .setValue(LIT, Boolean.valueOf(false))
-            .setValue(SIGNAL_FIRE, Boolean.valueOf(false))
-            .setValue(WATERLOGGED, Boolean.valueOf(false))
             .setValue(FACING, context.getHorizontalDirection());
     }
 
@@ -148,7 +142,7 @@ public class FirePitBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(LIT, SIGNAL_FIRE, WATERLOGGED, FACING, HAS_FUEL);
+        builder.add(LIT, FACING, HAS_FUEL);
     }
 
     // EntityBlock 接口实现
