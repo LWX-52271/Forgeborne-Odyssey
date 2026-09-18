@@ -138,7 +138,7 @@ public class ModBlocks {
         new StressBlock(Block.Properties.of()
             .mapColor(MapColor.TERRACOTTA_ORANGE)
             .strength(1.5f, 2.0f)
-            .sound(SoundType.GRAVEL)
+            .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()
         ));
 

@@ -66,6 +66,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -580,11 +581,20 @@ public class ClientForgeEventHandler {
             if (state.isAir()) continue;
 
             VoxelShape shape = state.getShape(level, pos);
-            AABB shapeAabb = shape.isEmpty() ? new AABB(0, 0, 0, 1, 1, 1) : shape.bounds();
+            if (shape.isEmpty()) continue;
+
+            List<AABB> aabbs = shape.toAabbs();
 
             for (Map.Entry<Direction, Integer> faceEntry : faceMap.entrySet()) {
-                renderPlasterFace(poseStack, builder, pos, faceEntry.getKey(), faceEntry.getValue(),
-                        camX, camY, camZ, level, u0, u1, v0, v1, shapeAabb);
+                Direction face = faceEntry.getKey();
+                int color = faceEntry.getValue();
+
+                for (AABB aabb : aabbs) {
+                    float[] localUV = computeFaceUV(face, aabb, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, u0, u1, v0, v1);
+                    if (localUV == null) continue;
+                    renderPlasterFace(poseStack, builder, pos, face, color,
+                            camX, camY, camZ, level, localUV[0], localUV[1], localUV[2], localUV[3], aabb);
+                }
             }
         }
 
@@ -592,6 +602,53 @@ public class ClientForgeEventHandler {
         renderType.clearRenderState();
 
         RenderSystem.disablePolygonOffset();
+    }
+
+    private static float[] computeFaceUV(Direction face, AABB aabb,
+                                         double minX, double maxX, double minY, double maxY, double minZ, double maxZ,
+                                         float u0, float u1, float v0, float v1) {
+        float uRange = u1 - u0;
+        float vRange = v1 - v0;
+
+        switch (face) {
+            case DOWN, UP -> {
+                double xRange = maxX - minX;
+                double zRange = maxZ - minZ;
+                float lu0 = (float) (u0 + ((aabb.minX - minX) / (xRange == 0 ? 1 : xRange)) * uRange);
+                float lu1 = (float) (u0 + ((aabb.maxX - minX) / (xRange == 0 ? 1 : xRange)) * uRange);
+                float lv0 = (float) (v0 + ((aabb.minZ - minZ) / (zRange == 0 ? 1 : zRange)) * vRange);
+                float lv1 = (float) (v0 + ((aabb.maxZ - minZ) / (zRange == 0 ? 1 : zRange)) * vRange);
+                return new float[]{lu0, lu1, lv0, lv1};
+            }
+            case NORTH, SOUTH -> {
+                double xRange = maxX - minX;
+                double yRange = maxY - minY;
+                float lu0 = (float) (u0 + ((aabb.minX - minX) / (xRange == 0 ? 1 : xRange)) * uRange);
+                float lu1 = (float) (u0 + ((aabb.maxX - minX) / (xRange == 0 ? 1 : xRange)) * uRange);
+                float lv0 = (float) (v0 + ((maxY - aabb.maxY) / (yRange == 0 ? 1 : yRange)) * vRange);
+                float lv1 = (float) (v0 + ((maxY - aabb.minY) / (yRange == 0 ? 1 : yRange)) * vRange);
+                return new float[]{lu0, lu1, lv0, lv1};
+            }
+            case WEST -> {
+                double zRange = maxZ - minZ;
+                double yRange = maxY - minY;
+                float lu0 = (float) (u0 + ((aabb.minZ - minZ) / (zRange == 0 ? 1 : zRange)) * uRange);
+                float lu1 = (float) (u0 + ((aabb.maxZ - minZ) / (zRange == 0 ? 1 : zRange)) * uRange);
+                float lv0 = (float) (v0 + ((maxY - aabb.maxY) / (yRange == 0 ? 1 : yRange)) * vRange);
+                float lv1 = (float) (v0 + ((maxY - aabb.minY) / (yRange == 0 ? 1 : yRange)) * vRange);
+                return new float[]{lu0, lu1, lv0, lv1};
+            }
+            case EAST -> {
+                double zRange = maxZ - minZ;
+                double yRange = maxY - minY;
+                float lu0 = (float) (u0 + ((maxZ - aabb.maxZ) / (zRange == 0 ? 1 : zRange)) * uRange);
+                float lu1 = (float) (u0 + ((maxZ - aabb.minZ) / (zRange == 0 ? 1 : zRange)) * uRange);
+                float lv0 = (float) (v0 + ((maxY - aabb.maxY) / (yRange == 0 ? 1 : yRange)) * vRange);
+                float lv1 = (float) (v0 + ((maxY - aabb.minY) / (yRange == 0 ? 1 : yRange)) * vRange);
+                return new float[]{lu0, lu1, lv0, lv1};
+            }
+        }
+        return null;
     }
 
     private static void renderPlasterFace(PoseStack poseStack, VertexConsumer consumer,
