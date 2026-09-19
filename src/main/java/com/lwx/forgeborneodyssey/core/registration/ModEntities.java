@@ -9,6 +9,7 @@ import com.lwx.forgeborneodyssey.entities.ThrownSurfaceCobblestone;
 import com.lwx.forgeborneodyssey.entities.StoneArrow;
 import com.lwx.forgeborneodyssey.entities.BoneArrow;
 import com.lwx.forgeborneodyssey.entities.CorpseEntity;
+import com.lwx.forgeborneodyssey.entities.BisonEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -96,5 +97,14 @@ public class ModEntities {
             .clientTrackingRange(8)
             .updateInterval(20)
             .build(ForgeborneOdyssey.MOD_ID + ":corpse")
+    );
+
+    // 野牛实体
+    public static final RegistryObject<EntityType<BisonEntity>> BISON = ENTITY_TYPES.register(
+        "bison",
+        () -> EntityType.Builder.of(BisonEntity::new, MobCategory.CREATURE)
+            .sized(1.3F, 1.8F)
+            .clientTrackingRange(10)
+            .build(ForgeborneOdyssey.MOD_ID + ":bison")
     );
 }

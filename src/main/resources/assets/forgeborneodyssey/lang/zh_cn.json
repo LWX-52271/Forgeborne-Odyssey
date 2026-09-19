@@ -199,6 +199,8 @@
     "entity.forgeborneodyssey.stone_spear_thrown": "投掷石矛",
     "entity.forgeborneodyssey.crude_stone_spear_thrown": "投掷粗制石矛",
     "entity.forgeborneodyssey.corpse": "尸体",
+    "entity.forgeborneodyssey.bison": "野牛",
+    "item.forgeborneodyssey.bison_spawn_egg": "野牛刷怪蛋",
     "item.forgeborneodyssey.fiber_rope": "纤维绳",
     "item.forgeborneodyssey.fiber_rope.tooltip": "§8草茎纤维搓成的绳索，基础合成材料",
     "item.forgeborneodyssey.waterskin": "皮水袋",

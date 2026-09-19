@@ -199,6 +199,8 @@
     "entity.forgeborneodyssey.stone_spear_thrown": "Thrown Stone Spear",
     "entity.forgeborneodyssey.crude_stone_spear_thrown": "Thrown Crude Stone Spear",
     "entity.forgeborneodyssey.corpse": "Corpse",
+    "entity.forgeborneodyssey.bison": "Bison",
+    "item.forgeborneodyssey.bison_spawn_egg": "Bison Spawn Egg",
     "item.forgeborneodyssey.fiber_rope": "Fiber Rope",
     "item.forgeborneodyssey.fiber_rope.tooltip": "§8Twisted grass fiber cordage, basic crafting material",
     "item.forgeborneodyssey.waterskin": "Waterskin",

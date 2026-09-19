@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.core;
 
 import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
+import com.lwx.forgeborneodyssey.entities.BisonEntity;
 import com.lwx.forgeborneodyssey.core.registration.*;
 import com.lwx.forgeborneodyssey.loot.GradeLootModifier;
 import com.lwx.forgeborneodyssey.loot.AnimalFatLootModifier;
@@ -201,6 +202,11 @@ public class ForgeborneOdyssey {
         event.add(EntityType.PIG, Attributes.ATTACK_DAMAGE);
         event.add(EntityType.COW, Attributes.ATTACK_DAMAGE);
         event.add(EntityType.SHEEP, Attributes.ATTACK_DAMAGE);
+    }
+
+    @SubscribeEvent
+    public static void onEntityAttributeCreation(net.minecraftforge.event.entity.EntityAttributeCreationEvent event) {
+        event.put(ModEntities.BISON.get(), BisonEntity.createAttributes().build());
     }
 
     @SubscribeEvent

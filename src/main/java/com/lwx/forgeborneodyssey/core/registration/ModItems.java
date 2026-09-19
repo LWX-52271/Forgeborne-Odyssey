@@ -666,6 +666,10 @@ public class ModItems {
 
 
 
+    // 刷怪蛋
+    public static final RegistryObject<Item> BISON_SPAWN_EGG = ITEMS.register("bison_spawn_egg",
+        () -> new net.minecraftforge.common.ForgeSpawnEggItem(ModEntities.BISON, 0x4A3728, 0x8B6914, new Item.Properties()));
+
     private static RegistryObject<Item> simpleItem(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties().stacksTo(64)));
     }

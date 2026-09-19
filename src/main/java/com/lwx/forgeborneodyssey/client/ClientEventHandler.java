@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.client;
 
+import com.lwx.forgeborneodyssey.client.model.BisonModel;
 import com.lwx.forgeborneodyssey.client.model.BoneArrowModel;
 import com.lwx.forgeborneodyssey.client.model.CrudeStoneSpearModel;
 import com.lwx.forgeborneodyssey.client.model.GrassChestplateModel;
@@ -8,6 +9,7 @@ import com.lwx.forgeborneodyssey.client.model.GrassLeggingsModel;
 import com.lwx.forgeborneodyssey.client.model.StoneArrowModel;
 import com.lwx.forgeborneodyssey.client.model.StoneSpearModel;
 import com.lwx.forgeborneodyssey.client.render.AnvilRenderer;
+import com.lwx.forgeborneodyssey.client.render.BisonRenderer;
 import com.lwx.forgeborneodyssey.client.render.BoneArrowRenderer;
 
 import com.lwx.forgeborneodyssey.client.render.DryingRackRenderer;
@@ -256,6 +258,10 @@ public class ClientEventHandler {
                 com.lwx.forgeborneodyssey.core.registration.ModEntities.CORPSE.get(),
                 CorpseRenderer::new
         );
+        event.registerEntityRenderer(
+                com.lwx.forgeborneodyssey.core.registration.ModEntities.BISON.get(),
+                BisonRenderer::new
+        );
     }
 
     /**
@@ -270,6 +276,7 @@ public class ClientEventHandler {
         event.registerLayerDefinition(CrudeStoneSpearModel.LAYER_LOCATION, CrudeStoneSpearModel::createBodyLayer);
         event.registerLayerDefinition(StoneArrowModel.LAYER_LOCATION, StoneArrowModel::createBodyLayer);
         event.registerLayerDefinition(BoneArrowModel.LAYER_LOCATION, BoneArrowModel::createBodyLayer);
+        event.registerLayerDefinition(BisonModel.LAYER_LOCATION, BisonModel::createBodyLayer);
     }
 
     @SubscribeEvent
