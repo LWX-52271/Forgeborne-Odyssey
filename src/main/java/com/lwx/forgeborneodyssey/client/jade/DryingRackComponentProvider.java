@@ -32,11 +32,11 @@ public enum DryingRackComponentProvider implements IBlockComponentProvider {
                 int remainingTicks = totalTime - progress;
 
                 if (remainingTicks > 0) {
-                    String remainingStr = formatRemainingTime(remainingTicks);
+                    Component remainingComponent = formatRemainingTime(remainingTicks);
                     tooltip.add(Component.translatable(
                             "jade.forgeborneodyssey.drying_rack.drying",
                             stack.getHoverName(),
-                            remainingStr));
+                            remainingComponent));
                 } else {
                     tooltip.add(Component.translatable(
                             "jade.forgeborneodyssey.drying_rack.done",
@@ -46,13 +46,13 @@ public enum DryingRackComponentProvider implements IBlockComponentProvider {
         }
     }
 
-    private static String formatRemainingTime(int ticks) {
+    private static Component formatRemainingTime(int ticks) {
         int totalSeconds = ticks / 20;
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
         if (minutes > 0) {
-            return minutes + "m " + seconds + "s";
+            return Component.translatable("jade.forgeborneodyssey.drying_rack.time_format.min_sec", minutes, seconds);
         }
-        return seconds + "s";
+        return Component.translatable("jade.forgeborneodyssey.drying_rack.time_format.sec", seconds);
     }
 }

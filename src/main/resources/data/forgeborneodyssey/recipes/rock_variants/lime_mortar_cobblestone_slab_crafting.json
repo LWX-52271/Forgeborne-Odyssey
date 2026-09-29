@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:lime_mortar_cobblestone"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:lime_mortar_cobblestone_slab",
+    "count": 6
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Survival Basics",
+  "icon": "forgeborneodyssey:fiber_rope",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "First Steps",
+      "text": "You spawn with nothing. Don't panic — follow this order:$(br2)$(li)§4Punch trees§r: Get logs, make planks and a crafting table$(br)$(li)§4Collect stones§r: Find §3surface cobblestone blocks§r (small grey stones on the ground)$(br)$(li)§4Cut grass§r: Bare hands = 1 grass fiber, flint knife = 2-3$(br)$(li)§4Make rope§r: 3 grass fibers in a column = §3fiber rope§r$(br2)With these basics, you can craft your first tools."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Core Tool Chain",
+      "text": "Essential survival tools in priority order:$(br2)$(li)§3Flint Knife§r: Stick + flint flake, right-click grass for fiber$(br)$(li)§3Cobblestone Hammer§r: Stick + surface cobblestone, core tool$(br)$(li)§3Flint Shovel§r: Right-click sand for clay, right-click dirt for kiln pit$(br)$(li)§3Stone Chisel§r: Stick + surface cobblestone, carves metal$(br)$(li)§3Wooden Tongs§r: Stick + fiber rope, §cMANDATORY for hot items!§r$(br)$(li)§3Scraper§r: Flint flake + fiber rope, for tanning leather$(br)$(li)§3Fire Drill§r: Stick + fiber rope + log, for ignition"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:granite_anvil_crafting",
+      "text": "§3Stone Anvil — Core of Cold Forging§r$(br2)The stone anvil is the essential workbench for cold forging.$(br2)Crafting: §47 Granite blocks§r in the pattern shown.$(br2)You can also use §4Limestone§r to make a limestone anvil — same function."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:fire_drill_crafting",
+      "text": "§3Fire Drill — The Spark of Civilization§r$(br2)Crafting: §4Stick + Fiber Rope + Log§r$(br2)Right-click a §4Fire Pit§r (7 surface cobblestone blocks in a ring) with the drill to ignite it.$(br2)Fire pits are used to heat metal billets — the first step of forging."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Rawhide Processing",
+      "text": "Animal rawhide needs multiple steps to become usable leather:$(br2)$(li)§4Step 1§r: Kill animals (cow/pig/sheep/horse etc.) to get §3Rawhide§r (1-3 per animal)$(br)$(li)§4Step 2§r: Place rawhide on a §3Drying Rack§r, wait for it to become §3Dried Hide§r$(br)$(li)§4Step 3§r: Dried Hide + Scraper + Plant Ash ×3 + Water Bottle → §3Tanned Leather§r$(br2)§4Note:§r Plant ash comes from the ash pile left after firing a pit kiln. Therefore, it's recommended to §3make pottery and fire a kiln first§r before processing leather."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Basic Armor",
+      "text": "Don't go naked! Two early armor options:$(br2)$(li)§3Grass Armor§r: Straw bale + fiber rope, the most basic protection$(br)$(li)§3Hide Armor§r: Tanned leather, higher defense$(br2)Grass armor is the fastest to obtain — craft a set right after starting. Hide armor requires the full leather processing chain, more of a mid-game gear."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:stone_spear_crafting",
+      "text": "§3Stone Spear — Primary Early Weapon§r$(br2)Crafting: §4Flint Spearhead + Birch Tar + Fiber Rope + Stick§r$(br2)Right-click to throw, deals solid damage.$(br2)§4Tip:§r The flint spearhead is crafted from flint flakes in the crafting table."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:simple_bow_crafting",
+      "text": "§3Simple Bow — Ranged Weapon§r$(br2)Crafting: §4Sticks ×3 + Fiber Rope§r$(br2)Use with stone arrows or bone arrows.$(br2)§4Tip:§r Pair with a sling and metal beads for both ranged and close combat."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:herb_poultice_crafting",
+      "text": "§3Herb Poultice — Early Healing§r$(br2)Crafting: §4Grass Fiber ×2 + Any Small Flower§r$(br2)Restores 4 health points (2 hearts).$(br2)Right-click to use when injured — can save your life."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:simple_fishing_rod_crafting",
+      "text": "§3Simple Fishing Rod — Food Source§r$(br2)Crafting: §4Sticks ×3 + Fiber Rope + Bone Fish Hook§r$(br2)Bone fish hook is crafted from bone + flint flake.$(br2)§4Tip:§r Fishing is a reliable early food source and can yield rare items."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:grease_torch_crafting",
+      "text": "§3Grease Torch — Early Lighting§r$(br2)Crafting: §4Animal Fat + Stick + Fiber Rope§r$(br2)Animal fat drops from killing animals.$(br2)Brighter than regular torches, great for caves and night lighting."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Survival Roadmap",
+      "text": "Here's a recommended early game progression:$(br2)$(li)§4Day 1§r: Punch trees → collect stones → knap stones → cut grass → make rope → craft flint knife and hammer$(br)$(li)§4Day 2§r: Make stone anvil → make fire pit and drill → find natural copper$(br)$(li)§4Day 3§r: Craft grass armor → strip birch bark → build tar kiln → produce birch tar → craft flint shovel$(br)$(li)§4Day 4§r: Use flint shovel to dig clay → make mixed clay (sand works as temper) → shape greenware → build pit kiln → fire pottery$(br)$(li)§4Day 5§r: Collect plant ash → hunt animals → dry rawhide → tan leather → craft hide armor$(br)$(li)§4Day 6§r: Begin cold forging → fire-crack mining → build quern → crush ore → smelt metals$(br2)This is just a suggestion — feel free to explore your own path!"
+    }
+  ],
+  "sortnum": -1
+}

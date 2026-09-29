@@ -1,0 +1,38 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Tar Kiln & Birch Tar",
+  "icon": "forgeborneodyssey:birch_tar",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Why Birch Tar?",
+      "text": "Advanced stone tools such as the flint knife, flint shovel, and stone spear require §4Birch Tar§r as an adhesive to secure flint or stone heads to their handles.$(br2)Birch tar is extracted from birch bark using a §4Tar Kiln§r — an ancient method of producing natural glue."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 1: Obtain Birch Bark",
+      "text": "With a §4Flint Knife§r (or §4Crude Flint Knife§r) in hand, right-click on a §3Birch Log§r to strip its bark.$(br2)Each log can be scraped §34 times§r, yielding §31 Birch Bark§r per scrape. After the 4th scrape, the log becomes a stripped birch log.$(br2)§4Tip:§r The crude flint knife can be obtained by knapping surface cobblestones — you don't need advanced tools to get birch bark."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 2: Dig the Dirt Pit",
+      "text": "§3The Tar Kiln is not crafted — build it directly in the world:$(br2)$(li)§3Hold Right-Click to Dig§r — Sneak (hold Shift) + §4hold right-click§r on any §4Dirt§r block with a §4Flint Shovel§r or §4Crude Flint Shovel§r for about §32 seconds§r to turn it into an §4Empty Dirt Pit§r (Stage 0)$(br2)§4Note:§r Works on Dirt, Grass Block, Coarse Dirt, Podzol, Mycelium, and Rooted Dirt. The empty dirt pit is the common starting point for both Tar Kiln and Charcoal Kiln, and requires further steps to become operational."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 3: Tar Mode (Extract Birch Tar)",
+      "text": "§3Starting from the Empty Dirt Pit (Stage 0), follow these steps in order:$(br2)$(li)§3① Coat Interior§r — Right-click top, use §4Mixed Clay§r to coat (Stage 0→1)$(br)$(li)§3② Lay Support§r — Right-click top, use §4Cobblestone§r for pebble support (Stage 1→2)$(br)$(li)§3③ Add Birch Bark§r — Right-click top, add §4Birch Bark§r (up to 4, Stage 2→6)$(br)$(li)§3④ Grass Fiber Seal§r — Right-click top, use §4Grass Stem Fiber§r to seal (Stage 3~6→7)$(br)$(li)§3⑤ Dirt Cap§r — Right-click top, use §4Mixed Clay§r or §4Dirt§r to cap (Stage 7→8)$(br)$(li)§3⑥ Ignite§r — Place §4Charcoal Ring§r on top and light it, or use a Fire Drill aimed at the top$(br2)§4Note:§r Tar mode must use a Charcoal Ring for ignition, not raw fuel."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 4: Waiting and Collecting",
+      "text": "§3Post-ignition process:$(br2)$(li)§3Burning Phase§r — Burns for approximately §5300 seconds (5 minutes)§r (Stage 8→9→10→11)$(br)$(li)§3Cooling Phase§r — Automatically cools after flames extinguish$(br)$(li)§3Collection§r — Right-click top with empty hand or §4Flint Shovel§r to extract §4Birch Tar§r (Stage 11)$(br2)§3Yield:§r 1 Birch Tar per Birch Bark.$(br2)§4Tip:§r The kiln is destroyed after extracting tar — you'll need to rebuild it."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 5: Using Birch Tar",
+      "text": "Birch tar is primarily used in crafting advanced stone tools:$(br2)$(li)§3Flint Knife§r — Flint Knife Head + Birch Tar + Fiber Rope + Stick$(br)$(li)§3Flint Shovel§r — Flint Shovel Head + Birch Tar + Fiber Rope + Stick$(br)$(li)§3Flint Sickle§r — Flint Sickle Head + Birch Tar + Fiber Rope + Stick$(br)$(li)§3Stone Spear§r — Flint Spearhead + Birch Tar + Fiber Rope + Stick$(br)$(li)§3Stone Axe§r — Stone Axe Head + Birch Tar + Fiber Rope + Stick$(br)$(li)§3Stone Hoe§r — Stone Hoe Head + Birch Tar + Fiber Rope + Stick$(br)$(li)§3Polished Stone Axe§r — Stone Axe Head + Birch Tar + Fiber Rope + Stick"
+    }
+  ],
+  "sortnum": 6
+}

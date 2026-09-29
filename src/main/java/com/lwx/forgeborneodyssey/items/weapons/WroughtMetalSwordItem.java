@@ -2,8 +2,8 @@ package com.lwx.forgeborneodyssey.items.weapons;
 
 import com.google.common.collect.Multimap;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -34,20 +34,20 @@ public class WroughtMetalSwordItem extends SwordItem {
     
     /**
      * 创建打制铜剑
-     * 铜较软，攻击力略高于石剑(5)，但耐久较低
+     * 攻击力略低于石剑(5)
      */
     public static WroughtMetalSwordItem createWroughtCopperSword() {
         Tier copperTier = new ForgeTier(0, 100, 2.0F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
-        return new WroughtMetalSwordItem(copperTier, 4, -2.4F);
+        return new WroughtMetalSwordItem(copperTier, 3, -2.4F);
     }
     
     /**
      * 创建打制银剑
-     * 银更软，攻击力与石剑相当，耐久更低
+     * 攻击力低于铜剑
      */
     public static WroughtMetalSwordItem createWroughtSilverSword() {
         Tier silverTier = new ForgeTier(0, 70, 1.5F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
-        return new WroughtMetalSwordItem(silverTier, 4, -2.4F);
+        return new WroughtMetalSwordItem(silverTier, 2, -2.4F);
     }
     
     /**
@@ -56,29 +56,23 @@ public class WroughtMetalSwordItem extends SwordItem {
      */
     public static WroughtMetalSwordItem createWroughtGoldSword() {
         Tier goldTier = new ForgeTier(0, 40, 1.0F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
-        return new WroughtMetalSwordItem(goldTier, 4, -2.6F);
+        return new WroughtMetalSwordItem(goldTier, 2, -2.6F);
     }
     
     /**
      * 获取 ItemStack 的质量等级
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Quality")) {
-            return AbstractMetalBilletItem.Quality.MEDIUM;
-        }
-        return AbstractMetalBilletItem.Quality.fromString(tag.getString("Quality"));
+        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
     }
     
     /**
      * 获取 ItemStack 的纯度
      */
     public float getPurity(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Purity")) {
-            return 90.0f; // 默认纯度
-        }
-        return tag.getFloat("Purity");
+        float p = QualityHelper.getPurity(stack);
+        if (p > 0.0f) return p * 100.0f;
+        return 90.0f;
     }
     
     /**
@@ -102,16 +96,13 @@ public class WroughtMetalSwordItem extends SwordItem {
      * @return 伤害修正值
      */
     public float getDamageModifierFromWeight(ItemStack stack) {
-        net.minecraft.nbt.CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Weight")) {
-            return 0.0f; // 没有重量信息，返回0
+        double weight = QualityHelper.getWeightGrams(stack);
+        if (weight <= 0.0) {
+            return 0.0f;
         }
         
-        double weight = tag.getDouble("Weight");
-        
-        // 根据重量计算伤害修正：每100g增加0.1点伤害，最多增加2.0点
         float damageBonus = (float)(weight / 100.0);
-        damageBonus = Math.min(2.0f, damageBonus); // 限制最大加成
+        damageBonus = Math.min(2.0f, damageBonus);
         
         return damageBonus;
     }
@@ -120,15 +111,12 @@ public class WroughtMetalSwordItem extends SwordItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         if (Screen.hasShiftDown()) {
-            // 添加重量等级提示
             AbstractMetalBilletItem.Quality quality = getQuality(stack);
             Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
             tooltip.add(qualityText);
             
-            // 添加重量提示
-            CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("Weight")) {
-                double weight = tag.getDouble("Weight");
+            double weight = QualityHelper.getWeightGrams(stack);
+            if (weight > 0.0) {
                 if (weight >= 1000.0) {
                     tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
                 } else {
@@ -136,17 +124,16 @@ public class WroughtMetalSwordItem extends SwordItem {
                 }
             }
             
-            // 添加纯度提示
             float purity = getPurity(stack);
-            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            if (purity > 0.0f) {
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            }
             
-            // 显示实际伤害值
             float baseDamage = this.getDamage();
             float modifier = getDamageModifierFromWeight(stack);
             float actualDamage = baseDamage + modifier;
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.base_damage", String.format("%.1f", actualDamage)));
             
-            // 显示基于纯度的耐久度
             int baseDurability = this.getDefaultInstance().getMaxDamage();
             int actualDurability = getDurabilityFromPurity(purity, baseDurability);
             int currentDamage = stack.getDamageValue();

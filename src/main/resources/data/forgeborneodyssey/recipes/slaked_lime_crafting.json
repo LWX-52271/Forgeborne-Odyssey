@@ -1,0 +1,16 @@
+{
+  "type": "forgeborneodyssey:fluid_container_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:quicklime"
+    },
+    {
+      "tag": "forgeborneodyssey:water_containers"
+    }
+  ],
+  "fluid_ingredient": 1,
+  "result": {
+    "item": "forgeborneodyssey:slaked_lime",
+    "count": 1
+  }
+}

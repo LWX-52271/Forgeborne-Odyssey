@@ -5,14 +5,16 @@ import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModEntities;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.entities.CorpseEntity;
-import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -51,6 +53,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 import net.minecraftforge.event.TickEvent;
@@ -84,7 +87,7 @@ import java.util.Map;
  * 模组事件处理器
  * 处理各种游戏事件
  */
-@Mod.EventBusSubscriber(modid = "forgeborneodyssey")
+@Mod.EventBusSubscriber(modid = "forgeborneodyssey", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEventHandlers {
     // 属坯料转化已改为合成表机制，无需事件处理
     
@@ -113,6 +116,20 @@ public class ModEventHandlers {
 
         PitDiggingProgress(BlockPos pos) {
             this.pos = pos;
+            this.ticks = 0;
+        }
+    }
+
+    // 记录玩家淘洗进度
+    private static final Map<Player, PanningProgress> panningProgress = new HashMap<>();
+    private static final int PANNING_DURATION = 60; // 3秒（60 ticks）
+
+    private static class PanningProgress {
+        boolean usingWaterBlock; // true=水源方块，false=水容器
+        int ticks;
+
+        PanningProgress(boolean usingWaterBlock) {
+            this.usingWaterBlock = usingWaterBlock;
             this.ticks = 0;
         }
     }
@@ -208,6 +225,12 @@ public class ModEventHandlers {
             Player player = entry.getKey();
             return player.level() == null || player.level().isClientSide;
         });
+
+        // 清理已离线的淘洗进度
+        panningProgress.entrySet().removeIf(entry -> {
+            Player player = entry.getKey();
+            return player.level() == null || player.level().isClientSide;
+        });
     }
     
     /**
@@ -251,11 +274,7 @@ public class ModEventHandlers {
                     double weight = generateWeightForBillet(billetItem, level.random);
                     billet.setQualityByWeight(billetItem, weight);
                     billet.setRandomPurity(billetItem, level.random);
-                    billetItem.getOrCreateTag().putDouble("Weight", weight);
-                }
-                if (billetItem.hasTag() && billetItem.getTag().contains("Weight")) {
-                    ItemQualityHelper.setQualityValue(billetItem,
-                        (float)(billetItem.getTag().getDouble("Weight") / 10000.0));
+                    com.lwx.forgeborneodyssey.quality.QualityHelper.setWeightGrams(billetItem, weight);
                 }
             }
             
@@ -333,6 +352,9 @@ public class ModEventHandlers {
         if (!player.level().isClientSide()) {
             processPitDigging(player);
         }
+
+        // 淘洗进度处理（客户端和服务端都需要）
+        processPanning(event.player);
     }
     
     /**
@@ -402,6 +424,39 @@ public class ModEventHandlers {
         ItemStack itemStack = event.getItemStack();
         Player player = event.getEntity();
         ItemStack offHand = player.getOffhandItem();
+
+        // ===== 淘洗交互：手持粗锡石砂对水源或副手水容器右键（深水/空气右键场景） =====
+        if (event.getHand() == InteractionHand.MAIN_HAND && itemStack.is(ModItems.ROUGH_CASSITERITE_SAND.get())) {
+            boolean isWaterBlock = false;
+            BlockPos waterPos = player.blockPosition();
+
+            Vec3 eyePos = player.getEyePosition();
+            Vec3 lookVec = player.getViewVector(1.0F);
+            Vec3 targetPos = eyePos.add(lookVec.scale(5.0));
+            ClipContext ctx = new ClipContext(eyePos, targetPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.SOURCE_ONLY, player);
+            BlockHitResult hit = player.level().clip(ctx);
+
+            if (hit.getType() == HitResult.Type.BLOCK) {
+                BlockState hitState = player.level().getBlockState(hit.getBlockPos());
+                if (hitState.getFluidState().is(Fluids.WATER) || hitState.is(Blocks.WATER)) {
+                    isWaterBlock = true;
+                    waterPos = hit.getBlockPos();
+                }
+            }
+
+            boolean hasWaterContainer = isWaterContainerWithWater(offHand);
+
+            if (isWaterBlock || hasWaterContainer) {
+                if (!panningProgress.containsKey(player)) {
+                    panningProgress.put(player, new PanningProgress(isWaterBlock));
+                    player.level().playSound(null, waterPos, SoundEvents.SAND_BREAK,
+                        SoundSource.PLAYERS, 0.5F, 1.0F);
+                }
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+                return;
+            }
+        }
 
         if (itemStack.is(Items.FISHING_ROD)) {
             event.setCanceled(true);
@@ -536,6 +591,51 @@ public class ModEventHandlers {
         BlockState state = event.getLevel().getBlockState(pos);
         ItemStack held = player.getItemInHand(event.getHand());
 
+        // ===== 淘洗交互：手持粗锡石砂对水源方块右键 =====
+        if (held.is(ModItems.ROUGH_CASSITERITE_SAND.get()) && event.getHand() == InteractionHand.MAIN_HAND) {
+            boolean isWaterBlock = state.getFluidState().is(Fluids.WATER) || state.is(Blocks.WATER);
+            // 水源方块无交互碰撞箱，射线会穿过水点击到水底方块，需同时检查上方一格
+            if (!isWaterBlock) {
+                BlockState aboveState = event.getLevel().getBlockState(pos.above());
+                isWaterBlock = aboveState.getFluidState().is(Fluids.WATER) || aboveState.is(Blocks.WATER);
+            }
+            boolean hasWaterContainer = false;
+
+            // 检查副手或背包中的水容器（陶水罐/水囊）
+            ItemStack offhand = player.getOffhandItem();
+            if (isWaterContainerWithWater(offhand)) {
+                hasWaterContainer = true;
+            }
+
+            if (isWaterBlock || hasWaterContainer) {
+                // 检查是否已经在淘洗中
+                if (panningProgress.containsKey(player)) {
+                    event.setCanceled(true);
+                    event.setCancellationResult(InteractionResult.SUCCESS);
+                    return;
+                }
+
+                // 启动淘洗进度
+                panningProgress.put(player, new PanningProgress(isWaterBlock));
+
+                // 播放初始音效
+                player.level().playSound(null, pos, SoundEvents.SAND_BREAK,
+                    SoundSource.PLAYERS, 0.5F, 1.0F);
+
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+
+                // 发送keep-alive包以模拟持续右键
+                if (!player.level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+                    com.lwx.forgeborneodyssey.network.ModMessages.CHANNEL.send(
+                        net.minecraftforge.network.PacketDistributor.PLAYER.with(() -> serverPlayer),
+                        new com.lwx.forgeborneodyssey.network.PitDiggingInputPacket()
+                    );
+                }
+                return;
+            }
+        }
+
         if ((held.getItem() instanceof com.lwx.forgeborneodyssey.items.tools.FlintKnifeItem
                 || held.getItem() instanceof com.lwx.forgeborneodyssey.items.tools.CrudeFlintKnifeItem)
                 && state.is(Blocks.BIRCH_LOG)) {
@@ -642,6 +742,89 @@ public class ModEventHandlers {
                 }
             }
 
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        // 用铲子在泥土上挖蚯蚓（非潜行——潜行是坑窑挖掘）
+        if ((held.is(ModItems.FLINT_SHOVEL.get()) || held.is(ModItems.CRUDE_FLINT_SHOVEL.get()))
+                && isDirtLike(state) && !player.isShiftKeyDown()) {
+            if (event.getLevel().getRandom().nextFloat() < 0.50F) {
+                int count = 2 + event.getLevel().getRandom().nextInt(3);
+                ItemStack earthworm = new ItemStack(ModItems.EARTHWORM.get(), count);
+                if (!player.getInventory().add(earthworm)) {
+                    player.drop(earthworm, false);
+                }
+                held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
+                event.getLevel().playSound(null, pos, SoundEvents.ROOTED_DIRT_BREAK, SoundSource.BLOCKS, 0.6F, 1.0F);
+                useBlock(event.getLevel(), pos, MAX_USAGE);
+
+                if (event.getLevel() instanceof ServerLevel serverLevel) {
+                    ItemStack displayStack = new ItemStack(ModItems.EARTHWORM.get());
+                    for (int i = 0; i < 6; i++) {
+                        double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                        double offsetY = serverLevel.random.nextDouble() * 0.3;
+                        double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                        serverLevel.sendParticles(
+                            new ItemParticleOption(ParticleTypes.ITEM, displayStack),
+                            pos.getX() + 0.5 + offsetX,
+                            pos.getY() + 0.5 + offsetY,
+                            pos.getZ() + 0.5 + offsetZ,
+                            1, 0.0, 0.0, 0.0, 0.0);
+                    }
+                }
+            } else {
+                event.getLevel().playSound(null, pos, SoundEvents.GRASS_HIT, SoundSource.BLOCKS, 0.3F, 1.0F);
+                if (event.getLevel() instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(
+                        new BlockParticleOption(ParticleTypes.BLOCK, state),
+                        pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
+                        3, 0.2, 0.1, 0.2, 0.0);
+                }
+            }
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            return;
+        }
+
+        // 用木棍在泥土上挖蚯蚓（消耗木棍）
+        if (event.getHand() == InteractionHand.MAIN_HAND && held.is(Items.STICK) && isDirtLike(state)) {
+            if (event.getLevel().getRandom().nextFloat() < 0.40F) {
+                int count = 1 + event.getLevel().getRandom().nextInt(3);
+                ItemStack earthworm = new ItemStack(ModItems.EARTHWORM.get(), count);
+                if (!player.getInventory().add(earthworm)) {
+                    player.drop(earthworm, false);
+                }
+                event.getLevel().playSound(null, pos, SoundEvents.ROOTED_DIRT_BREAK, SoundSource.BLOCKS, 0.6F, 1.0F);
+                useBlock(event.getLevel(), pos, MAX_USAGE);
+
+                if (event.getLevel() instanceof ServerLevel serverLevel) {
+                    ItemStack displayStack = new ItemStack(ModItems.EARTHWORM.get());
+                    for (int i = 0; i < 5; i++) {
+                        double offsetX = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                        double offsetY = serverLevel.random.nextDouble() * 0.3;
+                        double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 0.5;
+                        serverLevel.sendParticles(
+                            new ItemParticleOption(ParticleTypes.ITEM, displayStack),
+                            pos.getX() + 0.5 + offsetX,
+                            pos.getY() + 0.5 + offsetY,
+                            pos.getZ() + 0.5 + offsetZ,
+                            1, 0.0, 0.0, 0.0, 0.0);
+                    }
+                }
+            } else {
+                event.getLevel().playSound(null, pos, SoundEvents.GRASS_HIT, SoundSource.BLOCKS, 0.3F, 1.0F);
+                if (event.getLevel() instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(
+                        new BlockParticleOption(ParticleTypes.BLOCK, state),
+                        pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
+                        3, 0.2, 0.1, 0.2, 0.0);
+                }
+            }
+            if (!player.isCreative()) {
+                held.shrink(1);
+            }
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.SUCCESS);
             return;
@@ -775,6 +958,32 @@ public class ModEventHandlers {
             return;
         }
     }
+
+    /**
+	 * 检查物品是否为装有水的水容器（陶水罐或水囊）
+	 */
+	private static boolean isWaterContainerWithWater(ItemStack stack) {
+		if (stack.isEmpty()) return false;
+		// 检查陶水罐
+		if (stack.is(ModItems.CERAMIC_WATER_JUG.get())) {
+			CompoundTag tag = stack.getTag();
+			if (tag != null && tag.contains("Fluid")) {
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(tag.getCompound("Fluid"));
+				return !fluid.isEmpty() && fluid.getFluid() == Fluids.WATER;
+			}
+			return false;
+		}
+		// 检查水囊
+		if (stack.is(ModItems.WATERSKIN.get())) {
+			CompoundTag tag = stack.getTag();
+			if (tag != null && tag.contains("Fluid")) {
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(tag.getCompound("Fluid"));
+				return !fluid.isEmpty() && fluid.getFluid() == Fluids.WATER;
+			}
+			return false;
+		}
+		return false;
+	}
 
     private static boolean isDirtLike(BlockState state) {
         return state.is(Blocks.DIRT) ||
@@ -953,6 +1162,112 @@ public class ModEventHandlers {
     }
 
     /**
+     * 处理淘洗进度
+     * 玩家手持粗锡石砂对水源右键后，持续面向水源保持右键，3秒后完成淘洗
+     */
+    private static void processPanning(Player player) {
+        PanningProgress progress = panningProgress.get(player);
+        if (progress == null) return;
+
+        // 检查玩家是否仍持有粗锡石砂
+        ItemStack held = player.getMainHandItem();
+        if (!held.is(ModItems.ROUGH_CASSITERITE_SAND.get())) {
+            panningProgress.remove(player);
+            return;
+        }
+
+        // 检查玩家是否已死亡或离开（简化版保持检测）
+        if (!player.isAlive() || player.isRemoved()) {
+            panningProgress.remove(player);
+            return;
+        }
+
+        progress.ticks++;
+
+        // 播放淘洗音效（客户端）
+        if (player.level().isClientSide) {
+            // 每10 tick播放一次水流声
+            if (progress.ticks % 10 == 0) {
+                player.level().playLocalSound(
+                    player.getX(), player.getY(), player.getZ(),
+                    SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT,
+                    SoundSource.PLAYERS, 0.6F, 0.8F + player.getRandom().nextFloat() * 0.4F, false);
+            }
+            // 每5 tick播放沙土掉落声
+            if (progress.ticks % 5 == 0) {
+                player.level().playLocalSound(
+                    player.getX(), player.getY(), player.getZ(),
+                    SoundEvents.SAND_BREAK,
+                    SoundSource.PLAYERS, 0.3F, 1.2F + player.getRandom().nextFloat() * 0.3F, false);
+            }
+            // 棕色尘土粒子效果 - 在水中扩散
+            if (progress.ticks % 2 == 0) {
+                double x = player.getX() + (player.getRandom().nextDouble() - 0.5) * 0.8;
+                double z = player.getZ() + (player.getRandom().nextDouble() - 0.5) * 0.8;
+                player.level().addParticle(
+                    ParticleTypes.CRIT,
+                    x, player.getY() + 0.5, z,
+                    (player.getRandom().nextDouble() - 0.5) * 0.1,
+                    player.getRandom().nextDouble() * 0.1,
+                    (player.getRandom().nextDouble() - 0.5) * 0.1);
+            }
+        }
+
+        // 服务端处理完成逻辑
+        if (progress.ticks >= PANNING_DURATION && !player.level().isClientSide) {
+            ServerLevel serverLevel = (ServerLevel) player.level();
+            BlockPos playerPos = player.blockPosition();
+
+            // 消耗一个粗锡石砂
+            held.shrink(1);
+
+            // 计算淘洗结果
+            float luck = player.getLuck();
+            float successChance = 0.70F + luck * 0.05F; // 基础70%，幸运每级+5%
+            boolean success = serverLevel.random.nextFloat() < successChance;
+
+            if (success) {
+                // 成功：获得锡石精矿（1个）
+                ItemStack concentrate = new ItemStack(ModItems.CASSITERITE_CONCENTRATE.get(), 1);
+                if (!player.getInventory().add(concentrate)) {
+                    player.drop(concentrate, false);
+                }
+
+                // 成功音效 + 粒子
+                serverLevel.playSound(null, playerPos, SoundEvents.AMETHYST_CLUSTER_BREAK,
+                    SoundSource.PLAYERS, 0.6F, 0.5F);
+                for (int i = 0; i < 10; i++) {
+                    serverLevel.sendParticles(ParticleTypes.GLOW,
+                        playerPos.getX() + 0.5D + (serverLevel.random.nextDouble() - 0.5) * 1.0D,
+                        playerPos.getY() + 1.0D + serverLevel.random.nextDouble() * 0.5D,
+                        playerPos.getZ() + 0.5D + (serverLevel.random.nextDouble() - 0.5) * 1.0D,
+                        1, 0.0D, 0.0D, 0.0D, 0.0D);
+                }
+
+                player.displayClientMessage(
+                    Component.translatable("message.forgeborneodyssey.panning.success")
+                        .withStyle(net.minecraft.ChatFormatting.GREEN), true);
+            } else {
+                // 失败：全部冲走
+                serverLevel.playSound(null, playerPos, SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT,
+                    SoundSource.PLAYERS, 1.0F, 0.5F);
+                player.displayClientMessage(
+                    Component.translatable("message.forgeborneodyssey.panning.fail")
+                        .withStyle(net.minecraft.ChatFormatting.RED), true);
+            }
+
+            // 消耗饱食度（体力劳动）
+            player.causeFoodExhaustion(2.0F);
+
+            player.swing(InteractionHand.MAIN_HAND);
+
+            // 清除进度
+            panningProgress.remove(player);
+            com.lwx.forgeborneodyssey.network.PitDiggingInputPacket.clearKeepAlive(player);
+        }
+    }
+
+    /**
      * 判断是否为原版工具（镐、斧、铲、锄）
      */
     private static boolean isVanillaTool(ItemStack stack) {
@@ -1005,31 +1320,30 @@ public class ModEventHandlers {
 
     /**
      * 移除原版木炭和原版工具的合成配方
+     * 通过反射重建 RecipeManager 内部的 ImmutableMap，以可写方式移除指定配方
      */
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
         try {
             RecipeManager recipeManager = event.getServer().getRecipeManager();
 
-            Map<ResourceLocation, Recipe<?>> byName = null;
             Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> recipes = null;
+            Field recipesField = null;
+            Field byNameField = null;
 
             for (Field field : RecipeManager.class.getDeclaredFields()) {
                 field.setAccessible(true);
                 Class<?> ft = field.getType();
                 if (Map.class.isAssignableFrom(ft)) {
-                    Object val = field.get(recipeManager);
-                    if (val == null) continue;
-                    String cn = ft.getCanonicalName();
-                    if (recipes == null && cn.startsWith("java.util.Map") && field.getGenericType().getTypeName().contains("RecipeType")) {
+                    String typeName = field.getGenericType().getTypeName();
+                    if (typeName.contains("RecipeType")) {
+                        recipesField = field;
                         @SuppressWarnings("unchecked")
                         Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> casted =
-                                (Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>>) val;
+                                (Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>>) field.get(recipeManager);
                         recipes = casted;
-                    } else if (byName == null && cn.startsWith("java.util.Map") && field.getGenericType().getTypeName().contains("ResourceLocation") && !field.getGenericType().getTypeName().contains("RecipeType")) {
-                        @SuppressWarnings("unchecked")
-                        Map<ResourceLocation, Recipe<?>> casted = (Map<ResourceLocation, Recipe<?>>) val;
-                        byName = casted;
+                    } else if (typeName.contains("ResourceLocation")) {
+                        byNameField = field;
                     }
                 }
             }
@@ -1039,46 +1353,48 @@ public class ModEventHandlers {
                 return;
             }
 
-            if (byName != null) {
-                removeRecipe(byName, recipes, new ResourceLocation("minecraft", "charcoal"));
-            } else {
-                removeRecipe(null, recipes, new ResourceLocation("minecraft", "charcoal"));
-            }
+            java.util.Set<ResourceLocation> idsToRemove = new java.util.HashSet<>();
+            idsToRemove.add(new ResourceLocation("minecraft", "charcoal"));
 
             String[] materials = {"wooden", "stone", "iron", "golden", "diamond", "netherite"};
             String[] tools = {"_pickaxe", "_axe", "_shovel", "_hoe"};
-            int removedCount = 0;
             for (String material : materials) {
                 for (String tool : tools) {
-                    ResourceLocation toolId = new ResourceLocation("minecraft", material + tool);
-                    if (byName != null ? removeRecipe(byName, recipes, toolId) : removeRecipe(null, recipes, toolId)) {
-                        removedCount++;
-                    }
-                    ResourceLocation smithingId = new ResourceLocation("minecraft", "smithing_" + material + tool + "_smithing");
-                    if (byName != null ? removeRecipe(byName, recipes, smithingId) : removeRecipe(null, recipes, smithingId)) {
+                    idsToRemove.add(new ResourceLocation("minecraft", material + tool));
+                    idsToRemove.add(new ResourceLocation("minecraft",
+                            "smithing_" + material + tool + "_smithing"));
+                }
+            }
+
+            int removedCount = 0;
+            Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> newRecipes = new HashMap<>();
+            for (Map.Entry<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> entry : recipes.entrySet()) {
+                Map<ResourceLocation, Recipe<?>> innerCopy = new HashMap<>(entry.getValue());
+                for (ResourceLocation id : idsToRemove) {
+                    if (innerCopy.remove(id) != null) {
                         removedCount++;
                     }
                 }
+                newRecipes.put(entry.getKey(), java.util.Collections.unmodifiableMap(innerCopy));
             }
-            ForgeborneOdyssey.LOGGER.info("Removed vanilla charcoal recipe and " + removedCount + " vanilla tool recipes");
+
+            recipesField.set(recipeManager, java.util.Collections.unmodifiableMap(newRecipes));
+
+            if (byNameField != null) {
+                @SuppressWarnings("unchecked")
+                Map<ResourceLocation, Recipe<?>> byName =
+                        (Map<ResourceLocation, Recipe<?>>) byNameField.get(recipeManager);
+                if (byName != null) {
+                    Map<ResourceLocation, Recipe<?>> newByName = new HashMap<>(byName);
+                    newByName.keySet().removeAll(idsToRemove);
+                    byNameField.set(recipeManager, java.util.Collections.unmodifiableMap(newByName));
+                }
+            }
+
+            ForgeborneOdyssey.LOGGER.info("Removed {} vanilla recipes (charcoal + tools)", removedCount);
         } catch (Exception e) {
             ForgeborneOdyssey.LOGGER.error("Failed to remove vanilla recipes", e);
         }
-    }
-
-    private static boolean removeRecipe(Map<ResourceLocation, Recipe<?>> byName,
-                                        Map<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> recipes,
-                                        ResourceLocation id) {
-        boolean removed = false;
-        if (byName != null && byName.remove(id) != null) {
-            removed = true;
-        }
-        for (Map<ResourceLocation, Recipe<?>> map : recipes.values()) {
-            if (map.remove(id) != null) {
-                removed = true;
-            }
-        }
-        return removed;
     }
 
     /**

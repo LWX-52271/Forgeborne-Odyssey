@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.util;
 
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -8,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.UUID;
@@ -17,6 +18,10 @@ public class PlayerStrengthManager {
 
     public static final String KEY_STRENGTH = "forgeborneodyssey:strength";
     public static final String KEY_PROGRESS = "forgeborneodyssey:strength_progress";
+
+    public static boolean isSystemEnabled() {
+        return ConfigManager.INSTANCE.enableStrengthSystem.get();
+    }
 
     public static final int MIN_STRENGTH_LEVEL = 0;
 
@@ -51,6 +56,9 @@ public class PlayerStrengthManager {
     }
 
     public static double getMaxCarryCapacity(Player player) {
+        if (!isSystemEnabled()) {
+            return Double.MAX_VALUE;
+        }
         int level = getStrengthLevel(player);
         return ConfigManager.INSTANCE.baseCarryCapacity.get() + level * ConfigManager.INSTANCE.strengthBonusPerLevel.get();
     }
@@ -84,6 +92,15 @@ public class PlayerStrengthManager {
     private static final double KNOCKBACK_PER_LEVEL = 0.01;
 
     public static void applyStrengthAttributes(Player player) {
+        if (!isSystemEnabled()) {
+            applyModifier(player, Attributes.MAX_HEALTH, HEALTH_MODIFIER_UUID,
+                    "strength_health", 0.0, AttributeModifier.Operation.ADDITION);
+            applyModifier(player, Attributes.ATTACK_DAMAGE, DAMAGE_MODIFIER_UUID,
+                    "strength_damage", 0.0, AttributeModifier.Operation.ADDITION);
+            applyModifier(player, Attributes.KNOCKBACK_RESISTANCE, KNOCKBACK_MODIFIER_UUID,
+                    "strength_knockback", 0.0, AttributeModifier.Operation.ADDITION);
+            return;
+        }
         int level = getStrengthLevel(player);
         applyModifier(player, Attributes.MAX_HEALTH, HEALTH_MODIFIER_UUID,
                 "strength_health", level * HEALTH_PER_LEVEL, AttributeModifier.Operation.ADDITION);
@@ -104,6 +121,9 @@ public class PlayerStrengthManager {
     }
 
     public static boolean addTrainingProgress(Player player, float amount) {
+        if (!isSystemEnabled()) {
+            return false;
+        }
         int currentLevel = getStrengthLevel(player);
         if (currentLevel >= getMaxStrengthLevel()) {
             return false;
@@ -147,6 +167,7 @@ public class PlayerStrengthManager {
     }
 
     public static double getArcheryDamageBonus(Player player) {
+        if (!isSystemEnabled()) return 0.0;
         return getStrengthLevel(player) * DAMAGE_PER_LEVEL;
     }
 
@@ -161,10 +182,10 @@ public class PlayerStrengthManager {
     private static final float STRENGTH_CAVEIN_REDUCTION_PER_LEVEL = 0.001f;
     private static final float COOLDOWN_MIN_MULTIPLIER = 0.3f;
 
-    /**
-     * 获取负重惩罚等级，已考虑力气减免
-     */
     public static int getEffectiveWeightLevel(Player player) {
+        if (!isSystemEnabled()) {
+            return 0;
+        }
         double totalWeight = calculateTotalWeight(player);
         double maxCapacity = getMaxCarryCapacity(player);
 
@@ -186,34 +207,36 @@ public class PlayerStrengthManager {
     }
 
     public static float getMiningStressMultiplier(Player player) {
+        if (!isSystemEnabled()) return 1.0f;
         int level = getStrengthLevel(player);
         return STRESS_MULTIPLIER[getEffectiveWeightLevel(player)] * (1.0f + level * STRENGTH_BONUS_PER_LEVEL);
     }
 
     public static float getMiningCooldownMultiplier(Player player) {
+        if (!isSystemEnabled()) return 1.0f;
         int level = getStrengthLevel(player);
         return COOLDOWN_MULTIPLIER[getEffectiveWeightLevel(player)]
                 * Math.max(COOLDOWN_MIN_MULTIPLIER, 1.0f - level * STRENGTH_BONUS_PER_LEVEL);
     }
 
     public static float getForgingEfficiencyMultiplier(Player player) {
+        if (!isSystemEnabled()) return 1.0f;
         int level = getStrengthLevel(player);
         return Math.min(1.0f,
                 FORGING_MULTIPLIER[getEffectiveWeightLevel(player)] * (1.0f + level * STRENGTH_FORGE_BONUS_PER_LEVEL));
     }
 
     public static float getCaveInChanceBonus(Player player) {
+        if (!isSystemEnabled()) return 0.0f;
         int level = getStrengthLevel(player);
         return CAVEIN_BONUS[getEffectiveWeightLevel(player)] - level * STRENGTH_CAVEIN_REDUCTION_PER_LEVEL;
     }
 
     public static float getClimbCrawlMultiplier(Player player) {
+        if (!isSystemEnabled()) return 1.0f;
         return CLIMB_MULTIPLIER[getEffectiveWeightLevel(player)];
     }
 
-    /**
-     * 遍历背包中所有带 Weight 或 item_quality/ore_quality 标签的物品，计算总负重（克）
-     */
     public static double calculateTotalWeight(Player player) {
         double total = 0.0;
         Inventory inventory = player.getInventory();
@@ -236,33 +259,32 @@ public class PlayerStrengthManager {
         double weight = 0.0;
         CompoundTag tag = stack.getTag();
         if (tag != null) {
-            // 优先使用 Weight 标签（克），由 setQualityValue 统一写入
-            if (tag.contains("Weight")) {
-                weight += tag.getDouble("Weight") * stack.getCount();
-            } else if (tag.contains(ItemQualityHelper.TAG_ITEM_QUALITY)) {
-                weight += tag.getFloat(ItemQualityHelper.TAG_ITEM_QUALITY) * QUALITY_TO_WEIGHT * stack.getCount();
+            if (tag.contains(QualityHelper.TAG_WEIGHT_GRAMS)) {
+                weight += QualityHelper.getWeightGrams(stack) * stack.getCount();
+            } else if (tag.contains(QualityHelper.TAG_QUALITY)) {
+                weight += tag.getFloat(QualityHelper.TAG_QUALITY) * QUALITY_TO_WEIGHT * stack.getCount();
             } else if (tag.contains("ore_quality")) {
                 weight += tag.getFloat("ore_quality") * QUALITY_TO_WEIGHT * stack.getCount();
             }
             if (tag.contains("Items")) {
-            ListTag items = tag.getList("Items", CompoundTag.TAG_COMPOUND);
-            double contentsWeight = 0.0;
-            for (int i = 0; i < items.size(); i++) {
-                CompoundTag itemTag = items.getCompound(i);
-                ItemStack containedStack = ItemStack.of(itemTag);
-                contentsWeight += getStackWeight(containedStack);
+                ListTag items = tag.getList("Items", CompoundTag.TAG_COMPOUND);
+                double contentsWeight = 0.0;
+                for (int i = 0; i < items.size(); i++) {
+                    CompoundTag itemTag = items.getCompound(i);
+                    ItemStack containedStack = ItemStack.of(itemTag);
+                    contentsWeight += getStackWeight(containedStack);
+                }
+                weight += contentsWeight * stack.getCount();
             }
-            weight += contentsWeight * stack.getCount();
-        }
-        if (tag.contains("Fluid")) {
-            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(tag.getCompound("Fluid"));
-            if (!fluidStack.isEmpty()) {
-                weight += fluidStack.getAmount() * stack.getCount();
+            if (tag.contains("Fluid")) {
+                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(tag.getCompound("Fluid"));
+                if (!fluidStack.isEmpty()) {
+                    weight += fluidStack.getAmount() * stack.getCount();
+                }
             }
         }
+        return weight;
     }
-    return weight;
-}
 
     public static String getStrengthLevelName(int level) {
         if (level >= 45) return "铁人";

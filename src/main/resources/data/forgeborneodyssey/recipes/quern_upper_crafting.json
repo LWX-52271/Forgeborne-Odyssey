@@ -1,11 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "SSS"
+    "SSA"
   ],
   "key": {
     "S": {
       "item": "minecraft:cobblestone"
+    },
+    "A": {
+      "item": "minecraft:stick"
     }
   },
   "result": {

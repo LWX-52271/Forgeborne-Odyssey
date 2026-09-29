@@ -1,0 +1,72 @@
+﻿{
+  "type": "minecraft:ore",
+  "config": {
+    "size": 4,
+    "discard_chance_on_air_exposure": 0.0,
+    "targets": [
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:dirt"
+        },
+        "state": {
+          "Name": "forgeborneodyssey:ochre_deposit"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:grass_block"
+        },
+        "state": {
+          "Name": "forgeborneodyssey:ochre_deposit"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:coarse_dirt"
+        },
+        "state": {
+          "Name": "forgeborneodyssey:ochre_deposit"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:red_sand"
+        },
+        "state": {
+          "Name": "forgeborneodyssey:ochre_deposit"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:sand"
+        },
+        "state": {
+          "Name": "forgeborneodyssey:ochre_deposit"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:clay"
+        },
+        "state": {
+          "Name": "forgeborneodyssey:ochre_deposit"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:gravel"
+        },
+        "state": {
+          "Name": "forgeborneodyssey:ochre_deposit"
+        }
+      }
+    ]
+  }
+}

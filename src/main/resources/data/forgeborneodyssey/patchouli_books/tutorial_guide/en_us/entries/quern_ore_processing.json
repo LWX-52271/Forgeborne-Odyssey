@@ -1,0 +1,33 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Quern & Ore Processing",
+  "icon": "forgeborneodyssey:quern",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Ore Processing Overview",
+      "text": "The §4Ore Chunks§r obtained from fire-crack mining need to be crushed before metal can be extracted. The §4Quern§r is the core tool for crushing ore.$(br2)Ore processing flow:$(br)Ore Chunks → Quern Grinding → Ore Grains → Further Processing → Metal Billets"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:quern_crafting",
+      "text": "§3Quern Crafting Recipe$(br2)6 Cobblestone + 1 Stick.$(br)The quern consists of a base and an upper stone."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:quern_upper_crafting",
+      "text": "§3Quern Upper Stone Recipe$(br2)3 Cobblestone.$(br)The upper stone is the movable part, placed on top of the base."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How to Use the Quern",
+      "text": "$(li)Place the §4Quern Base§r on the ground$(br)$(li)Right-click the base with the §4Upper Stone§r to install it$(br)$(li)Right-click the quern with §4Ore Chunks§r to insert them$(br)$(li)Right-click the quern with an empty hand to turn the stone$(br)$(li)When grinding is complete, §4Ore Grains§r will drop$(br2)§4Tip:§r The quern can also grind other materials such as grains."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Further Processing of Ore Grains",
+      "text": "The ore grains obtained from grinding need further processing to become metal billets:$(br2)$(li)Place ore grains into a §4Crucible§r and heat to high temperature$(br)$(li)Pour the molten metal into a §4Mold§r to cool and shape$(br)$(li)Obtain §4Metal Billets§r, ready for cold forging$(br2)§4Tip:§r Crucibles and molds must be fired in a pit kiln. For the complete process, refer to the §3Pit Kiln Firing Guide§r."
+    }
+  ],
+  "sortnum": 7
+}

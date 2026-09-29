@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BCB",
+    "CMC",
+    "BCB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:stone_bricks"
+    },
+    "C": {
+      "item": "minecraft:cobblestone"
+    },
+    "M": {
+      "item": "forgeborneodyssey:lime_mortar"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:lime_mortar_stone_bricks",
+    "count": 4
+  }
+}

@@ -2,8 +2,8 @@ package com.lwx.forgeborneodyssey.items.weapons;
 
 import com.google.common.collect.Multimap;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -62,8 +62,7 @@ public class MetalKnifeItem extends SwordItem {
      * @param quality 质量等级
      */
     public void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putString("Quality", quality.getName());
+        QualityHelper.setQuality(stack, quality.toFloat());
     }
     
     /**
@@ -72,11 +71,7 @@ public class MetalKnifeItem extends SwordItem {
      * @return 质量等级
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Quality")) {
-            return AbstractMetalBilletItem.Quality.MEDIUM; // 默认为中
-        }
-        return AbstractMetalBilletItem.Quality.fromString(tag.getString("Quality"));
+        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
     }
     
     /**
@@ -85,11 +80,9 @@ public class MetalKnifeItem extends SwordItem {
      * @return 纯度值（0-100）
      */
     public float getPurity(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Purity")) {
-            return 85.0f; // 默认纯度
-        }
-        return tag.getFloat("Purity");
+        float p = QualityHelper.getPurity(stack);
+        if (p > 0.0f) return p * 100.0f;
+        return 85.0f;
     }
     
     /**
@@ -113,16 +106,13 @@ public class MetalKnifeItem extends SwordItem {
      * @return 伤害修正值
      */
     public float getDamageModifierFromWeight(ItemStack stack) {
-        net.minecraft.nbt.CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Weight")) {
-            return 0.0f; // 没有重量信息，返回0
+        double weight = QualityHelper.getWeightGrams(stack);
+        if (weight <= 0.0) {
+            return 0.0f;
         }
         
-        double weight = tag.getDouble("Weight");
-        
-        // 根据重量计算伤害修正：每100g增加0.1点伤害，最多增加2.0点
         float damageBonus = (float)(weight / 100.0);
-        damageBonus = Math.min(2.0f, damageBonus); // 限制最大加成
+        damageBonus = Math.min(2.0f, damageBonus);
         
         return damageBonus;
     }
@@ -131,15 +121,12 @@ public class MetalKnifeItem extends SwordItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         if (Screen.hasShiftDown()) {
-            // 添加重量等级提示
             AbstractMetalBilletItem.Quality quality = getQuality(stack);
             Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
             tooltip.add(qualityText);
             
-            // 添加重量提示
-            CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("Weight")) {
-                double weight = tag.getDouble("Weight");
+            double weight = QualityHelper.getWeightGrams(stack);
+            if (weight > 0.0) {
                 if (weight >= 1000.0) {
                     tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
                 } else {
@@ -147,17 +134,16 @@ public class MetalKnifeItem extends SwordItem {
                 }
             }
             
-            // 添加纯度提示
             float purity = getPurity(stack);
-            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            if (purity > 0.0f) {
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            }
             
-            // 显示实际伤害值
             float baseDamage = this.getDamage();
             float modifier = getDamageModifierFromWeight(stack);
             float actualDamage = baseDamage + modifier;
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.base_damage", String.format("%.1f", actualDamage)));
             
-            // 显示基于纯度的耐久度
             int baseDurability = this.getDefaultInstance().getMaxDamage();
             int actualDurability = getDurabilityFromPurity(purity, baseDurability);
             int currentDamage = stack.getDamageValue();

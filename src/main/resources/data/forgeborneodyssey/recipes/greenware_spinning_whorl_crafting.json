@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:mixed_clay"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:greenware_spinning_whorl",
+    "count": 1
+  }
+}

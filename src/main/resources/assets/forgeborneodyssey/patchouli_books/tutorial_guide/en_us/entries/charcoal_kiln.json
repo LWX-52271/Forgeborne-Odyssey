@@ -1,0 +1,33 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "Charcoal Kiln & Charcoal",
+  "icon": "minecraft:charcoal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Why Charcoal?",
+      "text": "Charcoal is a vital §4fuel§r source in early survival, burning much longer than raw logs. It is the primary fuel for firing pottery in the Pit Kiln.$(br2)Charcoal is produced by burning §4Hardwood§r in the §4Charcoal Kiln§r, which also yields §4Wood Ash§r — an important fertilizer and industrial material."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 1: Prepare Hardwood",
+      "text": "Craft any §4Log§r with an §4Axe§r (e.g. Polished Stone Axe, Wrought Copper Axe) to obtain §44 Hardwood§r.$(br2)The axe is not consumed and can be reused.$(br2)§4Tip:§r Hardwood is also fuel for the Pit Kiln — stockpile plenty."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 2: Dig the Dirt Pit",
+      "text": "§3The Charcoal Kiln shares the same starting point as the Tar Kiln — the Empty Dirt Pit:$(br2)$(li)§3Hold Right-Click to Dig§r — Sneak (hold Shift) + §4hold right-click§r on any §4Dirt§r block with a §4Flint Shovel§r or §4Crude Flint Shovel§r for about §32 seconds§r to turn it into an §4Empty Dirt Pit§r (Stage 0)$(br2)§4Note:§r Works on Dirt, Grass Block, Coarse Dirt, Podzol, Mycelium, and Rooted Dirt. The empty dirt pit is the common starting point for both Charcoal and Tar Kilns."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 3: Load and Ignite",
+      "text": "§3Starting from the Empty Dirt Pit (Stage 0), follow these steps:$(br2)$(li)§3① Add Firewood§r — Right-click top, add §4Hardwood§r (1 first, Stage 0→1, triggers charcoal mode), then fill to 4$(br)$(li)§3② Ignite§r — Use §4Fire Drill§r aimed at the top$(br)$(li)§3③ Seal with Dirt§r — After ignition, right-click top with §4Mixed Clay§r to seal (Stage 1→2)$(br2)§4Note:§r You must ignite first before sealing, otherwise sealing is not possible."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Step 4: Wait and Collect",
+      "text": "§3Post-sealing process:$(br2)$(li)§3Carbonization§r — Auto-carbonization after sealing (Stage 2→3→4)$(br)$(li)§3Cooling§r — Automatically cools after flames extinguish$(br)$(li)§3Collection§r — After cooling, right-click top with empty hand or §4Flint Shovel§r to extract §4Charcoal§r and §4Wood Ash§r (Stage 4)$(br2)§3Yield:§r ~0.5–1 Charcoal + ~0.5–1 Wood Ash per Hardwood (4 Hardwood = 2–4 Charcoal + 2–4 Wood Ash).$(br2)§4Tip:§r After harvesting, the kiln reverts to an empty dirt pit and can be reused."
+    }
+  ],
+  "sortnum": 5
+}

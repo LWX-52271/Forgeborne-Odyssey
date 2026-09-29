@@ -354,7 +354,8 @@ public class CorpseEntity extends Entity {
                 || tempEntity instanceof Goat
                 || tempEntity instanceof AbstractHorse
                 || tempEntity instanceof Fox
-                || tempEntity instanceof Wolf;
+                || tempEntity instanceof Wolf
+                || tempEntity instanceof BisonEntity;
         tempEntity.discard();
         return result;
     }
@@ -376,7 +377,8 @@ public class CorpseEntity extends Entity {
                 || tempEntity instanceof Sheep
                 || tempEntity instanceof Chicken
                 || tempEntity instanceof Rabbit
-                || tempEntity instanceof Goat;
+                || tempEntity instanceof Goat
+                || tempEntity instanceof BisonEntity;
         tempEntity.discard();
         return result;
     }

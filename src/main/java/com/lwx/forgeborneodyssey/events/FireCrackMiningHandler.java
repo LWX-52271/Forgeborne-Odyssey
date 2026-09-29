@@ -102,6 +102,7 @@ public class FireCrackMiningHandler {
     private static final int AMBIENT_HEAT_RADIUS = 2;
     private static final float AMBIENT_HEAT_MAX_RATE = 0.08f;
     private static final int SPLASH_RADIUS = 3;
+    private static final int MAX_NATURAL_QUENCH_PER_TICK = 4;
 
     private static final float OXYGEN_FULL = 1.0f;
     private static final float OXYGEN_NEAR_WATER = 0.7f;
@@ -387,7 +388,7 @@ public class FireCrackMiningHandler {
     private static float getHeatRate(BlockState state) {
         Block block = state.getBlock();
         if (block == Blocks.FIRE) return 0.08f;
-        if (block == Blocks.LAVA || block == Blocks.LAVA_CAULDRON) return 0.06f;
+        if (block == Blocks.LAVA || block == Blocks.LAVA_CAULDRON) return 0.03f;
         if (block instanceof FirePitBlock) return 0.05f;
         if (block instanceof FireMouthBlock) return 0.04f;
         if (block instanceof CampfireBlock) {
@@ -448,20 +449,19 @@ public class FireCrackMiningHandler {
         Map<BlockPos, Float> heatMap = getHeatMap(level);
         if (heatMap.size() >= MAX_HEAT_MAP_SIZE) return;
 
-        int discovered = 0;
         int maxPerPass = Math.min(32, MAX_HEAT_MAP_SIZE - heatMap.size());
         if (maxPerPass <= 0) return;
 
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos fireCursor = new BlockPos.MutableBlockPos();
+        List<BlockPos> candidates = new ArrayList<>();
 
         for (Player player : level.players()) {
-            if (discovered >= maxPerPass) break;
             BlockPos playerPos = player.blockPosition();
 
-            for (int dx = -SCAN_RADIUS_HORIZONTAL; dx <= SCAN_RADIUS_HORIZONTAL && discovered < maxPerPass; dx++) {
-                for (int dy = -SCAN_RADIUS_VERTICAL; dy <= SCAN_RADIUS_VERTICAL && discovered < maxPerPass; dy++) {
-                    for (int dz = -SCAN_RADIUS_HORIZONTAL; dz <= SCAN_RADIUS_HORIZONTAL && discovered < maxPerPass; dz++) {
+            for (int dx = -SCAN_RADIUS_HORIZONTAL; dx <= SCAN_RADIUS_HORIZONTAL; dx++) {
+                for (int dy = -SCAN_RADIUS_VERTICAL; dy <= SCAN_RADIUS_VERTICAL; dy++) {
+                    for (int dz = -SCAN_RADIUS_HORIZONTAL; dz <= SCAN_RADIUS_HORIZONTAL; dz++) {
                         cursor.set(playerPos.getX() + dx, playerPos.getY() + dy, playerPos.getZ() + dz);
 
                         if (heatMap.containsKey(cursor)) continue;
@@ -487,12 +487,19 @@ public class FireCrackMiningHandler {
                         }
 
                         if (hasFireNearby) {
-                            heatMap.put(cursor.immutable(), 0f);
-                            discovered++;
+                            candidates.add(cursor.immutable());
                         }
                     }
                 }
             }
+        }
+
+        Collections.shuffle(candidates);
+        int discovered = 0;
+        for (BlockPos candidate : candidates) {
+            if (discovered >= maxPerPass) break;
+            heatMap.put(candidate, 0f);
+            discovered++;
         }
         if (discovered > 0) {
             LOGGER.info("[FireCrack] Discovered {} heatable blocks, HEAT_MAP size: {}", discovered, heatMap.size());
@@ -513,7 +520,7 @@ public class FireCrackMiningHandler {
         Map<BlockPos, Float> heatMap = getHeatMap(level);
         Map<BlockPos, Long> quenchedMap = getQuenchedMap(level);
 
-        if (gameTime % 100 == 0) {
+        if (gameTime % 100 == 0 && (!heatMap.isEmpty() || !quenchedMap.isEmpty())) {
             LOGGER.info("[FireCrack] Tick {}, HEAT_MAP size: {}, QUENCHED_MAP size: {}",
                 gameTime, heatMap.size(), quenchedMap.size());
         }
@@ -523,6 +530,8 @@ public class FireCrackMiningHandler {
         if (isScanTick) {
             discoverHeatableBlocks(level);
         }
+
+        int naturalQuenchThisTick = 0;
 
         Map<BlockPos, Float> ambientCache = new HashMap<>();
         BlockPos.MutableBlockPos neighborCursor = new BlockPos.MutableBlockPos();
@@ -657,24 +666,32 @@ public class FireCrackMiningHandler {
 
             if (currentHeat >= NATURAL_QUENCH_THRESHOLD) {
                 Long lastQuench = quenchedMap.get(pos);
-                if (lastQuench != null && level.getGameTime() - lastQuench < QUENCH_COOLDOWN) continue;
-                if (isAdjacentToWater(level, pos)) {
-                    applyQuenchStress(level, pos, state, state.getBlock(), currentHeat, 1.0f);
+                if (lastQuench != null && level.getGameTime() - lastQuench < QUENCH_COOLDOWN) {
+                    // on cooldown, skip this block
+                } else if (isAdjacentToWater(level, pos)) {
+                    if (naturalQuenchThisTick < MAX_NATURAL_QUENCH_PER_TICK) {
+                        applyQuenchStress(level, pos, state, state.getBlock(), currentHeat, 1.0f);
+                        naturalQuenchThisTick++;
+                    }
                 }
             }
 
             if (isScanTick && heatMap.size() < MAX_HEAT_MAP_SIZE && currentHeat >= CONDUCTION_DISCOVERY_THRESHOLD) {
+                List<BlockPos> candidates = new ArrayList<>();
                 for (Direction dir : Direction.values()) {
                     if (RANDOM.nextFloat() < 0.2f) continue;
                     neighborCursor.set(pos.getX() + dir.getStepX(), pos.getY() + dir.getStepY(), pos.getZ() + dir.getStepZ());
                     if (!heatMap.containsKey(neighborCursor) && level.isLoaded(neighborCursor)) {
                         BlockState neighborState = level.getBlockState(neighborCursor);
                         if (isStressTracked(neighborState.getBlock())) {
-                            if (heatMap.size() < MAX_HEAT_MAP_SIZE) {
-                                heatMap.put(neighborCursor.immutable(), 0f);
-                            }
+                            candidates.add(neighborCursor.immutable());
                         }
                     }
+                }
+                Collections.shuffle(candidates);
+                for (BlockPos candidate : candidates) {
+                    if (heatMap.size() >= MAX_HEAT_MAP_SIZE) break;
+                    heatMap.put(candidate, 0f);
                 }
             }
         }
@@ -1174,19 +1191,41 @@ public class FireCrackMiningHandler {
     }
 
     /**
-     * 方块被破坏时清理热量数据
+     * 方块被破坏时清理热量数据，若为高温应力岩石则触发热力塌方连锁崩裂。
      */
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (event.getLevel().isClientSide()) return;
         if (!(event.getLevel() instanceof ServerLevel level)) return;
         BlockPos pos = event.getPos();
-        getHeatMap(level).remove(pos);
+
+        if (isBreakingByFireCrack(pos, level)) {
+            getHeatMap(level).remove(pos);
+            getQuenchedMap(level).remove(pos);
+            getFireDurationMap(level).remove(pos);
+            getFireOxygenCache(level).remove(pos);
+            HeatSavedData.get(level).removeHeat(level.dimension().location(), pos);
+            sendHeatSync(level, pos, 0.0f);
+            return;
+        }
+
+        Map<BlockPos, Float> heatMap = getHeatMap(level);
+        Float heat = heatMap.get(pos);
+        float stress = ForgeborneAPI.getStress(level, pos);
+        boolean triggerCollapse = heat != null && heat >= 50f && stress > 0f;
+
+        heatMap.remove(pos);
         getQuenchedMap(level).remove(pos);
         getFireDurationMap(level).remove(pos);
         getFireOxygenCache(level).remove(pos);
         HeatSavedData.get(level).removeHeat(level.dimension().location(), pos);
         sendHeatSync(level, pos, 0.0f);
+
+        if (triggerCollapse) {
+            level.playSound(null, pos, ModSounds.ROCK_THERMAL_CRACK.get(), SoundSource.BLOCKS, 0.7f, 0.8f + RANDOM.nextFloat() * 0.4f);
+            spawnCrackSteamParticles(level, pos);
+            triggerChainReaction(level, pos, heat, 1, new HashSet<>());
+        }
     }
 
     /**

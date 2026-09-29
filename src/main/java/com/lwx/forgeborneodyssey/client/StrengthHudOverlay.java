@@ -30,6 +30,8 @@ public class StrengthHudOverlay {
         Player player = mc.player;
         if (player == null || player.isCreative() || player.isSpectator()) return;
 
+        if (!PlayerStrengthManager.isSystemEnabled()) return;
+
         GuiGraphics graphics = event.getGuiGraphics();
         int screenWidth = event.getWindow().getGuiScaledWidth();
         int screenHeight = event.getWindow().getGuiScaledHeight();

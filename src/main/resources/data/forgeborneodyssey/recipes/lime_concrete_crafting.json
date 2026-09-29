@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GSG",
+    "SMS",
+    "GSG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gravel"
+    },
+    "S": {
+      "item": "minecraft:sand"
+    },
+    "M": {
+      "item": "forgeborneodyssey:lime_mortar"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:lime_concrete",
+    "count": 8
+  }
+}

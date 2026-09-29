@@ -87,6 +87,18 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> SLING_RELEASE = SOUND_EVENTS.register("sling.release",
         () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "sling.release")));
 
+    // 淘洗水流音效
+    public static final RegistryObject<SoundEvent> PANNING_WATER = SOUND_EVENTS.register("panning.water",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "panning.water")));
+
+    // 淘洗沙土掉落音效
+    public static final RegistryObject<SoundEvent> PANNING_SOIL = SOUND_EVENTS.register("panning.soil",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "panning.soil")));
+
+    // 淘洗成功音效（锡石颗粒碰撞声）
+    public static final RegistryObject<SoundEvent> PANNING_SUCCESS = SOUND_EVENTS.register("panning.success",
+        () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ForgeborneOdyssey.MOD_ID, "panning.success")));
+
     /**
      * 注册音效到事件总线
      */

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:dark_red_ochre"
+    },
+    {
+      "item": "forgeborneodyssey:slaked_lime"
+    },
+    {
+      "item": "forgeborneodyssey:plant_ash"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:dark_red_plaster",
+    "count": 1
+  }
+}

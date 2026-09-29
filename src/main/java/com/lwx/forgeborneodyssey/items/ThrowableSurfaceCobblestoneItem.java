@@ -2,7 +2,7 @@ package com.lwx.forgeborneodyssey.items;
 
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.entities.ThrownSurfaceCobblestone;
-import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import com.lwx.forgeborneodyssey.util.KnappingProficiency;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -38,6 +38,7 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+        QualityHelper.appendQualityTooltip(stack, tooltipComponents, true, false);
         if (Screen.hasShiftDown()) {
             tooltipComponents.add(Component.translatable("block.forgeborneodyssey.surface_cobblestone_block.tooltip"));
         } else {
@@ -108,10 +109,10 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
 
     private void performKnapping(Level level, Player player, ItemStack mainHandStack, ItemStack offhandStack) {
         // 读取双手圆石重量（消耗前）
-        float mainWeight = ItemQualityHelper.hasQuality(mainHandStack)
-                ? ItemQualityHelper.getQualityValue(mainHandStack) : -1f;
-        float offWeight = ItemQualityHelper.hasQuality(offhandStack)
-                ? ItemQualityHelper.getQualityValue(offhandStack) : -1f;
+        float mainWeight = QualityHelper.hasQuality(mainHandStack)
+                ? QualityHelper.getQuality(mainHandStack) : -1f;
+        float offWeight = QualityHelper.hasQuality(offhandStack)
+                ? QualityHelper.getQuality(offhandStack) : -1f;
 
         // 消耗双手各一个地表圆石
         if (!player.getAbilities().instabuild) {
@@ -152,7 +153,7 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
                 }
                 for (int i = 0; i < count; i++) {
                     ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get());
-                    ItemQualityHelper.setQualityValue(flake, Math.max(0.01f, totalWeight * ratios[i] / sum));
+                    QualityHelper.setQuality(flake, Math.max(0.01f, totalWeight * ratios[i] / sum));
                     Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), flake);
                 }
             } else {
@@ -176,7 +177,7 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
                 toolWeight = Math.max(0.01f, offWeight * 0.90f);
             }
             if (toolWeight > 0) {
-                ItemQualityHelper.setQualityValue(result, toolWeight);
+                QualityHelper.setQuality(result, toolWeight);
             }
             Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), result);
         }

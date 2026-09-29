@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DF",
+    "DF"
+  ],
+  "key": {
+    "D": {
+      "item": "forgeborneodyssey:dried_hide"
+    },
+    "F": {
+      "item": "forgeborneodyssey:fiber_rope"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:waterskin",
+    "count": 1
+  }
+}

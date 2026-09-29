@@ -57,6 +57,10 @@ public class StrengthTrainingHandler {
             return;
         }
 
+        if (!PlayerStrengthManager.isSystemEnabled()) {
+            return;
+        }
+
         syncCounter++;
         if (syncCounter >= SYNC_INTERVAL) {
             syncCounter = 0;

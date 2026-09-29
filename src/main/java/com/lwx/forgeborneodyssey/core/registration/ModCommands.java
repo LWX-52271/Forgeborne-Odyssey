@@ -4,9 +4,11 @@ import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
 import com.lwx.forgeborneodyssey.blocks.FireMouthBlock;
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlock;
 import com.lwx.forgeborneodyssey.blocks.PitKilnBlockEntity;
+import com.lwx.forgeborneodyssey.entities.BisonEntity;
 import org.jetbrains.annotations.Nullable;
 import com.lwx.forgeborneodyssey.world.SkarnDepositPiece;
 import com.lwx.forgeborneodyssey.util.PlayerStrengthManager;
+import com.lwx.forgeborneodyssey.util.ConfigManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -17,6 +19,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -102,6 +106,15 @@ public class ModCommands {
                     .then(literal("reset")
                         .executes(ModCommands::resetStrengthCommand)
                     )
+                    .then(literal("toggle")
+                        .executes(ModCommands::toggleStrengthSystemCommand)
+                    )
+                    .then(literal("enable")
+                        .executes(ModCommands::enableStrengthSystemCommand)
+                    )
+                    .then(literal("disable")
+                        .executes(ModCommands::disableStrengthSystemCommand)
+                    )
                 )
                 .then(literal("kiln")
                     .then(literal("heat")
@@ -144,6 +157,14 @@ public class ModCommands {
                     .then(literal("info")
                         .executes(ModCommands::infoKiln)
                     )
+                )
+                .then(literal("bison")
+                    .then(literal("graze").executes(ModCommands::bisonGraze))
+                    .then(literal("threaten").executes(ModCommands::bisonThreaten))
+                    .then(literal("rest").executes(ModCommands::bisonRest))
+                    .then(literal("wake").executes(ModCommands::bisonWake))
+                    .then(literal("attack").executes(ModCommands::bisonAttack))
+                    .then(literal("fight").executes(ModCommands::bisonFight))
                 )
         );
     }
@@ -788,6 +809,172 @@ public class ModCommands {
                 vent.name(),
                 insulation, insulationDesc[Math.min(insulation, 4)]
         )), false);
+        return 1;
+    }
+
+    private static BisonEntity findNearestBison(ServerPlayer player) {
+        ServerLevel level = player.serverLevel();
+        java.util.List<BisonEntity> bisonList = level.getEntitiesOfClass(
+            BisonEntity.class,
+            player.getBoundingBox().inflate(30.0),
+            e -> true);
+        if (bisonList.isEmpty()) return null;
+
+        BisonEntity nearest = null;
+        double nearestDist = Double.MAX_VALUE;
+        for (BisonEntity b : bisonList) {
+            double d = player.distanceToSqr(b);
+            if (d < nearestDist) {
+                nearestDist = d;
+                nearest = b;
+            }
+        }
+        return nearest;
+    }
+
+    private static int bisonGraze(CommandContext<CommandSourceStack> context) {
+        CommandSourceStack source = context.getSource();
+        ServerPlayer player = source.getPlayer();
+        if (player == null) { source.sendFailure(Component.literal("§c此命令只能由玩家执行")); return 0; }
+
+        BisonEntity bison = findNearestBison(player);
+        if (bison == null) { source.sendFailure(Component.literal("§c附近30格内没有野牛")); return 0; }
+
+        bison.grazeTicks = 60;
+        bison.level().broadcastEntityEvent(bison, BisonEntity.EVENT_GRAZE);
+        source.sendSuccess(() -> Component.literal("§a野牛开始放牧吃草"), true);
+        return 1;
+    }
+
+    private static int bisonThreaten(CommandContext<CommandSourceStack> context) {
+        CommandSourceStack source = context.getSource();
+        ServerPlayer player = source.getPlayer();
+        if (player == null) { source.sendFailure(Component.literal("§c此命令只能由玩家执行")); return 0; }
+
+        BisonEntity bison = findNearestBison(player);
+        if (bison == null) { source.sendFailure(Component.literal("§c附近30格内没有野牛")); return 0; }
+
+        bison.threatenTicks = 60;
+        bison.level().broadcastEntityEvent(bison, BisonEntity.EVENT_THREATEN);
+        source.sendSuccess(() -> Component.literal("§a野牛开始威胁展示"), true);
+        return 1;
+    }
+
+    private static int bisonRest(CommandContext<CommandSourceStack> context) {
+        CommandSourceStack source = context.getSource();
+        ServerPlayer player = source.getPlayer();
+        if (player == null) { source.sendFailure(Component.literal("§c此命令只能由玩家执行")); return 0; }
+
+        BisonEntity bison = findNearestBison(player);
+        if (bison == null) { source.sendFailure(Component.literal("§c附近30格内没有野牛")); return 0; }
+
+        bison.resting = true;
+        bison.level().broadcastEntityEvent(bison, BisonEntity.EVENT_REST_START);
+        source.sendSuccess(() -> Component.literal("§a野牛开始趴卧休息"), true);
+        return 1;
+    }
+
+    private static int bisonWake(CommandContext<CommandSourceStack> context) {
+        CommandSourceStack source = context.getSource();
+        ServerPlayer player = source.getPlayer();
+        if (player == null) { source.sendFailure(Component.literal("§c此命令只能由玩家执行")); return 0; }
+
+        BisonEntity bison = findNearestBison(player);
+        if (bison == null) { source.sendFailure(Component.literal("§c附近30格内没有野牛")); return 0; }
+
+        bison.resting = false;
+        bison.level().broadcastEntityEvent(bison, BisonEntity.EVENT_REST_STOP);
+        source.sendSuccess(() -> Component.literal("§a野牛起身"), true);
+        return 1;
+    }
+
+    private static int bisonAttack(CommandContext<CommandSourceStack> context) {
+        CommandSourceStack source = context.getSource();
+        ServerPlayer player = source.getPlayer();
+        if (player == null) { source.sendFailure(Component.literal("§c此命令只能由玩家执行")); return 0; }
+
+        BisonEntity bison = findNearestBison(player);
+        if (bison == null) { source.sendFailure(Component.literal("§c附近30格内没有野牛")); return 0; }
+
+        bison.level().broadcastEntityEvent(bison, BisonEntity.EVENT_ATTACK);
+        source.sendSuccess(() -> Component.literal("§a野牛执行冲撞"), true);
+        return 1;
+    }
+
+    private static int bisonFight(CommandContext<CommandSourceStack> context) {
+        CommandSourceStack source = context.getSource();
+        ServerPlayer player = source.getPlayer();
+        if (player == null) { source.sendFailure(Component.literal("§c此命令只能由玩家执行")); return 0; }
+
+        ServerLevel level = player.serverLevel();
+        java.util.List<BisonEntity> bisonList = level.getEntitiesOfClass(
+            BisonEntity.class,
+            player.getBoundingBox().inflate(30.0),
+            e -> !e.isBaby());
+        if (bisonList.size() < 2) { source.sendFailure(Component.literal("§c附近30格内成年野牛不足2只")); return 0; }
+
+        BisonEntity b1 = bisonList.get(0);
+        BisonEntity b2 = bisonList.get(1);
+
+        b1.fightAnimationRemaining = 20;
+        b2.fightAnimationRemaining = 20;
+        b1.level().broadcastEntityEvent(b1, BisonEntity.EVENT_FIGHT);
+        b2.level().broadcastEntityEvent(b2, BisonEntity.EVENT_FIGHT);
+        level.playSound(null, b1.getX(), b1.getY(), b1.getZ(),
+            SoundEvents.RAVAGER_ROAR, SoundSource.NEUTRAL, 1.0F, 0.6F);
+
+        // 造成互相伤害
+        b1.doHurtTarget(b2);
+        b2.doHurtTarget(b1);
+
+        source.sendSuccess(() -> Component.literal("§a两只野牛开始互顶"), true);
+        return 1;
+    }
+
+    private static int toggleStrengthSystemCommand(CommandContext<CommandSourceStack> context) {
+        boolean enabled = !ConfigManager.INSTANCE.enableStrengthSystem.get();
+        ConfigManager.INSTANCE.enableStrengthSystem.set(enabled);
+
+        CommandSourceStack source = context.getSource();
+        if (source.getPlayer() != null) {
+            PlayerStrengthManager.applyStrengthAttributes(source.getPlayer());
+        }
+
+        source.sendSuccess(() -> Component.literal(enabled
+                ? "§a✓ 负重锻炼系统已启用"
+                : "§c✗ 负重锻炼系统已禁用（负重惩罚、训练、力气属性加成均不生效）"), true);
+        return 1;
+    }
+
+    private static int enableStrengthSystemCommand(CommandContext<CommandSourceStack> context) {
+        boolean wasEnabled = ConfigManager.INSTANCE.enableStrengthSystem.get();
+        ConfigManager.INSTANCE.enableStrengthSystem.set(true);
+        
+
+        CommandSourceStack source = context.getSource();
+        if (source.getPlayer() != null) {
+            PlayerStrengthManager.applyStrengthAttributes(source.getPlayer());
+        }
+
+        source.sendSuccess(() -> Component.literal(wasEnabled
+                ? "§a负重锻炼系统已处于启用状态"
+                : "§a✓ 负重锻炼系统已启用"), true);
+        return 1;
+    }
+
+    private static int disableStrengthSystemCommand(CommandContext<CommandSourceStack> context) {
+        boolean wasEnabled = ConfigManager.INSTANCE.enableStrengthSystem.get();
+        ConfigManager.INSTANCE.enableStrengthSystem.set(false);
+        
+
+        CommandSourceStack source = context.getSource();
+        if (source.getPlayer() != null) {
+            PlayerStrengthManager.applyStrengthAttributes(source.getPlayer());
+        }
+
+        source.sendSuccess(() -> Component.literal(wasEnabled
+                ? "§c✗ 负重锻炼系统已禁用（负重惩罚、训练、力气属性加成均不生效）"
+                : "§c负重锻炼系统已处于禁用状态"), true);
         return 1;
     }
 }

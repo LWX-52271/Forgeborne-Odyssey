@@ -1,0 +1,68 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "生存基础",
+  "icon": "forgeborneodyssey:fiber_rope",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "开局第一步",
+      "text": "进入世界后，你手无寸铁。别慌，按以下顺序行动：$(br2)$(li)§4撸树§r：徒手打原木，做成木板和工作台$(br)$(li)§4捡石头§r：在地面寻找散落的§3地表圆石块§r（灰色小石头）$(br)$(li)§4敲击石头§r：双手各持一个地表圆石，右键互相敲击，有概率获得§3旧石器工具§r或§3燧石片§r$(br)$(li)§4割草§r：空手右键草得1个草纤维，用燧石刀则得2-3个$(br)$(li)§4搓绳§r：3个草纤维竖排合成§3纤维绳§r$(br2)有了这些，你就能制作第一批工具了。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "核心工具链",
+      "text": "以下是生存必备工具，按优先级排列：$(br2)$(li)§3燧石刀§r：双手敲击地表圆石获得，右键割草$(br)$(li)§3圆石锤§r：木棍+地表圆石块，核心工具$(br)$(li)§3燧石铲§r：右键沙子取黏土，右键泥土挖窑坑$(br)$(li)§3石凿§r：木棍+地表圆石块，雕刻金属$(br)$(li)§3木钳§r：木棍+纤维绳，§c取高温物品必备！§r$(br)$(li)§3刮皮刀§r：燧石碎片+纤维绳，鞣制皮革$(br)$(li)§3火钻§r：木棍+纤维绳+原木，用于点火"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:granite_anvil_crafting",
+      "text": "§3石砧——冷锻核心§r$(br2)石砧是冷锻工艺的必备工作台。$(br2)合成：§47个花岗岩§r按上图排列。$(br2)也可以用§4石灰岩§r制作石灰岩石砧，功能完全相同。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:fire_drill_crafting",
+      "text": "§3火钻——文明的起点§r$(br2)合成：§4木棍+纤维绳+原木§r$(br2)手持火钻右键§4火塘§r（8个地表圆石块围成环形）即可点火。$(br2)火塘用于加热铜坯料，是锻造的第一步。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "生皮加工全流程",
+      "text": "动物的生皮需要经过多步处理才能变成可用的皮革：$(br2)$(li)§4第1步§r：击杀动物（牛/猪/羊/马等）获得§3生皮§r（每只1-3张）$(br)$(li)§4第2步§r：将生皮放在§3晾晒架§r上，等待晾干成§3干皮§r$(br)$(li)§4第3步§r：干皮+刮皮刀+草木灰×3+水瓶→§3鞣制皮革§r$(br2)§4注意：§r草木灰来自竖穴窑烧制完成后的灰烬堆。因此建议§3先制陶烧窑§r获取草木灰，再进行皮革加工。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "基础护甲",
+      "text": "别裸奔！早期有两种护甲可选：$(br2)$(li)§3草编护甲§r：草捆+纤维绳合成，最基础的保护$(br)$(li)§3兽皮护甲§r：鞣制皮革合成，防御力更高$(br2)草编护甲入手最快，建议开局就做一套。兽皮护甲需要完整的生皮加工链，属于中期装备。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:stone_spear_crafting",
+      "text": "§3石矛——早期主力武器§r$(br2)合成：§4燧石矛头+桦木焦油+纤维绳+木棍§r$(br2)右键投掷，伤害可观。$(br2)§4提示：§r燧石矛头由燧石碎片在合成台中制作。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:simple_bow_crafting",
+      "text": "§3简易弓——远程武器§r$(br2)合成：§4木棍×3+纤维绳§r$(br2)配合石箭或骨箭使用。$(br2)§4提示：§r搭配投石索+金属珠，远近皆可。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:herb_poultice_crafting",
+      "text": "§3草药敷料——早期回血§r$(br2)合成：§4草纤维×2+任意小花§r$(br2)恢复4点生命值（2颗心）。$(br2)受伤后右键使用，关键时刻能救命。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:simple_fishing_rod_crafting",
+      "text": "§3简易钓鱼竿——食物来源§r$(br2)合成：§4木棍×3+纤维绳+骨鱼钩§r$(br2)骨鱼钩由骨头+燧石碎片合成。$(br2)§4提示：§r钓鱼是早期稳定的食物来源，还能钓到稀有物品。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:grease_torch_crafting",
+      "text": "§3油脂火把——早期照明§r$(br2)合成：§4动物脂肪+木棍+纤维绳§r$(br2)动物脂肪从击杀动物获得。$(br2)比普通火把更亮，适合矿洞和夜晚照明。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "生存路线图",
+      "text": "总结一下早期生存的推荐路线：$(br2)$(li)§4第一天§r：撸树→捡石头→敲击石头获取旧石器工具→割草→搓绳→做圆石锤$(br)$(li)§4第二天§r：做石砧→做火塘和火钻→寻找自然铜$(br)$(li)§4第三天§r：做草编护甲→剥桦树皮→做焦油窑→烧制桦树焦油→制作燧石铲$(br)$(li)§4第四天§r：用燧石铲挖黏土→做混合黏土（沙子可替代熟料）→造生坯→建造竖穴窑→烧制陶器$(br)$(li)§4第五天§r：收集草木灰→狩猎动物→晾晒生皮→鞣制皮革→做兽皮护甲$(br)$(li)§4第六天§r：开始冷锻→火裂采矿→在石砧上破碎矿石→熔炼金属颗粒→做石磨盘研磨面粉$(br2)当然，这只是建议，你可以自由探索！"
+    }
+  ],
+  "sortnum": -1
+}

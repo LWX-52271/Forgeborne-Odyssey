@@ -25,14 +25,15 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -178,6 +179,16 @@ public class ForgeborneOdyssey {
                     Ingredient.of(ModItems.COPPER_GRASS_FLOWER_ITEM.get()),
                     minerPotion);
         });
+
+        // 注册野牛生成放置规则（在草地等固体方块上生成）
+        event.enqueueWork(() -> {
+            SpawnPlacements.register(
+                ModEntities.BISON.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Animal::checkAnimalSpawnRules
+            );
+        });
     }
 
     private void registerBlockColors(RegisterColorHandlersEvent.Block event) {
@@ -195,13 +206,6 @@ public class ForgeborneOdyssey {
             }
             return 0x3F76E4;
         }, ModBlocks.STORAGE_POT_BLOCK.get());
-    }
-
-    @SubscribeEvent
-    public static void onEntityAttributeModification(EntityAttributeModificationEvent event) {
-        event.add(EntityType.PIG, Attributes.ATTACK_DAMAGE);
-        event.add(EntityType.COW, Attributes.ATTACK_DAMAGE);
-        event.add(EntityType.SHEEP, Attributes.ATTACK_DAMAGE);
     }
 
     @SubscribeEvent

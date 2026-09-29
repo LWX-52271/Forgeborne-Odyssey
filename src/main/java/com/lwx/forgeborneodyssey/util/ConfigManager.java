@@ -15,6 +15,7 @@ public class ConfigManager {
     public ForgeConfigSpec.DoubleValue trainingActivationRatio;
     public ForgeConfigSpec.DoubleValue progressPerLevelBase;
     public ForgeConfigSpec.DoubleValue progressPerLevelIncrement;
+    public ForgeConfigSpec.BooleanValue enableStrengthSystem;
 
     public ForgeConfigSpec.DoubleValue wildAnimalDamageMultiplier;
     public ForgeConfigSpec.DoubleValue wildAnimalHealthMultiplier;
@@ -55,6 +56,11 @@ public class ConfigManager {
         INSTANCE.progressPerLevelIncrement = BUILDER
                 .comment("Additional ticks per level added to level-up requirement")
                 .defineInRange("progressPerLevelIncrement", 60.0, 0.0, 1000.0);
+
+        INSTANCE.enableStrengthSystem = BUILDER
+                .comment("Master switch for the entire carry-weight + strength-training system. " +
+                        "If false: no debuffs, no training progress, no attribute bonuses, no carry limits.")
+                .define("enableStrengthSystem", true);
 
         BUILDER.pop();
 

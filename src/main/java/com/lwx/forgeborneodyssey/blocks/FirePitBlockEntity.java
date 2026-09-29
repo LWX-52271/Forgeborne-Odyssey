@@ -5,7 +5,7 @@ import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
 import com.lwx.forgeborneodyssey.items.softmetalbillets.AbstractSoftMetalBilletItem;
-import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -316,7 +316,7 @@ public class FirePitBlockEntity extends BlockEntity {
                     }
                 }
 
-                ItemQualityHelper.inheritQuality(softBillet, storedItem);
+                QualityHelper.inheritQuality(softBillet, storedItem);
 
                 setStoredItem(softBillet);
                 
@@ -335,7 +335,7 @@ public class FirePitBlockEntity extends BlockEntity {
     private void finishCooking() {
         ItemStack cookedItem = FoodCookingRecipes.getCookedResult(storedItem);
         if (!cookedItem.isEmpty()) {
-            ItemQualityHelper.inheritQuality(cookedItem, storedItem);
+            QualityHelper.inheritQuality(cookedItem, storedItem);
             setStoredItem(cookedItem);
             
             // 停止烹饪
@@ -378,13 +378,13 @@ public class FirePitBlockEntity extends BlockEntity {
             CompoundTag tag = stack.getTag();
             if (tag != null && tag.contains("ore_quality")) {
                 float oreQuality = tag.getFloat("ore_quality");
-                ItemQualityHelper.setQualityValue(stack, oreQuality);
+                QualityHelper.setQuality(stack, oreQuality);
                 tag.remove("ore_quality");
                 if (tag.isEmpty()) {
                     stack.setTag(null);
                 }
-            } else if (!ItemQualityHelper.hasQuality(stack)) {
-                ItemQualityHelper.assignRandomQuality(stack, level != null ? level.getRandom() : net.minecraft.util.RandomSource.create());
+            } else if (!QualityHelper.hasQuality(stack)) {
+                QualityHelper.assignRandomQuality(stack, level != null ? level.getRandom() : net.minecraft.util.RandomSource.create());
             }
         }
         this.storedItem = stack;

@@ -1,0 +1,15 @@
+{
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "water": "minecraft:block/water_still"
+  },
+  "elements": [
+    {
+      "from": [4, 12, 4],
+      "to": [12, 13, 12],
+      "faces": {
+        "up": {"uv": [4, 4, 12, 12], "texture": "#water", "tintindex": 0}
+      }
+    }
+  ]
+}

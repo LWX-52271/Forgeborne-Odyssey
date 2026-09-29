@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "forgeborneodyssey:item/ceramic_water_jug_filled_4"
+  }
+}

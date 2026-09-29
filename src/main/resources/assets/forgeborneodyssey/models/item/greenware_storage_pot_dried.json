@@ -1,0 +1,6 @@
+{
+  "parent": "forgeborneodyssey:item/tinted_dried",
+  "textures": {
+    "layer0": "forgeborneodyssey:block/wet_clay"
+  }
+}

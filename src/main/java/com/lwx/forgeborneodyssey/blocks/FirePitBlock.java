@@ -14,7 +14,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.Containers;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -172,10 +175,40 @@ public class FirePitBlock extends Block implements EntityBlock {
         
         // 处理熄灭火塘（已点燃状态）
         if (state.getValue(LIT)) {
-            if (FluidHelper.isWaterContainer(heldItem)) {
+            if (FluidHelper.isWaterContainer(heldItem) && player.isShiftKeyDown()) {
                 if (!level.isClientSide) {
+                    // 水浇法制炭：向燃烧木质燃料的火塘洒水，概率产出炭块
+                    BlockEntity be = level.getBlockEntity(pos);
+                    if (be instanceof FirePitBlockEntity firePitBE && firePitBE.hasFuel()) {
+                        ItemStack fuelStack = firePitBE.getFuelItem();
+                        if (!fuelStack.isEmpty()
+                                && fuelStack.getItem() != Items.COAL
+                                && fuelStack.getItem() != Items.CHARCOAL
+                                && fuelStack.getItem() != Items.BLAZE_ROD) {
+                            int fuelTime = firePitBE.getFuelTime();
+                            int potential = fuelTime / 75;
+                            int produced = 0;
+                            for (int i = 0; i < potential; i++) {
+                                if (level.random.nextFloat() < 0.30f) {
+                                    produced++;
+                                }
+                            }
+                            if (produced > 0) {
+                                Containers.dropItemStack(level,
+                                        pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                                        new ItemStack(ModItems.CHARCOAL_CLUMP.get(), produced));
+                                player.displayClientMessage(
+                                        Component.translatable(
+                                                "message.forgeborneodyssey.firepit.water_quench", produced),
+                                        true);
+                            }
+                        }
+                        firePitBE.clearFuel();
+                    }
+
                     level.playSound(player, pos, SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    BlockState newState = state.setValue(LIT, Boolean.valueOf(false));
+                    BlockState newState = state.setValue(LIT, Boolean.valueOf(false))
+                            .setValue(HAS_FUEL, Boolean.valueOf(false));
                     level.setBlock(pos, newState, 11);
                     level.sendBlockUpdated(pos, state, newState, 3);
                     level.gameEvent(player, net.minecraft.world.level.gameevent.GameEvent.BLOCK_CHANGE, pos);
@@ -184,7 +217,7 @@ public class FirePitBlock extends Block implements EntityBlock {
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             // 用铲子右键熄灭
-            else if (heldItem.canPerformAction(net.minecraftforge.common.ToolActions.SHOVEL_FLATTEN)) {
+            else if (heldItem.canPerformAction(net.minecraftforge.common.ToolActions.SHOVEL_FLATTEN) && player.isShiftKeyDown()) {
                 if (!level.isClientSide) {
                     level.playSound(player, pos, SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.BLOCKS, 1.0F, 1.0F);
                     BlockState newState = state.setValue(LIT, Boolean.valueOf(false));

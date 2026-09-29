@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:yellow_ochre"
+    },
+    {
+      "item": "forgeborneodyssey:slaked_lime"
+    },
+    {
+      "item": "forgeborneodyssey:plant_ash"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:yellow_plaster",
+    "count": 1
+  }
+}

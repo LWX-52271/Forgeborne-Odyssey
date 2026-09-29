@@ -1,0 +1,101 @@
+package com.lwx.forgeborneodyssey.items.tools;
+
+import com.lwx.forgeborneodyssey.core.registration.ModItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class CrudeFlintSickleItem extends SwordItem {
+
+    public static final Tier CRUDE_FLINT_SICKLE_TIER = new Tier() {
+        @Override
+        public int getUses() {
+            return 20;
+        }
+
+        @Override
+        public float getSpeed() {
+            return 1.5F;
+        }
+
+        @Override
+        public float getAttackDamageBonus() {
+            return 0.0F;
+        }
+
+        @Override
+        public int getLevel() {
+            return 0;
+        }
+
+        @Override
+        public int getEnchantmentValue() {
+            return 5;
+        }
+
+        @Override
+        public Ingredient getRepairIngredient() {
+            return Ingredient.of(ModItems.FLINT_FLAKE.get());
+        }
+    };
+
+    public CrudeFlintSickleItem() {
+        super(CRUDE_FLINT_SICKLE_TIER, 1, -2.0F, new Item.Properties()
+                .stacksTo(1)
+                .durability(20));
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        BlockState state = level.getBlockState(pos);
+        Player player = context.getPlayer();
+        ItemStack stack = context.getItemInHand();
+
+        if (isGrass(state)) {
+            if (!level.isClientSide && player != null) {
+                int harvested = 0;
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        BlockPos targetPos = pos.offset(dx, 0, dz);
+                        BlockState targetState = level.getBlockState(targetPos);
+                        if (isGrass(targetState)) {
+                            level.destroyBlock(targetPos, false, player);
+                            ItemStack fiber = new ItemStack(ModItems.GRASS_FIBER.get(),
+                                    1 + level.getRandom().nextInt(2));
+                            Containers.dropItemStack(level,
+                                    targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5,
+                                    fiber);
+                            harvested++;
+                        }
+                    }
+                }
+                if (harvested > 0) {
+                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+                    level.playSound(null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.PASS;
+    }
+
+    private boolean isGrass(BlockState state) {
+        return state.is(Blocks.GRASS) || state.is(Blocks.TALL_GRASS)
+                || state.is(Blocks.FERN) || state.is(Blocks.LARGE_FERN);
+    }
+}

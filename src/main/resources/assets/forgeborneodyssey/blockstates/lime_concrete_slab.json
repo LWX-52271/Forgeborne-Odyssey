@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/lime_concrete_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/lime_concrete_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/lime_concrete"
+    }
+  }
+}

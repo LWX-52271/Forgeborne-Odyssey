@@ -272,11 +272,7 @@ public class ForgeborneAPI {
      */
     public static float getPurity(ItemStack stack) {
         if (stack.isEmpty()) return -1;
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Purity")) {
-            return -1;
-        }
-        return tag.getFloat("Purity");
+        return com.lwx.forgeborneodyssey.quality.QualityHelper.getPurity(stack);
     }
 
     /**
@@ -286,15 +282,8 @@ public class ForgeborneAPI {
      */
     public static double getWeight(ItemStack stack) {
         if (stack.isEmpty()) return -1;
-        CompoundTag tag = stack.getTag();
-        if (tag == null) return -1;
-        if (tag.contains("Weight")) {
-            return tag.getDouble("Weight");
-        }
-        if (tag.contains(com.lwx.forgeborneodyssey.quality.ItemQualityHelper.TAG_ITEM_QUALITY)) {
-            return tag.getFloat(com.lwx.forgeborneodyssey.quality.ItemQualityHelper.TAG_ITEM_QUALITY) * 1000.0;
-        }
-        return -1;
+        double w = com.lwx.forgeborneodyssey.quality.QualityHelper.getWeightGrams(stack);
+        return w > 0.0 ? w : -1;
     }
 
     /**
@@ -304,8 +293,7 @@ public class ForgeborneAPI {
      */
     public static void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
         if (stack.isEmpty() || quality == null) return;
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putString("Quality", quality.getName());
+        com.lwx.forgeborneodyssey.quality.QualityHelper.setQuality(stack, quality.toFloat());
     }
 
     /**
@@ -315,8 +303,7 @@ public class ForgeborneAPI {
      */
     public static void setPurity(ItemStack stack, float purity) {
         if (stack.isEmpty()) return;
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putFloat("Purity", purity);
+        com.lwx.forgeborneodyssey.quality.QualityHelper.setPurity(stack, purity / 100.0f);
     }
 
     /**
@@ -326,8 +313,6 @@ public class ForgeborneAPI {
      */
     public static void setWeight(ItemStack stack, double weightInGrams) {
         if (stack.isEmpty()) return;
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putDouble("Weight", weightInGrams);
-        com.lwx.forgeborneodyssey.quality.ItemQualityHelper.setQualityValue(stack, (float)(weightInGrams / 10000.0));
+        com.lwx.forgeborneodyssey.quality.QualityHelper.setWeightGrams(stack, weightInGrams);
     }
 }

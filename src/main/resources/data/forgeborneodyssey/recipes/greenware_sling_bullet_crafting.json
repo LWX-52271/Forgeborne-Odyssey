@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "forgeborneodyssey:mixed_clay"
+        }
+    ],
+    "result": {
+        "item": "forgeborneodyssey:greenware_sling_bullet",
+        "count": 8
+    }
+}

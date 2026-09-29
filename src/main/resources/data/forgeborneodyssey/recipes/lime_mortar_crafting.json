@@ -1,0 +1,19 @@
+{
+  "type": "forgeborneodyssey:fluid_container_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:slaked_lime"
+    },
+    {
+      "item": "minecraft:sand"
+    },
+    {
+      "tag": "forgeborneodyssey:water_containers"
+    }
+  ],
+  "fluid_ingredient": 2,
+  "result": {
+    "item": "forgeborneodyssey:lime_mortar",
+    "count": 2
+  }
+}

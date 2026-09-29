@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "forgeborneodyssey:block/lime_mortar_stone_bricks",
+    "top": "forgeborneodyssey:block/lime_mortar_stone_bricks",
+    "side": "forgeborneodyssey:block/lime_mortar_stone_bricks"
+  }
+}

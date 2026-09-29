@@ -82,6 +82,7 @@ import com.lwx.forgeborneodyssey.items.fragments.GoldFragmentItem;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -414,6 +415,11 @@ public class ModItems {
     public static final RegistryObject<Item> RAW_MOLYBDENITE = simpleItem("raw_molybdenite");
     public static final RegistryObject<Item> RAW_CASSITERITE = simpleItem("raw_cassiterite");
     public static final RegistryObject<Item> RAW_CASSITERITE_SAND = simpleItem("raw_cassiterite_sand");
+    public static final RegistryObject<Item> ROUGH_CASSITERITE_SAND = simpleItem("rough_cassiterite_sand");
+    public static final RegistryObject<Item> CASSITERITE_CONCENTRATE = ITEMS.register("cassiterite_concentrate",
+        () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<Item> TIN_OXIDE_SCORIA = ITEMS.register("tin_oxide_scoria",
+        () -> new Item(new Item.Properties().stacksTo(16)));
 
     // 铜矿石颗粒（18种）
     public static final RegistryObject<Item> CHALCOPYRITE_GRAIN = simpleItem("chalcopyrite_grain");
@@ -668,7 +674,7 @@ public class ModItems {
 
     // 刷怪蛋
     public static final RegistryObject<Item> BISON_SPAWN_EGG = ITEMS.register("bison_spawn_egg",
-        () -> new net.minecraftforge.common.ForgeSpawnEggItem(ModEntities.BISON, 0x4A3728, 0x8B6914, new Item.Properties()));
+        () -> new ForgeSpawnEggItem(ModEntities.BISON, 0x5C3A1E, 0x2A1A0E, new Item.Properties().stacksTo(64)));
 
     private static RegistryObject<Item> simpleItem(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties().stacksTo(64)));

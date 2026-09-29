@@ -2,8 +2,8 @@ package com.lwx.forgeborneodyssey.items.tools;
 
 import com.google.common.collect.Multimap;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -27,7 +27,7 @@ import java.util.UUID;
 public class WroughtSilverAxeItem extends AxeItem {
     
     public WroughtSilverAxeItem() {
-        super(Tiers.STONE, 5.0F, -3.1F, new Item.Properties()
+        super(Tiers.STONE, 3.0F, -3.1F, new Item.Properties()
             .stacksTo(1)  // 只能持有一个
             .durability(48)); // 耐久度设置为48，比铜斧低，银质较软
     }
@@ -38,22 +38,20 @@ public class WroughtSilverAxeItem extends AxeItem {
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("item.forgeborneodyssey.wrought_silver_axe.tooltip"));
             
-            // 添加质量等级提示
             AbstractMetalBilletItem.Quality quality = getQuality(stack);
             Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
             tooltip.add(qualityText);
             
-            // 添加纯度提示
             float purity = getPurity(stack);
-            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            if (purity > 0.0f) {
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            }
             
-            // 显示实际伤害值
             float modifier = getDamageModifierFromWeight(stack);
             float actualDamage = 5.0F + modifier;
-            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.base_damage", String.format("%.1f", actualDamage)));;
+            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.base_damage", String.format("%.1f", actualDamage)));
             
-            // 显示基于纯度的耐久度
-            int baseDurability = 48; // 基础耐久度
+            int baseDurability = 48;
             int actualDurability = getDurabilityFromPurity(purity, baseDurability);
             int currentDamage = stack.getDamageValue();
             int remainingDurability = Math.max(0, actualDurability - currentDamage);
@@ -92,8 +90,7 @@ public class WroughtSilverAxeItem extends AxeItem {
      * @param quality 重量等级
      */
     public void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putString("Quality", quality.getName());
+        QualityHelper.setQuality(stack, quality.toFloat());
     }
     
     /**
@@ -102,11 +99,7 @@ public class WroughtSilverAxeItem extends AxeItem {
      * @return 重量等级
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Quality")) {
-            return AbstractMetalBilletItem.Quality.MEDIUM; // 默认为中
-        }
-        return AbstractMetalBilletItem.Quality.fromString(tag.getString("Quality"));
+        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
     }
     
     /**
@@ -115,11 +108,9 @@ public class WroughtSilverAxeItem extends AxeItem {
      * @return 纯度值（0-100）
      */
     public float getPurity(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Purity")) {
-            return 90.0f; // 默认纯度（银的纯度较高）
-        }
-        return tag.getFloat("Purity");
+        float p = QualityHelper.getPurity(stack);
+        if (p > 0.0f) return p * 100.0f;
+        return 90.0f;
     }
     
     /**
@@ -130,9 +121,8 @@ public class WroughtSilverAxeItem extends AxeItem {
      * @return 修正后的耐久度
      */
     public int getDurabilityFromPurity(float purity, int baseDurability) {
-        // 纯度范围映射到耐久度系数：70% -> 1.3倍, 100% -> 0.8倍
         float multiplier = 1.3f - (purity - 70.0f) / 30.0f * 0.5f;
-        multiplier = Math.max(0.5f, Math.min(1.5f, multiplier)); // 限制在 0.5-1.5 之间
+        multiplier = Math.max(0.5f, Math.min(1.5f, multiplier));
         return Math.round(baseDurability * multiplier);
     }
     
@@ -143,16 +133,13 @@ public class WroughtSilverAxeItem extends AxeItem {
      * @return 伤害修正值
      */
     public float getDamageModifierFromWeight(ItemStack stack) {
-        net.minecraft.nbt.CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Weight")) {
-            return 0.0f; // 没有重量信息，返回0
+        double weight = QualityHelper.getWeightGrams(stack);
+        if (weight <= 0.0) {
+            return 0.0f;
         }
         
-        double weight = tag.getDouble("Weight");
-        
-        // 根据重量计算伤害修正：每100g增加0.1点伤害，最多增加2.0点
         float damageBonus = (float)(weight / 100.0);
-        damageBonus = Math.min(2.0f, damageBonus); // 限制最大加成
+        damageBonus = Math.min(2.0f, damageBonus);
         
         return damageBonus;
     }

@@ -205,7 +205,7 @@ public class ClientEventHandler {
                 return com.lwx.forgeborneodyssey.blocks.StoragePotBlockEntity.DEFAULT_COLOR;
             }, ModItems.STORAGE_POT.get());
 
-        });
+            });
         
         // 注册实体渲染器
         event.enqueueWork(() -> {

@@ -1,0 +1,32 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "forgeborneodyssey:item/ceramic_water_jug"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "forgeborneodyssey:filled": 0.25
+      },
+      "model": "forgeborneodyssey:item/ceramic_water_jug_filled_1"
+    },
+    {
+      "predicate": {
+        "forgeborneodyssey:filled": 0.5
+      },
+      "model": "forgeborneodyssey:item/ceramic_water_jug_filled_2"
+    },
+    {
+      "predicate": {
+        "forgeborneodyssey:filled": 0.75
+      },
+      "model": "forgeborneodyssey:item/ceramic_water_jug_filled_3"
+    },
+    {
+      "predicate": {
+        "forgeborneodyssey:filled": 1.0
+      },
+      "model": "forgeborneodyssey:item/ceramic_water_jug_filled_4"
+    }
+  ]
+}

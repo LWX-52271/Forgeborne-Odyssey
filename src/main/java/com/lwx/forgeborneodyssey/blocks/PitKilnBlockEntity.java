@@ -2,7 +2,7 @@ package com.lwx.forgeborneodyssey.blocks;
 
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
-import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -528,10 +528,10 @@ public class PitKilnBlockEntity extends BlockEntity {
                     if (!greenware.isEmpty()) {
                         ItemStack result = entity.getResultForSlot(greenware, level.getRandom());
                         if (!result.isEmpty() && !result.is(ModItems.KILN_WASTE_SHARD.get())) {
-                            if (ItemQualityHelper.hasQuality(greenware)) {
-                                ItemQualityHelper.inheritQualityWithLoss(result, greenware, 0.05f);
+                            if (QualityHelper.hasQuality(greenware)) {
+                                QualityHelper.inheritQualityWithLoss(result, greenware, 0.05f);
                             } else {
-                                ItemQualityHelper.assignRandomQuality(result, level.getRandom());
+                                QualityHelper.assignRandomQuality(result, level.getRandom());
                             }
                         }
                         Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result);

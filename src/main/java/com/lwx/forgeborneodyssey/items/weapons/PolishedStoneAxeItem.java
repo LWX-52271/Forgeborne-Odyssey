@@ -41,7 +41,7 @@ public class PolishedStoneAxeItem extends AxeItem {
     };
 
     public PolishedStoneAxeItem() {
-        super(POLISHED_STONE_AXE_TIER, 4.5F, -3.1F, new Item.Properties()
+        super(POLISHED_STONE_AXE_TIER, 5.0F, -3.1F, new Item.Properties()
                 .stacksTo(1)
                 .durability(251));
     }

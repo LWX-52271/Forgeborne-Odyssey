@@ -3,7 +3,6 @@ package com.lwx.forgeborneodyssey.client.jade;
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.world.OreGrade;
-import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.BlockAccessor;
@@ -28,8 +27,7 @@ public enum OreGradeComponentProvider implements IBlockComponentProvider {
             if (grade >= 0.0f) {
                 OreGrade oreGrade = OreGrade.fromValue(grade);
                 String gradeKey = "jade.forgeborneodyssey.ore_grade." + oreGrade.getName();
-                String translated = Language.getInstance().getOrDefault(gradeKey);
-                tooltip.add(Component.literal(translated));
+                tooltip.add(Component.translatable(gradeKey));
             }
         }
     }

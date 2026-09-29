@@ -100,11 +100,21 @@ public class CopperGrassFlowerFeature extends Feature<NoneFeatureConfiguration> 
         }
 
         int placed = 0;
+        int chunkMinX = origin.getX();
+        int chunkMinZ = origin.getZ();
+        int chunkMaxX = chunkMinX + 15;
+        int chunkMaxZ = chunkMinZ + 15;
 
         for (int attempt = 0; attempt < clusterSize * 4 && placed < clusterSize; attempt++) {
             int dx = random.nextInt(radius * 2 + 1) - radius;
             int dz = random.nextInt(radius * 2 + 1) - radius;
             BlockPos targetPos = surfaceCenter.offset(dx, 0, dz);
+
+            if (targetPos.getX() < chunkMinX || targetPos.getX() > chunkMaxX
+                    || targetPos.getZ() < chunkMinZ || targetPos.getZ() > chunkMaxZ) {
+                continue;
+            }
+
             BlockPos targetSurface = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, targetPos);
 
             if (targetSurface.getY() < 48) continue;

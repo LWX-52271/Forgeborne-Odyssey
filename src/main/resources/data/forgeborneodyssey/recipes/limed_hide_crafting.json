@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:quicklime"
+    },
+    {
+      "item": "forgeborneodyssey:rawhide"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:limed_hide"
+  }
+}

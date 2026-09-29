@@ -1,0 +1,38 @@
+{
+  "parent": "forgeborneodyssey:stone_age",
+  "display": {
+    "icon": {
+      "item": "forgeborneodyssey:birch_tar"
+    },
+    "title": {
+      "translate": "advancement.forgeborneodyssey.birch_tar.title"
+    },
+    "description": {
+      "translate": "advancement.forgeborneodyssey.birch_tar.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_birch_tar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": [],
+        "items": [
+          {
+            "items": [
+              "forgeborneodyssey:birch_tar"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_birch_tar"
+    ]
+  ]
+}

@@ -67,6 +67,7 @@ public class OpenPitMineRuinPiece extends StructurePiece {
 
     private int pitRadius;
     private int pitDepth;
+    private int pitCenterY;
 
     public OpenPitMineRuinPiece(StructurePieceType type, int genDepth, BoundingBox boundingBox) {
         super(type, genDepth, boundingBox);
@@ -76,21 +77,26 @@ public class OpenPitMineRuinPiece extends StructurePiece {
         super(ModStructures.OPEN_PIT_MINE_RUIN_PIECE.get(), tag);
         this.pitRadius = tag.getInt("PitRadius");
         this.pitDepth = tag.getInt("PitDepth");
+        this.pitCenterY = tag.getInt("PitCenterY");
     }
+
+    private static final int CLEAR_HEIGHT = 25;
 
     public OpenPitMineRuinPiece(BlockPos center, int pitRadius, int pitDepth) {
         super(ModStructures.OPEN_PIT_MINE_RUIN_PIECE.get(), 0,
                 new BoundingBox(
                         center.getX() - pitRadius - 2, center.getY() - pitDepth + 1, center.getZ() - pitRadius - 2,
-                        center.getX() + pitRadius + 2, center.getY() + 2, center.getZ() + pitRadius + 2));
+                        center.getX() + pitRadius + 2, center.getY() + CLEAR_HEIGHT, center.getZ() + pitRadius + 2));
         this.pitRadius = pitRadius;
         this.pitDepth = pitDepth;
+        this.pitCenterY = center.getY();
     }
 
     @Override
     protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
         tag.putInt("PitRadius", pitRadius);
         tag.putInt("PitDepth", pitDepth);
+        tag.putInt("PitCenterY", pitCenterY);
     }
 
     @Override
@@ -99,9 +105,13 @@ public class OpenPitMineRuinPiece extends StructurePiece {
 
         int centerX = this.boundingBox.getCenter().getX();
         int centerZ = this.boundingBox.getCenter().getZ();
-        int topY = this.boundingBox.maxY() - 2;
 
-        BlockPos center = new BlockPos(centerX, topY, centerZ);
+        ChunkPos centerChunk = new ChunkPos(centerX >> 4, centerZ >> 4);
+        if (!chunkPos.equals(centerChunk)) {
+            return;
+        }
+
+        BlockPos center = new BlockPos(centerX, pitCenterY, centerZ);
 
         if (isBottomHollow(level, center, pitRadius, pitDepth)) {
             return;

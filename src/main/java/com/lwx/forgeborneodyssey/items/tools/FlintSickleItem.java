@@ -67,12 +67,26 @@ public class FlintSickleItem extends SwordItem {
 
         if (isGrass(state)) {
             if (!level.isClientSide && player != null) {
-                level.destroyBlock(pos, false, player);
-                ItemStack fiber = new ItemStack(ModItems.GRASS_FIBER.get(),
-                        1 + level.getRandom().nextInt(2));
-                Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, fiber);
-                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
-                level.playSound(null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+                int harvested = 0;
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        BlockPos targetPos = pos.offset(dx, 0, dz);
+                        BlockState targetState = level.getBlockState(targetPos);
+                        if (isGrass(targetState)) {
+                            level.destroyBlock(targetPos, false, player);
+                            ItemStack fiber = new ItemStack(ModItems.GRASS_FIBER.get(),
+                                    1 + level.getRandom().nextInt(2));
+                            Containers.dropItemStack(level,
+                                    targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5,
+                                    fiber);
+                            harvested++;
+                        }
+                    }
+                }
+                if (harvested > 0) {
+                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+                    level.playSound(null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 0.8F, 1.0F);
+                }
             }
             return InteractionResult.SUCCESS;
         }

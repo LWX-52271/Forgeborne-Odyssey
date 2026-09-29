@@ -1,8 +1,8 @@
 package com.lwx.forgeborneodyssey.items.metalbars;
 
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,37 +26,30 @@ public class GoldBarItem extends Item {
      * 获取 ItemStack 的质量等级
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Quality")) {
-            return AbstractMetalBilletItem.Quality.MEDIUM;
-        }
-        return AbstractMetalBilletItem.Quality.fromString(tag.getString("Quality"));
+        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
     }
     
     /**
      * 获取 ItemStack 的纯度
      */
     public float getPurity(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Purity")) {
-            return 80.0f; // 金的默认纯度较低
-        }
-        return tag.getFloat("Purity");
+        float p = QualityHelper.getPurity(stack);
+        if (p > 0.0f) return p * 100.0f;
+        return 80.0f;
     }
     
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         if (Screen.hasShiftDown()) {
-            // 添加重量等级提示
+            tooltip.add(Component.translatable("item.forgeborneodyssey.gold_bar.tooltip"));
+            
             AbstractMetalBilletItem.Quality quality = getQuality(stack);
             Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
             tooltip.add(qualityText);
             
-            // 添加重量提示
-            CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("Weight")) {
-                double weight = tag.getDouble("Weight");
+            double weight = QualityHelper.getWeightGrams(stack);
+            if (weight > 0.0) {
                 if (weight >= 1000.0) {
                     tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
                 } else {
@@ -64,11 +57,11 @@ public class GoldBarItem extends Item {
                 }
             }
             
-            // 添加纯度提示
             float purity = getPurity(stack);
-            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            if (purity > 0.0f) {
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            }
             
-            // 添加继承提示
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));

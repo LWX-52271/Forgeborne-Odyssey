@@ -2,6 +2,7 @@ package com.lwx.forgeborneodyssey.client;
 
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.blocks.TunnelSupportBlock;
+import com.lwx.forgeborneodyssey.entities.BisonEntity;
 import com.lwx.forgeborneodyssey.events.FireCrackMiningHandler;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.core.registration.ModSounds;
@@ -54,6 +55,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.client.model.data.ModelData;
@@ -197,6 +199,49 @@ public class ClientForgeEventHandler {
 
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             renderSlingOrbit(event);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCameraAngles(ViewportEvent.ComputeCameraAngles event) {
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        if (player == null || mc.level == null) return;
+
+        final double MAX_DIST = 16.0;
+        double strongestShake = 0.0;
+
+        AABB searchBox = player.getBoundingBox().inflate(MAX_DIST);
+        for (BisonEntity bison : mc.level.getEntitiesOfClass(BisonEntity.class, searchBox)) {
+            double dist = player.distanceTo(bison);
+            if (dist > MAX_DIST) continue;
+
+            double proximity = 1.0 - (dist / MAX_DIST);
+            double shake = 0.0;
+
+            if (bison.attackAnimationRemaining > 0) {
+                shake = proximity * 1.0;
+            } else if (bison.threatenAnimationState.isStarted()) {
+                shake = proximity * 0.15;
+            } else if (bison.runAnimationState.isStarted()) {
+                shake = proximity * 0.4;
+            } else if (bison.walkAnimationState.isStarted()) {
+                shake = proximity * 0.06;
+            }
+
+            if (shake > strongestShake) {
+                strongestShake = shake;
+            }
+        }
+
+        if (strongestShake > 0.001) {
+            RandomSource rand = mc.level.random;
+            float time = (mc.level.getGameTime() + (float) event.getPartialTick()) * 0.3F;
+            float rhythmic = (float) Math.sin(time * 10.0) * (float) strongestShake * 0.7F;
+            float jitter = (rand.nextFloat() - 0.5F) * (float) strongestShake * 0.4F;
+            event.setYaw(event.getYaw() + rhythmic + jitter);
+            event.setPitch(event.getPitch() + rhythmic * 0.6F + jitter * 0.5F);
+            event.setRoll((float) (event.getRoll() + jitter * 0.3));
         }
     }
 

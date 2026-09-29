@@ -2,7 +2,7 @@ package com.lwx.forgeborneodyssey.blocks;
 
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
-import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -72,7 +72,7 @@ public class DryingRackBlockEntity extends BlockEntity {
                                 entity.items[slot] = new ItemStack(ModItems.KILN_WASTE_SHARD.get(), getWasteShardCount(stack));
                             } else {
                                 ItemStack driedStack = new ItemStack(driedResult);
-                                ItemQualityHelper.inheritQuality(driedStack, stack);
+                                QualityHelper.inheritQuality(driedStack, stack);
                                 entity.items[slot] = driedStack;
                             }
                         }

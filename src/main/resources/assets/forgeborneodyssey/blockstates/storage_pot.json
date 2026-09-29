@@ -1,0 +1,39 @@
+{
+  "multipart": [
+    {
+      "apply": { "model": "forgeborneodyssey:block/storage_pot" }
+    },
+    {
+      "when": { "water_level": "1" },
+      "apply": { "model": "forgeborneodyssey:block/storage_pot_water_1" }
+    },
+    {
+      "when": { "water_level": "2" },
+      "apply": { "model": "forgeborneodyssey:block/storage_pot_water_2" }
+    },
+    {
+      "when": { "water_level": "3" },
+      "apply": { "model": "forgeborneodyssey:block/storage_pot_water_3" }
+    },
+    {
+      "when": { "water_level": "4" },
+      "apply": { "model": "forgeborneodyssey:block/storage_pot_water_4" }
+    },
+    {
+      "when": { "water_level": "5" },
+      "apply": { "model": "forgeborneodyssey:block/storage_pot_water_5" }
+    },
+    {
+      "when": { "water_level": "6" },
+      "apply": { "model": "forgeborneodyssey:block/storage_pot_water_6" }
+    },
+    {
+      "when": { "water_level": "7" },
+      "apply": { "model": "forgeborneodyssey:block/storage_pot_water_7" }
+    },
+    {
+      "when": { "water_level": "8" },
+      "apply": { "model": "forgeborneodyssey:block/storage_pot_water_8" }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lit=false": { "model": "forgeborneodyssey:block/charcoal_ring" },
+    "lit=true":  { "model": "forgeborneodyssey:block/charcoal_ring_lit" }
+  }
+}

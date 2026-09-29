@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C C",
+    "C C",
+    " A "
+  ],
+  "key": {
+    "C": {
+      "item": "forgeborneodyssey:mixed_clay"
+    },
+    "A": {
+      "item": "forgeborneodyssey:temper_grog"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:greenware_storage_pot",
+    "count": 1
+  }
+}

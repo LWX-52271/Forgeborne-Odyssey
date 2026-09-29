@@ -1,0 +1,33 @@
+{
+  "category": "forgeborneodyssey:basics",
+  "name": "石磨盘的使用",
+  "icon": "forgeborneodyssey:quern",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "石磨盘概述",
+      "text": "§4石磨盘§r是一种古老的研磨工具，用于将材料研磨成更细的粉末或加工形状。$(br2)石磨盘可以研磨以下材料：$(br)$(li)§3小麦§r → §4面粉§r（2个）$(br)$(li)§3骨头§r → §4骨粉§r（4个）$(br)$(li)§3骨块§r → §4骨粉§r（9个）$(br)$(li)§3燧石/燧石卵石§r → §4磨光石斧头§r（1个）$(br2)§4注意：§r石磨盘不能研磨矿石，矿石加工请使用§3坩埚熔炼§r。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:quern_crafting",
+      "text": "§3石磨盘底座合成配方$(br2)6个圆石 + 1个木棍。$(br)石磨盘由底座和上磨两部分组成。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:quern_upper_crafting",
+      "text": "§3石磨盘上磨合成配方$(br2)3个圆石。$(br)上磨是石磨盘的可动部分，放在底座上使用。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "如何使用石磨盘",
+      "text": "$(li)将§4石磨盘底座§r放置在地面上$(br)$(li)手持§4上磨§r右键底座将其安装上去$(br)$(li)手持§4待研磨材料§r右键石磨盘放入$(br)$(li)空手右键石磨盘转动研磨§4（需8次转动）§r$(br)$(li)研磨完成后自动掉落成品$(br2)§4提示：§r石磨盘一次只能研磨一个物品，完成后再放入下一个。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "面粉的用途",
+      "text": "§3小麦研磨得到的面粉是重要的食物原料：$(br2)$(li)§4面粉§r + §4水桶§r → §3生面团§r$(br)$(li)§3生面团§r放入§4熔炉§r烤制 → §3面包§r$(br2)面包可以为玩家提供较高的饱食度，是早期重要的食物来源。"
+    }
+  ],
+  "sortnum": 7
+}

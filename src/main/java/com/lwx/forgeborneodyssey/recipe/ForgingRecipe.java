@@ -157,14 +157,14 @@ public class ForgingRecipe implements Recipe<Container> {
                 }
                 // 如果结果是金属珠，继承质量和纯度
                 else if (result.getItem() instanceof com.lwx.forgeborneodyssey.items.beads.ThrowableBeadItem) {
-                    result.getOrCreateTag().putString("Quality", quality.getName());
-                    result.getOrCreateTag().putFloat("Purity", purity);
+                    com.lwx.forgeborneodyssey.quality.QualityHelper.setQuality(result, quality.toFloat());
+                    com.lwx.forgeborneodyssey.quality.QualityHelper.setPurity(result, purity / 100.0f);
                 }
                 // 如果结果是金属条，继承质量和纯度
                 else if (result.getItem() instanceof com.lwx.forgeborneodyssey.items.metalbars.GoldBarItem ||
                          result.getItem() instanceof com.lwx.forgeborneodyssey.items.metalbars.SilverBarItem) {
-                    result.getOrCreateTag().putString("Quality", quality.getName());
-                    result.getOrCreateTag().putFloat("Purity", purity);
+                    com.lwx.forgeborneodyssey.quality.QualityHelper.setQuality(result, quality.toFloat());
+                    com.lwx.forgeborneodyssey.quality.QualityHelper.setPurity(result, purity / 100.0f);
                 }
             }
             

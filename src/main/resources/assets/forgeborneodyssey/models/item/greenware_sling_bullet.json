@@ -1,0 +1,6 @@
+{
+    "parent": "forgeborneodyssey:item/greenware_spinning_whorl",
+    "textures": {
+        "layer0": "forgeborneodyssey:item/greenware_sling_bullet"
+    }
+}

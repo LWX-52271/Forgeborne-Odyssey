@@ -103,7 +103,7 @@ public class ModEntities {
     public static final RegistryObject<EntityType<BisonEntity>> BISON = ENTITY_TYPES.register(
         "bison",
         () -> EntityType.Builder.of(BisonEntity::new, MobCategory.CREATURE)
-            .sized(1.3F, 1.8F)
+            .sized(1.8F, 2.2F)
             .clientTrackingRange(10)
             .build(ForgeborneOdyssey.MOD_ID + ":bison")
     );

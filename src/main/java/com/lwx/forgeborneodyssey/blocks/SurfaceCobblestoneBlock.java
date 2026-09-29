@@ -1,6 +1,6 @@
 package com.lwx.forgeborneodyssey.blocks;
 
-import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -105,8 +105,8 @@ public class SurfaceCobblestoneBlock extends FallingBlock {
             level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.5f, 1.0f);
             
             ItemStack blockItem = new ItemStack(this);
-            if (!ItemQualityHelper.hasQuality(blockItem)) {
-                ItemQualityHelper.assignRandomQuality(blockItem);
+            if (!QualityHelper.hasQuality(blockItem)) {
+                QualityHelper.assignRandomQuality(blockItem);
             }
             if (!player.getInventory().add(blockItem)) {
                 player.drop(blockItem, false);

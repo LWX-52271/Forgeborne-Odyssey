@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/lime_mortar_cobblestone_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/lime_mortar_cobblestone_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/lime_mortar_cobblestone"
+    }
+  }
+}

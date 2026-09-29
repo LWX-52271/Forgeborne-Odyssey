@@ -28,7 +28,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "forgeborneodyssey:raw_cassiterite_sand",
+          "name": "forgeborneodyssey:rough_cassiterite_sand",
           "functions": [
             {
               "function": "minecraft:set_count",

@@ -6,7 +6,7 @@ import com.lwx.forgeborneodyssey.items.GrassFiberItem;
 import com.lwx.forgeborneodyssey.items.RawClayItem;
 import com.lwx.forgeborneodyssey.items.TemperGrogItem;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
-import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -20,6 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -55,10 +57,10 @@ public class CraftingEventListener {
 
         if (stack.getItem() instanceof AbstractMetalBilletItem) {
             AbstractMetalBilletItem billet = (AbstractMetalBilletItem) stack.getItem();
-            if (!stack.hasTag() || !stack.getTag().contains("Quality")) {
+            if (!com.lwx.forgeborneodyssey.quality.QualityHelper.hasQuality(stack)) {
                 billet.setQuality(stack, AbstractMetalBilletItem.Quality.MEDIUM);
             }
-            if (!stack.hasTag() || !stack.getTag().contains("Purity")) {
+            if (!com.lwx.forgeborneodyssey.quality.QualityHelper.hasPurity(stack)) {
                 billet.setRandomPurity(stack, net.minecraft.util.RandomSource.create());
             }
         }
@@ -110,14 +112,14 @@ public class CraftingEventListener {
     }
 
     private static void migrateOrAssignQuality(ItemStack stack, RandomSource random) {
-        if (ItemQualityHelper.hasQuality(stack)) {
+        if (QualityHelper.hasQuality(stack)) {
             return;
         }
 
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("ore_quality")) {
             float oreQuality = tag.getFloat("ore_quality");
-            ItemQualityHelper.setQualityValue(stack, oreQuality);
+            QualityHelper.setQuality(stack, oreQuality);
             tag.remove("ore_quality");
             if (tag.isEmpty()) {
                 stack.setTag(null);
@@ -172,6 +174,11 @@ public class CraftingEventListener {
         ItemStack craftedItem = event.getCrafting();
         
         if (craftedItem.isEmpty()) {
+            // Shift-click 合成：结果已直接进入背包，事件携带的 craftedItem 为空
+            // 需要从合成格中计算质量，应用到背包中对应的物品上
+            if (event.getInventory() instanceof CraftingContainer craftMatrix && !player.level().isClientSide) {
+                handleShiftCraftQuality(player, craftMatrix);
+            }
             return;
         }
 
@@ -183,40 +190,44 @@ public class CraftingEventListener {
             CompoundTag inheritedTag = findInheritedProperties(craftMatrix);
             
             if (inheritedTag != null && !inheritedTag.isEmpty()) {
-                CompoundTag targetTag = craftedItem.getOrCreateTag();
                 
-                if (inheritedTag.contains("Quality")) {
-                    String quality = inheritedTag.getString("Quality");
-                    targetTag.putString("Quality", quality);
+                if (inheritedTag.contains("quality")) {
+                    float quality = inheritedTag.getFloat("quality");
+                    com.lwx.forgeborneodyssey.quality.QualityHelper.setQuality(craftedItem, quality);
                 }
                 
-                if (inheritedTag.contains("Purity")) {
-                    float purity = inheritedTag.getFloat("Purity");
-                    targetTag.putFloat("Purity", purity);
+                if (inheritedTag.contains("purity")) {
+                    float purity = inheritedTag.getFloat("purity");
+                    com.lwx.forgeborneodyssey.quality.QualityHelper.setPurity(craftedItem, purity);
+                }
+                
+                if (inheritedTag.contains("weight_grams")) {
+                    double weight = inheritedTag.getDouble("weight_grams");
+                    com.lwx.forgeborneodyssey.quality.QualityHelper.setWeightGrams(craftedItem, weight);
                 }
             }
 
-            if (!ItemQualityHelper.hasQuality(craftedItem)) {
+            if (!QualityHelper.hasQuality(craftedItem)) {
                 float totalWeight = 0;
                 int weightCount = 0;
                 for (int i = 0; i < craftMatrix.getContainerSize(); i++) {
                     ItemStack inputStack = craftMatrix.getItem(i);
-                    if (!inputStack.isEmpty() && ItemQualityHelper.hasQuality(inputStack)) {
-                        totalWeight += ItemQualityHelper.getQualityValue(inputStack);
+                    if (!inputStack.isEmpty() && QualityHelper.hasQuality(inputStack)) {
+                        totalWeight += QualityHelper.getQuality(inputStack);
                         weightCount++;
                     }
                 }
                 if (weightCount > 0) {
                     int outputCount = craftedItem.getCount();
                     float perItemWeight = totalWeight / outputCount;
-                    ItemQualityHelper.setQualityValue(craftedItem, perItemWeight);
+                    QualityHelper.setQuality(craftedItem, perItemWeight);
                 } else {
-                    ItemQualityHelper.assignRandomQuality(craftedItem);
+                    QualityHelper.assignRandomQuality(craftedItem);
                 }
             }
         } else {
-            if (!ItemQualityHelper.hasQuality(craftedItem)) {
-                ItemQualityHelper.assignRandomQuality(craftedItem);
+            if (!QualityHelper.hasQuality(craftedItem)) {
+                QualityHelper.assignRandomQuality(craftedItem);
             }
         }
     }
@@ -234,7 +245,7 @@ public class CraftingEventListener {
             if (!inputStack.isEmpty() && inputStack.hasTag()) {
                 CompoundTag tag = inputStack.getTag();
                 // 检查是否包含重量相关属性
-                if (tag.contains("Quality") || tag.contains("Purity") || tag.contains("Weight")) {
+                if (tag.contains("quality") || tag.contains("purity") || tag.contains("weight_grams")) {
                     // 优先返回金属坯料或金属制品的属性
                     String itemName = inputStack.getItem().toString().toLowerCase();
                     if (itemName.contains("billet") || itemName.contains("axe") || 
@@ -255,13 +266,69 @@ public class CraftingEventListener {
             ItemStack inputStack = craftMatrix.getItem(i);
             if (!inputStack.isEmpty() && inputStack.hasTag()) {
                 CompoundTag tag = inputStack.getTag();
-                if (tag.contains("Quality") || tag.contains("Purity") || tag.contains("Weight")) {
+                if (tag.contains("quality") || tag.contains("purity") || tag.contains("weight_grams")) {
                     return tag;
                 }
             }
         }
         
         return null;
+    }
+
+    /**
+     * 处理 Shift-click 合成时的质量继承
+     * 此时合成结果已直接进入背包，事件携带的 craftedItem 为空
+     * 通过查找合成配方确定产出物类型，为背包中对应物品赋予质量
+     * 确保批量合成本质上与普通合成使用相同的质量计算逻辑
+     */
+    private static void handleShiftCraftQuality(Player player, CraftingContainer craftMatrix) {
+        // 计算合成格中所有输入材料的质量总和
+        float totalWeight = 0;
+        int weightCount = 0;
+        for (int i = 0; i < craftMatrix.getContainerSize(); i++) {
+            ItemStack inputStack = craftMatrix.getItem(i);
+            if (!inputStack.isEmpty() && QualityHelper.hasQuality(inputStack)) {
+                totalWeight += QualityHelper.getQuality(inputStack);
+                weightCount++;
+            }
+        }
+
+        if (weightCount <= 0) {
+            // 没有材料有质量，跳过
+            return;
+        }
+
+        // 查找合成配方，确定产出物类型
+        Level level = player.level();
+        var optionalRecipe = level.getRecipeManager()
+                .getRecipeFor(RecipeType.CRAFTING, craftMatrix, level);
+        if (optionalRecipe.isEmpty()) return;
+
+        ItemStack result = optionalRecipe.get().getResultItem(level.registryAccess());
+        if (result.isEmpty()) return;
+
+        // 计算每件产出物的质量：总质量 / 每组产出数量
+        int outputCount = result.getCount();
+        float perItemWeight = totalWeight / outputCount;
+
+        // 在背包中查找与产出物类型匹配的物品，为其赋予质量
+        // 注意：不检查 hasQuality，因为 shift-click 的结果可能合并进已有质量的堆叠中
+        // 必须覆盖以确保堆叠中所有物品都获得正确的计算质量
+        for (ItemStack stack : player.getInventory().items) {
+            if (!stack.isEmpty() && ItemStack.isSameItem(stack, result)) {
+                QualityHelper.setQuality(stack, perItemWeight);
+            }
+        }
+        for (ItemStack stack : player.getInventory().armor) {
+            if (!stack.isEmpty() && ItemStack.isSameItem(stack, result)) {
+                QualityHelper.setQuality(stack, perItemWeight);
+            }
+        }
+        for (ItemStack stack : player.getInventory().offhand) {
+            if (!stack.isEmpty() && ItemStack.isSameItem(stack, result)) {
+                QualityHelper.setQuality(stack, perItemWeight);
+            }
+        }
     }
 
     /**
@@ -279,68 +346,68 @@ public class CraftingEventListener {
         if (item == ModItems.NATURAL_GOLD_BLOCK_ITEM.get()
             || item == ModItems.NATURAL_SILVER_BLOCK_ITEM.get()
             || item == ModItems.NATURAL_COPPER_BLOCK_ITEM.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.5f + random.nextFloat() * 0.5f);
+            QualityHelper.setQuality(stack, 0.5f + random.nextFloat() * 0.5f);
             return;
         }
 
         // 皮/脂肪：0.5~4kg
         if (item == ModItems.RAWHIDE.get()
             || item == ModItems.ANIMAL_FAT.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.05f + random.nextFloat() * 0.35f);
+            QualityHelper.setQuality(stack, 0.05f + random.nextFloat() * 0.35f);
             return;
         }
 
         // 草纤维/树皮：50~400g
         if (item == ModItems.GRASS_FIBER.get()
             || item == ModItems.BIRCH_BARK.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.005f + random.nextFloat() * 0.035f);
+            QualityHelper.setQuality(stack, 0.005f + random.nextFloat() * 0.035f);
             return;
         }
 
         // 蚯蚓：1~5g
         if (item == ModItems.EARTHWORM.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.0001f + random.nextFloat() * 0.0004f);
+            QualityHelper.setQuality(stack, 0.0001f + random.nextFloat() * 0.0004f);
             return;
         }
 
         // 铜草花：10~50g
         if (item == ModItems.COPPER_GRASS_FLOWER_ITEM.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.001f + random.nextFloat() * 0.004f);
+            QualityHelper.setQuality(stack, 0.001f + random.nextFloat() * 0.004f);
             return;
         }
 
         // 灰烬：50~200g
         if (item == ModItems.ASH.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.005f + random.nextFloat() * 0.015f);
+            QualityHelper.setQuality(stack, 0.005f + random.nextFloat() * 0.015f);
             return;
         }
 
         // 面粉：0.5~2kg
         if (item == ModItems.FLOUR.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.05f + random.nextFloat() * 0.15f);
+            QualityHelper.setQuality(stack, 0.05f + random.nextFloat() * 0.15f);
             return;
         }
 
         // 碎石：2~6kg
         if (item == ModItems.STONE_DEBITAGE.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.2f + random.nextFloat() * 0.4f);
+            QualityHelper.setQuality(stack, 0.2f + random.nextFloat() * 0.4f);
             return;
         }
 
         // 小石子：50~200g
         if (item == ModItems.FLINT_PEBBLE.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.005f + random.nextFloat() * 0.015f);
+            QualityHelper.setQuality(stack, 0.005f + random.nextFloat() * 0.015f);
             return;
         }
 
         // 砾石：200~1000g
         if (item == ModItems.GRAVEL.get()) {
-            ItemQualityHelper.setQualityValue(stack, 0.02f + random.nextFloat() * 0.08f);
+            QualityHelper.setQuality(stack, 0.02f + random.nextFloat() * 0.08f);
             return;
         }
 
         // 默认：交给 generateWeightForItem 处理
-        ItemQualityHelper.assignRandomQuality(stack, random);
+        QualityHelper.assignRandomQuality(stack, random);
     }
 
     private static void applyExothermicEffect(Player player) {

@@ -2,8 +2,8 @@ package com.lwx.forgeborneodyssey.items.tools;
 
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -37,19 +37,13 @@ public class CopperFishingRodItem extends FishingRodItem {
     }
 
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Quality")) {
-            return AbstractMetalBilletItem.Quality.MEDIUM;
-        }
-        return AbstractMetalBilletItem.Quality.fromString(tag.getString("Quality"));
+        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
     }
 
     public float getPurity(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Purity")) {
-            return 95.0f;
-        }
-        return tag.getFloat("Purity");
+        float p = QualityHelper.getPurity(stack);
+        if (p > 0.0f) return p * 100.0f;
+        return 95.0f;
     }
 
     @Override
@@ -90,9 +84,8 @@ public class CopperFishingRodItem extends FishingRodItem {
             Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
             tooltip.add(qualityText);
 
-            CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("Weight")) {
-                double weight = tag.getDouble("Weight");
+            double weight = QualityHelper.getWeightGrams(stack);
+            if (weight > 0.0) {
                 if (weight >= 1000.0) {
                     tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
                 } else {
@@ -101,7 +94,9 @@ public class CopperFishingRodItem extends FishingRodItem {
             }
 
             float purity = getPurity(stack);
-            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            if (purity > 0.0f) {
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            }
 
             int actualDurability = getDurabilityFromPurity(purity, BASE_DURABILITY);
             int currentDamage = stack.getDamageValue();

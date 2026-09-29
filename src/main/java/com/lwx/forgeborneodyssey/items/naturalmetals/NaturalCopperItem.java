@@ -1,8 +1,8 @@
 package com.lwx.forgeborneodyssey.items.naturalmetals;
 
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,26 +23,13 @@ public class NaturalCopperItem extends Item {
         super(new Item.Properties());
     }
     
-    /**
-     * 获取 ItemStack 的质量等级
-     */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Quality")) {
-            return AbstractMetalBilletItem.Quality.MEDIUM;
-        }
-        return AbstractMetalBilletItem.Quality.fromString(tag.getString("Quality"));
+        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
     }
     
-    /**
-     * 获取 ItemStack 的纯度
-     */
     public float getPurity(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("Purity")) {
-            return 95.0f; // 自然铜的默认纯度
-        }
-        return tag.getFloat("Purity");
+        float p = QualityHelper.getPurity(stack);
+        return p > 0.0f ? p * 100.0f : 95.0f;
     }
     
     @Override
@@ -51,15 +38,12 @@ public class NaturalCopperItem extends Item {
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("item.forgeborneodyssey.natural_copper.tooltip"));
             
-            // 添加重量等级提示
             AbstractMetalBilletItem.Quality quality = getQuality(stack);
             Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
             tooltip.add(qualityText);
             
-            // 添加重量提示
-            CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("Weight")) {
-                double weight = tag.getDouble("Weight");
+            double weight = QualityHelper.getWeightGrams(stack);
+            if (weight > 0.0) {
                 if (weight >= 1000.0) {
                     tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
                 } else {
@@ -67,9 +51,10 @@ public class NaturalCopperItem extends Item {
                 }
             }
             
-            // 添加纯度提示
             float purity = getPurity(stack);
-            tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            if (purity > 0.0f) {
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+            }
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
         }

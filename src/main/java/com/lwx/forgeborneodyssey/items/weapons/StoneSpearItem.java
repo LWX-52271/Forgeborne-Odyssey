@@ -36,7 +36,7 @@ public class StoneSpearItem extends SwordItem {
 
         @Override
         public float getAttackDamageBonus() {
-            return 3.0F;
+            return 2.0F;
         }
 
         @Override

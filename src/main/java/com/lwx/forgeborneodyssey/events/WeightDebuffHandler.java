@@ -25,6 +25,10 @@ public class WeightDebuffHandler {
             return;
         }
 
+        if (!PlayerStrengthManager.isSystemEnabled()) {
+            return;
+        }
+
         double totalWeight = PlayerStrengthManager.calculateTotalWeight(player);
         double maxCapacity = PlayerStrengthManager.getMaxCarryCapacity(player);
 

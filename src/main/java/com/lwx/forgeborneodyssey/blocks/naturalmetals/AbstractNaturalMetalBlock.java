@@ -1,6 +1,6 @@
 package com.lwx.forgeborneodyssey.blocks.naturalmetals;
 
-import com.lwx.forgeborneodyssey.quality.ItemQualityHelper;
+import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -117,6 +117,7 @@ public abstract class AbstractNaturalMetalBlock extends FallingBlock {
             
             // 给玩家方块物品
             ItemStack blockItem = new ItemStack(this);
+            QualityHelper.assignRandomQuality(blockItem, level.random);
             if (!player.getInventory().add(blockItem)) {
                 // 如果背包满了，掉落在地上
                 player.drop(blockItem, false);
@@ -276,8 +277,6 @@ public abstract class AbstractNaturalMetalBlock extends FallingBlock {
                 billet.setQualityByWeight(billetItem, weight);
                 billet.setRandomPurity(billetItem, level.random);
             }
-
-            ItemQualityHelper.setQualityValue(billetItem, (float)(weight / 10000.0));
 
             level.destroyBlock(pos, false);
             
