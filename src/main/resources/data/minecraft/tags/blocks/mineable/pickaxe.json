@@ -30,10 +30,6 @@
     "forgeborneodyssey:torbernite_ore",
     "forgeborneodyssey:cuprovanadite_ore",
     "forgeborneodyssey:chrysocolla_ore",
-    "forgeborneodyssey:granite_anvil",
-    "forgeborneodyssey:limestone_anvil",
-    "forgeborneodyssey:polished_granite_anvil",
-    "forgeborneodyssey:polished_limestone_anvil",
     "forgeborneodyssey:shale_stairs",
     "forgeborneodyssey:sandstone_stairs",
     "forgeborneodyssey:limestone_stairs",
@@ -88,6 +84,10 @@
     "forgeborneodyssey:lime_mortar_stone_bricks_stairs",
     "forgeborneodyssey:lime_mortar_stone_bricks_slab",
     "forgeborneodyssey:lime_mortar_stone_bricks_wall",
-    "forgeborneodyssey:ochre_deposit"
+    "forgeborneodyssey:ochre_deposit",
+    "forgeborneodyssey:quartzite_anvil",
+    "forgeborneodyssey:quartz_sandstone_anvil",
+    "forgeborneodyssey:coarse_sandstone_anvil",
+    "forgeborneodyssey:basalt_anvil"
   ]
 }

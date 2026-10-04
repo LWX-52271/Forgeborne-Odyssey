@@ -124,50 +124,16 @@ public class ForgingRecipe implements Recipe<Container> {
          */
         public ItemStack createResultWithQuality(ItemStack inputStack) {
             ItemStack result = stack.copy();
-            
-            // 如果输入是金属胚料，获取其质量等级和纯度
+
             if (inputStack.getItem() instanceof AbstractMetalBilletItem billetItem) {
-                AbstractMetalBilletItem.Quality quality = billetItem.getQuality(inputStack);
                 float purity = billetItem.getPurity(inputStack);
-                
-                // 如果结果是金属刀，设置质量属性
-                if (result.getItem() instanceof MetalKnifeItem knifeItem) {
-                    knifeItem.setQuality(result, quality);
-                    // 金属刀不继承纯度，因为它们不是直接由胚料转化而来
-                }
-                // 如果结果是打制铜斧，设置质量属性
-                else if (result.getItem() instanceof WroughtCopperAxeItem axeItem) {
-                    axeItem.setQuality(result, quality);
-                }
-                // 如果结果是打制银斧，设置质量属性
-                else if (result.getItem() instanceof WroughtSilverAxeItem axeItem) {
-                    axeItem.setQuality(result, quality);
-                }
-                // 如果结果是打制金斧，设置质量属性
-                else if (result.getItem() instanceof WroughtGoldAxeItem axeItem) {
-                    axeItem.setQuality(result, quality);
-                }
-                // 如果结果是软化金属条，继承质量和纯度
-                else if (result.getItem() instanceof com.lwx.forgeborneodyssey.items.softmetalstrips.AbstractSoftMetalStripItem stripItem) {
-                    if (inputStack.getItem() instanceof com.lwx.forgeborneodyssey.items.softmetalbillets.AbstractSoftMetalBilletItem softBilletItem) {
-                        AbstractMetalBilletItem.Quality softQuality = softBilletItem.getQuality(inputStack);
-                        stripItem.setQuality(result, softQuality);
-                        stripItem.setPurity(result, purity);
-                    }
-                }
-                // 如果结果是金属珠，继承质量和纯度
-                else if (result.getItem() instanceof com.lwx.forgeborneodyssey.items.beads.ThrowableBeadItem) {
-                    com.lwx.forgeborneodyssey.quality.QualityHelper.setQuality(result, quality.toFloat());
-                    com.lwx.forgeborneodyssey.quality.QualityHelper.setPurity(result, purity / 100.0f);
-                }
-                // 如果结果是金属条，继承质量和纯度
-                else if (result.getItem() instanceof com.lwx.forgeborneodyssey.items.metalbars.GoldBarItem ||
-                         result.getItem() instanceof com.lwx.forgeborneodyssey.items.metalbars.SilverBarItem) {
-                    com.lwx.forgeborneodyssey.quality.QualityHelper.setQuality(result, quality.toFloat());
-                    com.lwx.forgeborneodyssey.quality.QualityHelper.setPurity(result, purity / 100.0f);
-                }
+                com.lwx.forgeborneodyssey.quality.QualityHelper.setPurity(result, purity / 100.0f);
             }
-            
+
+            // Mass conservation: result weight = input weight * yield
+            com.lwx.forgeborneodyssey.quality.QualityHelper.conserveWeight(
+                result, inputStack, com.lwx.forgeborneodyssey.quality.QualityHelper.DEFAULT_YIELD);
+
             return result;
         }
     }

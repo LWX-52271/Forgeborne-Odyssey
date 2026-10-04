@@ -1,9 +1,9 @@
 package com.lwx.forgeborneodyssey.core.registration;
 
-import com.lwx.forgeborneodyssey.blocks.anvils.GraniteAnvilBlock;
-import com.lwx.forgeborneodyssey.blocks.anvils.LimestoneAnvilBlock;
-import com.lwx.forgeborneodyssey.blocks.anvils.PolishedGraniteAnvilBlock;
-import com.lwx.forgeborneodyssey.blocks.anvils.PolishedLimestoneAnvilBlock;
+import com.lwx.forgeborneodyssey.blocks.anvils.QuartziteAnvilBlock;
+import com.lwx.forgeborneodyssey.blocks.anvils.QuartzSandstoneAnvilBlock;
+import com.lwx.forgeborneodyssey.blocks.anvils.CoarseSandstoneAnvilBlock;
+import com.lwx.forgeborneodyssey.blocks.anvils.BasaltAnvilBlock;
 import com.lwx.forgeborneodyssey.blocks.anvils.AnvilBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.naturalmetals.NaturalCopperBlock;
 import com.lwx.forgeborneodyssey.blocks.naturalmetals.NaturalGoldBlock;
@@ -11,6 +11,7 @@ import com.lwx.forgeborneodyssey.blocks.naturalmetals.NaturalSilverBlock;
 
 import com.lwx.forgeborneodyssey.blocks.ShaftFrameBlock;
 import com.lwx.forgeborneodyssey.blocks.TunnelSupportBlock;
+import com.lwx.forgeborneodyssey.blocks.BoulderBlock;
 import com.lwx.forgeborneodyssey.blocks.SurfaceCobblestoneBlock;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlock;
 import com.lwx.forgeborneodyssey.blocks.FireMouthBlock;
@@ -132,6 +133,12 @@ public class ModBlocks {
 
     // 地表圆石方块
     public static final RegistryObject<Block> SURFACE_COBBLESTONE_BLOCK = BLOCKS.register("surface_cobblestone_block", SurfaceCobblestoneBlock::new);
+
+    // 扁平大砾石方块
+    public static final RegistryObject<Block> QUARTZITE_BOULDER = BLOCKS.register("quartzite_boulder", BoulderBlock::new);
+    public static final RegistryObject<Block> QUARTZ_SANDSTONE_BOULDER = BLOCKS.register("quartz_sandstone_boulder", BoulderBlock::new);
+    public static final RegistryObject<Block> COARSE_SANDSTONE_BOULDER = BLOCKS.register("coarse_sandstone_boulder", BoulderBlock::new);
+    public static final RegistryObject<Block> BASALT_BOULDER = BLOCKS.register("basalt_boulder", BoulderBlock::new);
 
     // 赭石结核
     public static final RegistryObject<Block> OCHRE_DEPOSIT = BLOCKS.register("ochre_deposit", () ->
@@ -266,19 +273,17 @@ public class ModBlocks {
     public static final RegistryObject<Block> NATURAL_SILVER_BLOCK = BLOCKS.register("natural_silver_block", NaturalSilverBlock::new);
     public static final RegistryObject<Block> NATURAL_COPPER_BLOCK = BLOCKS.register("natural_copper_block", NaturalCopperBlock::new);
     
-    // 天然石砧
-    public static final RegistryObject<Block> GRANITE_ANVIL = BLOCKS.register("granite_anvil", GraniteAnvilBlock::new);
-    public static final RegistryObject<Block> LIMESTONE_ANVIL = BLOCKS.register("limestone_anvil", LimestoneAnvilBlock::new);
-    
-    // 打磨石砧
-    public static final RegistryObject<Block> POLISHED_GRANITE_ANVIL = BLOCKS.register("polished_granite_anvil", PolishedGraniteAnvilBlock::new);
-    public static final RegistryObject<Block> POLISHED_LIMESTONE_ANVIL = BLOCKS.register("polished_limestone_anvil", PolishedLimestoneAnvilBlock::new);
+    // 大砾石石砧
+    public static final RegistryObject<Block> QUARTZITE_ANVIL = BLOCKS.register("quartzite_anvil", QuartziteAnvilBlock::new);
+    public static final RegistryObject<Block> QUARTZ_SANDSTONE_ANVIL = BLOCKS.register("quartz_sandstone_anvil", QuartzSandstoneAnvilBlock::new);
+    public static final RegistryObject<Block> COARSE_SANDSTONE_ANVIL = BLOCKS.register("coarse_sandstone_anvil", CoarseSandstoneAnvilBlock::new);
+    public static final RegistryObject<Block> BASALT_ANVIL = BLOCKS.register("basalt_anvil", BasaltAnvilBlock::new);
     
     // 石砧方块实体类型
     public static final RegistryObject<BlockEntityType<AnvilBlockEntity>> ANVIL_BLOCK_ENTITY = BLOCK_ENTITIES.register("anvil_block_entity", 
         () -> BlockEntityType.Builder.of(AnvilBlockEntity::new, 
-            GRANITE_ANVIL.get(), LIMESTONE_ANVIL.get(),
-            POLISHED_GRANITE_ANVIL.get(), POLISHED_LIMESTONE_ANVIL.get()).build(null));
+            QUARTZITE_ANVIL.get(), QUARTZ_SANDSTONE_ANVIL.get(),
+            COARSE_SANDSTONE_ANVIL.get(), BASALT_ANVIL.get()).build(null));
     
     // 岩石楼梯方块
     public static final RegistryObject<Block> SHALE_STAIRS = BLOCKS.register("shale_stairs", ShaleStairsBlock::new);

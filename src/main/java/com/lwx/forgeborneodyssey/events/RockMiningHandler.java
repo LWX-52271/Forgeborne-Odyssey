@@ -159,7 +159,6 @@ public class RockMiningHandler {
         boolean isFlintShovel = !heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.FLINT_SHOVEL.get());
         if (!heldItem.isEmpty()
                 && !heldItem.is(Items.STONE_PICKAXE)
-                && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.COBBLESTONE_HAMMER.get())
                 && !heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.HANDLE_STONE_HAMMER.get())
                 && !isFlintShovel) {
             return;
@@ -270,7 +269,7 @@ public class RockMiningHandler {
         // 如果手持石镐或石锤，增加6
         if (!heldItem.isEmpty() && heldItem.is(Items.STONE_PICKAXE)) {
             increaseAmount = 6.0f;
-        } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.COBBLESTONE_HAMMER.get())) {
+        } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
             increaseAmount = 4.0f;
         } else if (!heldItem.isEmpty() && heldItem.is(com.lwx.forgeborneodyssey.core.registration.ModItems.HANDLE_STONE_HAMMER.get())) {
             increaseAmount = 8.0f;

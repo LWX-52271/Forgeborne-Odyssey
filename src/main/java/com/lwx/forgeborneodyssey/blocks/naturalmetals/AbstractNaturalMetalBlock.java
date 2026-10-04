@@ -1,5 +1,7 @@
 package com.lwx.forgeborneodyssey.blocks.naturalmetals;
 
+import com.lwx.forgeborneodyssey.quality.ItemMassRegistry;
+import com.lwx.forgeborneodyssey.quality.MetalMaterial;
 import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -117,7 +119,7 @@ public abstract class AbstractNaturalMetalBlock extends FallingBlock {
             
             // 给玩家方块物品
             ItemStack blockItem = new ItemStack(this);
-            QualityHelper.assignRandomQuality(blockItem, level.random);
+            QualityHelper.ensurePhysicalWeight(blockItem);
             if (!player.getInventory().add(blockItem)) {
                 // 如果背包满了，掉落在地上
                 player.drop(blockItem, false);
@@ -267,16 +269,10 @@ public abstract class AbstractNaturalMetalBlock extends FallingBlock {
         ItemStack billetItem = this.getBilletItem();
         
         if (!billetItem.isEmpty()) {
-            double weight = 0;
-
-            if (billetItem.getItem() instanceof com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem) {
-                com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem billet = 
-                    (com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem) billetItem.getItem();
-                
-                weight = this.generateRandomWeight(level.random);
-                billet.setQualityByWeight(billetItem, weight);
-                billet.setRandomPurity(billetItem, level.random);
-            }
+            QualityHelper.setPurity(billetItem, 0.5f + level.random.nextFloat() * 0.4f);
+            MetalMaterial material = MetalMaterial.fromItem(billetItem);
+            double billetVolume = ItemMassRegistry.getVolumeCm3(billetItem);
+            QualityHelper.setWeightGrams(billetItem, material.weightForVolume(billetVolume));
 
             level.destroyBlock(pos, false);
             
@@ -299,32 +295,6 @@ public abstract class AbstractNaturalMetalBlock extends FallingBlock {
                 level.addFreshEntity(itemEntity);
             });
         }
-    }
-    
-    /**
-     * 生成随机重量（克）
-     * 使用指数分布，让小重量的概率更高
-     * @param random 随机源
-     * @param minWeight 最小重量（克）
-     * @param maxWeight 最大重量（克）
-     * @return 重量（克）
-     */
-    protected double generateRandomWeight(net.minecraft.util.RandomSource random, double minWeight, double maxWeight) {
-        // 使用指数分布：小重量的概率更高
-        // 指数越大，小数值概率越高。使用6.0让低等级更容易出现，高等级更稀有
-        double ratio = Math.pow(random.nextDouble(), 6.0);
-        return minWeight + ratio * (maxWeight - minWeight);
-    }
-    
-    /**
-     * 生成随机重量（克）- 默认实现
-     * 子类应该重写generateRandomWeight(RandomSource, double, double)方法
-     * @param random 随机源
-     * @return 重量（克）
-     */
-    protected double generateRandomWeight(net.minecraft.util.RandomSource random) {
-        // 默认重量范围：1g ~ 2000g
-        return generateRandomWeight(random, 1.0, 2000.0);
     }
     
     /**

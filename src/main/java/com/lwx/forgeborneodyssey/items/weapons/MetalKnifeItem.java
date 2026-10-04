@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 金属刀物品（弱武器）
- * 支持质量等级系统：低级、中级、高级，影响伤害值
+ * 閲戝睘鍒€鐗╁搧锛堝急姝﹀櫒锛?
+ * 鏀寔璐ㄩ噺绛夌骇绯荤粺锛氫綆绾с€佷腑绾с€侀珮绾э紝褰卞搷浼ゅ鍊?
  */
 public class MetalKnifeItem extends SwordItem {
     
@@ -33,7 +33,7 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 创建铜刀
+     * 鍒涘缓閾滃垁
      */
     public static MetalKnifeItem createCopperKnife() {
         Tier copperTier = new ForgeTier(0, 59, 1.0F, 1.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
@@ -41,7 +41,7 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 创建银刀
+     * 鍒涘缓閾跺垁
      */
     public static MetalKnifeItem createSilverKnife() {
         Tier silverTier = new ForgeTier(0, 29, 0.5F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
@@ -49,7 +49,7 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 创建金刀
+     * 鍒涘缓閲戝垁
      */
     public static MetalKnifeItem createGoldKnife() {
         Tier goldTier = new ForgeTier(0, 29, 0.5F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
@@ -57,27 +57,27 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 为 ItemStack 设置指定质量等级
-     * @param stack 物品堆
-     * @param quality 质量等级
+     * 涓?ItemStack 璁剧疆鎸囧畾璐ㄩ噺绛夌骇
+     * @param stack 鐗╁搧鍫?
+     * @param quality 璐ㄩ噺绛夌骇
      */
     public void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
-        QualityHelper.setQuality(stack, quality.toFloat());
+        QualityHelper.ensurePhysicalWeight(stack);
     }
     
     /**
-     * 获取 ItemStack 的质量等级
-     * @param stack 物品堆
-     * @return 质量等级
+     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
+     * @param stack 鐗╁搧鍫?
+     * @return 璐ㄩ噺绛夌骇
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
+        return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 获取 ItemStack 的纯度
-     * @param stack 物品堆
-     * @return 纯度值（0-100）
+     * 鑾峰彇 ItemStack 鐨勭函搴?
+     * @param stack 鐗╁搧鍫?
+     * @return 绾害鍊硷紙0-100锛?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -86,57 +86,45 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 根据纯度获取耐久度修正系数
-     * 纯度越高，耐久度越低（线性关系）
-     * @param purity 纯度值（0-100）
-     * @param baseDurability 基础耐久度
-     * @return 修正后的耐久度
+     * 鏍规嵁绾害鑾峰彇鑰愪箙搴︿慨姝ｇ郴鏁帮紙缁熶竴鍏紡锛?
+     * 绾害涓庡伐鑹鸿秺楂橈紝鑰愪箙搴﹁秺楂橈紙濮旀墭 {@link QualityHelper}锛?
+     * @param purity 绾害鍊硷紙0-100锛?
+     * @param baseDurability 鍩虹鑰愪箙搴?
+     * @return 淇鍚庣殑鑰愪箙搴?
      */
     public int getDurabilityFromPurity(float purity, int baseDurability) {
-        // 纯度范围映射到耐久度系数：70% -> 1.3倍, 100% -> 0.8倍
-        float multiplier = 1.3f - (purity - 70.0f) / 30.0f * 0.5f;
-        multiplier = Math.max(0.5f, Math.min(1.5f, multiplier)); // 限制在 0.5-1.5 之间
-        return Math.round(baseDurability * multiplier);
+        return QualityHelper.getDurability(baseDurability,
+                Math.max(0.0f, Math.min(1.0f, purity / 100.0f)), 0.5f);
     }
     
     /**
-     * 根据重量获取伤害修正值
-     * 重量越大，伤害越高
-     * @param stack 物品堆
-     * @return 伤害修正值
+     * 鏍规嵁閲嶉噺鑾峰彇浼ゅ淇鍊?
+     * 閲嶉噺瓒婂ぇ锛屼激瀹宠秺楂橈紙缁熶竴鍏紡锛屽鎵?{@link QualityHelper}锛?
+     * @param stack 鐗╁搧鍫?
+     * @return 浼ゅ淇鍊?
      */
     public float getDamageModifierFromWeight(ItemStack stack) {
-        double weight = QualityHelper.getWeightGrams(stack);
-        if (weight <= 0.0) {
-            return 0.0f;
-        }
-        
-        float damageBonus = (float)(weight / 100.0);
-        damageBonus = Math.min(2.0f, damageBonus);
-        
-        return damageBonus;
+        return QualityHelper.getDamageModifierFromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         if (Screen.hasShiftDown()) {
-            AbstractMetalBilletItem.Quality quality = getQuality(stack);
-            Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
-            tooltip.add(qualityText);
+            tooltip.add(AbstractMetalBilletItem.getTierDisplayComponent(stack));
             
             double weight = QualityHelper.getWeightGrams(stack);
             if (weight > 0.0) {
                 if (weight >= 1000.0) {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", String.format("%.3f", weight / 1000.0)));
                 } else {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", weight));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", String.format("%.2f", weight)));
                 }
             }
             
             float purity = getPurity(stack);
             if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
             }
             
             float baseDamage = this.getDamage();
@@ -144,8 +132,7 @@ public class MetalKnifeItem extends SwordItem {
             float actualDamage = baseDamage + modifier;
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.base_damage", String.format("%.1f", actualDamage)));
             
-            int baseDurability = this.getDefaultInstance().getMaxDamage();
-            int actualDurability = getDurabilityFromPurity(purity, baseDurability);
+            int actualDurability = getMaxDamage(stack);
             int currentDamage = stack.getDamageValue();
             int remainingDurability = Math.max(0, actualDurability - currentDamage);
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.durability", remainingDurability + "/" + actualDurability));
@@ -156,25 +143,25 @@ public class MetalKnifeItem extends SwordItem {
     
     @Override
     public int getMaxDamage(ItemStack stack) {
-        // 根据纯度动态计算最大耐久度
-        float purity = getPurity(stack);
+        // 鏍规嵁绾害涓庡伐鑹哄姩鎬佽绠楁渶澶ц€愪箙搴︼紙缁熶竴鍏紡锛?
+        float purity = getPurity(stack) / 100.0f;
         int baseDurability = super.getMaxDamage(stack);
-        return getDurabilityFromPurity(purity, baseDurability);
+        return QualityHelper.getDurability(baseDurability, purity, 0.5f);
     }
     
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         Multimap<Attribute, AttributeModifier> modifiers = com.google.common.collect.HashMultimap.create();
         
-        // 获取父类的属性
+        // 鑾峰彇鐖剁被鐨勫睘鎬?
         Multimap<Attribute, AttributeModifier> parentModifiers = super.getAttributeModifiers(slot, stack);
         modifiers.putAll(parentModifiers);
         
-        // 只在主手时应用伤害修正
+        // 鍙湪涓绘墜鏃跺簲鐢ㄤ激瀹充慨姝?
         if (slot == EquipmentSlot.MAINHAND) {
             float damageModifier = getDamageModifierFromWeight(stack);
             
-            // 如果有伤害修正，添加到属性中
+            // 濡傛灉鏈変激瀹充慨姝ｏ紝娣诲姞鍒板睘鎬т腑
             if (damageModifier != 0.0f) {
                 UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
                 modifiers.put(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE,

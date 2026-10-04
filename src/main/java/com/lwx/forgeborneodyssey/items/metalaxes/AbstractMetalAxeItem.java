@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 金属斧头物品基类（非工具）
+ * 閲戝睘鏂уご鐗╁搧鍩虹被锛堥潪宸ュ叿锛?
  */
 public abstract class AbstractMetalAxeItem extends Item {
     
@@ -22,24 +22,24 @@ public abstract class AbstractMetalAxeItem extends Item {
     }
     
     /**
-     * 获取金属类型名称（用于本地化键）
+     * 鑾峰彇閲戝睘绫诲瀷鍚嶇О锛堢敤浜庢湰鍦板寲閿級
      */
     protected abstract String getMetalType();
     
     /**
-     * 获取悬停文本键
+     * 鑾峰彇鎮仠鏂囨湰閿?
      */
     protected abstract String getTooltipKey();
     
     /**
-     * 获取 ItemStack 的质量等级
+     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
+        return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 获取 ItemStack 的纯度
+     * 鑾峰彇 ItemStack 鐨勭函搴?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -58,22 +58,20 @@ public abstract class AbstractMetalAxeItem extends Item {
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable(getTooltipKey()));
             
-            AbstractMetalBilletItem.Quality quality = getQuality(stack);
-            Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
-            tooltip.add(qualityText);
+            tooltip.add(AbstractMetalBilletItem.getTierDisplayComponent(stack));
             
             double weight = QualityHelper.getWeightGrams(stack);
             if (weight > 0.0) {
                 if (weight >= 1000.0) {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", String.format("%.3f", weight / 1000.0)));
                 } else {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", weight));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", String.format("%.2f", weight)));
                 }
             }
             
             float purity = getPurity(stack);
             if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
             }
             
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));

@@ -208,17 +208,7 @@ public class AnvilBlockEntity extends BlockEntity {
 
     public void setStoredItem(ItemStack stack) {
         if (!stack.isEmpty()) {
-            CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("ore_quality")) {
-                float oreQuality = tag.getFloat("ore_quality");
-                QualityHelper.setQuality(stack, oreQuality);
-                tag.remove("ore_quality");
-                if (tag.isEmpty()) {
-                    stack.setTag(null);
-                }
-            } else if (!QualityHelper.hasQuality(stack)) {
-                QualityHelper.assignRandomQuality(stack, level != null ? level.getRandom() : net.minecraft.util.RandomSource.create());
-            }
+            QualityHelper.ensurePhysicalWeight(stack);
         }
 
         boolean isSameType = !this.storedItem.isEmpty() && 
@@ -439,9 +429,9 @@ public class AnvilBlockEntity extends BlockEntity {
         // 手工碎石消耗饱食度（夏朝纯人力劳作，消耗较大）
         float exhaustionAmount;
         if (hammer.is(ModItems.HANDLE_STONE_HAMMER.get())) {
-            exhaustionAmount = 0.25f;
-        } else if (hammer.is(ModItems.COBBLESTONE_HAMMER.get())) {
             exhaustionAmount = 0.35f;
+        } else if (hammer.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
+            exhaustionAmount = 0.45f;
         } else {
             exhaustionAmount = 0.30f;
         }
@@ -474,7 +464,7 @@ public class AnvilBlockEntity extends BlockEntity {
         ((ServerLevel) level).sendParticles(
             new ItemParticleOption(ParticleTypes.ITEM, storedItem),
             worldPosition.getX() + 0.5D + offsetX * 0.5D,
-            worldPosition.getY() + 1.1D,
+            worldPosition.getY() + 0.38D,
             worldPosition.getZ() + 0.5D + offsetZ * 0.5D,
             particleCount,
             0.15D, 0.15D, 0.15D,
@@ -553,22 +543,19 @@ public class AnvilBlockEntity extends BlockEntity {
             net.minecraft.sounds.SoundSource.BLOCKS, 0.8f, breakPitch);
         
         // 质量守恒：总重量均分给所有产出物（颗粒 + 掺和料）
-        float perItemQuality = quality / (grainCount + temperCount);
+        double sourceWeightGrams = QualityHelper.getWeightGrams(storedItem);
 
-        // item_quality：总质量含15%破碎损耗，其中90%分配给矿物颗粒，10%分配给掺和料
-        float sourceItemQuality = QualityHelper.hasQuality(storedItem)
-            ? QualityHelper.getQuality(storedItem) : quality * 10.0f;
-        float perItemQualityWithLoss = grainCount > 0
-            ? Math.max(0.01f, sourceItemQuality * 0.85f * 0.90f / grainCount)
-            : 0.01f;
+        // 含15%破碎损耗，其中90%分配给矿物颗粒，10%分配给掺和料
+        double perGrainWeight = grainCount > 0
+            ? Math.max(0.01, sourceWeightGrams * 0.85 * 0.90 / grainCount)
+            : 0.01;
 
         // 生成矿物颗粒——继承原矿的纯度，质量按产出数量均分
         for (int i = 0; i < grainCount; i++) {
             ItemStack grainStack = new ItemStack(grainItem);
             CompoundTag grainTag = grainStack.getOrCreateTag();
             grainTag.putFloat("ore_purity", purity);
-            grainTag.putFloat("ore_quality", perItemQuality);
-            QualityHelper.setQuality(grainStack, perItemQualityWithLoss);
+            QualityHelper.setWeightGrams(grainStack, perGrainWeight);
 
             net.minecraft.world.entity.item.ItemEntity grainEntity = 
                 new net.minecraft.world.entity.item.ItemEntity(
@@ -584,13 +571,13 @@ public class AnvilBlockEntity extends BlockEntity {
         
         // 生成掺和料（废石）——质量极低，仅保留10%的均分质量
         float temperQuality = temperCount > 0 
-            ? Math.max(0.01f, sourceItemQuality * 0.85f * 0.10f / temperCount) 
+            ? Math.max(0.01f, (float)(sourceWeightGrams * 0.85 * 0.10 / temperCount)) 
             : 0.01f;
         for (int i = 0; i < temperCount; i++) {
             ItemStack temperStack = new ItemStack(ModItems.TEMPER_GROG.get());
             CompoundTag temperTag = temperStack.getOrCreateTag();
-            temperTag.putFloat("ore_quality", perItemQuality);
-            QualityHelper.setQuality(temperStack, temperQuality);
+            temperTag.putFloat("ore_quality", temperQuality);
+            QualityHelper.setWeightGrams(temperStack, temperQuality);
 
             net.minecraft.world.entity.item.ItemEntity temperEntity = 
                 new net.minecraft.world.entity.item.ItemEntity(
@@ -957,14 +944,13 @@ public class AnvilBlockEntity extends BlockEntity {
      */
     private void spawnFlintFlakes(int count) {
         if (level == null) return;
-        float sourceQuality = QualityHelper.hasQuality(storedItem)
-            ? QualityHelper.getQuality(storedItem) : 0.5f;
-        float perFlakeQuality = Math.max(0.01f, sourceQuality * 0.90f / count);
-        float totalConsumed = perFlakeQuality * count;
+        double sourceWeight = QualityHelper.getWeightGrams(storedItem);
+        double perFlakeWeight = Math.max(0.01, sourceWeight * 0.90 / count);
+        double totalConsumed = perFlakeWeight * count;
 
         for (int i = 0; i < count; i++) {
             ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get());
-            QualityHelper.setQuality(flake, perFlakeQuality);
+            QualityHelper.setWeightGrams(flake, perFlakeWeight);
             net.minecraft.world.entity.item.ItemEntity flakeEntity =
                 new net.minecraft.world.entity.item.ItemEntity(
                     level,
@@ -982,9 +968,9 @@ public class AnvilBlockEntity extends BlockEntity {
             level.addFreshEntity(flakeEntity);
         }
 
-        if (!storedItem.isEmpty() && QualityHelper.hasQuality(storedItem)) {
-            float remaining = Math.max(0.01f, sourceQuality - totalConsumed);
-            QualityHelper.setQuality(storedItem, remaining);
+        if (!storedItem.isEmpty()) {
+            double remaining = Math.max(0.01, sourceWeight - totalConsumed);
+            QualityHelper.setWeightGrams(storedItem, remaining);
         }
     }
 
@@ -1199,7 +1185,7 @@ public class AnvilBlockEntity extends BlockEntity {
             ((ServerLevel) level).sendParticles(
                 new ItemParticleOption(ParticleTypes.ITEM, storedItem.copy()),
                 worldPosition.getX() + 0.5D,
-                worldPosition.getY() + 1.15D,
+                worldPosition.getY() + 0.4D,
                 worldPosition.getZ() + 0.5D,
                 particleCount,
                 spreadX * (level.random.nextDouble() - 0.5),
@@ -1217,7 +1203,7 @@ public class AnvilBlockEntity extends BlockEntity {
             ((ServerLevel) level).sendParticles(
                 ParticleTypes.EXPLOSION,
                 worldPosition.getX() + 0.5D,
-                worldPosition.getY() + 1.1D,
+                worldPosition.getY() + 0.38D,
                 worldPosition.getZ() + 0.5D,
                 1, 0.05D, 0.05D, 0.05D, 0.02D
             );
@@ -1709,29 +1695,14 @@ public class AnvilBlockEntity extends BlockEntity {
         }
         
         if (!fragmentItem.isEmpty()) {
+            double totalFragWeight = minFragmentWeight + level.random.nextDouble() * (maxFragmentWeight - minFragmentWeight);
+            double perFragWeight = totalFragWeight / fragmentCount;
+            float originalPurity = QualityHelper.getPurity(storedItem);
+
             for (int i = 0; i < fragmentCount; i++) {
                 ItemStack fragment = fragmentItem.copy();
-                
-                double fragmentWeight = (minFragmentWeight + level.random.nextDouble() * (maxFragmentWeight - minFragmentWeight)) / fragmentCount;
-                
-                net.minecraft.nbt.CompoundTag tag = fragment.getOrCreateTag();
-                QualityHelper.setQuality(fragment, (float)(fragmentWeight / 10000.0));
+                QualityHelper.setWeightGrams(fragment, perFragWeight);
 
-                com.lwx.forgeborneodyssey.items.fragments.AbstractMetalFragmentItem fragmentItemObj = 
-                    (com.lwx.forgeborneodyssey.items.fragments.AbstractMetalFragmentItem) fragment.getItem();
-                
-                double weightRatio = fragmentWeight / (originalWeight / fragmentCount);
-                com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem.Quality quality;
-                if (weightRatio < 0.85) {
-                    quality = com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem.Quality.LOW;
-                } else if (weightRatio > 1.15) {
-                    quality = com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem.Quality.HIGH;
-                } else {
-                    quality = com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem.Quality.MEDIUM;
-                }
-                QualityHelper.setQuality(fragment, quality.toFloat());
-                
-                float originalPurity = QualityHelper.getPurity(storedItem);
                 if (originalPurity > 0.0f) {
                     float fragmentPurity = Math.max(0.50f, originalPurity - level.random.nextFloat() * 0.10f);
                     QualityHelper.setPurity(fragment, fragmentPurity);
@@ -1825,7 +1796,7 @@ public class AnvilBlockEntity extends BlockEntity {
         if (currentTick % 20 != 0) return;
 
         double cx = worldPosition.getX() + 0.5D;
-        double cy = worldPosition.getY() + 1.1D;
+        double cy = worldPosition.getY() + 0.38D;
         double cz = worldPosition.getZ() + 0.5D;
 
         if (storedItem.is(ModItems.STONE_CORE.get())) {
@@ -1926,13 +1897,16 @@ public class AnvilBlockEntity extends BlockEntity {
      */
     private void inheritQualityAndPurity(ItemStack sourceItem, ItemStack targetItem, boolean isForging, @Nullable ServerPlayer player) {
         if (sourceItem.isEmpty() || targetItem.isEmpty()) return;
-        
-        QualityHelper.inheritQuality(targetItem, sourceItem);
 
-        if (isForging && level != null && QualityHelper.hasQuality(targetItem)) {
-            float weightKg = QualityHelper.getQuality(targetItem);
-            double weightRatio = 0.95 + level.random.nextDouble() * 0.03;
-            QualityHelper.setQuality(targetItem, (float)(weightKg * weightRatio));
+        if (isForging) {
+            QualityHelper.inheritConserving(targetItem, sourceItem, 1.0);
+            if (level != null && QualityHelper.hasWeight(targetItem)) {
+                double weightGrams = QualityHelper.getWeightGrams(targetItem);
+                double weightRatio = 0.95 + level.random.nextDouble() * 0.03;
+                QualityHelper.setWeightGrams(targetItem, weightGrams * weightRatio);
+            }
+        } else {
+            QualityHelper.inheritQuality(targetItem, sourceItem);
         }
     }
 }

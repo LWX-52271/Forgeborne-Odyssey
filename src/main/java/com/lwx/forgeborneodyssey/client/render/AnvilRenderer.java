@@ -39,7 +39,7 @@ public class AnvilRenderer implements BlockEntityRenderer<AnvilBlockEntity> {
 
         poseStack.pushPose();
         // 移动到砧顶中心
-        poseStack.translate(0.5D, 1.05D, 0.5D);
+        poseStack.translate(0.5D, 0.38D, 0.5D);
         
         // 根据方块朝向旋转物品
         Direction facing = blockEntity.getBlockState().getValue(HorizontalDirectionalBlock.FACING);

@@ -38,7 +38,7 @@ public class AxeBendingRecipeCategory implements IRecipeCategory<AxeBendingRecip
     public AxeBendingRecipeCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(WIDTH, HEIGHT);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-                new ItemStack(ModBlocks.GRANITE_ANVIL.get()));
+                new ItemStack(ModBlocks.QUARTZITE_ANVIL.get()));
         this.localizedName = Component.translatable("jei.forgeborneodyssey.axe_bending");
     }
 

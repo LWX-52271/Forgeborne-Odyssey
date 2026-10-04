@@ -90,6 +90,10 @@ public class ForgeborneOdyssey {
     // 注册地表岩石特征
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> SURFACE_ROCK_FEATURE = 
         FEATURES.register("surface_rock_feature", () -> new SurfaceRockFeature(NoneFeatureConfiguration.CODEC));
+
+    // 注册砾石特征
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> BOULDER_FEATURE = 
+        FEATURES.register("boulder_feature", () -> new BoulderFeature(NoneFeatureConfiguration.CODEC));
     
     // 注册自然金属特征（使用独立的 Codec）
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> NATURAL_COPPER_FEATURE = 

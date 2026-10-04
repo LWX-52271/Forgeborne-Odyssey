@@ -44,7 +44,7 @@ public class QuernBlockEntity extends BlockEntity {
                 if (level != null && !level.isClientSide) {
                     ItemStack result = getGrindResult(inputItem);
                     if (result != null && !result.isEmpty()) {
-                        QualityHelper.inheritQualityWithLoss(result, inputItem, 0.05f);
+                        QualityHelper.inheritWithLossPerItem(result, inputItem, 0.05f, result.getCount());
                         Containers.dropItemStack(level,
                                 worldPosition.getX() + 0.5,
                                 worldPosition.getY() + 0.7,

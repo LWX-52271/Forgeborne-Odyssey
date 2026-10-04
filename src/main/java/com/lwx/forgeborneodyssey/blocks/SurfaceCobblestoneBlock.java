@@ -105,9 +105,7 @@ public class SurfaceCobblestoneBlock extends FallingBlock {
             level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.5f, 1.0f);
             
             ItemStack blockItem = new ItemStack(this);
-            if (!QualityHelper.hasQuality(blockItem)) {
-                QualityHelper.assignRandomQuality(blockItem);
-            }
+            QualityHelper.ensurePhysicalWeight(blockItem);
             if (!player.getInventory().add(blockItem)) {
                 player.drop(blockItem, false);
             }

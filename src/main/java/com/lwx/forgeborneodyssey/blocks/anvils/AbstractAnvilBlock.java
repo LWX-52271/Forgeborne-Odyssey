@@ -70,10 +70,10 @@ public abstract class AbstractAnvilBlock extends HorizontalDirectionalBlock impl
      * 石砧材质枚举
      */
     public enum AnvilMaterial {
-        GRANITE(MapColor.DIRT, 2.0f),
-        LIMESTONE(MapColor.TERRACOTTA_WHITE, 1.8f),
-        ANDESITE(MapColor.COLOR_GRAY, 1.9f),
-        DIORITE(MapColor.TERRACOTTA_LIGHT_GRAY, 1.85f);
+        QUARTZITE(MapColor.QUARTZ, 2.2f),
+        QUARTZ_SANDSTONE(MapColor.SAND, 1.6f),
+        COARSE_SANDSTONE(MapColor.TERRACOTTA_ORANGE, 1.4f),
+        BASALT(MapColor.COLOR_BLACK, 2.0f);
 
         private final MapColor mapColor;
         private final float hardness;
@@ -110,11 +110,7 @@ public abstract class AbstractAnvilBlock extends HorizontalDirectionalBlock impl
         return RenderShape.MODEL;   // 使用自定义非立方体模型
     }
 
-    private static final VoxelShape SHAPE = Shapes.or(
-        Block.box(0, 10, 0, 16, 16, 16),   // 顶部平台 (完整16x16)
-        Block.box(2, 4, 2, 14, 10, 14),     // 中部柱体
-        Block.box(0, 0, 0, 16, 4, 16)       // 底部基座 (完整16x16)
-    );
+    private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 5, 14);
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {

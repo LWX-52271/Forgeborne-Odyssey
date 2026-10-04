@@ -54,7 +54,7 @@ public class ForgingHitPacket {
                 }
                 // 验证玩家是否手持有效的锤子物品
                 var hammer = player.getMainHandItem();
-                if (!hammer.is(ModItems.HANDLE_STONE_HAMMER.get()) && !hammer.is(ModItems.COBBLESTONE_HAMMER.get())) {
+                if (!hammer.is(ModItems.HANDLE_STONE_HAMMER.get()) && !hammer.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
                     return;
                 }
                 var level = player.level();

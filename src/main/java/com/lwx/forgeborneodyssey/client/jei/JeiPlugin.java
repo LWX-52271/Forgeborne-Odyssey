@@ -72,7 +72,7 @@ public class JeiPlugin implements IModPlugin {
         registration.addRecipes(KnappingRecipeCategory.RECIPE_TYPE, buildKnappingRecipes());
 
         registration.addIngredientInfo(
-                new ItemStack(ModBlocks.GRANITE_ANVIL.get()),
+                new ItemStack(ModBlocks.QUARTZITE_ANVIL.get()),
                 VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.forgeborneodyssey.anvil_usage.desc")
         );
@@ -122,20 +122,20 @@ public class JeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        ItemStack graniteAnvil = new ItemStack(ModBlocks.GRANITE_ANVIL.get());
-        ItemStack limestoneAnvil = new ItemStack(ModBlocks.LIMESTONE_ANVIL.get());
-        ItemStack polishedGraniteAnvil = new ItemStack(ModBlocks.POLISHED_GRANITE_ANVIL.get());
-        ItemStack polishedLimestoneAnvil = new ItemStack(ModBlocks.POLISHED_LIMESTONE_ANVIL.get());
+        ItemStack quartziteAnvil = new ItemStack(ModBlocks.QUARTZITE_ANVIL.get());
+        ItemStack quartzSandstoneAnvil = new ItemStack(ModBlocks.QUARTZ_SANDSTONE_ANVIL.get());
+        ItemStack coarseSandstoneAnvil = new ItemStack(ModBlocks.COARSE_SANDSTONE_ANVIL.get());
+        ItemStack basaltAnvil = new ItemStack(ModBlocks.BASALT_ANVIL.get());
 
-        registration.addRecipeCatalyst(graniteAnvil, ForgingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(limestoneAnvil, ForgingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedGraniteAnvil, ForgingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedLimestoneAnvil, ForgingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartziteAnvil, ForgingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartzSandstoneAnvil, ForgingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(coarseSandstoneAnvil, ForgingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(basaltAnvil, ForgingRecipeCategory.RECIPE_TYPE);
 
-        registration.addRecipeCatalyst(graniteAnvil, OreCrushingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(limestoneAnvil, OreCrushingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedGraniteAnvil, OreCrushingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedLimestoneAnvil, OreCrushingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartziteAnvil, OreCrushingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartzSandstoneAnvil, OreCrushingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(coarseSandstoneAnvil, OreCrushingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(basaltAnvil, OreCrushingRecipeCategory.RECIPE_TYPE);
 
         ItemStack firePit = new ItemStack(ModBlocks.FIRE_PIT_BLOCK.get());
         registration.addRecipeCatalyst(firePit, FirePitCookingRecipeCategory.RECIPE_TYPE);
@@ -150,20 +150,20 @@ public class JeiPlugin implements IModPlugin {
         ItemStack pitKiln = new ItemStack(ModBlocks.PIT_KILN.get());
         registration.addRecipeCatalyst(pitKiln, PitKilnFiringRecipeCategory.RECIPE_TYPE);
 
-        registration.addRecipeCatalyst(graniteAnvil, AxeBendingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(limestoneAnvil, AxeBendingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedGraniteAnvil, AxeBendingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedLimestoneAnvil, AxeBendingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartziteAnvil, AxeBendingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartzSandstoneAnvil, AxeBendingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(coarseSandstoneAnvil, AxeBendingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(basaltAnvil, AxeBendingRecipeCategory.RECIPE_TYPE);
 
-        registration.addRecipeCatalyst(graniteAnvil, ChiselCarvingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(limestoneAnvil, ChiselCarvingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedGraniteAnvil, ChiselCarvingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedLimestoneAnvil, ChiselCarvingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartziteAnvil, ChiselCarvingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartzSandstoneAnvil, ChiselCarvingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(coarseSandstoneAnvil, ChiselCarvingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(basaltAnvil, ChiselCarvingRecipeCategory.RECIPE_TYPE);
 
-        registration.addRecipeCatalyst(graniteAnvil, KnappingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(limestoneAnvil, KnappingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedGraniteAnvil, KnappingRecipeCategory.RECIPE_TYPE);
-        registration.addRecipeCatalyst(polishedLimestoneAnvil, KnappingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartziteAnvil, KnappingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartzSandstoneAnvil, KnappingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(coarseSandstoneAnvil, KnappingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(basaltAnvil, KnappingRecipeCategory.RECIPE_TYPE);
     }
 
     private static List<FirePitCookingRecipe> buildFirePitCookingRecipes() {

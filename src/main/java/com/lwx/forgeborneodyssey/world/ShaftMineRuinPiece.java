@@ -1183,9 +1183,12 @@ public class ShaftMineRuinPiece extends StructurePiece {
                 continue;
             }
 
-            Block anvilBlock = random.nextBoolean()
-                    ? ModBlocks.GRANITE_ANVIL.get()
-                    : ModBlocks.LIMESTONE_ANVIL.get();
+            Block anvilBlock = switch (random.nextInt(4)) {
+                    case 0 -> ModBlocks.QUARTZITE_ANVIL.get();
+                    case 1 -> ModBlocks.QUARTZ_SANDSTONE_ANVIL.get();
+                    case 2 -> ModBlocks.COARSE_SANDSTONE_ANVIL.get();
+                    default -> ModBlocks.BASALT_ANVIL.get();
+                };
             level.setBlock(anvilSurface,
                     anvilBlock.defaultBlockState()
                             .setValue(HorizontalDirectionalBlock.FACING,
@@ -1196,7 +1199,7 @@ public class ShaftMineRuinPiece extends StructurePiece {
                 ItemStack damagedHammer = createDamagedTool(
                         random.nextBoolean()
                                 ? ModItems.HANDLE_STONE_HAMMER.get()
-                                : ModItems.COBBLESTONE_HAMMER.get(),
+                                : ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get(),
                         random, 0.10f, 0.35f);
                 ItemEntity itemEntity = new ItemEntity(level.getLevel(),
                         anvilSurface.getX() + 0.5,
@@ -1342,7 +1345,7 @@ public class ShaftMineRuinPiece extends StructurePiece {
         };
 
         Item[] toolPool = {
-            ModItems.COBBLESTONE_HAMMER.get(),
+            ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get(),
             ModItems.FLINT_KNIFE.get(),
             ModItems.STONE_CHISEL.get(),
             ModItems.FLINT_SHOVEL.get(),
@@ -1427,7 +1430,7 @@ public class ShaftMineRuinPiece extends StructurePiece {
         };
 
         Item[] toolPool = {
-            ModItems.COBBLESTONE_HAMMER.get(),
+            ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get(),
             ModItems.FLINT_KNIFE.get(),
             ModItems.STONE_CHISEL.get()
         };

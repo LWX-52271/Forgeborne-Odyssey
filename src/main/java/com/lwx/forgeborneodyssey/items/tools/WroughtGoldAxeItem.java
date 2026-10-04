@@ -21,15 +21,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 打制金斧物品
- * 支持质量等级系统：低级、中级、高级，影响伤害值
+ * 鎵撳埗閲戞枾鐗╁搧
+ * 鏀寔璐ㄩ噺绛夌骇绯荤粺锛氫綆绾с€佷腑绾с€侀珮绾э紝褰卞搷浼ゅ鍊?
  */
 public class WroughtGoldAxeItem extends AxeItem {
     
     public WroughtGoldAxeItem() {
         super(Tiers.STONE, 2.0F, -3.0F, new Item.Properties()
-            .stacksTo(1)  // 只能持有一个
-            .durability(32)); // 耐久度设置为32，金质非常柔软
+            .stacksTo(1)  // 鍙兘鎸佹湁涓€涓?
+            .durability(32)); // 鑰愪箙搴﹁缃负32锛岄噾璐ㄩ潪甯告煍杞?
     }
     
     @Override
@@ -38,21 +38,18 @@ public class WroughtGoldAxeItem extends AxeItem {
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("item.forgeborneodyssey.wrought_gold_axe.tooltip"));
             
-            AbstractMetalBilletItem.Quality quality = getQuality(stack);
-            Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
-            tooltip.add(qualityText);
+            tooltip.add(AbstractMetalBilletItem.getTierDisplayComponent(stack));
             
             float purity = getPurity(stack);
             if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
             }
             
             float modifier = getDamageModifierFromWeight(stack);
             float actualDamage = 4.0F + modifier;
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.base_damage", String.format("%.1f", actualDamage)));
             
-            int baseDurability = 32;
-            int actualDurability = getDurabilityFromPurity(purity, baseDurability);
+            int actualDurability = getMaxDamage(stack);
             int currentDamage = stack.getDamageValue();
             int remainingDurability = Math.max(0, actualDurability - currentDamage);
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.durability", remainingDurability + "/" + actualDurability));
@@ -78,34 +75,34 @@ public class WroughtGoldAxeItem extends AxeItem {
     }
     
     /**
-     * 获取工具等级
+     * 鑾峰彇宸ュ叿绛夌骇
      */
     public Tier getTier() {
         return Tiers.STONE;
     }
     
     /**
-     * 为 ItemStack 设置指定重量等级
-     * @param stack 物品堆
-     * @param quality 重量等级
+     * 涓?ItemStack 璁剧疆鎸囧畾閲嶉噺绛夌骇
+     * @param stack 鐗╁搧鍫?
+     * @param quality 閲嶉噺绛夌骇
      */
     public void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
-        QualityHelper.setQuality(stack, quality.toFloat());
+        QualityHelper.ensurePhysicalWeight(stack);
     }
     
     /**
-     * 获取 ItemStack 的重量等级
-     * @param stack 物品堆
-     * @return 重量等级
+     * 鑾峰彇 ItemStack 鐨勯噸閲忕瓑绾?
+     * @param stack 鐗╁搧鍫?
+     * @return 閲嶉噺绛夌骇
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
+        return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 获取 ItemStack 的纯度
-     * @param stack 物品堆
-     * @return 纯度值（0-100）
+     * 鑾峰彇 ItemStack 鐨勭函搴?
+     * @param stack 鐗╁搧鍫?
+     * @return 绾害鍊硷紙0-100锛?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -114,57 +111,47 @@ public class WroughtGoldAxeItem extends AxeItem {
     }
     
     /**
-     * 根据纯度获取耐久度修正系数
-     * 纯度越高，耐久度越低（线性关系）
-     * @param purity 纯度值（0-100）
-     * @param baseDurability 基础耐久度
-     * @return 修正后的耐久度
+     * 鏍规嵁绾害鑾峰彇鑰愪箙搴︿慨姝ｇ郴鏁?
+     * 绾害瓒婇珮锛岃€愪箙搴﹁秺浣庯紙绾挎€у叧绯伙級
+     * @param purity 绾害鍊硷紙0-100锛?
+     * @param baseDurability 鍩虹鑰愪箙搴?
+     * @return 淇鍚庣殑鑰愪箙搴?
      */
     public int getDurabilityFromPurity(float purity, int baseDurability) {
-        float multiplier = 1.3f - (purity - 70.0f) / 30.0f * 0.5f;
-        multiplier = Math.max(0.5f, Math.min(1.5f, multiplier));
-        return Math.round(baseDurability * multiplier);
+        return QualityHelper.getDurability(baseDurability,
+                Math.max(0.0f, Math.min(1.0f, purity / 100.0f)), 0.5f);
     }
     
     /**
-     * 根据重量获取伤害修正值
-     * 重量越大，伤害越高
-     * @param stack 物品堆
-     * @return 伤害修正值
+     * 鏍规嵁閲嶉噺鑾峰彇浼ゅ淇鍊?
+     * 閲嶉噺瓒婂ぇ锛屼激瀹宠秺楂?
+     * @param stack 鐗╁搧鍫?
+     * @return 浼ゅ淇鍊?
      */
     public float getDamageModifierFromWeight(ItemStack stack) {
-        double weight = QualityHelper.getWeightGrams(stack);
-        if (weight <= 0.0) {
-            return 0.0f;
-        }
-        
-        float damageBonus = (float)(weight / 100.0);
-        damageBonus = Math.min(2.0f, damageBonus);
-        
-        return damageBonus;
+        return QualityHelper.getDamageModifierFromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     @Override
     public int getMaxDamage(ItemStack stack) {
-        // 根据纯度动态计算最大耐久度
-        float purity = getPurity(stack);
-        int baseDurability = 32; // 基础耐久度
-        return getDurabilityFromPurity(purity, baseDurability);
+        // 鏍规嵁绾害涓庡伐鑹哄姩鎬佽绠楁渶澶ц€愪箙搴︼紙缁熶竴鍏紡锛?
+        float purity = getPurity(stack) / 100.0f;
+        return QualityHelper.getDurability(64, purity, 0.5f);
     }
     
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         Multimap<Attribute, AttributeModifier> modifiers = com.google.common.collect.HashMultimap.create();
         
-        // 获取父类的属性
+        // 鑾峰彇鐖剁被鐨勫睘鎬?
         Multimap<Attribute, AttributeModifier> parentModifiers = super.getAttributeModifiers(slot, stack);
         modifiers.putAll(parentModifiers);
         
-        // 只在主手时应用伤害修正
+        // 鍙湪涓绘墜鏃跺簲鐢ㄤ激瀹充慨姝?
         if (slot == EquipmentSlot.MAINHAND) {
             float damageModifier = getDamageModifierFromWeight(stack);
             
-            // 如果有伤害修正，添加到属性中
+            // 濡傛灉鏈変激瀹充慨姝ｏ紝娣诲姞鍒板睘鎬т腑
             if (damageModifier != 0.0f) {
                 UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
                 modifiers.put(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE,

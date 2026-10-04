@@ -1,7 +1,7 @@
 {
   "category": "forgeborneodyssey:basics",
   "name": "石器工具",
-  "icon": "forgeborneodyssey:cobblestone_hammer",
+  "icon": "forgeborneodyssey:surface_cobblestone_block",
   "pages": [
     {
       "type": "patchouli:text",
@@ -9,9 +9,9 @@
       "text": "§0在冶锻纪行中，你的第一批工具将由圆石制成。地表圆石是最基础的原料，在地表随处可见。$(br)寻找地表圆石，用它来制作锤子和石凿，开启你的冶锻之旅。"
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§3圆石锤§r——基础锻造工具。用于在石砧上敲击金属坯料。"
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:surface_cobblestone_block",
+      "text": "§3地表圆石§r——最基础的锻造工具。用于在石砧上敲击金属坯料，但耐久极低，两三下就会碎裂。"
     },
     {
       "type": "patchouli:crafting",

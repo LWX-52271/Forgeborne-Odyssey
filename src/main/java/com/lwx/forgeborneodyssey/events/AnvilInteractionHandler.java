@@ -37,7 +37,7 @@ public class AnvilInteractionHandler {
         ItemStack heldItem = player.getItemInHand(event.getHand());
         
         if (heldItem.is(ModItems.HANDLE_STONE_HAMMER.get()) || 
-            heldItem.is(ModItems.COBBLESTONE_HAMMER.get())) {
+            heldItem.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
             
             // 在客户端发送锻造敲击数据包
             if (level.isClientSide) {

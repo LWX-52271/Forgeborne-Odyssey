@@ -45,7 +45,7 @@ public class ForgingRecipeCategory implements IRecipeCategory<ForgingRecipe> {
     public ForgingRecipeCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(WIDTH, HEIGHT);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-                new ItemStack(ModBlocks.GRANITE_ANVIL.get()));
+                new ItemStack(ModBlocks.QUARTZITE_ANVIL.get()));
         this.localizedName = Component.translatable("jei.forgeborneodyssey.forging");
     }
 

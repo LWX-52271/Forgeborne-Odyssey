@@ -2,7 +2,6 @@ package com.lwx.forgeborneodyssey.loot;
 
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
-import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import com.lwx.forgeborneodyssey.world.OreDropCalculator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -83,7 +82,6 @@ public class GradeLootModifier extends LootModifier {
         }
         tag.putFloat("ore_purity", purity);
         tag.putFloat("ore_quality", quality);
-        QualityHelper.setQuality(stack, quality);
         return stack;
     }
 

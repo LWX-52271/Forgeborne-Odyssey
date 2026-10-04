@@ -13,59 +13,59 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 软化金属坯料物品基类
- * 可堆叠（每组16个），作为锻造原料使用
- * 经过加热软化处理的金属坯料，更容易塑形
- * 继承自普通金属坯料的重量等级系统
+ * 杞寲閲戝睘鍧枡鐗╁搧鍩虹被
+ * 鍙爢鍙狅紙姣忕粍16涓級锛屼綔涓洪敾閫犲師鏂欎娇鐢?
+ * 缁忚繃鍔犵儹杞寲澶勭悊鐨勯噾灞炲澂鏂欙紝鏇村鏄撳褰?
+ * 缁ф壙鑷櫘閫氶噾灞炲澂鏂欑殑閲嶉噺绛夌骇绯荤粺
  */
 public abstract class AbstractSoftMetalBilletItem extends Item {
     
     public AbstractSoftMetalBilletItem() {
         super(new Item.Properties()
-            .stacksTo(16)); // 每组最多16个
+            .stacksTo(16)); // 姣忕粍鏈€澶?6涓?
     }
     
     /**
-     * 获取金属类型名称（用于本地化键）
+     * 鑾峰彇閲戝睘绫诲瀷鍚嶇О锛堢敤浜庢湰鍦板寲閿級
      */
     protected abstract String getMetalType();
     
     /**
-     * 获取悬停文本键
+     * 鑾峰彇鎮仠鏂囨湰閿?
      */
     protected abstract String getTooltipKey();
     
     /**
-     * 为 ItemStack 设置指定质量等级
-     * @param stack 物品堆
-     * @param quality 质量等级
+     * 涓?ItemStack 璁剧疆鎸囧畾璐ㄩ噺绛夌骇
+     * @param stack 鐗╁搧鍫?
+     * @param quality 璐ㄩ噺绛夌骇
      */
     public void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
-        QualityHelper.setQuality(stack, quality.toFloat());
+        QualityHelper.ensurePhysicalWeight(stack);
     }
     
     /**
-     * 获取 ItemStack 的质量等级
-     * @param stack 物品堆
-     * @return 质量等级
+     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
+     * @param stack 鐗╁搧鍫?
+     * @return 璐ㄩ噺绛夌骇
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
+        return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 为 ItemStack 设置指定纯度
-     * @param stack 物品堆
-     * @param purity 纯度值（0-100）
+     * 涓?ItemStack 璁剧疆鎸囧畾绾害
+     * @param stack 鐗╁搧鍫?
+     * @param purity 绾害鍊硷紙0-100锛?
      */
     public void setPurity(ItemStack stack, float purity) {
         QualityHelper.setPurity(stack, purity / 100.0f);
     }
     
     /**
-     * 获取 ItemStack 的纯度
-     * @param stack 物品堆
-     * @return 纯度值（0-100），如果没有则返回默认值
+     * 鑾峰彇 ItemStack 鐨勭函搴?
+     * @param stack 鐗╁搧鍫?
+     * @return 绾害鍊硷紙0-100锛夛紝濡傛灉娌℃湁鍒欒繑鍥為粯璁ゅ€?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -78,23 +78,19 @@ public abstract class AbstractSoftMetalBilletItem extends Item {
         super.appendHoverText(stack, level, tooltip, flag);
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable(getTooltipKey()));
-            
-            AbstractMetalBilletItem.Quality quality = getQuality(stack);
-            Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
-            tooltip.add(qualityText);
-            
+            // 品级显示已随品级系统移除
             double weight = QualityHelper.getWeightGrams(stack);
             if (weight > 0.0) {
                 if (weight >= 1000.0) {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", String.format("%.3f", weight / 1000.0)));
                 } else {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", weight));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", String.format("%.2f", weight)));
                 }
             }
             
             float purity = getPurity(stack);
             if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
             }
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));

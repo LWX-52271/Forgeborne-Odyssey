@@ -375,17 +375,7 @@ public class FirePitBlockEntity extends BlockEntity {
 
     public void setStoredItem(ItemStack stack) {
         if (!stack.isEmpty()) {
-            CompoundTag tag = stack.getTag();
-            if (tag != null && tag.contains("ore_quality")) {
-                float oreQuality = tag.getFloat("ore_quality");
-                QualityHelper.setQuality(stack, oreQuality);
-                tag.remove("ore_quality");
-                if (tag.isEmpty()) {
-                    stack.setTag(null);
-                }
-            } else if (!QualityHelper.hasQuality(stack)) {
-                QualityHelper.assignRandomQuality(stack, level != null ? level.getRandom() : net.minecraft.util.RandomSource.create());
-            }
+            QualityHelper.ensurePhysicalWeight(stack);
         }
         this.storedItem = stack;
         setChanged();

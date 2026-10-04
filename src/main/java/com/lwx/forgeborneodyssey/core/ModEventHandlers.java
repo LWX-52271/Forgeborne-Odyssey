@@ -265,17 +265,8 @@ public class ModEventHandlers {
                     1, 0.0D, 0.0D, 0.0D, 1.0D);
             }
             
-            // 为每个生成的金属坯料设置随机重量等级
             if (billetItem.getItem() instanceof com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem) {
-                com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem billet = 
-                    (com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem) billetItem.getItem();
-                // 为每个物品设置独立的重量、质量和纯度
-                for (int i = 0; i < billetItem.getCount(); i++) {
-                    double weight = generateWeightForBillet(billetItem, level.random);
-                    billet.setQualityByWeight(billetItem, weight);
-                    billet.setRandomPurity(billetItem, level.random);
-                    com.lwx.forgeborneodyssey.quality.QualityHelper.setWeightGrams(billetItem, weight);
-                }
+                com.lwx.forgeborneodyssey.quality.QualityHelper.assignRandomProperties(billetItem, level.random);
             }
             
             // 移除原物品实体
@@ -307,32 +298,7 @@ public class ModEventHandlers {
         }
         return ItemStack.EMPTY;
     }
-    
-    /**
-     * 根据坯料类型生成随机重量
-     * 使用指数分布，让小重量的概率更高
-     * @param billetItem 坯料物品堆
-     * @param random 随机源
-     * @return 重量（克）
-     */
-    private static double generateWeightForBillet(ItemStack billetItem, net.minecraft.util.RandomSource random) {
-        // 使用指数分布：小重量的概率更高，指数6.0让低等级更容易出现，高等级更稀有
-        double ratio = Math.pow(random.nextDouble(), 6.0);
-        
-        if (billetItem.getItem() == ModItems.GOLD_BILLET.get()) {
-            // 金坯料：0.1g ~ 10000g
-            return 0.1 + ratio * 9999.9;
-        } else if (billetItem.getItem() == ModItems.SILVER_BILLET.get()) {
-            // 银坯料：0.1g ~ 3000g
-            return 0.1 + ratio * 2999.9;
-        } else if (billetItem.getItem() == ModItems.COPPER_BILLET.get()) {
-            // 铜坯料：0.2g ~ 5000g
-            return 0.2 + ratio * 4999.8;
-        }
-        // 默认重量
-        return 1.0 + ratio * 1999.0;
-    }
-    
+
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) {
@@ -681,7 +647,7 @@ public class ModEventHandlers {
                 return;
             }
 
-            if (held.getItem() instanceof com.lwx.forgeborneodyssey.items.tools.CobblestoneHammerItem) {
+            if (held.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
                 ItemStack cobblestone = findSurfaceCobblestone(player);
                 if (!cobblestone.isEmpty()) {
                     if (!event.getLevel().isClientSide()) {

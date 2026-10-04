@@ -15,8 +15,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "forgeborneodyssey:granite_anvil_crafting",
-      "text": "§3石砧——冷锻核心§r$(br2)石砧是冷锻工艺的必备工作台。$(br2)合成：§47个花岗岩§r按上图排列。$(br2)也可以用§4石灰岩§r制作石灰岩石砧，功能完全相同。"
+      "recipe": "forgeborneodyssey:quartzite_anvil_crafting",
+      "text": "§3砾石石砧——冷锻核心§r$(br2)砾石石砧是冷锻工艺的必备工作台。$(br2)砾石石砧合成：§41个大砾石§r+§4地表圆石§r（模拟啄击成形），可选用：$(br)$(li)§4石英岩§r→石英岩石砧$(br)$(li)§4石英砂岩§r→石英砂岩石砧$(br)$(li)§4粗砂岩§r→粗砂岩石砧$(br)$(li)§4玄武岩§r→玄武岩石砧"
     },
     {
       "type": "patchouli:crafting",

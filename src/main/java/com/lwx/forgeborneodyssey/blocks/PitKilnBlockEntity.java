@@ -528,10 +528,10 @@ public class PitKilnBlockEntity extends BlockEntity {
                     if (!greenware.isEmpty()) {
                         ItemStack result = entity.getResultForSlot(greenware, level.getRandom());
                         if (!result.isEmpty() && !result.is(ModItems.KILN_WASTE_SHARD.get())) {
-                            if (QualityHelper.hasQuality(greenware)) {
-                                QualityHelper.inheritQualityWithLoss(result, greenware, 0.05f);
+                            if (QualityHelper.hasWeight(greenware)) {
+                                QualityHelper.inheritWithLoss(result, greenware, 0.05f);
                             } else {
-                                QualityHelper.assignRandomQuality(result, level.getRandom());
+                                QualityHelper.ensurePhysicalWeight(result);
                             }
                         }
                         Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result);

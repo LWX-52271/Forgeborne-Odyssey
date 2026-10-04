@@ -86,6 +86,16 @@ public class SimpleWorldGen {
             NoneFeatureConfiguration.INSTANCE
         ));
 
+        // 注册砾石配置特征
+        ResourceKey<ConfiguredFeature<?, ?>> boulderKey = 
+            ResourceKey.create(Registries.CONFIGURED_FEATURE, 
+                new ResourceLocation(ForgeborneOdyssey.MOD_ID, "boulder"));
+                
+        context.register(boulderKey, new ConfiguredFeature<>(
+            new BoulderFeature(NoneFeatureConfiguration.CODEC),
+            NoneFeatureConfiguration.INSTANCE
+        ));
+
         context.register(OCHRE_DEPOSIT_KEY, new ConfiguredFeature<>(
             Feature.ORE,
             new OreConfiguration(
@@ -163,6 +173,28 @@ public class SimpleWorldGen {
             )
         ));
 
+        // 注册砾石放置特征
+        var boulderFeature = context.lookup(Registries.CONFIGURED_FEATURE)
+            .getOrThrow(ResourceKey.create(Registries.CONFIGURED_FEATURE, 
+                new ResourceLocation(ForgeborneOdyssey.MOD_ID, "boulder")));
+        
+        ResourceKey<PlacedFeature> boulderPlacedKey = 
+            ResourceKey.create(Registries.PLACED_FEATURE, 
+                new ResourceLocation(ForgeborneOdyssey.MOD_ID, "boulder_placed"));
+        
+        context.register(boulderPlacedKey, new PlacedFeature(
+            boulderFeature,
+            List.of(
+                CountPlacement.of(6),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(
+                    VerticalAnchor.absolute(60),
+                    VerticalAnchor.absolute(200)
+                ),
+                BiomeFilter.biome()
+            )
+        ));
+
         var ochreFeature = context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(OCHRE_DEPOSIT_KEY);
         
         context.register(OCHRE_DEPOSIT_PLACED_KEY, new PlacedFeature(
@@ -215,6 +247,19 @@ public class SimpleWorldGen {
                 ResourceKey.create(Registries.PLACED_FEATURE, 
                     new ResourceLocation(ForgeborneOdyssey.MOD_ID, "surface_rock_placed")))),
             GenerationStep.Decoration.RAW_GENERATION
+        ));
+
+        // 注册砾石生物群系修饰符
+        ResourceKey<BiomeModifier> addBoulder = 
+            ResourceKey.create(net.minecraftforge.registries.ForgeRegistries.Keys.BIOME_MODIFIERS, 
+                new ResourceLocation(ForgeborneOdyssey.MOD_ID, "add_boulder"));
+        
+        context.register(addBoulder, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+            overworldBiomes,
+            HolderSet.direct(placedFeatures.getOrThrow(
+                ResourceKey.create(Registries.PLACED_FEATURE, 
+                    new ResourceLocation(ForgeborneOdyssey.MOD_ID, "boulder_placed")))),
+            GenerationStep.Decoration.UNDERGROUND_ORES
         ));
 
         context.register(ADD_OCHRE_DEPOSIT, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(

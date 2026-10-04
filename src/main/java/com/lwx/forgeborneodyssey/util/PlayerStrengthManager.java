@@ -261,10 +261,6 @@ public class PlayerStrengthManager {
         if (tag != null) {
             if (tag.contains(QualityHelper.TAG_WEIGHT_GRAMS)) {
                 weight += QualityHelper.getWeightGrams(stack) * stack.getCount();
-            } else if (tag.contains(QualityHelper.TAG_QUALITY)) {
-                weight += tag.getFloat(QualityHelper.TAG_QUALITY) * QUALITY_TO_WEIGHT * stack.getCount();
-            } else if (tag.contains("ore_quality")) {
-                weight += tag.getFloat("ore_quality") * QUALITY_TO_WEIGHT * stack.getCount();
             }
             if (tag.contains("Items")) {
                 ListTag items = tag.getList("Items", CompoundTag.TAG_COMPOUND);

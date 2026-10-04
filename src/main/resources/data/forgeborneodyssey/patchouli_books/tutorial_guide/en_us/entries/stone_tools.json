@@ -1,7 +1,7 @@
 {
   "category": "forgeborneodyssey:basics",
   "name": "Stone Tools",
-  "icon": "forgeborneodyssey:cobblestone_hammer",
+  "icon": "forgeborneodyssey:surface_cobblestone_block",
   "pages": [
     {
       "type": "patchouli:text",
@@ -9,9 +9,9 @@
       "text": "Before you can work with metal, you need basic stone tools.$(br2)Start by finding §4surface cobblestone blocks§r scattered on the ground. They look like small rocks on the surface.$(br2)Pick them up and use them in the crafting table to make your first tools."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§3Cobblestone Hammer§r$(br)Basic forging tool.$(br)Used for forging metal on anvils."
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:surface_cobblestone_block",
+      "text": "§3Surface Cobblestone§r$(br)The most basic forging tool.$(br)Used for forging metal on anvils, but breaks after just a few hits."
     },
     {
       "type": "patchouli:crafting",

@@ -20,8 +20,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 可投掷的金属珠物品基类
- * 支持重量等级和纯度系统
+ * 鍙姇鎺风殑閲戝睘鐝犵墿鍝佸熀绫?
+ * 鏀寔閲嶉噺绛夌骇鍜岀函搴︾郴缁?
  */
 public class ThrowableBeadItem extends Item {
     
@@ -30,21 +30,21 @@ public class ThrowableBeadItem extends Item {
     }
     
     /**
-     * 获取金属类型名称（用于默认纯度）
+     * 鑾峰彇閲戝睘绫诲瀷鍚嶇О锛堢敤浜庨粯璁ょ函搴︼級
      */
     protected String getMetalType() {
-        return "copper"; // 默认为铜
+        return "copper"; // 榛樿涓洪摐
     }
     
     /**
-     * 获取 ItemStack 的质量等级
+     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
+        return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 获取 ItemStack 的纯度
+     * 鑾峰彇 ItemStack 鐨勭函搴?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -61,22 +61,20 @@ public class ThrowableBeadItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         if (Screen.hasShiftDown()) {
-            AbstractMetalBilletItem.Quality quality = getQuality(stack);
-            Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
-            tooltip.add(qualityText);
+            tooltip.add(AbstractMetalBilletItem.getTierDisplayComponent(stack));
             
             double weight = QualityHelper.getWeightGrams(stack);
             if (weight > 0.0) {
                 if (weight >= 1000.0) {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", String.format("%.3f", weight / 1000.0)));
                 } else {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", weight));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", String.format("%.2f", weight)));
                 }
             }
             
             float purity = getPurity(stack);
             if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
             }
             
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
@@ -90,29 +88,29 @@ public class ThrowableBeadItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         
         if (!level.isClientSide) {
-            // 创建投掷物实体
+            // 鍒涘缓鎶曟幏鐗╁疄浣?
             ThrownMetalBead thrown = new ThrownMetalBead(level, player, stack);
             
-            // 设置投掷位置和初始速度
+            // 璁剧疆鎶曟幏浣嶇疆鍜屽垵濮嬮€熷害
             thrown.setPos(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
             
-            // 根据玩家的视线方向投掷
+            // 鏍规嵁鐜╁鐨勮绾挎柟鍚戞姇鎺?
             var lookAngle = player.getLookAngle();
-            double speed = 1.5; // 投掷速度
+            double speed = 1.5; // 鎶曟幏閫熷害
             thrown.setDeltaMovement(
                 lookAngle.x * speed,
-                lookAngle.y * speed - 0.3, // 减少向上分量，增加下坠感
+                lookAngle.y * speed - 0.3, // 鍑忓皯鍚戜笂鍒嗛噺锛屽鍔犱笅鍧犳劅
                 lookAngle.z * speed
             );
             
-            // 添加到世界
+            // 娣诲姞鍒颁笘鐣?
             level.addFreshEntity(thrown);
             
-            // 播放声音
+            // 鎾斁澹伴煶
             level.playSound(null, player.getX(), player.getY(), player.getZ(), 
                 SoundEvents.SNOWBALL_THROW, SoundSource.PLAYERS, 1.0f, 1.0f);
             
-            // 消耗物品
+            // 娑堣€楃墿鍝?
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }

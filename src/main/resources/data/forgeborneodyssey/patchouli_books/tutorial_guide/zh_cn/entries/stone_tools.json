@@ -1,7 +1,7 @@
 {
   "category": "forgeborneodyssey:basics",
   "name": "石器工具",
-  "icon": "forgeborneodyssey:cobblestone_hammer",
+  "icon": "forgeborneodyssey:surface_cobblestone_block",
   "pages": [
     {
       "type": "patchouli:text",
@@ -14,9 +14,9 @@
       "text": "将§4地表圆石§r放在双手（主手和副手各一个），然后右键将它们互相敲击。$(br2)每次敲击§4必然获得产物§r，基础概率如下：$(br)$(li)§3燧石片§r（约70%概率，2-3个）$(br)$(li)§3粗制工具§r（约30%概率，随机获得刀/铲/镰/矛之一）$(br2)§4提示：§r敲击熟练度会随使用次数提升，熟练度满时工具概率可提升至约50%。"
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§3圆石锤§r$(br)基础锻造工具。$(br)用于在石砧上锻打金属。"
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:surface_cobblestone_block",
+      "text": "§3地表圆石§r$(br)最基础的锻造工具。$(br)用于在石砧上锻打金属，但耐久极低，两三下就会碎裂。"
     },
     {
       "type": "patchouli:crafting",

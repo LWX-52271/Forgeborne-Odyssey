@@ -25,7 +25,7 @@ import com.lwx.forgeborneodyssey.items.armor.HideArmorItem;
 import com.lwx.forgeborneodyssey.items.tools.ScraperItem;
 import com.lwx.forgeborneodyssey.items.softmetalbillets.SoftCopperBilletItem;
 import com.lwx.forgeborneodyssey.items.softmetalstrips.SoftCopperStripItem;
-import com.lwx.forgeborneodyssey.items.tools.CobblestoneHammerItem;
+
 import com.lwx.forgeborneodyssey.items.tools.FlintShovelItem;
 import com.lwx.forgeborneodyssey.items.tools.CrudeFlintKnifeItem;
 import com.lwx.forgeborneodyssey.items.tools.CrudeFlintShovelItem;
@@ -207,16 +207,13 @@ public class ModItems {
     // 软化金属条
     public static final RegistryObject<Item> SOFT_COPPER_STRIP = ITEMS.register("soft_copper_strip", SoftCopperStripItem::new);
 
-    // 天然石砧物品
-    public static final RegistryObject<Item> GRANITE_ANVIL_ITEM = createBlockItem("granite_anvil", ModBlocks.GRANITE_ANVIL);
-    public static final RegistryObject<Item> LIMESTONE_ANVIL_ITEM = createBlockItem("limestone_anvil", ModBlocks.LIMESTONE_ANVIL);
-
-    // 打磨石砧物品
-    public static final RegistryObject<Item> POLISHED_GRANITE_ANVIL_ITEM = createBlockItem("polished_granite_anvil", ModBlocks.POLISHED_GRANITE_ANVIL);
-    public static final RegistryObject<Item> POLISHED_LIMESTONE_ANVIL_ITEM = createBlockItem("polished_limestone_anvil", ModBlocks.POLISHED_LIMESTONE_ANVIL);
+    // 大砾石石砧物品
+    public static final RegistryObject<Item> QUARTZITE_ANVIL_ITEM = createBlockItem("quartzite_anvil", ModBlocks.QUARTZITE_ANVIL);
+    public static final RegistryObject<Item> QUARTZ_SANDSTONE_ANVIL_ITEM = createBlockItem("quartz_sandstone_anvil", ModBlocks.QUARTZ_SANDSTONE_ANVIL);
+    public static final RegistryObject<Item> COARSE_SANDSTONE_ANVIL_ITEM = createBlockItem("coarse_sandstone_anvil", ModBlocks.COARSE_SANDSTONE_ANVIL);
+    public static final RegistryObject<Item> BASALT_ANVIL_ITEM = createBlockItem("basalt_anvil", ModBlocks.BASALT_ANVIL);
 
     // 工具物品
-    public static final RegistryObject<Item> COBBLESTONE_HAMMER = ITEMS.register("cobblestone_hammer", CobblestoneHammerItem::new);
     public static final RegistryObject<Item> FLINT_SHOVEL = ITEMS.register("flint_shovel", FlintShovelItem::new);
     public static final RegistryObject<Item> FLINT_KNIFE = ITEMS.register("flint_knife", FlintKnifeItem::new);
     public static final RegistryObject<Item> FLINT_SICKLE = ITEMS.register("flint_sickle", FlintSickleItem::new);

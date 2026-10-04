@@ -1,7 +1,7 @@
 {
   "category": "forgeborneodyssey:basics",
   "name": "冷锻工艺",
-  "icon": "forgeborneodyssey:granite_anvil",
+  "icon": "forgeborneodyssey:quartzite_anvil",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "第一步：制作坯料",
-      "text": "$(li)合成§4花岗岩石砧§r或§4石灰岩石砧§r$(br)$(li)自然金属块+水桶=坯料$(br)$(li)每个坯料有随机的重量和质量$(br2)§4提示：§r可以反复合成以获得更高重量的坯料。"
+      "text": "$(li)用1个大砾石+1个地表圆石合成§4砾石石砧§r（石英岩/石英砂岩/粗砂岩/玄武岩均可）$(br)$(li)自然金属块+水桶=坯料$(br)$(li)每个坯料有随机的重量和质量$(br2)§4提示：§r可以反复合成以获得更高重量的坯料。"
     },
     {
       "type": "patchouli:text",

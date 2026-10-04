@@ -15,8 +15,8 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "forgeborneodyssey:granite_anvil_crafting",
-      "text": "§3Stone Anvil — Core of Cold Forging§r$(br2)The stone anvil is the essential workbench for cold forging.$(br2)Crafting: §47 Granite blocks§r in the pattern shown.$(br2)You can also use §4Limestone§r to make a limestone anvil — same function."
+      "recipe": "forgeborneodyssey:quartzite_anvil_crafting",
+      "text": "§3Boulder Anvil — Core of Cold Forging§r$(br2)The boulder anvil is the essential workbench for cold forging.$(br2)Boulder anvil crafting: §41 boulder block§r + §4surface cobblestone block§r (simulating pecking), using:$(br)$(li)§4Quartzite§r → Quartzite Anvil$(br)$(li)§4Quartz Sandstone§r → Quartz Sandstone Anvil$(br)$(li)§4Coarse Sandstone§r → Coarse Sandstone Anvil$(br)$(li)§4Basalt§r → Basalt Anvil"
     },
     {
       "type": "patchouli:crafting",

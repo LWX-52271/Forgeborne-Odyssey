@@ -1,7 +1,7 @@
 {
   "category": "forgeborneodyssey:basics",
   "name": "Cold Forging",
-  "icon": "forgeborneodyssey:granite_anvil",
+  "icon": "forgeborneodyssey:quartzite_anvil",
   "pages": [
     {
       "type": "patchouli:text",
@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Step 1: Make Billets",
-      "text": "$(li)Craft a §4Granite Anvil§r or §4Limestone Anvil§r$(br)$(li)Combine natural metal block + water bucket = billet$(br)$(li)Each billet has random weight and quality$(br2)§4Tip:§r You can craft multiple times to get a higher weight billet."
+      "text": "$(li)Craft a §4Boulder Anvil§r using 1 boulder block + 1 surface cobblestone (quartzite/quartz sandstone/coarse sandstone/basalt)$(br)$(li)Combine natural metal block + water bucket = billet$(br)$(li)Each billet has random weight and quality$(br2)§4Tip:§r You can craft multiple times to get a higher weight billet."
     },
     {
       "type": "patchouli:text",

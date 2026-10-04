@@ -127,5 +127,12 @@ public class ModMessages {
             .decoder(LimePlasterSyncPacket::new)
             .consumerMainThread(LimePlasterSyncPacket::handle)
             .add();
+
+        // 教程任务同步（服务端 -> 客户端）
+        CHANNEL.messageBuilder(SyncTutorialTasksPacket.class, messageID++)
+            .encoder(SyncTutorialTasksPacket::toBytes)
+            .decoder(SyncTutorialTasksPacket::new)
+            .consumerMainThread(SyncTutorialTasksPacket::handle)
+            .add();
     }
 }

@@ -37,7 +37,7 @@ public class ChiselCarvingRecipeCategory implements IRecipeCategory<ChiselCarvin
     public ChiselCarvingRecipeCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(WIDTH, HEIGHT);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-                new ItemStack(ModBlocks.GRANITE_ANVIL.get()));
+                new ItemStack(ModBlocks.QUARTZITE_ANVIL.get()));
         this.localizedName = Component.translatable("jei.forgeborneodyssey.chisel_carving");
     }
 

@@ -23,7 +23,7 @@ public class GoldSheetItem extends Item {
      * 获取 ItemStack 的质量等级
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
+        return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
@@ -40,25 +40,8 @@ public class GoldSheetItem extends Item {
         super.appendHoverText(stack, level, tooltip, flag);
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("item.forgeborneodyssey.gold_sheet.tooltip"));
-            
-            AbstractMetalBilletItem.Quality quality = getQuality(stack);
-            Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
-            tooltip.add(qualityText);
-            
-            double weight = QualityHelper.getWeightGrams(stack);
-            if (weight > 0.0) {
-                if (weight >= 1000.0) {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
-                } else {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", weight));
-                }
-            }
-            
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
-            }
-            
+
+            // 品级/重量/纯度已由全局 ItemTooltipEvent（OreQualityTooltipHandler）统一追加，避免双份。
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));

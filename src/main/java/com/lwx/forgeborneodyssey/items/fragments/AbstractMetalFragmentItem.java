@@ -13,9 +13,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 金属碎片物品基类
- * 可堆叠（每组64个），作为锻造原料或制作材料使用
- * 继承重量等级和纯度系统
+ * 閲戝睘纰庣墖鐗╁搧鍩虹被
+ * 鍙爢鍙狅紙姣忕粍64涓級锛屼綔涓洪敾閫犲師鏂欐垨鍒朵綔鏉愭枡浣跨敤
+ * 缁ф壙閲嶉噺绛夌骇鍜岀函搴︾郴缁?
  */
 public abstract class AbstractMetalFragmentItem extends Item {
     
@@ -24,24 +24,24 @@ public abstract class AbstractMetalFragmentItem extends Item {
     }
     
     /**
-     * 获取金属类型名称（用于默认纯度和本地化键）
+     * 鑾峰彇閲戝睘绫诲瀷鍚嶇О锛堢敤浜庨粯璁ょ函搴﹀拰鏈湴鍖栭敭锛?
      */
     protected abstract String getMetalType();
     
     /**
-     * 获取悬停文本键
+     * 鑾峰彇鎮仠鏂囨湰閿?
      */
     protected abstract String getTooltipKey();
     
     /**
-     * 获取 ItemStack 的质量等级
+     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
+        return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 获取 ItemStack 的纯度
+     * 鑾峰彇 ItemStack 鐨勭函搴?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -60,24 +60,7 @@ public abstract class AbstractMetalFragmentItem extends Item {
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable(getTooltipKey()));
 
-            AbstractMetalBilletItem.Quality quality = getQuality(stack);
-            Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
-            tooltip.add(qualityText);
-
-            double weight = QualityHelper.getWeightGrams(stack);
-            if (weight > 0.0) {
-                if (weight >= 1000.0) {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
-                } else {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", weight));
-                }
-            }
-
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
-            }
-
+            // 品级/重量/纯度已由全局 ItemTooltipEvent（OreQualityTooltipHandler）统一追加，避免双份。
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));

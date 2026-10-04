@@ -14,6 +14,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -32,13 +33,13 @@ import java.util.Random;
 public class ThrowableSurfaceCobblestoneItem extends BlockItem {
     
     public ThrowableSurfaceCobblestoneItem(Block block) {
-        super(block, new Properties().stacksTo(64));
+        super(block, new Properties().stacksTo(64).durability(3));
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-        QualityHelper.appendQualityTooltip(stack, tooltipComponents, true, false);
+        // 品级/重量/纯度已由全局 ItemTooltipEvent（OreQualityTooltipHandler）统一追加，避免双份。
         if (Screen.hasShiftDown()) {
             tooltipComponents.add(Component.translatable("block.forgeborneodyssey.surface_cobblestone_block.tooltip"));
         } else {
@@ -109,10 +110,10 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
 
     private void performKnapping(Level level, Player player, ItemStack mainHandStack, ItemStack offhandStack) {
         // 读取双手圆石重量（消耗前）
-        float mainWeight = QualityHelper.hasQuality(mainHandStack)
-                ? QualityHelper.getQuality(mainHandStack) : -1f;
-        float offWeight = QualityHelper.hasQuality(offhandStack)
-                ? QualityHelper.getQuality(offhandStack) : -1f;
+        double mainWeight = QualityHelper.hasWeight(mainHandStack)
+                ? QualityHelper.getWeightGrams(mainHandStack) : -1;
+        double offWeight = QualityHelper.hasWeight(offhandStack)
+                ? QualityHelper.getWeightGrams(offhandStack) : -1;
 
         // 消耗双手各一个地表圆石
         if (!player.getAbilities().instabuild) {
@@ -133,15 +134,15 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
             // 燧石片：2-3个，各自独立重量
             int count = 2 + KNAPPING_RANDOM.nextInt(2);
 
-            float totalWeight;
+            double totalWeight;
             if (mainWeight > 0 && offWeight > 0) {
-                totalWeight = (mainWeight + offWeight) * 0.90f;
+                totalWeight = (mainWeight + offWeight) * 0.90;
             } else if (mainWeight > 0) {
-                totalWeight = mainWeight * 0.90f;
+                totalWeight = mainWeight * 0.90;
             } else if (offWeight > 0) {
-                totalWeight = offWeight * 0.90f;
+                totalWeight = offWeight * 0.90;
             } else {
-                totalWeight = -1f;
+                totalWeight = -1;
             }
 
             if (totalWeight > 0) {
@@ -153,7 +154,7 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
                 }
                 for (int i = 0; i < count; i++) {
                     ItemStack flake = new ItemStack(ModItems.FLINT_FLAKE.get());
-                    QualityHelper.setQuality(flake, Math.max(0.01f, totalWeight * ratios[i] / sum));
+                    QualityHelper.setWeightGrams(flake, Math.max(0.01, totalWeight * ratios[i] / sum));
                     Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), flake);
                 }
             } else {
@@ -168,16 +169,16 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
         // 工具：按比例分配（刀25% 铲25% 镰20% 矛30%）
         ItemStack result = rollToolResult();
         if (!result.isEmpty()) {
-            float toolWeight = -1f;
+            double toolWeight = -1;
             if (mainWeight > 0 && offWeight > 0) {
-                toolWeight = Math.max(0.01f, (mainWeight + offWeight) * 0.90f);
+                toolWeight = Math.max(0.01, (mainWeight + offWeight) * 0.90);
             } else if (mainWeight > 0) {
-                toolWeight = Math.max(0.01f, mainWeight * 0.90f);
+                toolWeight = Math.max(0.01, mainWeight * 0.90);
             } else if (offWeight > 0) {
-                toolWeight = Math.max(0.01f, offWeight * 0.90f);
+                toolWeight = Math.max(0.01, offWeight * 0.90);
             }
             if (toolWeight > 0) {
-                QualityHelper.setQuality(result, toolWeight);
+                QualityHelper.setWeightGrams(result, toolWeight);
             }
             Containers.dropItemStack(level, player.getX(), player.getY(), player.getZ(), result);
         }
@@ -194,5 +195,27 @@ public class ThrowableSurfaceCobblestoneItem extends BlockItem {
         } else {
             return new ItemStack(ModItems.CRUDE_STONE_SPEAR.get());
         }
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        stack.hurtAndBreak(1, attacker, (e) -> e.broadcastBreakEvent(net.minecraft.world.InteractionHand.MAIN_HAND));
+        return true;
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+        return stack.getDamageValue() > 0;
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+        return Math.round(13.0F - (float) stack.getDamageValue() * 13.0F / (float) stack.getMaxDamage());
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        float f = Math.max(0.0F, (float) (stack.getMaxDamage() - stack.getDamageValue()) / (float) stack.getMaxDamage());
+        return (int) (f * 100.0F) << 16 | (int) ((1.0F - f) * 100.0F) << 8;
     }
 }

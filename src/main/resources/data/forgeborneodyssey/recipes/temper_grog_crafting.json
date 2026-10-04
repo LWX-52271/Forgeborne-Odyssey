@@ -8,7 +8,7 @@
       "item": "forgeborneodyssey:kiln_waste_shard"
     },
     "K": [
-      {"item": "forgeborneodyssey:cobblestone_hammer"},
+      {"item": "forgeborneodyssey:surface_cobblestone_block"},
       {"item": "forgeborneodyssey:handle_stone_hammer"}
     ]
   },

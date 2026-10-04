@@ -39,7 +39,7 @@ public class OreCrushingRecipeCategory implements IRecipeCategory<OreCrushingRec
     public OreCrushingRecipeCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(WIDTH, HEIGHT);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-                new ItemStack(ModBlocks.GRANITE_ANVIL.get()));
+                new ItemStack(ModBlocks.QUARTZITE_ANVIL.get()));
         this.localizedName = Component.translatable("jei.forgeborneodyssey.ore_crushing");
     }
 

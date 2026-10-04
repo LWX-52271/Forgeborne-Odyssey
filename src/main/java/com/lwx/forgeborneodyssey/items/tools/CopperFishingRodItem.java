@@ -23,8 +23,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 铜鱼竿物品
- * 功能与原版鱼竿完全相同，仅数值（耐久度）不同
+ * 閾滈奔绔跨墿鍝?
+ * 鍔熻兘涓庡師鐗堥奔绔垮畬鍏ㄧ浉鍚岋紝浠呮暟鍊硷紙鑰愪箙搴︼級涓嶅悓
  */
 public class CopperFishingRodItem extends FishingRodItem {
 
@@ -37,7 +37,7 @@ public class CopperFishingRodItem extends FishingRodItem {
     }
 
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
+        return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
 
     public float getPurity(ItemStack stack) {
@@ -80,25 +80,9 @@ public class CopperFishingRodItem extends FishingRodItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         if (Screen.hasShiftDown()) {
-            AbstractMetalBilletItem.Quality quality = getQuality(stack);
-            Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
-            tooltip.add(qualityText);
+            // 品级/重量/纯度已由全局 ItemTooltipEvent（OreQualityTooltipHandler）统一追加，避免双份。
 
-            double weight = QualityHelper.getWeightGrams(stack);
-            if (weight > 0.0) {
-                if (weight >= 1000.0) {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
-                } else {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", weight));
-                }
-            }
-
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
-            }
-
-            int actualDurability = getDurabilityFromPurity(purity, BASE_DURABILITY);
+            int actualDurability = getMaxDamage(stack);
             int currentDamage = stack.getDamageValue();
             int remainingDurability = Math.max(0, actualDurability - currentDamage);
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.durability", remainingDurability + "/" + actualDurability));
@@ -108,14 +92,13 @@ public class CopperFishingRodItem extends FishingRodItem {
     }
 
     public int getDurabilityFromPurity(float purity, int baseDurability) {
-        float multiplier = 0.8f + (purity - 70.0f) / 30.0f * 0.5f;
-        multiplier = Math.max(0.5f, Math.min(1.5f, multiplier));
-        return Math.round(baseDurability * multiplier);
+        return QualityHelper.getDurability(baseDurability,
+                Math.max(0.0f, Math.min(1.0f, purity / 100.0f)), 0.5f);
     }
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        float purity = getPurity(stack);
-        return getDurabilityFromPurity(purity, BASE_DURABILITY);
+        float purity = getPurity(stack) / 100.0f;
+        return QualityHelper.getDurability(BASE_DURABILITY, purity, 0.5f);
     }
 }

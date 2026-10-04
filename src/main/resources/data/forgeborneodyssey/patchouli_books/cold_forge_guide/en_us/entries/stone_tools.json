@@ -1,7 +1,7 @@
 {
   "category": "forgeborneodyssey:basics",
   "name": "Stone Tools",
-  "icon": "forgeborneodyssey:cobblestone_hammer",
+  "icon": "forgeborneodyssey:surface_cobblestone_block",
   "pages": [
     {
       "type": "patchouli:text",
@@ -9,9 +9,9 @@
       "text": "§8[Start Your Adventure]$(br2)In Forgeborne Odyssey, your first tools will be made from cobblestone. Surface cobblestone is the most basic resource, found everywhere on the surface.$(br)Look for surface cobblestone and use it to craft hammers and chisels to begin your forging journey."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "forgeborneodyssey:cobblestone_hammer_crafting",
-      "text": "§3Cobblestone Hammer§r - Basic forging tool. Strike metal billets on the anvil."
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:surface_cobblestone_block",
+      "text": "§3Surface Cobblestone§r - The most basic forging tool. Strike metal billets on the anvil, but breaks after just a few hits."
     },
     {
       "type": "patchouli:crafting",

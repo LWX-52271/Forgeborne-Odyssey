@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 铜环物品
+ * 閾滅幆鐗╁搧
  */
 public class CopperRingItem extends Item {
     
@@ -22,14 +22,14 @@ public class CopperRingItem extends Item {
     }
     
     /**
-     * 获取 ItemStack 的质量等级
+     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
-        return AbstractMetalBilletItem.Quality.fromFloat(QualityHelper.getQuality(stack));
+        return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 获取 ItemStack 的纯度
+     * 鑾峰彇 ItemStack 鐨勭函搴?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -43,22 +43,18 @@ public class CopperRingItem extends Item {
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("item.forgeborneodyssey.copper_ring.tooltip"));
             
-            AbstractMetalBilletItem.Quality quality = getQuality(stack);
-            Component qualityText = AbstractMetalBilletItem.getQualityDisplayName(quality);
-            tooltip.add(qualityText);
-            
             double weight = QualityHelper.getWeightGrams(stack);
             if (weight > 0.0) {
                 if (weight >= 1000.0) {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", weight / 1000.0));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_kg", String.format("%.3f", weight / 1000.0)));
                 } else {
-                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", weight));
+                    tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", String.format("%.2f", weight)));
                 }
             }
             
             float purity = getPurity(stack);
             if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", purity));
+                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
             }
             
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));

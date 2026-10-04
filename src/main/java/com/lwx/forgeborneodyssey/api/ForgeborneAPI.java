@@ -293,7 +293,7 @@ public class ForgeborneAPI {
      */
     public static void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
         if (stack.isEmpty() || quality == null) return;
-        com.lwx.forgeborneodyssey.quality.QualityHelper.setQuality(stack, quality.toFloat());
+        com.lwx.forgeborneodyssey.quality.QualityHelper.ensurePhysicalWeight(stack);
     }
 
     /**
