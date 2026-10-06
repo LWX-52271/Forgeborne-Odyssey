@@ -2,7 +2,7 @@
   "parent": "forgeborneodyssey:stone_age",
   "display": {
     "icon": {
-      "item": "forgeborneodyssey:forgeborne_guide_book"
+      "item": "forgeborneodyssey:tutorial_guide_book"
     },
     "title": {
       "translate": "advancement.forgeborneodyssey.guide_book.title"
@@ -23,10 +23,7 @@
         "items": [
           {
             "items": [
-              "forgeborneodyssey:tutorial_guide_book",
-              "forgeborneodyssey:forgeborne_guide_book",
-              "forgeborneodyssey:pit_kiln_guide_book",
-              "forgeborneodyssey:fire_crack_mining_guide"
+              "forgeborneodyssey:tutorial_guide_book"
             ]
           }
         ]

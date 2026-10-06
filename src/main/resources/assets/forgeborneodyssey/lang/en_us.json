@@ -338,8 +338,8 @@
     "item.forgeborneodyssey.herb_poultice.tooltip": "§8A primitive wound dressing made of grass fiber and flowers, restores 4 HP",
     "item.forgeborneodyssey.forgeborne_guide_book": "Primitive Cold Forge Manual",
     "item.forgeborneodyssey.forgeborne_guide_book.tooltip": "§6A guidebook recording the basics of primitive cold forging\n§8Right-click to view detailed content",
-    "item.forgeborneodyssey.tutorial_guide_book": "Forgeborne Odyssey Tutorial",
-    "item.forgeborneodyssey.tutorial_guide_book.tooltip": "§6A tutorial book containing complete beginner's knowledge\n§8Right-click to view detailed content",
+    "item.forgeborneodyssey.tutorial_guide_book": "Guide",
+    "item.forgeborneodyssey.tutorial_guide_book.tooltip": "§6A guide book containing complete beginner's knowledge\n§8Right-click to view detailed content",
     "item.forgeborneodyssey.pit_kiln_guide_book": "Pit Kiln Firing Guide",
     "item.forgeborneodyssey.pit_kiln_guide_book.tooltip": "§6A guidebook recording the art of pit kiln pottery firing\n§8Right-click to view detailed content",
     "item.forgeborneodyssey.fire_crack_mining_guide": "Fire-Crack Mining Technique",
@@ -478,6 +478,7 @@
     "guidebook.forgeborneodyssey.chapter6.cooking": "• Fire pit can cook food items",
     "guidebook.forgeborneodyssey.chapter6.ash": "• Ash works as fertilizer to ripen plants",
     "guidebook.forgeborneodyssey.chapter6.building": "• 9 rock types can make stairs, slabs & walls",
+    "guidebook.forgeborneodyssey.chapter6.corpse": "• Corpses: knife yields full loot, bare hands yield fewer drops",
     "guidebook.forgeborneodyssey.chapter6.shift_tip": "§2Hold Shift key to see item details",
     "pit_kiln_guide.forgeborneodyssey.title": "§3§lPit Kiln Firing Guide",
     "pit_kiln_guide.forgeborneodyssey.subtitle": "Complete Pottery Firing Manual",
@@ -933,6 +934,7 @@
     "item.forgeborneodyssey.hide_boots": "Hide Boots",
     "item.forgeborneodyssey.grass_basket": "Grass Basket",
     "item.forgeborneodyssey.hide_armor.tooltip": "§8Tanned leather armor, better than grass but worse than iron",
+
     "message.forgeborneodyssey.knapping.no_material": "§cPlace a knapping material first!",
     "message.forgeborneodyssey.knapping.no_hammer": "§cNeed a hammer to knap!",
     "message.forgeborneodyssey.knapping.pattern_matched": "§2Pattern matched!",
@@ -995,11 +997,27 @@
     "tooltip.forgeborneodyssey.quality.low": "§8Quality: §cLow",
     "tooltip.forgeborneodyssey.quality.medium": "§8Quality: §6Medium",
     "tooltip.forgeborneodyssey.quality.high": "§8Quality: §2High",
+
+    "tooltip.forgeborneodyssey.mass_tier": "§3Mass: %s",
+    "mass_tier.forgeborneodyssey.light": "Light",
+    "mass_tier.forgeborneodyssey.weighty": "Weighty",
+    "mass_tier.forgeborneodyssey.heavy": "Heavy",
+    "mass_tier.forgeborneodyssey.immovable": "Immovable",
+
     "block.forgeborneodyssey.quartzite_boulder": "Quartzite Boulder",
     "block.forgeborneodyssey.quartz_sandstone_boulder": "Quartz Sandstone Boulder",
     "block.forgeborneodyssey.coarse_sandstone_boulder": "Coarse Sandstone Boulder",
     "block.forgeborneodyssey.basalt_boulder": "Basalt Boulder",
 
     "key.categories.forgeborneodyssey": "Forgeborne Odyssey",
-    "key.forgeborneodyssey.toggle_tutorial": "Toggle Survival Guide Panel"
+    "key.forgeborneodyssey.toggle_tutorial": "Toggle Survival Guide Panel", 
+
+    "message.forgeborneodyssey.thirst.dehydrated": "§4You are taking damage from dehydration!", 
+    "message.forgeborneodyssey.thirst.drink": "§bYou drank some water.", 
+    "thirst.forgeborneodyssey.label": "Thirst", 
+    "thirst.forgeborneodyssey.full": "Hydrated", 
+    "thirst.forgeborneodyssey.low": "Thirsty", 
+    "thirst.forgeborneodyssey.critical": "Dehydrated", 
+
+    "tooltip.forgeborneodyssey.drink": "§bRight-click to drink§r, §9Right-click water to fill" 
 }

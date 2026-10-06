@@ -3,11 +3,14 @@ package com.lwx.forgeborneodyssey.events;
 import com.lwx.forgeborneodyssey.network.ModMessages;
 import com.lwx.forgeborneodyssey.network.SyncStrengthPacket;
 import com.lwx.forgeborneodyssey.util.PlayerStrengthManager;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -71,6 +74,11 @@ public class StrengthTrainingHandler {
         double maxCapacity = PlayerStrengthManager.getMaxCarryCapacity(player);
         double activationThreshold = maxCapacity * PlayerStrengthManager.getTrainingActivationRatio();
 
+        int weightLevel = PlayerStrengthManager.getEffectiveWeightLevel(player);
+        if (weightLevel > 0) {
+            applyWeightHunger(player, weightLevel);
+        }
+
         if (totalWeight < activationThreshold) {
             return;
         }
@@ -106,6 +114,26 @@ public class StrengthTrainingHandler {
         return PlayerStrengthManager.getBaseTrainingRate() * overloadFactor * movementFactor * levelDecay;
     }
 
+    private static void applyWeightHunger(Player player, int weightLevel) {
+        float activityFactor;
+        if (player.isSprinting()) {
+            activityFactor = 6.0f;
+        } else if (player.isSwimming()) {
+            activityFactor = 4.0f;
+        } else if (player.walkDist != player.walkDistO) {
+            activityFactor = 3.0f;
+        } else {
+            activityFactor = 1.0f;
+        }
+
+        if (!player.onGround()) {
+            activityFactor += 2.0f;
+        }
+
+        float extraExhaustion = weightLevel * activityFactor * 0.001f;
+        player.getFoodData().addExhaustion(extraExhaustion);
+    }
+
     private static void onLevelUp(ServerPlayer player, int newLevel) {
         String name = PlayerStrengthManager.getStrengthLevelName(newLevel);
         player.sendSystemMessage(Component.translatable(
@@ -116,6 +144,28 @@ public class StrengthTrainingHandler {
         player.level().playSound(null, player.blockPosition(),
                 SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS,
                 0.5f, 1.2f);
+
+        spawnStrengthParticles(player);
+    }
+
+    private static void spawnStrengthParticles(ServerPlayer player) {
+        ServerLevel serverLevel = (ServerLevel) player.level();
+        double x = player.getX();
+        double y = player.getY() + 1.2;
+        double z = player.getZ();
+
+        int ringCount = 36;
+        for (int i = 0; i < ringCount; i++) {
+            double angle = (i / (double) ringCount) * Math.PI * 2;
+            double radius = 0.7;
+            double px = x + Math.cos(angle) * radius;
+            double pz = z + Math.sin(angle) * radius;
+            serverLevel.sendParticles(ParticleTypes.ENCHANT,
+                    px, y, pz,
+                    3,
+                    0.15, 0.6, 0.15,
+                    0.08);
+        }
     }
 
     public static void syncStrengthToClient(ServerPlayer player) {

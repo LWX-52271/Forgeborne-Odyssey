@@ -44,11 +44,17 @@ import com.lwx.forgeborneodyssey.items.tools.WroughtGoldAxeItem;
 import com.lwx.forgeborneodyssey.items.FiberRopeItem;
 import com.lwx.forgeborneodyssey.items.WaterskinItem;
 import com.lwx.forgeborneodyssey.items.CeramicWaterJugItem;
+import com.lwx.forgeborneodyssey.items.PlasterItem;
+import com.lwx.forgeborneodyssey.items.TooltipItem;
 import com.lwx.forgeborneodyssey.items.TutorialGuideBookItem;
 import com.lwx.forgeborneodyssey.items.tools.CopperFishingRodItem;
 import com.lwx.forgeborneodyssey.items.tools.SimpleFishingRodItem;
 import com.lwx.forgeborneodyssey.items.BoneFishHookItem;
+import com.lwx.forgeborneodyssey.items.CeramicBlowpipeItem;
+import com.lwx.forgeborneodyssey.items.GrayCrucibleItem;
+import com.lwx.forgeborneodyssey.items.GreenwareItem;
 import com.lwx.forgeborneodyssey.items.HerbPoulticeItem;
+import com.lwx.forgeborneodyssey.items.QuicklimeItem;
 import com.lwx.forgeborneodyssey.items.weapons.MetalKnifeItem;
 import com.lwx.forgeborneodyssey.items.weapons.MetalSwordBladeItem;
 import com.lwx.forgeborneodyssey.items.weapons.SlingItem;
@@ -65,6 +71,7 @@ import com.lwx.forgeborneodyssey.items.RawhideItem;
 import com.lwx.forgeborneodyssey.items.DriedHideItem;
 import com.lwx.forgeborneodyssey.items.LimedHideItem;
 import com.lwx.forgeborneodyssey.items.TannedLeatherItem;
+import com.lwx.forgeborneodyssey.items.ThrowableSurfaceCobblestoneItem;
 import com.lwx.forgeborneodyssey.items.GrassBasketItem;
 import com.lwx.forgeborneodyssey.items.StoragePotBlockItem;
 import com.lwx.forgeborneodyssey.items.beads.GoldBeadItem;
@@ -78,7 +85,6 @@ import com.lwx.forgeborneodyssey.items.metalhooks.CopperHookItem;
 import com.lwx.forgeborneodyssey.items.fragments.CopperFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.SilverFragmentItem;
 import com.lwx.forgeborneodyssey.items.fragments.GoldFragmentItem;
-// import com.lwx.forgeborneodyssey.items.PitKilnGuideBookItem; // 暂由Patchouli自动生成
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -132,7 +138,7 @@ public class ModItems {
     public static final RegistryObject<Item> CHLORITE_ROCK_BLOCK_ITEM = createBlockItem("chlorite_rock_block", ModBlocks.CHLORITE_ROCK_BLOCK);
 
     // 地表圆石物品
-    public static final RegistryObject<Item> SURFACE_COBBLESTONE_BLOCK_ITEM = ITEMS.register("surface_cobblestone_block", () -> new com.lwx.forgeborneodyssey.items.ThrowableSurfaceCobblestoneItem(ModBlocks.SURFACE_COBBLESTONE_BLOCK.get()));
+    public static final RegistryObject<Item> SURFACE_COBBLESTONE_BLOCK_ITEM = ITEMS.register("surface_cobblestone_block", () -> new ThrowableSurfaceCobblestoneItem(ModBlocks.SURFACE_COBBLESTONE_BLOCK.get()));
 
     // 竖井框架物品
     public static final RegistryObject<Item> SHAFT_FRAME_ITEM = createBlockItem("shaft_frame", ModBlocks.SHAFT_FRAME);
@@ -206,6 +212,12 @@ public class ModItems {
 
     // 软化金属条
     public static final RegistryObject<Item> SOFT_COPPER_STRIP = ITEMS.register("soft_copper_strip", SoftCopperStripItem::new);
+
+    // 扁平大砾石物品
+    public static final RegistryObject<Item> QUARTZITE_BOULDER_ITEM = createBlockItem("quartzite_boulder", ModBlocks.QUARTZITE_BOULDER);
+    public static final RegistryObject<Item> QUARTZ_SANDSTONE_BOULDER_ITEM = createBlockItem("quartz_sandstone_boulder", ModBlocks.QUARTZ_SANDSTONE_BOULDER);
+    public static final RegistryObject<Item> COARSE_SANDSTONE_BOULDER_ITEM = createBlockItem("coarse_sandstone_boulder", ModBlocks.COARSE_SANDSTONE_BOULDER);
+    public static final RegistryObject<Item> BASALT_BOULDER_ITEM = createBlockItem("basalt_boulder", ModBlocks.BASALT_BOULDER);
 
     // 大砾石石砧物品
     public static final RegistryObject<Item> QUARTZITE_ANVIL_ITEM = createBlockItem("quartzite_anvil", ModBlocks.QUARTZITE_ANVIL);
@@ -293,7 +305,7 @@ public class ModItems {
     // 石器加工基础材料
     public static final RegistryObject<Item> FLINT_PEBBLE = simpleItem("flint_pebble");
     public static final RegistryObject<Item> STONE_CORE = simpleItem("stone_core");
-    public static final RegistryObject<Item> FLINT_FLAKE = simpleItem("flint_flake");
+    public static final RegistryObject<Item> FLINT_FLAKE = ITEMS.register("flint_flake", FlintFlakeItem::new);
     public static final RegistryObject<Item> STONE_DEBITAGE = simpleItem("stone_debitage");
 
     // 红铜片物品
@@ -497,15 +509,6 @@ public class ModItems {
 
     // 新手教程书
     public static final RegistryObject<Item> TUTORIAL_GUIDE_BOOK = ITEMS.register("tutorial_guide_book", TutorialGuideBookItem::new);
-
-    // 冶锻入门手册
-    public static final RegistryObject<Item> FORGEBORNE_GUIDE_BOOK = ITEMS.register("forgeborne_guide_book", ForgeborneGuideBookItem::new);
-
-    // 火裂采矿术指南
-    public static final RegistryObject<Item> FIRE_CRACK_MINING_GUIDE = ITEMS.register("fire_crack_mining_guide", FireCrackMiningGuideBookItem::new);
-
-    // 竖穴升焰窑使用指南
-    public static final RegistryObject<Item> PIT_KILN_GUIDE_BOOK = ITEMS.register("pit_kiln_guide_book", PitKilnGuideBookItem::new);
 
     // 第三类：基础原材料（陶器系统）
     public static final RegistryObject<Item> RAW_CLAY = ITEMS.register("raw_clay", RawClayItem::new);

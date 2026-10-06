@@ -259,8 +259,8 @@ public class PlayerStrengthManager {
         double weight = 0.0;
         CompoundTag tag = stack.getTag();
         if (tag != null) {
-            if (tag.contains(QualityHelper.TAG_WEIGHT_GRAMS)) {
-                weight += QualityHelper.getWeightGrams(stack) * stack.getCount();
+            if (tag.contains(QualityHelper.TAG_WEIGHT_GRAMS) || tag.contains(QualityHelper.TAG_MASS_TIER)) {
+                weight += QualityHelper.getWeightForCalc(stack) * stack.getCount();
             }
             if (tag.contains("Items")) {
                 ListTag items = tag.getList("Items", CompoundTag.TAG_COMPOUND);

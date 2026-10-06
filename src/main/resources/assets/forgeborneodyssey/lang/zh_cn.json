@@ -339,8 +339,8 @@
     "item.forgeborneodyssey.herb_poultice.tooltip": "§8草茎纤维与花朵制成的原始伤口敷料，恢复4点生命值",
     "item.forgeborneodyssey.forgeborne_guide_book": "冷锻手册",
     "item.forgeborneodyssey.forgeborne_guide_book.tooltip": "§6记载着冷锻工艺的指南书\n§8右键点击查看详细内容",
-    "item.forgeborneodyssey.tutorial_guide_book": "冶锻纪行新手教程",
-    "item.forgeborneodyssey.tutorial_guide_book.tooltip": "§6记载着冶锻纪行完整入门知识的教程书\n§8右键点击查看详细内容",
+    "item.forgeborneodyssey.tutorial_guide_book": "指南",
+    "item.forgeborneodyssey.tutorial_guide_book.tooltip": "§6记载着冶锻纪行完整入门知识的指南书\n§8右键点击查看详细内容",
     "item.forgeborneodyssey.pit_kiln_guide_book": "竖穴升焰窑使用指南",
     "item.forgeborneodyssey.pit_kiln_guide_book.tooltip": "§6记载着竖穴升焰窑烧制陶器工艺的指南书\n§8右键点击查看详细内容",
     "item.forgeborneodyssey.fire_crack_mining_guide": "火裂采矿术",
@@ -477,6 +477,7 @@
     "guidebook.forgeborneodyssey.chapter6.cooking": "• 火塘可以用来烹饪食物",
     "guidebook.forgeborneodyssey.chapter6.ash": "• 灰烬可以作为肥料催熟植物",
     "guidebook.forgeborneodyssey.chapter6.building": "• 9种岩石类型可制作楼梯、半砖和墙",
+    "guidebook.forgeborneodyssey.chapter6.corpse": "• 尸体：持刀可完整处理，空手可处理但掉落减半",
     "guidebook.forgeborneodyssey.chapter6.shift_tip": "§2按住Shift键可以查看物品的详细信息",
     "pit_kiln_guide.forgeborneodyssey.title": "§3§l竖穴升焰窑使用指南",
     "pit_kiln_guide.forgeborneodyssey.subtitle": "陶器烧制完全手册",
@@ -933,6 +934,7 @@
     "item.forgeborneodyssey.hide_boots": "兽皮鞋",
     "item.forgeborneodyssey.grass_basket": "草编篮",
     "item.forgeborneodyssey.hide_armor.tooltip": "§8鞣制皮革护甲，优于草甲但劣于铁甲",
+
     "message.forgeborneodyssey.knapping.no_material": "§c先放置敲击材料！",
     "message.forgeborneodyssey.knapping.no_hammer": "§c需要手持石锤才能敲击！",
     "message.forgeborneodyssey.knapping.pattern_matched": "§2图案匹配成功！",
@@ -992,6 +994,21 @@
     "tooltip.forgeborneodyssey.quality.medium": "§8品质: §6中",
     "tooltip.forgeborneodyssey.quality.high": "§8品质: §2高",
 
+    "tooltip.forgeborneodyssey.mass_tier": "§3质量：%s",
+    "mass_tier.forgeborneodyssey.light": "轻盈",
+    "mass_tier.forgeborneodyssey.weighty": "压手",
+    "mass_tier.forgeborneodyssey.heavy": "沉重",
+    "mass_tier.forgeborneodyssey.immovable": "无法移动",
+
     "key.categories.forgeborneodyssey": "冶锻纪行",
-    "key.forgeborneodyssey.toggle_tutorial": "切换生存指南面板"
+    "key.forgeborneodyssey.toggle_tutorial": "切换生存指南面板", 
+
+    "message.forgeborneodyssey.thirst.dehydrated": "§4你因脱水而受到伤害！", 
+    "message.forgeborneodyssey.thirst.drink": "§b你喝了一些水。", 
+    "thirst.forgeborneodyssey.label": "口渴值", 
+    "thirst.forgeborneodyssey.full": "不渴", 
+    "thirst.forgeborneodyssey.low": "口渴", 
+    "thirst.forgeborneodyssey.critical": "极度脱水", 
+
+    "tooltip.forgeborneodyssey.drink": "§b右键喝水§r，§9右键水源装水" 
 }

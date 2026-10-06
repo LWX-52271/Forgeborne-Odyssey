@@ -21,7 +21,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.Fox;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
@@ -220,10 +226,17 @@ public class CorpseEntity extends Entity {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
+        if (heldItem.isEmpty()) {
+            if (!this.level().isClientSide) {
+                harvestWithBareHands(player);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
         return InteractionResult.PASS;
     }
 
-    private void dropLootTableItems(Player player) {
+    private void dropLootTableItems(Player player, boolean reduceDrops) {
         EntityType<?> entityType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(getDeadEntityTypeId()));
         if (entityType == null) {
             return;
@@ -270,49 +283,80 @@ public class CorpseEntity extends Entity {
                     .create(LootContextParamSets.ENTITY);
 
             for (ItemStack drop : lootTable.getRandomItems(params)) {
-                if (!drop.is(Items.LEATHER)) {
-                    this.spawnAtLocation(drop);
+                if (drop.is(Items.LEATHER)) {
+                    continue;
                 }
+                if (reduceDrops) {
+                    // 空手处理：约一半的掉落不会出现
+                    if (this.random.nextInt(2) == 0) {
+                        continue;
+                    }
+                    if (drop.getCount() > 1) {
+                        drop.setCount(Math.max(1, drop.getCount() / 2));
+                    }
+                }
+                this.spawnAtLocation(drop);
             }
             dummy.discard();
         }
     }
 
-    private void dropEquipment() {
+    private void dropEquipment(boolean reduceDrops) {
         CompoundTag nbt = getEntityNbt();
 
-        dropInventoryList(nbt, "HandItems");
-        dropInventoryList(nbt, "ArmorItems");
+        dropInventoryList(nbt, "HandItems", reduceDrops);
+        dropInventoryList(nbt, "ArmorItems", reduceDrops);
     }
 
-    private void dropInventoryList(CompoundTag nbt, String key) {
+    private void dropInventoryList(CompoundTag nbt, String key, boolean reduceDrops) {
         if (!nbt.contains(key, 9)) return;
         ListTag list = nbt.getList(key, 10);
         for (int i = 0; i < list.size(); i++) {
             CompoundTag itemTag = list.getCompound(i);
             ItemStack stack = ItemStack.of(itemTag);
-            if (!stack.isEmpty()) {
-                if (stack.isDamageableItem() && stack.getDamageValue() == 0) {
-                    int maxDamage = stack.getMaxDamage();
-                    int minDamage = (int)(maxDamage * 0.15);
-                    int maxRandomDamage = (int)(maxDamage * 0.75);
-                    int randomDamage = this.random.nextIntBetweenInclusive(minDamage, maxRandomDamage);
-                    stack.setDamageValue(randomDamage);
-                }
-                this.spawnAtLocation(stack);
+            if (stack.isEmpty()) {
+                continue;
             }
+            if (reduceDrops) {
+                // 空手处理：装备约一半的概率不会掉落
+                if (this.random.nextInt(2) == 0) {
+                    continue;
+                }
+            }
+            if (stack.isDamageableItem() && stack.getDamageValue() == 0) {
+                int maxDamage = stack.getMaxDamage();
+                int minDamage = (int)(maxDamage * 0.15);
+                int maxRandomDamage = (int)(maxDamage * 0.75);
+                int randomDamage = this.random.nextIntBetweenInclusive(minDamage, maxRandomDamage);
+                stack.setDamageValue(randomDamage);
+            }
+            this.spawnAtLocation(stack);
         }
     }
 
     private void harvestWithKnife(Player player, ItemStack knife, InteractionHand hand) {
+        harvestCorpse(player, false);
+        knife.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+        this.discard();
+    }
+
+    private void harvestWithBareHands(Player player) {
+        harvestCorpse(player, true);
+        this.discard();
+    }
+
+    private void harvestCorpse(Player player, boolean reduceDrops) {
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PUMPKIN_CARVE, SoundSource.PLAYERS, 1.0F, 1.0F);
-        dropLootTableItems(player);
-        dropEquipment();
+        dropLootTableItems(player, reduceDrops);
+        dropEquipment(reduceDrops);
 
         CompoundTag nbt = getEntityNbt();
         if (nbt.contains("CorpseStoredXp", 3)) {
             int xp = nbt.getInt("CorpseStoredXp");
             if (xp > 0) {
+                if (reduceDrops) {
+                    xp = Math.max(1, xp / 2);
+                }
                 net.minecraft.world.entity.ExperienceOrb.award((ServerLevel) this.level(), this.position(), xp);
             }
         }
@@ -321,19 +365,25 @@ public class CorpseEntity extends Entity {
 
         if (isMeatAnimal(typeId)) {
             int fatCount = this.random.nextInt(2) + 1;
+            if (reduceDrops) {
+                fatCount = (fatCount + 1) / 2;
+            }
             this.spawnAtLocation(new ItemStack(ModItems.ANIMAL_FAT.get(), fatCount));
 
             int boneCount = this.random.nextInt(3) + 1;
+            if (reduceDrops) {
+                boneCount = (boneCount + 1) / 2;
+            }
             this.spawnAtLocation(new ItemStack(Items.BONE, boneCount));
         }
 
         if (isHideAnimal(typeId)) {
             int count = this.random.nextInt(3) + 1;
+            if (reduceDrops) {
+                count = (count + 1) / 2;
+            }
             this.spawnAtLocation(new ItemStack(ModItems.RAWHIDE.get(), count));
         }
-
-        knife.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-        this.discard();
     }
 
     private boolean isHideAnimal(String typeId) {

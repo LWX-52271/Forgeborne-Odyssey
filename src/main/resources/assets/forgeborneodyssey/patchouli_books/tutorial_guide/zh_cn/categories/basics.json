@@ -1,6 +1,6 @@
 {
-  "name": "新手教程",
-  "description": "冶锻纪行完整新手入门指南",
-  "icon": "forgeborneodyssey:forgeborne_guide_book",
+  "name": "基础入门",
+  "description": "生存基础、石器工具与模组概述",
+  "icon": "forgeborneodyssey:tutorial_guide_book",
   "sortnum": 0
 }

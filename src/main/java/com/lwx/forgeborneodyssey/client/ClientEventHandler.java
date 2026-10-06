@@ -287,6 +287,6 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
-        event.register(TutorialTaskOverlay.TOGGLE_KEY);
+        event.register(TutorialTaskOverlay.getToggleKey());
     }
 }

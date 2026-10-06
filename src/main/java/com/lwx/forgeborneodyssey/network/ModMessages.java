@@ -134,5 +134,12 @@ public class ModMessages {
             .decoder(SyncTutorialTasksPacket::new)
             .consumerMainThread(SyncTutorialTasksPacket::handle)
             .add();
+
+        // 口渴值同步（服务端 -> 客户端）
+        CHANNEL.messageBuilder(SyncThirstPacket.class, messageID++)
+            .encoder(SyncThirstPacket::toBytes)
+            .decoder(SyncThirstPacket::new)
+            .consumerMainThread(SyncThirstPacket::handle)
+            .add();
     }
 }

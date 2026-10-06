@@ -282,8 +282,26 @@ public class ForgeborneAPI {
      */
     public static double getWeight(ItemStack stack) {
         if (stack.isEmpty()) return -1;
-        double w = com.lwx.forgeborneodyssey.quality.QualityHelper.getWeightGrams(stack);
+        double w = com.lwx.forgeborneodyssey.quality.QualityHelper.getWeightForCalc(stack);
         return w > 0.0 ? w : -1;
+    }
+
+    /**
+     * 获取物品的质量档位
+     * @param stack 物品堆
+     * @return 质量档位枚举
+     */
+    public static com.lwx.forgeborneodyssey.quality.MassTier getMassTier(ItemStack stack) {
+        return com.lwx.forgeborneodyssey.quality.QualityHelper.getMassTier(stack);
+    }
+
+    /**
+     * 设置物品的质量档位
+     * @param stack 物品堆
+     * @param tier  目标档位
+     */
+    public static void setMassTier(ItemStack stack, com.lwx.forgeborneodyssey.quality.MassTier tier) {
+        com.lwx.forgeborneodyssey.quality.QualityHelper.setMassTier(stack, tier);
     }
 
     /**

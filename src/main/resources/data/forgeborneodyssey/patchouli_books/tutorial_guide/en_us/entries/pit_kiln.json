@@ -1,12 +1,22 @@
 {
-  "category": "forgeborneodyssey:basics",
+  "category": "forgeborneodyssey:kilns",
   "name": "Pottery Making",
   "icon": "forgeborneodyssey:pit_kiln",
   "pages": [
     {
       "type": "patchouli:text",
-      "title": "Pottery Basics",
-      "text": "Pottery is essential for making crucibles, molds, and other ceramic tools.$(br2)The process involves multiple steps: gathering clay, shaping greenware, building a kiln, and firing.$(br2)For a complete guide, read the §3Pit Kiln Firing Guide§r (obtainable separately)."
+      "title": "Pit Kiln",
+      "text": "§3Pit Kiln§r is the core facility for ancient pottery firing. It uses a dirt-walled pit structure, burning fuel through the fire mouth to produce high temperatures, combined with vents to control the kiln atmosphere, transforming greenware into different ceramic products.$(br2)This guide will walk you step by step through the construction and firing process of the pit kiln."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Firing Process",
+      "text": "The pit kiln operates in five stages:$(br)$(li)§5Build the Kiln§r — Place pit kiln block, surround with dirt in a U-shape$(br)$(li)§5Install Grate & Load§r — Install grate, place greenware inside$(br)$(li)§5Seal & Heat§r — Add fuel, seal with kiln lid, ignite$(br)$(li)§5High-Temp Firing§r — Temperature exceeds 100℃, formal firing begins$(br)$(li)§5Cooling & Collect§r — Fuel depletes, temperature drops, products auto-drop on completion"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Key Concepts",
+      "text": "$(li)§3Temperature§r: Determined by fuel, grate efficiency, and insulation grade, max 900℃ (1200℃ with blowpipe)$(br)$(li)§3Oxygen Content§r: Controlled by fire mouth and vent states$(br)$(li)§3Oxidizing Atmosphere§r: High oxygen, suitable for §4redware$(br)$(li)§3Reducing Atmosphere§r: Low oxygen, suitable for §3gray ware§0 and §8black ware$(br)$(li)§3Insulation Grade§r: Determined by surrounding dirt blocks (0-4 sides)"
     },
     {
       "type": "patchouli:text",
@@ -14,14 +24,34 @@
       "text": "$(li)Use §4Flint Shovel§r on sand/gravel to get §4Raw Clay§r$(br)$(li)Use §4Flint Knife§r on grass to get §4Grass Fiber§r$(br)$(li)Harvest wheat for §4Rice Husk§r (30% chance)$(br2)These are the basic materials for pottery."
     },
     {
+      "type": "patchouli:crafting",
+      "recipe": "forgeborneodyssey:mixed_clay_crafting",
+      "text": "§3Mixed Clay Recipe§r$(br2)Craft: §4Raw Clay + Any Temper (Grog/Sand/Red Sand) + Grass Fiber§r$(br2)Mixed clay is the foundation for all pottery greenware items."
+    },
+    {
       "type": "patchouli:text",
       "title": "Step 2: Make Greenware",
-      "text": "Combine raw clay with temper (grog) and fiber to make mixed clay. Then shape it into greenware:$(br2)$(li)§4Crucible§r - for melting metals$(br)$(li)§4Mold§r - for casting shapes$(br)$(li)§4Brick§r - for construction$(br)$(li)§4Blowpipe§r - for metalworking$(br2)§4Tip:§r The temper material in the mixed clay recipe can be substituted with §3Sand§r or §3Red Sand§r — you don't need specialized temper grog. Greenware must be fired in a kiln to become usable."
+      "text": "Shape mixed clay into greenware:$(br2)$(li)§4Crucible§r — for melting metals$(br)$(li)§4Mold§r — for casting shapes$(br)$(li)§4Brick§r — for construction$(br)$(li)§4Blowpipe§r — for metalworking$(br2)§4Tip:§r The temper material in the mixed clay recipe can be substituted with §3Sand§r or §3Red Sand§r — no need for specialized temper grog. Greenware must be fired in a kiln to become usable."
     },
     {
       "type": "patchouli:text",
       "title": "Step 3: Build and Fire Kiln",
-      "text": "$(li)Use §4Flint Shovel§r on dirt to dig a kiln pit$(br)$(li)Place greenware items in the kiln$(br)$(li)Add fuel through the fire mouth$(br)$(li)Seal with kiln lid and ignite$(br)$(li)Control temperature and atmosphere$(br)$(li)Wait for firing to complete, then collect$(br2)§4Tip:§r Different products need different firing conditions."
+      "text": "Building a complete pit kiln requires:$(br2)$(li)Pit kiln block ×1$(br)$(li)Dirt blocks ×8 (for kiln body)$(br)$(li)Fire mouth block ×1$(br)$(li)Grate block ×1$(br)$(li)Kiln lid ×1$(br)$(li)Fire drill ×1 (ignition tool)$(br)$(li)Fuel (firewood, straw, rice husk char, etc.)$(br)$(li)Greenware items$(br2)Procedure: Use §4Flint Shovel§r on dirt to dig kiln pit → load greenware → add fuel through fire mouth → seal with kiln lid & ignite → control temp and atmosphere → wait for firing to complete."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Firing Conditions",
+      "text": "Different products need different firing conditions:$(br2)$(li)§4Redware§r (oxidizing atmosphere): Red Mold, Red Brick$(br)$(li)§3Gray Ware§r (reducing atmosphere): Gray Crucible$(br)$(li)§8Black Ware§r (strong reducing atmosphere): Advanced ceramics$(br2)§4Tip:§r Vents control oxygen levels inside the kiln. Close the fire mouth tightly to create a reducing atmosphere."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:gray_crucible",
+      "text": "§3Gray Crucible§r is one of the key successful products. Fired in a reducing atmosphere, it has high temperature resistance and is the basic tool for metal smelting."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "forgeborneodyssey:red_mold",
+      "text": "§4Red Mold§r is fired in an oxidizing atmosphere, used for casting metal ingots and tools."
     }
   ],
   "sortnum": 4

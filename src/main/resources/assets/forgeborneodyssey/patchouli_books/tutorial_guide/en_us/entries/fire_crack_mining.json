@@ -1,22 +1,47 @@
 {
-  "category": "forgeborneodyssey:basics",
-  "name": "Fire-Crack Mining",
+  "category": "forgeborneodyssey:fire_crack_mining",
+  "name": "Fire Crack Mining",
   "icon": "forgeborneodyssey:fire_pit_block",
   "pages": [
     {
       "type": "patchouli:text",
       "title": "What is Fire-Crack Mining?",
-      "text": "Since you cannot mine ores with a pickaxe, you need §4fire-crack mining§r to extract ore chunks from ore blocks.$(br2)This ancient technique uses thermal stress: heat the rock with fire, then shock it with water to crack it open.$(br2)For a complete guide, read the §3Fire-Crack Mining Guide§r (obtainable separately)."
+      "text": "Since you cannot mine ores with a pickaxe, you need §4fire-crack mining§r to extract ore chunks from ore blocks.$(br2)This ancient technique uses thermal stress: heat the rock with fire, then shock it with water to crack it open.$(br2)Below is the complete guide, from preparation to advanced tips."
     },
     {
       "type": "patchouli:text",
-      "title": "Basic Steps",
-      "text": "$(li)Find an ore block you want to mine$(br)$(li)Place a fire source near the ore block$(br)$(li)Wait for the heat to spread$(br)$(li)Pour water on the heated rock$(br)$(li)The thermal shock cracks the rock, dropping ore chunks$(br2)§4Tip:§r Different rock types respond differently to heat."
+      "title": "Preparation",
+      "text": "§0Before starting fire-crack mining, prepare the following:$(br2)$(li)§5Bow Drill§r ×1 — Core tool for igniting flames$(br)$(li)§5Water Bucket§r ×1 — Quench heated rocks$(br)$(li)§5Fuel Items§r — Torches, planks, sticks to maintain flame$(br)$(li)§5Pickaxe§r — Collect cracked minerals and rocks$(br)$(li)§5Shelter (Optional)§r — May be needed in enclosed spaces"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Basic Procedure",
+      "text": "§0Using copper ore mining as an example:$(br2)§4[1. Locate Target]$(br) Find rock blocks to mine (e.g., chalcopyrite, bornite).$(br2)§4[2. Build Flame]$(br) Place fuel adjacent to target rocks and ignite with Bow Drill.$(br2)§4[3. Wait for Heating]$(br) The flame gradually heats adjacent rocks. Be patient.$(br2)§4[4. Quench with Water]$(br) Right-click heated rocks with a water bucket.$(br2)§4[5. Collect Products]$(br) Rocks crack and drop minerals automatically."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Heat Management",
+      "text": "§0Follow these tips for optimal heating efficiency:$(br2)$(li)§3Keep Flame Burning§r — Refuel before it depletes$(br)$(li)§3Strategic Placement§r — Place flames next to rocks for best heating$(br)$(li)§3Cooling Rate§r — Hot rocks cool quickly without active heating$(br)$(li)§3Conduction Distance§r — Heat travels up to 3 blocks; use multiple flames for distant rocks$(br)$(li)§3Direction-Independent§r — Modern model conducts heat uniformly in all directions"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Efficient Mining",
+      "text": "§0Master these techniques for maximum efficiency:$(br2)§2§lChain Thermal Cracking§r $(br) When one rock cracks, heat spreads to adjacent rocks, potentially triggering chain reactions. Best in dense ore veins.$(br2)§2§lMulti-Source Heating§r $(br) Light multiple flames around the target area to accelerate heating. Ideal for hard rock layers.$(br2)§2§lOpen Area Advantage§r $(br) Build in open areas for maximum oxygen, maximizing combustion efficiency.$(br2)§2§lCycle Operation§r $(br) Quench before fuel runs out, then re-ignite and repeat."
     },
     {
       "type": "patchouli:text",
       "title": "Ore Processing",
-      "text": "Ore chunks are the raw material you get from fire-crack mining.$(br2)You need to use a §4Quern§r to grind ore chunks into §4Ore Grains§r, then place the grains in a crucible to melt them, pour into a mold to cool, and finally obtain metal billets.$(br2)For the complete process, read §3Chapter 7: Quern & Ore Processing§r.$(br2)§4Tip:§r Ore quality (grade) affects how much metal you can extract."
+      "text": "Ore chunks are the raw material you get from fire-crack mining.$(br2)You need to use a §4Quern§r to grind ore chunks into §4Ore Grains§r, then place the grains in a crucible to melt them, pour into a mold to cool, and finally obtain metal billets.$(br2)For the complete process, read §3Using the Quern§r in the §3Processing§r category.$(br2)§4Tip:§r Ore quality (grade) affects how much metal you can extract."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Troubleshooting",
+      "text": "$(li)§cFlame extinguishes quickly?§r → Check if area is enclosed; low oxygen accelerates consumption. Build in open areas.$(br)$(li)§cHeating too slow?§r → Use multiple heat sources or check fuel levels.$(br)$(li)§cNo cracking after water?§r → Temperature may be insufficient; heat longer before quenching.$(br)$(li)§cFlint won't ignite?§r → Ensure no block above, surface is burnable, and you're in the Overworld.$(br)$(li)§cFlame hurts player?§r → Yes! Standing near flames causes burn damage. Keep safe distance."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Safety Notes",
+      "text": "§0Follow these safety guidelines:$(br2)$(li)§cFire Damage§r — Standing near active flames causes continuous burn damage$(br)$(li)§cTNT Compatibility§r — Bow Drill retains vanilla functionality for TNT and other flammables$(br)$(li)§cOverworld Only§r — Fire-crack system only works in the Overworld; disabled in other dimensions$(br)$(li)§cMultiplayer Support§r — Thermal operations are independent per player in multiplayer$(br)$(li)§cPersistent Data§r — Flame and heat data saves with the world; no loss on restart"
     }
   ],
   "sortnum": 3

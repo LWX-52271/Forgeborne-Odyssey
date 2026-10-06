@@ -12,6 +12,7 @@ import com.lwx.forgeborneodyssey.network.ModMessages;
 import com.lwx.forgeborneodyssey.network.SyncStressPacket;
 import com.lwx.forgeborneodyssey.util.FluidHelper;
 import com.lwx.forgeborneodyssey.util.HeatSavedData;
+import com.lwx.forgeborneodyssey.util.OxygenUtil;
 import com.lwx.forgeborneodyssey.util.VanillaBlockStressManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -409,37 +410,10 @@ public class FireCrackMiningHandler {
     /**
      * 环境氧浓度系数：根据方块周围封闭程度决定燃烧效率
      * 露天=1.0，近水=0.7，半封闭=0.25，全封闭=0.05
+     * 复用 {@link com.lwx.forgeborneodyssey.util.OxygenUtil}
      */
     private static float getOxygenMultiplier(Level level, BlockPos pos) {
-        boolean skyOpen = true;
-        BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos();
-        for (int dy = 1; dy <= OXYGEN_SCAN_HEIGHT; dy++) {
-            checkPos.set(pos.getX(), pos.getY() + dy, pos.getZ());
-            if (!level.isLoaded(checkPos)) break;
-            if (level.getBlockState(checkPos).canOcclude()) {
-                skyOpen = false;
-                break;
-            }
-        }
-
-        boolean hasWater = false;
-        int solidFaces = 0;
-        for (Direction dir : Direction.values()) {
-            checkPos.set(pos.getX() + dir.getStepX(), pos.getY() + dir.getStepY(), pos.getZ() + dir.getStepZ());
-            BlockState ns = level.getBlockState(checkPos);
-            if (ns.is(Blocks.WATER)) hasWater = true;
-            if (ns.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED)
-                    && ns.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED)) {
-                hasWater = true;
-            }
-            if (ns.canOcclude()) solidFaces++;
-        }
-
-        if (hasWater) return OXYGEN_NEAR_WATER;
-        if (skyOpen && solidFaces <= 2) return OXYGEN_FULL;
-        if (skyOpen) return 0.7f;
-        if (solidFaces == 6) return OXYGEN_ENCLOSED;
-        return OXYGEN_PARTIAL;
+        return OxygenUtil.getOxygenMultiplier(level, pos);
     }
 
     /**

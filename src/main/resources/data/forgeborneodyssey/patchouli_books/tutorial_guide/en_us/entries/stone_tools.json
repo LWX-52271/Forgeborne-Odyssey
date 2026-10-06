@@ -46,7 +46,7 @@
     {
       "type": "patchouli:text",
       "title": "About Birch Tar",
-      "text": "§4Note:§r Advanced tools like the flint knife, flint shovel, flint sickle, and stone spear require §4Birch Tar§r as an adhesive.$(br2)Birch tar is extracted from birch bark using a §4Tar Kiln§r:$(br)$(li)Right-click §3Birch Logs§r with a crude flint knife to strip bark$(br)$(li)Place birch bark in a tar kiln and fire it$(br)$(li)Obtain birch tar for crafting$(br2)For detailed steps, read §3Chapter 6: Tar Kiln & Birch Tar§r."
+      "text": "§4Note:§r Advanced tools like the flint knife, flint shovel, flint sickle, and stone spear require §4Birch Tar§r as an adhesive.$(br2)Birch tar is extracted from birch bark using a §4Tar Kiln§r:$(br)$(li)Right-click §3Birch Logs§r with a crude flint knife to strip bark$(br)$(li)Place birch bark in a tar kiln and fire it$(br)$(li)Obtain birch tar for crafting$(br2)For detailed steps, read §3Tar Kiln & Birch Tar§r in the §3Kilns§r category."
     },
     {
       "type": "patchouli:text",

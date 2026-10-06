@@ -18,9 +18,8 @@ public class ModCreativeTabs {
         CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.forgeborneodyssey.blocks"))
             .displayItems((parameters, output) -> {
-                // 只添加所有模组方块到创造模式标签页
                 ModBlocks.BLOCKS.getEntries().forEach(blockRegistryObject -> {
-                    output.accept(blockRegistryObject.get());
+                    output.accept(new ItemStack(blockRegistryObject.get()));
                 });
             })
             .icon(() -> new ItemStack(ModBlocks.CUPRITE_ORE.get()))  // 使用模组方块作为图标

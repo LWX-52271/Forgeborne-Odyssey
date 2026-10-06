@@ -1,4 +1,13 @@
 {
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "minecraft"
+      }
+    }
+  ],
   "type": "minecraft:smithing_transform",
   "template": {
     "item": "minecraft:netherite_upgrade_smithing_template"

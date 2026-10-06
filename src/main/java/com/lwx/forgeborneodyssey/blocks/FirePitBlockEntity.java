@@ -116,11 +116,10 @@ public class FirePitBlockEntity extends BlockEntity {
         if (itemStack.is(Items.COAL)) return 1600;  // 80 秒
         if (itemStack.is(Items.CHARCOAL)) return 1600;  // 80 秒
         if (itemStack.is(Items.BLAZE_ROD)) return 2400;  // 120 秒
-        if (itemStack.is(Items.STICK)) return 20;  // 1 秒
+        if (itemStack.is(Items.STICK)) return 100;  // 5 秒
         
-        // 木制品（通过 Forge 的燃料系统）
-        // 除以 4 平衡时间：火塘作为持续热源，燃料效率高于火裂采矿的露天火焰
-        return ForgeHooks.getBurnTime(itemStack, null) / 4;
+        // 木制品等其余燃料统一使用原版熔炉燃烧时间
+        return ForgeHooks.getBurnTime(itemStack, null);
     }
     
     // 烧制相关的方法
