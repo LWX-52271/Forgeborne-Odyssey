@@ -2,6 +2,7 @@ package com.lwx.forgeborneodyssey.client;
 
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.blocks.TunnelSupportBlock;
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.entities.BisonEntity;
 import com.lwx.forgeborneodyssey.events.FireCrackMiningHandler;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
@@ -590,7 +591,7 @@ public class ClientForgeEventHandler {
     }
 
     private static final ResourceLocation PLASTER_SPRITE_ID =
-            new ResourceLocation("forgeborneodyssey", "block/lime_plaster_block");
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "block/lime_plaster_block");
 
     private static void renderPlasterOverlay(PoseStack poseStack, Level level) {
         Map<BlockPos, Map<Direction, Integer>> plastered = ClientPlasterData.getAllPlastered();

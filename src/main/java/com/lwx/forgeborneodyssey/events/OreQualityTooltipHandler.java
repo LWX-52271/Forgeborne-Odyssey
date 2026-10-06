@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.events;
 
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +26,6 @@ public class OreQualityTooltipHandler {
         ResourceLocation key = ForgeRegistries.ITEMS.getKey(stack.getItem());
         if (key == null) return false;
         String ns = key.getNamespace();
-        return "forgeborneodyssey".equals(ns) || "minecraft".equals(ns);
+        return ForgeborneOdyssey.MOD_ID.equals(ns) || "minecraft".equals(ns);
     }
 }

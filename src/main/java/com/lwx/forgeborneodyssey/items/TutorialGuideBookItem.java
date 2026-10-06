@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.items;
 
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class TutorialGuideBookItem extends Item {
 
-    public static final ResourceLocation BOOK_ID = new ResourceLocation("forgeborneodyssey", "tutorial_guide");
+    public static final ResourceLocation BOOK_ID = new ResourceLocation(ForgeborneOdyssey.MOD_ID, "tutorial_guide");
 
     public TutorialGuideBookItem() {
         super(new Item.Properties().stacksTo(1));

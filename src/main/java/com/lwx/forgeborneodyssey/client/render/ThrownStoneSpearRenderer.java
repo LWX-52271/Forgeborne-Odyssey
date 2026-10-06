@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.client.render;
 
 import com.lwx.forgeborneodyssey.client.model.StoneSpearModel;
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.entities.ThrownStoneSpear;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,7 +16,7 @@ import net.minecraft.util.Mth;
 
 public class ThrownStoneSpearRenderer extends EntityRenderer<ThrownStoneSpear> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("forgeborneodyssey", "textures/entity/stone_spear.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ForgeborneOdyssey.MOD_ID, "textures/entity/stone_spear.png");
     private final StoneSpearModel<ThrownStoneSpear> model;
 
     public ThrownStoneSpearRenderer(EntityRendererProvider.Context context) {

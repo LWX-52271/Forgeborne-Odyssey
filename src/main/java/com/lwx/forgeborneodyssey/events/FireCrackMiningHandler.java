@@ -4,6 +4,7 @@ import com.lwx.forgeborneodyssey.api.ForgeborneAPI;
 import com.lwx.forgeborneodyssey.blocks.FireMouthBlock;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlock;
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.core.registration.ModSounds;
 import com.lwx.forgeborneodyssey.network.FireCrackBatchSyncPacket;
@@ -91,7 +92,7 @@ public class FireCrackMiningHandler {
     private static final int MAX_CHAIN_DEPTH = 3;
     private static final float CALCINATION_HEAT_THRESHOLD = 90.0f;
     private static final TagKey<Block> LIME_BEARING = BlockTags.create(
-            new ResourceLocation("forgeborneodyssey", "heat_shock/lime_bearing"));
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "heat_shock/lime_bearing"));
     private static final long QUENCH_BONUS_DURATION = 1200;
     private static final long QUENCH_COOLDOWN = 40;
     private static final float QUENCH_BONUS_MULTIPLIER = 1.5f;

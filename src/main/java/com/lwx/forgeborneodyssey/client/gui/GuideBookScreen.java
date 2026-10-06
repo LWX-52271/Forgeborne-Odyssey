@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.client.gui;
 
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -15,7 +16,7 @@ import net.minecraft.world.item.Items;
  */
 public class GuideBookScreen extends Screen {
     
-    private static final ResourceLocation BOOK_TEXTURE = new ResourceLocation("forgeborneodyssey", "textures/gui/guide_book.png");
+    private static final ResourceLocation BOOK_TEXTURE = new ResourceLocation(ForgeborneOdyssey.MOD_ID, "textures/gui/guide_book.png");
     
     private int currentPage = 0;
     private static final int TOTAL_PAGES = 10; // 总页数（根据文本量动态计算）

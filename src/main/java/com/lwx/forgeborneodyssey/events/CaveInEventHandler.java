@@ -2,9 +2,10 @@ package com.lwx.forgeborneodyssey.events;
 
 import com.lwx.forgeborneodyssey.blocks.ShaftFrameBlock;
 import com.lwx.forgeborneodyssey.blocks.TunnelSupportBlock;
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
+import com.lwx.forgeborneodyssey.core.registration.ModSounds;
 import com.lwx.forgeborneodyssey.network.ModMessages;
 import com.lwx.forgeborneodyssey.network.SyncCrawlStatePacket;
-import com.lwx.forgeborneodyssey.core.registration.ModSounds;
 import com.lwx.forgeborneodyssey.util.PlayerStrengthManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,7 +14,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import com.lwx.forgeborneodyssey.core.registration.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -49,7 +49,7 @@ public class CaveInEventHandler {
     private static final int CAVE_IN_SOUND_COOLDOWN = 40;
 
     private static final TagKey<Block> CAVEIN_COLLAPSIBLE = BlockTags.create(
-            new ResourceLocation("forgeborneodyssey", "cavein_collapsible"));
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "cavein_collapsible"));
 
     private static long lastCaveInSoundTick = -CAVE_IN_SOUND_COOLDOWN;
 

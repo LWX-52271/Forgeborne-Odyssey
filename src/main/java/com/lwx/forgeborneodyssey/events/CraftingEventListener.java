@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.events;
 
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.items.GrassFiberItem;
 import com.lwx.forgeborneodyssey.items.RawClayItem;
@@ -73,7 +74,7 @@ public class CraftingEventListener {
         ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
         if (id == null) return false;
         String ns = id.getNamespace();
-        return "forgeborneodyssey".equals(ns) || "minecraft".equals(ns);
+        return ForgeborneOdyssey.MOD_ID.equals(ns) || "minecraft".equals(ns);
     }
 
     private static void spawnPickupParticles(PlayerEvent.ItemPickupEvent event, ItemStack stack) {

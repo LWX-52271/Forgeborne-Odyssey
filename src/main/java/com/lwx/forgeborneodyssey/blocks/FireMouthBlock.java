@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.blocks;
 
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.core.BlockPos;
@@ -50,7 +51,7 @@ public class FireMouthBlock extends HorizontalDirectionalBlock {
     protected static final VoxelShape SHAPE_WEST = Block.box(13, 0, 3, 16, 9, 13);
 
     private static final TagKey<Item> KILN_FUEL_TAG = TagKey.create(Registries.ITEM,
-            new ResourceLocation("forgeborneodyssey", "kiln_fuel"));
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "kiln_fuel"));
 
     public FireMouthBlock() {
         super(Properties.of()
