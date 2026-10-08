@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "forgeborneodyssey:tool_shapeless",
   "ingredients": [
     {
       "item": "forgeborneodyssey:dried_hide"
@@ -24,6 +24,7 @@
       }
     }
   ],
+  "tool": "1",
   "result": {
     "item": "forgeborneodyssey:tanned_leather"
   }

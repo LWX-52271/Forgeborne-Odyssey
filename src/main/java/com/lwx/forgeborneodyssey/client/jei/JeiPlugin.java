@@ -4,8 +4,6 @@ import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.core.FoodCookingRecipes;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
-import com.lwx.forgeborneodyssey.core.registration.ModRecipes;
-import com.lwx.forgeborneodyssey.recipe.ForgingRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -17,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeManager;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -48,18 +45,14 @@ public class JeiPlugin implements IModPlugin {
                 new PitKilnFiringRecipeCategory(registration.getJeiHelpers().getGuiHelper()),
                 new AxeBendingRecipeCategory(registration.getJeiHelpers().getGuiHelper()),
                 new ChiselCarvingRecipeCategory(registration.getJeiHelpers().getGuiHelper()),
-                new KnappingRecipeCategory(registration.getJeiHelpers().getGuiHelper())
+                new KnappingRecipeCategory(registration.getJeiHelpers().getGuiHelper()),
+                new HammerForgingRecipeCategory(registration.getJeiHelpers().getGuiHelper())
         );
     }
 
     @Override
     public void registerRecipes(@Nonnull IRecipeRegistration registration) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null) return;
-        RecipeManager recipeManager = minecraft.level.getRecipeManager();
-
-        List<ForgingRecipe> forgingRecipes = recipeManager.getAllRecipesFor(ModRecipes.FORGING_RECIPE_TYPE.get());
-        registration.addRecipes(ForgingRecipeCategory.RECIPE_TYPE, forgingRecipes);
+        if (Minecraft.getInstance().level == null) return;
 
         registration.addRecipes(OreCrushingRecipeCategory.RECIPE_TYPE, buildOreCrushingRecipes());
         registration.addRecipes(FirePitCookingRecipeCategory.RECIPE_TYPE, buildFirePitCookingRecipes());
@@ -70,6 +63,7 @@ public class JeiPlugin implements IModPlugin {
         registration.addRecipes(AxeBendingRecipeCategory.RECIPE_TYPE, buildAxeBendingRecipes());
         registration.addRecipes(ChiselCarvingRecipeCategory.RECIPE_TYPE, buildChiselCarvingRecipes());
         registration.addRecipes(KnappingRecipeCategory.RECIPE_TYPE, buildKnappingRecipes());
+        registration.addRecipes(HammerForgingRecipeCategory.RECIPE_TYPE, buildHammerForgingRecipes());
 
         registration.addIngredientInfo(
                 new ItemStack(ModBlocks.QUARTZITE_ANVIL.get()),
@@ -164,6 +158,11 @@ public class JeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(quartzSandstoneAnvil, KnappingRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(coarseSandstoneAnvil, KnappingRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(basaltAnvil, KnappingRecipeCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(quartziteAnvil, HammerForgingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(quartzSandstoneAnvil, HammerForgingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(coarseSandstoneAnvil, HammerForgingRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(basaltAnvil, HammerForgingRecipeCategory.RECIPE_TYPE);
     }
 
     private static List<FirePitCookingRecipe> buildFirePitCookingRecipes() {
@@ -636,6 +635,65 @@ public class JeiPlugin implements IModPlugin {
                 coreShapingOutputs,
                 "jei.forgeborneodyssey.knapping.stone_core_desc",
                 4
+        ));
+
+        return recipes;
+    }
+
+    private static List<HammerForgingRecipe> buildHammerForgingRecipes() {
+        List<HammerForgingRecipe> recipes = new ArrayList<>();
+
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.COPPER_BILLET.get()),
+                new ItemStack(ModItems.COPPER_SHEET.get()),
+                8
+        ));
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.SILVER_BILLET.get()),
+                new ItemStack(ModItems.SILVER_SHEET.get()),
+                8
+        ));
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.GOLD_BILLET.get()),
+                new ItemStack(ModItems.GOLD_SHEET.get()),
+                8
+        ));
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.SOFT_COPPER_BILLET.get()),
+                new ItemStack(ModItems.COPPER_SHEET.get()),
+                8
+        ));
+
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.COPPER_CURVE.get()),
+                new ItemStack(ModItems.COPPER_AXE.get()),
+                6
+        ));
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.SILVER_CURVE.get()),
+                new ItemStack(ModItems.SILVER_AXE.get()),
+                6
+        ));
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.GOLD_CURVE.get()),
+                new ItemStack(ModItems.GOLD_AXE.get()),
+                6
+        ));
+
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.COPPER_SLOT.get()),
+                new ItemStack(ModItems.COPPER_SWORD_BLADE.get()),
+                7
+        ));
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.SILVER_SLOT.get()),
+                new ItemStack(ModItems.SILVER_SWORD_BLADE.get()),
+                7
+        ));
+        recipes.add(new HammerForgingRecipe(
+                new ItemStack(ModItems.GOLD_SLOT.get()),
+                new ItemStack(ModItems.GOLD_SWORD_BLADE.get()),
+                7
         ));
 
         return recipes;
