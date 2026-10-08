@@ -185,7 +185,7 @@ public class SimpleWorldGen {
         context.register(boulderPlacedKey, new PlacedFeature(
             boulderFeature,
             List.of(
-                CountPlacement.of(6),
+                CountPlacement.of(16),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(
                     VerticalAnchor.absolute(60),

@@ -22,7 +22,7 @@ public class PitDiggingInputPacket {
     public void toBytes(FriendlyByteBuf buffer) {
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             Player player = context.getSender();
@@ -30,7 +30,7 @@ public class PitDiggingInputPacket {
                 lastKeepAliveTick.put(player.getUUID(), player.level().getGameTime());
             }
         });
-        return true;
+        context.setPacketHandled(true);
     }
 
     public static boolean isKeepAliveRecent(Player player) {

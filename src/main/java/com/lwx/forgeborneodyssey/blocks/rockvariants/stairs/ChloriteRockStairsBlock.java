@@ -10,7 +10,7 @@ public class ChloriteRockStairsBlock extends StairBlock {
     public ChloriteRockStairsBlock() {
         super(ModBlocks.CHLORITE_ROCK_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_GREEN)
-            .strength(2.0f, 2.0f)
+            .strength(2.0f, 6.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

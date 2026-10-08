@@ -10,7 +10,7 @@ public class QuartziteStairsBlock extends StairBlock {
     public QuartziteStairsBlock() {
         super(ModBlocks.QUARTZITE_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.of()
             .mapColor(MapColor.QUARTZ)
-            .strength(3.0f, 3.0f)
+            .strength(3.0f, 9.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.client;
 
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
+import com.lwx.forgeborneodyssey.blocks.StressBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.TunnelSupportBlock;
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.entities.BisonEntity;
@@ -292,7 +293,7 @@ public class ClientForgeEventHandler {
                     if (!(level.getBlockState(pos).getBlock() instanceof StressBlock)) {
                         continue;
                     }
-                    if (level.getBlockEntity(pos) instanceof StressBlock.StressBlockEntity stressEntity) {
+                    if (level.getBlockEntity(pos) instanceof StressBlockEntity stressEntity) {
                         float heat = FireCrackMiningHandler.getClientHeat(pos);
                         renderStressBlockCrack(event.getPoseStack(), pos, stressEntity, heat, level);
                     }
@@ -530,7 +531,7 @@ public class ClientForgeEventHandler {
     }
 
     private static void renderStressBlockCrack(PoseStack poseStack, BlockPos pos,
-                                                StressBlock.StressBlockEntity stressEntity, float heat, Level level) {
+                                                StressBlockEntity stressEntity, float heat, Level level) {
         int heatCrackStage = heat >= 30f ? Math.min(9, (int) ((heat - 30f) / 7f)) : -1;
         int stressCrackStage = stressEntity.getLastDamageStage();
 

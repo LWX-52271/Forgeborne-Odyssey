@@ -1,6 +1,6 @@
 package com.lwx.forgeborneodyssey.client.jade;
 
-import com.lwx.forgeborneodyssey.blocks.StressBlock;
+import com.lwx.forgeborneodyssey.blocks.StressBlockEntity;
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.world.OreGrade;
 import net.minecraft.network.chat.Component;
@@ -22,7 +22,7 @@ public enum OreGradeComponentProvider implements IBlockComponentProvider {
 
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
-        if (accessor.getBlockEntity() instanceof StressBlock.StressBlockEntity stressBE) {
+        if (accessor.getBlockEntity() instanceof StressBlockEntity stressBE) {
             float grade = stressBE.getGrade();
             if (grade >= 0.0f) {
                 OreGrade oreGrade = OreGrade.fromValue(grade);

@@ -9,7 +9,7 @@ public class SericitizedRockSlabBlock extends SlabBlock {
     public SericitizedRockSlabBlock() {
         super(BlockBehaviour.Properties.of()
             .mapColor(MapColor.TERRACOTTA_LIGHT_GRAY)
-            .strength(2.0f, 2.0f)
+            .strength(2.0f, 6.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

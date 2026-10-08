@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.entities;
 
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -51,8 +52,13 @@ public class CorpseEntity extends Entity {
             SynchedEntityData.defineId(CorpseEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Long> DATA_SPAWN_TICK =
             SynchedEntityData.defineId(CorpseEntity.class, EntityDataSerializers.LONG);
+    private static final EntityDataAccessor<Float> DATA_SPAWN_Y =
+            SynchedEntityData.defineId(CorpseEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_TARGET_GROUND_Y =
+            SynchedEntityData.defineId(CorpseEntity.class, EntityDataSerializers.FLOAT);
 
     private static final int MAX_AGE = 6000;
+    public static final int FALL_TICKS_PER_BLOCK = 2;
     private static final TagKey<Item> KNIFE_TAG = TagKey.create(Registries.ITEM, new ResourceLocation("forge", "tools/knives"));
     public static final int FALL_DURATION_TICKS = 20;
 
@@ -62,8 +68,25 @@ public class CorpseEntity extends Entity {
     public CorpseEntity(EntityType<? extends CorpseEntity> entityType, Level level) {
         super(entityType, level);
         this.noPhysics = true;
+        this.noCulling = true;
         this.setNoGravity(true);
         this.setInvulnerable(true);
+    }
+
+    public void setSpawnY(float y) {
+        this.entityData.set(DATA_SPAWN_Y, y);
+    }
+
+    public float getSpawnY() {
+        return this.entityData.get(DATA_SPAWN_Y);
+    }
+
+    public void setTargetGroundY(float y) {
+        this.entityData.set(DATA_TARGET_GROUND_Y, y);
+    }
+
+    public float getTargetGroundY() {
+        return this.entityData.get(DATA_TARGET_GROUND_Y);
     }
 
     public void setDeadEntityData(EntityType<?> type, CompoundTag nbt) {
@@ -129,6 +152,8 @@ public class CorpseEntity extends Entity {
         this.entityData.define(DATA_ENTITY_NBT, "");
         this.entityData.define(DATA_SPAWN_DEATH_YROT, 0.0F);
         this.entityData.define(DATA_SPAWN_TICK, 0L);
+        this.entityData.define(DATA_SPAWN_Y, 0.0F);
+        this.entityData.define(DATA_TARGET_GROUND_Y, 0.0F);
     }
 
     @Override
@@ -155,6 +180,12 @@ public class CorpseEntity extends Entity {
         if (tag.contains("SpawnTick")) {
             this.entityData.set(DATA_SPAWN_TICK, tag.getLong("SpawnTick"));
         }
+        if (tag.contains("SpawnY")) {
+            this.entityData.set(DATA_SPAWN_Y, tag.getFloat("SpawnY"));
+        }
+        if (tag.contains("TargetGroundY")) {
+            this.entityData.set(DATA_TARGET_GROUND_Y, tag.getFloat("TargetGroundY"));
+        }
     }
 
     @Override
@@ -164,6 +195,8 @@ public class CorpseEntity extends Entity {
         tag.putString("EntityNbt", this.entityData.get(DATA_ENTITY_NBT));
         tag.putFloat("SpawnDeathYRot", this.entityData.get(DATA_SPAWN_DEATH_YROT));
         tag.putLong("SpawnTick", this.entityData.get(DATA_SPAWN_TICK));
+        tag.putFloat("SpawnY", this.entityData.get(DATA_SPAWN_Y));
+        tag.putFloat("TargetGroundY", this.entityData.get(DATA_TARGET_GROUND_Y));
     }
 
     @Override
@@ -268,7 +301,8 @@ public class CorpseEntity extends Entity {
             }
             try {
                 dummy.load(cleanedNbt);
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                ForgeborneOdyssey.LOGGER.warn("Failed to load NBT into corpse dummy entity", e);
             }
 
             dummy.setPos(this.getX(), this.getY(), this.getZ());
@@ -439,7 +473,8 @@ public class CorpseEntity extends Entity {
         if (nbt.contains("CustomName", 8)) {
             try {
                 return Component.Serializer.fromJson(nbt.getString("CustomName"));
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                ForgeborneOdyssey.LOGGER.warn("Failed to parse custom name from corpse NBT", e);
             }
         }
         String typeId = getDeadEntityTypeId();

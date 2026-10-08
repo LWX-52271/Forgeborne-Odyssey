@@ -27,7 +27,7 @@ public class DryingRackBlock extends BaseEntityBlock {
     public DryingRackBlock() {
         super(Properties.of()
                 .mapColor(MapColor.WOOD)
-                .strength(0.8F)
+                .strength(2.0F)
                 .sound(SoundType.WOOD)
                 .noOcclusion()
                 .isViewBlocking((s, l, p) -> false));

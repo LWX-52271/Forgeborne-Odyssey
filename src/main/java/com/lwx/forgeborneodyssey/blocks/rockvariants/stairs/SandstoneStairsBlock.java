@@ -10,7 +10,7 @@ public class SandstoneStairsBlock extends StairBlock {
     public SandstoneStairsBlock() {
         super(ModBlocks.SANDSTONE_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.of()
             .mapColor(MapColor.SAND)
-            .strength(2.0f, 2.0f)
+            .strength(1.0f, 3.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

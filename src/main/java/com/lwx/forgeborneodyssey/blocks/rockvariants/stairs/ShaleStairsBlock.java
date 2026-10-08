@@ -10,7 +10,7 @@ public class ShaleStairsBlock extends StairBlock {
     public ShaleStairsBlock() {
         super(ModBlocks.SHALE_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.of()
             .mapColor(MapColor.STONE)
-            .strength(2.0f, 2.0f)
+            .strength(2.0f, 6.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

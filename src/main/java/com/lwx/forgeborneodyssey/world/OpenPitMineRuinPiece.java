@@ -12,9 +12,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -68,6 +72,8 @@ public class OpenPitMineRuinPiece extends StructurePiece {
     private int pitRadius;
     private int pitDepth;
     private int pitCenterY;
+    private double stretchX = 1.0;
+    private double stretchZ = 1.0;
 
     public OpenPitMineRuinPiece(StructurePieceType type, int genDepth, BoundingBox boundingBox) {
         super(type, genDepth, boundingBox);
@@ -78,6 +84,8 @@ public class OpenPitMineRuinPiece extends StructurePiece {
         this.pitRadius = tag.getInt("PitRadius");
         this.pitDepth = tag.getInt("PitDepth");
         this.pitCenterY = tag.getInt("PitCenterY");
+        this.stretchX = tag.contains("StretchX") ? tag.getDouble("StretchX") : 1.0;
+        this.stretchZ = tag.contains("StretchZ") ? tag.getDouble("StretchZ") : 1.0;
     }
 
     private static final int CLEAR_HEIGHT = 25;
@@ -90,6 +98,10 @@ public class OpenPitMineRuinPiece extends StructurePiece {
         this.pitRadius = pitRadius;
         this.pitDepth = pitDepth;
         this.pitCenterY = center.getY();
+
+        long seed = (long) center.getX() * 0x8da6b343L + (long) center.getZ() * 0xd8163841L;
+        this.stretchX = 0.75 + ((seed & 0x7fff) / (double) 0x7fff) * 0.5;
+        this.stretchZ = 0.75 + (((seed >> 16) & 0x7fff) / (double) 0x7fff) * 0.5;
     }
 
     @Override
@@ -97,6 +109,8 @@ public class OpenPitMineRuinPiece extends StructurePiece {
         tag.putInt("PitRadius", pitRadius);
         tag.putInt("PitDepth", pitDepth);
         tag.putInt("PitCenterY", pitCenterY);
+        tag.putDouble("StretchX", stretchX);
+        tag.putDouble("StretchZ", stretchZ);
     }
 
     @Override
@@ -160,17 +174,57 @@ public class OpenPitMineRuinPiece extends StructurePiece {
     private void clearSurfaceAbove(WorldGenLevel level, BlockPos center, int radius) {
         int topY = center.getY();
         int clearRadius = radius + 2;
+        Set<BlockPos> treeCleared = new HashSet<>();
 
         for (int dx = -clearRadius; dx <= clearRadius; dx++) {
             for (int dz = -clearRadius; dz <= clearRadius; dz++) {
                 double dist = Math.sqrt(dx * dx + dz * dz);
                 if (dist <= clearRadius) {
-                    for (int y = 1; y <= 25; y++) {
+                    for (int y = 1; y <= 35; y++) {
                         BlockPos pos = new BlockPos(center.getX() + dx, topY + y, center.getZ() + dz);
                         BlockState state = level.getBlockState(pos);
                         if (!state.isAir() && !state.canBeReplaced()) {
-                            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                            if (isTreeOrMushroomBlock(state) && !treeCleared.contains(pos)) {
+                                clearFullTree(level, pos, treeCleared);
+                            } else if (!treeCleared.contains(pos)) {
+                                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                            }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean isTreeOrMushroomBlock(BlockState state) {
+        return state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES)
+                || state.is(Blocks.MUSHROOM_STEM)
+                || state.is(Blocks.RED_MUSHROOM_BLOCK)
+                || state.is(Blocks.BROWN_MUSHROOM_BLOCK);
+    }
+
+    private void clearFullTree(WorldGenLevel level, BlockPos start, Set<BlockPos> cleared) {
+        ArrayDeque<BlockPos> queue = new ArrayDeque<>();
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            BlockPos pos = queue.poll();
+            if (cleared.contains(pos)) continue;
+
+            BlockState state = level.getBlockState(pos);
+            if (!isTreeOrMushroomBlock(state)) continue;
+
+            cleared.add(pos);
+            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+
+            for (Direction dir : Direction.values()) {
+                BlockPos neighbor = pos.relative(dir);
+                if (!cleared.contains(neighbor)) {
+                    int dx = neighbor.getX() - start.getX();
+                    int dy = neighbor.getY() - start.getY();
+                    int dz = neighbor.getZ() - start.getZ();
+                    if (dx * dx + dy * dy + dz * dz < 20 * 20) {
+                        queue.add(neighbor);
                     }
                 }
             }
@@ -222,21 +276,26 @@ public class OpenPitMineRuinPiece extends StructurePiece {
     private void carvePit(WorldGenLevel level, BlockPos center, int radius, int depth,
                           Block wallRock, RandomSource random) {
         int topY = center.getY();
+        int cx = center.getX();
+        int cz = center.getZ();
 
         for (int y = 0; y < depth; y++) {
             int currentY = topY - y;
             float stepProgress = (float) y / depth;
             float currentRadius = radius * (1.0f - stepProgress * 0.45f);
+            int loopRadius = (int) Math.ceil(currentRadius + 2.5);
 
-            for (int dx = -(int) Math.ceil(currentRadius); dx <= (int) Math.ceil(currentRadius); dx++) {
-                for (int dz = -(int) Math.ceil(currentRadius); dz <= (int) Math.ceil(currentRadius); dz++) {
-                    double dist = Math.sqrt(dx * dx + dz * dz);
+            for (int dx = -loopRadius; dx <= loopRadius; dx++) {
+                for (int dz = -loopRadius; dz <= loopRadius; dz++) {
+                    double dist = getIrregularDist(dx, dz);
+                    double edgeNoise = getEdgeNoise(cx, cz, currentY, dx, dz);
+                    double effectiveRadius = currentRadius + edgeNoise;
 
-                    if (dist <= currentRadius) {
-                        BlockPos pos = new BlockPos(center.getX() + dx, currentY, center.getZ() + dz);
+                    if (dist <= effectiveRadius) {
+                        BlockPos pos = new BlockPos(cx + dx, currentY, cz + dz);
                         BlockState currentState = level.getBlockState(pos);
 
-                        if (y == 0 && dist <= currentRadius) {
+                        if (y == 0) {
                             if (currentState.isAir() || currentState.canBeReplaced()) {
                                 continue;
                             }
@@ -244,14 +303,14 @@ public class OpenPitMineRuinPiece extends StructurePiece {
                             continue;
                         }
 
-                        boolean isEdge = dist > currentRadius - 1.2 && dist <= currentRadius;
+                        boolean isEdge = dist > effectiveRadius - 1.2 && dist <= effectiveRadius;
 
                         if (isEdge) {
                             if (!currentState.isAir() && currentState.isSolid()
                                     && isBlockBelowSolid(level, pos)) {
                                 level.setBlock(pos, wallRock.defaultBlockState(), 3);
                             }
-                        } else if (y > 0) {
+                        } else {
                             if (!currentState.isAir() && currentState.isSolid()) {
                                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                             }
@@ -260,6 +319,21 @@ public class OpenPitMineRuinPiece extends StructurePiece {
                 }
             }
         }
+    }
+
+    private double getIrregularDist(int dx, int dz) {
+        double ex = dx / stretchX;
+        double ez = dz / stretchZ;
+        return Math.sqrt(ex * ex + ez * ez);
+    }
+
+    private double getEdgeNoise(int cx, int cz, int currentY, int dx, int dz) {
+        double ex = dx / stretchX;
+        double ez = dz / stretchZ;
+        double angle = Math.atan2(ez, ex);
+        return Math.sin(angle * 3.0 + cx * 0.137) * 1.5
+             + Math.cos(angle * 5.0 + cz * 0.173) * 1.0
+             + Math.sin(angle * 7.0 - currentY * 0.2) * 0.7;
     }
 
     private void placeCopperOres(WorldGenLevel level, BlockPos center, int radius, int depth,

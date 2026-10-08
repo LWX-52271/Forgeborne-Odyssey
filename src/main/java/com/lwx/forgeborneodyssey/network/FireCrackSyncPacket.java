@@ -31,15 +31,12 @@ public class FireCrackSyncPacket {
         buffer.writeFloat(heat);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isServer()) {
-            return false;
-        }
         context.enqueueWork(() -> {
             FireCrackMiningHandler.setClientHeat(pos, heat);
         });
-        return true;
+        context.setPacketHandled(true);
     }
 
     public BlockPos getPos() {

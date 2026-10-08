@@ -41,11 +41,8 @@ public class LimePlasterSyncPacket {
         buffer.writeInt(color);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isServer()) {
-            return false;
-        }
         context.enqueueWork(() -> {
             if (add) {
                 ClientPlasterData.addPlaster(pos, face, color);
@@ -53,6 +50,6 @@ public class LimePlasterSyncPacket {
                 ClientPlasterData.removePlaster(pos, face);
             }
         });
-        return true;
+        context.setPacketHandled(true);
     }
 }

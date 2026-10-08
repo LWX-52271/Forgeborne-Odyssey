@@ -1,6 +1,6 @@
 package com.lwx.forgeborneodyssey.events;
 
-import com.lwx.forgeborneodyssey.blocks.StressBlock;
+import com.lwx.forgeborneodyssey.blocks.StressBlockEntity;
 import com.lwx.forgeborneodyssey.util.StressHelper;
 import com.lwx.forgeborneodyssey.util.VanillaBlockStressManager;
 import net.minecraft.core.BlockPos;
@@ -32,7 +32,7 @@ public class StressEventHandler {
         if (levelAccessor instanceof Level level) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
 
-            if (blockEntity instanceof StressBlock.StressBlockEntity stressBlockEntity) {
+            if (blockEntity instanceof StressBlockEntity stressBlockEntity) {
                 StressHelper.addStress(level, pos, 1.0f);
                 float currentStress = StressHelper.getStress(level, pos);
                 if (currentStress >= 10.0f) {

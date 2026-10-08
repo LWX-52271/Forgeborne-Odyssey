@@ -10,7 +10,7 @@ public class QuartzVeinStairsBlock extends StairBlock {
     public QuartzVeinStairsBlock() {
         super(ModBlocks.QUARTZ_VEIN_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.of()
             .mapColor(MapColor.QUARTZ)
-            .strength(2.5f, 2.5f)
+            .strength(2.5f, 7.5f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

@@ -34,13 +34,13 @@ public class UpdateCursorPacket {
         buffer.writeFloat(offsetZ);
     }
     
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             // 在客户端处理（不再需要光标位置）
             // 此数据包已废弃，保留仅为兼容性
         });
-        return true;
+        context.setPacketHandled(true);
     }
     
     public BlockPos getPos() {

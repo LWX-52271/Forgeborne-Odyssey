@@ -9,7 +9,7 @@ public class QuartziteSlabBlock extends SlabBlock {
     public QuartziteSlabBlock() {
         super(BlockBehaviour.Properties.of()
             .mapColor(MapColor.QUARTZ)
-            .strength(3.0f, 3.0f)
+            .strength(3.0f, 9.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

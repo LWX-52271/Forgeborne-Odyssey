@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
@@ -39,14 +40,10 @@ public class BlowpipeBurstPacket {
         buffer.writeDouble(dirZ);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isServer()) {
-            return false;
-        }
-
         context.enqueueWork(() -> {
-            var minecraft = net.minecraft.client.Minecraft.getInstance();
+            var minecraft = Minecraft.getInstance();
             if (minecraft.level == null) {
                 return;
             }
@@ -60,7 +57,6 @@ public class BlowpipeBurstPacket {
                 );
             }
         });
-
-        return true;
+        context.setPacketHandled(true);
     }
 }

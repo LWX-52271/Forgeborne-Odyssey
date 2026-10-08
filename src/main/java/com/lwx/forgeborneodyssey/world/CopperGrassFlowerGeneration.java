@@ -27,10 +27,6 @@ public class CopperGrassFlowerGeneration {
             ResourceKey.create(Registries.PLACED_FEATURE,
                     new ResourceLocation(ForgeborneOdyssey.MOD_ID, "copper_grass_flower_placed"));
 
-    public static final ResourceKey<BiomeModifier> ADD_COPPER_GRASS_FLOWER =
-            ResourceKey.create(net.minecraftforge.registries.ForgeRegistries.Keys.BIOME_MODIFIERS,
-                    new ResourceLocation(ForgeborneOdyssey.MOD_ID, "add_copper_grass_flower"));
-
     public static void bootstrapConfigured(BootstapContext<ConfiguredFeature<?, ?>> context) {
         context.register(COPPER_GRASS_FLOWER_KEY, new ConfiguredFeature<>(
                 ForgeborneOdyssey.COPPER_GRASS_FLOWER_FEATURE.get(),
@@ -44,7 +40,7 @@ public class CopperGrassFlowerGeneration {
         context.register(COPPER_GRASS_FLOWER_PLACED_KEY, new PlacedFeature(
                 configuredFeature,
                 List.of(
-                        CountPlacement.of(1),
+                        RarityFilter.onAverageOnceEvery(4),
                         InSquarePlacement.spread(),
                         BiomeFilter.biome()
                 )));
@@ -57,12 +53,8 @@ public class CopperGrassFlowerGeneration {
         HolderSet.Direct<PlacedFeature> featureSet = HolderSet.direct(
                 placedFeaturesRegistry.getOrThrow(COPPER_GRASS_FLOWER_PLACED_KEY));
 
-        HolderSet<Biome> taigaBiomes = biomesRegistry.getOrThrow(BiomeTags.IS_TAIGA);
         HolderSet<Biome> forestBiomes = biomesRegistry.getOrThrow(BiomeTags.IS_FOREST);
         HolderSet<Biome> hillBiomes = biomesRegistry.getOrThrow(BiomeTags.IS_HILL);
-
-        context.register(ADD_COPPER_GRASS_FLOWER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
-                taigaBiomes, featureSet, GenerationStep.Decoration.VEGETAL_DECORATION));
 
         ResourceKey<BiomeModifier> forestKey = ResourceKey.create(
                 net.minecraftforge.registries.ForgeRegistries.Keys.BIOME_MODIFIERS,

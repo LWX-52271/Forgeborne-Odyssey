@@ -1,6 +1,6 @@
 package com.lwx.forgeborneodyssey.client.renderer;
 
-import com.lwx.forgeborneodyssey.blocks.StressBlock;
+import com.lwx.forgeborneodyssey.blocks.StressBlockEntity;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
  * 的 AFTER_TRANSLUCENT_BLOCKS 阶段，确保在半透明方块（水、玻璃等）中也能正常显示。
  * 此 BER 仅保留注册占位，无实际渲染逻辑。
  */
-public class StressBlockRenderer implements BlockEntityRenderer<StressBlock.StressBlockEntity> {
+public class StressBlockRenderer implements BlockEntityRenderer<StressBlockEntity> {
 
     public StressBlockRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(StressBlock.StressBlockEntity blockEntity, float partialTick,
+    public void render(StressBlockEntity blockEntity, float partialTick,
                        com.mojang.blaze3d.vertex.PoseStack poseStack,
                        net.minecraft.client.renderer.MultiBufferSource bufferSource,
                        int packedLight, int packedOverlay) {

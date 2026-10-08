@@ -42,15 +42,11 @@ public class FireCrackBatchSyncPacket {
         }
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isServer()) {
-            return false;
-        }
         context.enqueueWork(() -> {
-            // 批量替换客户端热量缓存，避免过期数据累积
             FireCrackMiningHandler.replaceClientHeatMap(positions, heats);
         });
-        return true;
+        context.setPacketHandled(true);
     }
 }

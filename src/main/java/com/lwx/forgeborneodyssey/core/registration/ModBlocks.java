@@ -36,6 +36,7 @@ import com.lwx.forgeborneodyssey.blocks.StoragePotBlock;
 import com.lwx.forgeborneodyssey.blocks.StoragePotBlockEntity;
 
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
+import com.lwx.forgeborneodyssey.blocks.StressBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.ChloriteRockStairsBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.GabbroStairsBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.LimeConcreteStairsBlock;
@@ -85,84 +86,52 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ForgeborneOdyssey.MOD_ID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ForgeborneOdyssey.MOD_ID);
 
-    // 铜相关矿物方�?
-    public static final RegistryObject<Block> CHALCOPYRITE_ORE = BLOCKS.register("chalcopyrite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.STONE)
-            .strength(3.0f, 3.0f)
+    private static RegistryObject<Block> ore(String name, MapColor color, float strength) {
+        return BLOCKS.register(name, () -> new StressBlock(Block.Properties.of()
+            .mapColor(color)
+            .strength(strength, strength)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
+    }
+
+    private static RegistryObject<Block> ore(String name, MapColor color) {
+        return ore(name, color, 3.0f);
+    }
+
+    private static RegistryObject<Block> rock(String name, MapColor color, float strength) {
+        return BLOCKS.register(name, () -> new StressBlock(Block.Properties.of()
+            .mapColor(color)
+            .strength(strength, strength * 3.0f)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+    }
+
+    private static RegistryObject<Block> stair(String name, java.util.function.Supplier<Block> supplier) {
+        return BLOCKS.register(name + "_stairs", supplier);
+    }
+
+    private static RegistryObject<Block> slab(String name, java.util.function.Supplier<Block> supplier) {
+        return BLOCKS.register(name + "_slab", supplier);
+    }
+
+    private static RegistryObject<Block> wall(String name, java.util.function.Supplier<Block> supplier) {
+        return BLOCKS.register(name + "_wall", supplier);
+    }
+
+    // 铜相关矿物方块
+    public static final RegistryObject<Block> CHALCOPYRITE_ORE = ore("chalcopyrite_ore", MapColor.STONE);
 
     // 岩石方块
-    public static final RegistryObject<Block> SHALE_BLOCK = BLOCKS.register("shale_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.STONE)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> SANDSTONE_BLOCK = BLOCKS.register("sandstone_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.SAND)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> LIMESTONE_BLOCK = BLOCKS.register("limestone_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_WHITE)
-            .strength(2.5f, 2.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> POLISHED_LIMESTONE_BLOCK = BLOCKS.register("polished_limestone_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_WHITE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> MARBLE_BLOCK = BLOCKS.register("marble_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_WHITE)
-            .strength(2.5f, 2.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> QUARTZITE_BLOCK = BLOCKS.register("quartzite_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.QUARTZ)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> GABBRO_BLOCK = BLOCKS.register("gabbro_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_BLACK)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> QUARTZ_VEIN_BLOCK = BLOCKS.register("quartz_vein_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.QUARTZ)
-            .strength(2.5f, 2.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> SERICITIZED_ROCK_BLOCK = BLOCKS.register("sericitized_rock_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_LIGHT_GRAY)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> CHLORITE_ROCK_BLOCK = BLOCKS.register("chlorite_rock_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_GREEN)
-            .strength(2.0f, 2.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> SHALE_BLOCK = rock("shale_block", MapColor.STONE, 2.0f);
+    public static final RegistryObject<Block> SANDSTONE_BLOCK = rock("sandstone_block", MapColor.SAND, 1.0f);
+    public static final RegistryObject<Block> LIMESTONE_BLOCK = rock("limestone_block", MapColor.TERRACOTTA_WHITE, 2.5f);
+    public static final RegistryObject<Block> POLISHED_LIMESTONE_BLOCK = rock("polished_limestone_block", MapColor.TERRACOTTA_WHITE, 2.5f);
+    public static final RegistryObject<Block> MARBLE_BLOCK = rock("marble_block", MapColor.TERRACOTTA_WHITE, 2.5f);
+    public static final RegistryObject<Block> QUARTZITE_BLOCK = rock("quartzite_block", MapColor.QUARTZ, 3.0f);
+    public static final RegistryObject<Block> GABBRO_BLOCK = rock("gabbro_block", MapColor.COLOR_BLACK, 3.0f);
+    public static final RegistryObject<Block> QUARTZ_VEIN_BLOCK = rock("quartz_vein_block", MapColor.QUARTZ, 2.5f);
+    public static final RegistryObject<Block> SERICITIZED_ROCK_BLOCK = rock("sericitized_rock_block", MapColor.TERRACOTTA_LIGHT_GRAY, 2.0f);
+    public static final RegistryObject<Block> CHLORITE_ROCK_BLOCK = rock("chlorite_rock_block", MapColor.COLOR_GREEN, 2.0f);
 
     // 地表圆石方块
     public static final RegistryObject<Block> SURFACE_COBBLESTONE_BLOCK = BLOCKS.register("surface_cobblestone_block", SurfaceCobblestoneBlock::new);
@@ -177,87 +146,20 @@ public class ModBlocks {
     public static final RegistryObject<Block> OCHRE_DEPOSIT = BLOCKS.register("ochre_deposit", () ->
         new StressBlock(Block.Properties.of()
             .mapColor(MapColor.TERRACOTTA_ORANGE)
-            .strength(1.5f, 2.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()
-        ));
+            .strength(0.8f, 1.5f)
+            .sound(SoundType.GRAVEL)));
 
-    public static final RegistryObject<Block> BORNITE_ORE = BLOCKS.register("bornite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.STONE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> CHALCOCITE_ORE = BLOCKS.register("chalcocite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.STONE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> COVELLITE_ORE = BLOCKS.register("covellite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.STONE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> CUBANITE_ORE = BLOCKS.register("cubanite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.STONE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> MALACHITE_ORE = BLOCKS.register("malachite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_GREEN)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> AZURITE_ORE = BLOCKS.register("azurite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_BLUE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> CUPRITE_ORE = BLOCKS.register("cuprite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_RED)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> TENORITE_ORE = BLOCKS.register("tenorite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_BLACK)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> CHALCANTHITE_ORE = BLOCKS.register("chalcanthite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_CYAN)
-            .strength(2.5f, 2.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> BROCHANTITE_ORE = BLOCKS.register("brochantite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_GREEN)
-            .strength(2.5f, 2.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> MIXED_COPPER_ORE = BLOCKS.register("mixed_copper_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_ORANGE)
-            .strength(3.5f, 3.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> BORNITE_ORE = ore("bornite_ore", MapColor.STONE);
+    public static final RegistryObject<Block> CHALCOCITE_ORE = ore("chalcocite_ore", MapColor.STONE);
+    public static final RegistryObject<Block> COVELLITE_ORE = ore("covellite_ore", MapColor.STONE);
+    public static final RegistryObject<Block> CUBANITE_ORE = ore("cubanite_ore", MapColor.STONE);
+    public static final RegistryObject<Block> MALACHITE_ORE = ore("malachite_ore", MapColor.COLOR_GREEN);
+    public static final RegistryObject<Block> AZURITE_ORE = ore("azurite_ore", MapColor.COLOR_BLUE);
+    public static final RegistryObject<Block> CUPRITE_ORE = ore("cuprite_ore", MapColor.TERRACOTTA_RED);
+    public static final RegistryObject<Block> TENORITE_ORE = ore("tenorite_ore", MapColor.TERRACOTTA_BLACK);
+    public static final RegistryObject<Block> CHALCANTHITE_ORE = ore("chalcanthite_ore", MapColor.COLOR_CYAN, 2.5f);
+    public static final RegistryObject<Block> BROCHANTITE_ORE = ore("brochantite_ore", MapColor.COLOR_GREEN, 2.5f);
+    public static final RegistryObject<Block> MIXED_COPPER_ORE = ore("mixed_copper_ore", MapColor.COLOR_ORANGE, 3.5f);
 
     public static final RegistryObject<Block> NATIVE_COPPER_ORE = BLOCKS.register("native_copper_ore", () ->
         new StressBlock(Block.Properties.of()
@@ -266,40 +168,11 @@ public class ModBlocks {
             .sound(SoundType.COPPER)
             .requiresCorrectToolForDrops()));
 
-    public static final RegistryObject<Block> TETRAHEDRITE_ORE = BLOCKS.register("tetrahedrite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.STONE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> TENNANTITE_ORE = BLOCKS.register("tennantite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.STONE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> TORBERNITE_ORE = BLOCKS.register("torbernite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_GREEN)
-            .strength(2.5f, 2.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> CUPROVANADITE_ORE = BLOCKS.register("cuprovanadite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_YELLOW)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> CHRYSOCOLLA_ORE = BLOCKS.register("chrysocolla_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_CYAN)
-            .strength(2.5f, 2.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> TETRAHEDRITE_ORE = ore("tetrahedrite_ore", MapColor.STONE);
+    public static final RegistryObject<Block> TENNANTITE_ORE = ore("tennantite_ore", MapColor.STONE);
+    public static final RegistryObject<Block> TORBERNITE_ORE = ore("torbernite_ore", MapColor.COLOR_GREEN, 2.5f);
+    public static final RegistryObject<Block> CUPROVANADITE_ORE = ore("cuprovanadite_ore", MapColor.COLOR_YELLOW);
+    public static final RegistryObject<Block> CHRYSOCOLLA_ORE = ore("chrysocolla_ore", MapColor.COLOR_CYAN, 2.5f);
     
     // 自然金属�?
     public static final RegistryObject<Block> NATURAL_GOLD_BLOCK = BLOCKS.register("natural_gold_block", NaturalGoldBlock::new);
@@ -318,38 +191,36 @@ public class ModBlocks {
             QUARTZITE_ANVIL.get(), QUARTZ_SANDSTONE_ANVIL.get(),
             COARSE_SANDSTONE_ANVIL.get(), BASALT_ANVIL.get()).build(null));
     
-    // 岩石楼梯方块
-    public static final RegistryObject<Block> SHALE_STAIRS = BLOCKS.register("shale_stairs", ShaleStairsBlock::new);
-    public static final RegistryObject<Block> SANDSTONE_STAIRS = BLOCKS.register("sandstone_stairs", SandstoneStairsBlock::new);
-    public static final RegistryObject<Block> LIMESTONE_STAIRS = BLOCKS.register("limestone_stairs", LimestoneStairsBlock::new);
-    public static final RegistryObject<Block> MARBLE_STAIRS = BLOCKS.register("marble_stairs", MarbleStairsBlock::new);
-    public static final RegistryObject<Block> QUARTZITE_STAIRS = BLOCKS.register("quartzite_stairs", QuartziteStairsBlock::new);
-    public static final RegistryObject<Block> GABBRO_STAIRS = BLOCKS.register("gabbro_stairs", GabbroStairsBlock::new);
-    public static final RegistryObject<Block> QUARTZ_VEIN_STAIRS = BLOCKS.register("quartz_vein_stairs", QuartzVeinStairsBlock::new);
-    public static final RegistryObject<Block> SERICITIZED_ROCK_STAIRS = BLOCKS.register("sericitized_rock_stairs", SericitizedRockStairsBlock::new);
-    public static final RegistryObject<Block> CHLORITE_ROCK_STAIRS = BLOCKS.register("chlorite_rock_stairs", ChloriteRockStairsBlock::new);
-    
-    // 岩石半砖方块
-    public static final RegistryObject<Block> SHALE_SLAB = BLOCKS.register("shale_slab", ShaleSlabBlock::new);
-    public static final RegistryObject<Block> SANDSTONE_SLAB = BLOCKS.register("sandstone_slab", SandstoneSlabBlock::new);
-    public static final RegistryObject<Block> LIMESTONE_SLAB = BLOCKS.register("limestone_slab", LimestoneSlabBlock::new);
-    public static final RegistryObject<Block> MARBLE_SLAB = BLOCKS.register("marble_slab", MarbleSlabBlock::new);
-    public static final RegistryObject<Block> QUARTZITE_SLAB = BLOCKS.register("quartzite_slab", QuartziteSlabBlock::new);
-    public static final RegistryObject<Block> GABBRO_SLAB = BLOCKS.register("gabbro_slab", GabbroSlabBlock::new);
-    public static final RegistryObject<Block> QUARTZ_VEIN_SLAB = BLOCKS.register("quartz_vein_slab", QuartzVeinSlabBlock::new);
-    public static final RegistryObject<Block> SERICITIZED_ROCK_SLAB = BLOCKS.register("sericitized_rock_slab", SericitizedRockSlabBlock::new);
-    public static final RegistryObject<Block> CHLORITE_ROCK_SLAB = BLOCKS.register("chlorite_rock_slab", ChloriteRockSlabBlock::new);
-    
-    // 岩石墙方�?
-    public static final RegistryObject<Block> SHALE_WALL = BLOCKS.register("shale_wall", ShaleWallBlock::new);
-    public static final RegistryObject<Block> SANDSTONE_WALL = BLOCKS.register("sandstone_wall", SandstoneWallBlock::new);
-    public static final RegistryObject<Block> LIMESTONE_WALL = BLOCKS.register("limestone_wall", LimestoneWallBlock::new);
-    public static final RegistryObject<Block> MARBLE_WALL = BLOCKS.register("marble_wall", MarbleWallBlock::new);
-    public static final RegistryObject<Block> QUARTZITE_WALL = BLOCKS.register("quartzite_wall", QuartziteWallBlock::new);
-    public static final RegistryObject<Block> GABBRO_WALL = BLOCKS.register("gabbro_wall", GabbroWallBlock::new);
-    public static final RegistryObject<Block> QUARTZ_VEIN_WALL = BLOCKS.register("quartz_vein_wall", QuartzVeinWallBlock::new);
-    public static final RegistryObject<Block> SERICITIZED_ROCK_WALL = BLOCKS.register("sericitized_rock_wall", SericitizedRockWallBlock::new);
-    public static final RegistryObject<Block> CHLORITE_ROCK_WALL = BLOCKS.register("chlorite_rock_wall", ChloriteRockWallBlock::new);
+    // 岩石楼梯/半砖/墙方块
+    public static final RegistryObject<Block> SHALE_STAIRS = stair("shale", ShaleStairsBlock::new);
+    public static final RegistryObject<Block> SANDSTONE_STAIRS = stair("sandstone", SandstoneStairsBlock::new);
+    public static final RegistryObject<Block> LIMESTONE_STAIRS = stair("limestone", LimestoneStairsBlock::new);
+    public static final RegistryObject<Block> MARBLE_STAIRS = stair("marble", MarbleStairsBlock::new);
+    public static final RegistryObject<Block> QUARTZITE_STAIRS = stair("quartzite", QuartziteStairsBlock::new);
+    public static final RegistryObject<Block> GABBRO_STAIRS = stair("gabbro", GabbroStairsBlock::new);
+    public static final RegistryObject<Block> QUARTZ_VEIN_STAIRS = stair("quartz_vein", QuartzVeinStairsBlock::new);
+    public static final RegistryObject<Block> SERICITIZED_ROCK_STAIRS = stair("sericitized_rock", SericitizedRockStairsBlock::new);
+    public static final RegistryObject<Block> CHLORITE_ROCK_STAIRS = stair("chlorite_rock", ChloriteRockStairsBlock::new);
+
+    public static final RegistryObject<Block> SHALE_SLAB = slab("shale", ShaleSlabBlock::new);
+    public static final RegistryObject<Block> SANDSTONE_SLAB = slab("sandstone", SandstoneSlabBlock::new);
+    public static final RegistryObject<Block> LIMESTONE_SLAB = slab("limestone", LimestoneSlabBlock::new);
+    public static final RegistryObject<Block> MARBLE_SLAB = slab("marble", MarbleSlabBlock::new);
+    public static final RegistryObject<Block> QUARTZITE_SLAB = slab("quartzite", QuartziteSlabBlock::new);
+    public static final RegistryObject<Block> GABBRO_SLAB = slab("gabbro", GabbroSlabBlock::new);
+    public static final RegistryObject<Block> QUARTZ_VEIN_SLAB = slab("quartz_vein", QuartzVeinSlabBlock::new);
+    public static final RegistryObject<Block> SERICITIZED_ROCK_SLAB = slab("sericitized_rock", SericitizedRockSlabBlock::new);
+    public static final RegistryObject<Block> CHLORITE_ROCK_SLAB = slab("chlorite_rock", ChloriteRockSlabBlock::new);
+
+    public static final RegistryObject<Block> SHALE_WALL = wall("shale", ShaleWallBlock::new);
+    public static final RegistryObject<Block> SANDSTONE_WALL = wall("sandstone", SandstoneWallBlock::new);
+    public static final RegistryObject<Block> LIMESTONE_WALL = wall("limestone", LimestoneWallBlock::new);
+    public static final RegistryObject<Block> MARBLE_WALL = wall("marble", MarbleWallBlock::new);
+    public static final RegistryObject<Block> QUARTZITE_WALL = wall("quartzite", QuartziteWallBlock::new);
+    public static final RegistryObject<Block> GABBRO_WALL = wall("gabbro", GabbroWallBlock::new);
+    public static final RegistryObject<Block> QUARTZ_VEIN_WALL = wall("quartz_vein", QuartzVeinWallBlock::new);
+    public static final RegistryObject<Block> SERICITIZED_ROCK_WALL = wall("sericitized_rock", SericitizedRockWallBlock::new);
+    public static final RegistryObject<Block> CHLORITE_ROCK_WALL = wall("chlorite_rock", ChloriteRockWallBlock::new);
     
     // 火塘方块
     public static final RegistryObject<Block> FIRE_PIT_BLOCK = BLOCKS.register("fire_pit_block", FirePitBlock::new);
@@ -446,98 +317,23 @@ public class ModBlocks {
     public static final RegistryObject<Block> TUNNEL_SUPPORT = BLOCKS.register("tunnel_support", TunnelSupportBlock::new);
 
     // 矽卡岩矿床方块
-    public static final RegistryObject<Block> ENDOSKARN_BLOCK = BLOCKS.register("endoskarn_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_BROWN)
-            .strength(4.0f, 4.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> GARNET_SKARN_BLOCK = BLOCKS.register("garnet_skarn_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_RED)
-            .strength(3.5f, 3.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> PYROXENE_SKARN_BLOCK = BLOCKS.register("pyroxene_skarn_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_GREEN)
-            .strength(3.5f, 3.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> WOLLASTONITE_SKARN_BLOCK = BLOCKS.register("wollastonite_skarn_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_WHITE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> MASSIVE_SKARN_ORE = BLOCKS.register("massive_skarn_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_BROWN)
-            .strength(4.0f, 4.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> ENDOSKARN_BLOCK = rock("endoskarn_block", MapColor.TERRACOTTA_BROWN, 4.0f);
+    public static final RegistryObject<Block> GARNET_SKARN_BLOCK = rock("garnet_skarn_block", MapColor.TERRACOTTA_RED, 3.5f);
+    public static final RegistryObject<Block> PYROXENE_SKARN_BLOCK = rock("pyroxene_skarn_block", MapColor.COLOR_GREEN, 3.5f);
+    public static final RegistryObject<Block> WOLLASTONITE_SKARN_BLOCK = rock("wollastonite_skarn_block", MapColor.TERRACOTTA_WHITE, 3.0f);
+    public static final RegistryObject<Block> MASSIVE_SKARN_ORE = rock("massive_skarn_ore", MapColor.TERRACOTTA_BROWN, 4.0f);
 
     // 退化蚀变矽卡岩（湿矽卡岩阶段）
-    public static final RegistryObject<Block> EPIDOTE_SKARN_BLOCK = BLOCKS.register("epidote_skarn_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_GREEN)
-            .strength(3.5f, 3.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> ACTINOLITE_SKARN_BLOCK = BLOCKS.register("actinolite_skarn_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_GREEN)
-            .strength(3.5f, 3.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> TREMOLITE_SKARN_BLOCK = BLOCKS.register("tremolite_skarn_block", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_WHITE)
-            .strength(3.0f, 3.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> EPIDOTE_SKARN_BLOCK = rock("epidote_skarn_block", MapColor.COLOR_GREEN, 3.5f);
+    public static final RegistryObject<Block> ACTINOLITE_SKARN_BLOCK = rock("actinolite_skarn_block", MapColor.COLOR_GREEN, 3.5f);
+    public static final RegistryObject<Block> TREMOLITE_SKARN_BLOCK = rock("tremolite_skarn_block", MapColor.TERRACOTTA_WHITE, 3.0f);
 
     // 矽卡岩型多金属矿石
-    public static final RegistryObject<Block> MAGNETITE_ORE = BLOCKS.register("magnetite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_BLACK)
-            .strength(4.0f, 4.0f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> SCHEELITE_ORE = BLOCKS.register("scheelite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_WHITE)
-            .strength(3.5f, 3.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> GALENA_ORE = BLOCKS.register("galena_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_GRAY)
-            .strength(3.5f, 3.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> SPHALERITE_ORE = BLOCKS.register("sphalerite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_BROWN)
-            .strength(3.5f, 3.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
-
-    public static final RegistryObject<Block> MOLYBDENITE_ORE = BLOCKS.register("molybdenite_ore", () ->
-        new StressBlock(Block.Properties.of()
-            .mapColor(MapColor.COLOR_GRAY)
-            .strength(3.5f, 3.5f)
-            .sound(SoundType.STONE)
-            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> MAGNETITE_ORE = rock("magnetite_ore", MapColor.TERRACOTTA_BLACK, 4.0f);
+    public static final RegistryObject<Block> SCHEELITE_ORE = rock("scheelite_ore", MapColor.TERRACOTTA_WHITE, 3.5f);
+    public static final RegistryObject<Block> GALENA_ORE = rock("galena_ore", MapColor.COLOR_GRAY, 3.5f);
+    public static final RegistryObject<Block> SPHALERITE_ORE = rock("sphalerite_ore", MapColor.TERRACOTTA_BROWN, 3.5f);
+    public static final RegistryObject<Block> MOLYBDENITE_ORE = rock("molybdenite_ore", MapColor.COLOR_GRAY, 3.5f);
 
     // 冲积砂锡矿
     public static final RegistryObject<Block> CASSITERITE_PLACER_BLOCK = BLOCKS.register("cassiterite_placer_block", () ->
@@ -571,23 +367,21 @@ public class ModBlocks {
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()));
 
-    // 石灰砂浆砌筑碎石 - 楼梯/半砖/墙
-    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE_STAIRS = BLOCKS.register("lime_mortar_cobblestone_stairs", LimeMortarCobblestoneStairsBlock::new);
-    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE_SLAB = BLOCKS.register("lime_mortar_cobblestone_slab", LimeMortarCobblestoneSlabBlock::new);
-    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE_WALL = BLOCKS.register("lime_mortar_cobblestone_wall", LimeMortarCobblestoneWallBlock::new);
+    // 石灰砂浆/混凝土 楼梯/半砖/墙
+    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE_STAIRS = stair("lime_mortar_cobblestone", LimeMortarCobblestoneStairsBlock::new);
+    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE_SLAB = slab("lime_mortar_cobblestone", LimeMortarCobblestoneSlabBlock::new);
+    public static final RegistryObject<Block> LIME_MORTAR_COBBLESTONE_WALL = wall("lime_mortar_cobblestone", LimeMortarCobblestoneWallBlock::new);
 
-    // 石灰混凝土 - 楼梯/半砖/墙
-    public static final RegistryObject<Block> LIME_CONCRETE_STAIRS = BLOCKS.register("lime_concrete_stairs", LimeConcreteStairsBlock::new);
-    public static final RegistryObject<Block> LIME_CONCRETE_SLAB = BLOCKS.register("lime_concrete_slab", LimeConcreteSlabBlock::new);
-    public static final RegistryObject<Block> LIME_CONCRETE_WALL = BLOCKS.register("lime_concrete_wall", LimeConcreteWallBlock::new);
+    public static final RegistryObject<Block> LIME_CONCRETE_STAIRS = stair("lime_concrete", LimeConcreteStairsBlock::new);
+    public static final RegistryObject<Block> LIME_CONCRETE_SLAB = slab("lime_concrete", LimeConcreteSlabBlock::new);
+    public static final RegistryObject<Block> LIME_CONCRETE_WALL = wall("lime_concrete", LimeConcreteWallBlock::new);
 
-    // 石灰砂浆砌筑石砖 - 楼梯/半砖/墙
-    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS_STAIRS = BLOCKS.register("lime_mortar_stone_bricks_stairs", LimeMortarStoneBricksStairsBlock::new);
-    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS_SLAB = BLOCKS.register("lime_mortar_stone_bricks_slab", LimeMortarStoneBricksSlabBlock::new);
-    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS_WALL = BLOCKS.register("lime_mortar_stone_bricks_wall", LimeMortarStoneBricksWallBlock::new);
+    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS_STAIRS = stair("lime_mortar_stone_bricks", LimeMortarStoneBricksStairsBlock::new);
+    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS_SLAB = slab("lime_mortar_stone_bricks", LimeMortarStoneBricksSlabBlock::new);
+    public static final RegistryObject<Block> LIME_MORTAR_STONE_BRICKS_WALL = wall("lime_mortar_stone_bricks", LimeMortarStoneBricksWallBlock::new);
 
     // 应力方块实体类型
-    public static final RegistryObject<BlockEntityType<StressBlock.StressBlockEntity>> STRESS_BLOCK_ENTITY = BLOCK_ENTITIES.register("stress_block_entity",
+    public static final RegistryObject<BlockEntityType<StressBlockEntity>> STRESS_BLOCK_ENTITY = BLOCK_ENTITIES.register("stress_block_entity",
         () -> {
             // 收集所有需要应力值的方块
             Block[] stressBlocks = {
@@ -606,7 +400,7 @@ public class ModBlocks {
                 CASSITERITE_PLACER_BLOCK.get(),
                 OCHRE_DEPOSIT.get()
             };
-            return BlockEntityType.Builder.of(StressBlock.StressBlockEntity::new, stressBlocks).build(null);
+            return BlockEntityType.Builder.of(StressBlockEntity::new, stressBlocks).build(null);
         });
 
 

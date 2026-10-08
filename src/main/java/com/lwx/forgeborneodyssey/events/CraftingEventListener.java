@@ -1,18 +1,16 @@
 package com.lwx.forgeborneodyssey.events;
 
-import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.items.GrassFiberItem;
 import com.lwx.forgeborneodyssey.items.RawClayItem;
 import com.lwx.forgeborneodyssey.items.TemperGrogItem;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
 import com.lwx.forgeborneodyssey.quality.QualityHelper;
+import com.lwx.forgeborneodyssey.util.ItemHelper;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -45,7 +43,7 @@ public class CraftingEventListener {
         ItemStack stack = event.getStack();
         if (stack.isEmpty()) return;
 
-        if (isModItem(stack)) {
+        if (ItemHelper.isModItem(stack)) {
             QualityHelper.ensurePhysicalWeight(stack);
 
             if (stack.getItem() instanceof AbstractMetalBilletItem) {
@@ -68,13 +66,6 @@ public class CraftingEventListener {
         if (stack.getItem() instanceof TemperGrogItem) {
             spawnPickupParticles(event, stack);
         }
-    }
-
-    private static boolean isModItem(ItemStack stack) {
-        ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        if (id == null) return false;
-        String ns = id.getNamespace();
-        return ForgeborneOdyssey.MOD_ID.equals(ns) || "minecraft".equals(ns);
     }
 
     private static void spawnPickupParticles(PlayerEvent.ItemPickupEvent event, ItemStack stack) {
@@ -110,17 +101,17 @@ public class CraftingEventListener {
 
         RandomSource random = player.level().random;
         for (ItemStack stack : player.getInventory().items) {
-            if (!stack.isEmpty() && isModItem(stack)) {
+            if (!stack.isEmpty() && ItemHelper.isModItem(stack)) {
                 QualityHelper.ensurePhysicalWeight(stack);
             }
         }
         for (ItemStack stack : player.getInventory().armor) {
-            if (!stack.isEmpty() && isModItem(stack)) {
+            if (!stack.isEmpty() && ItemHelper.isModItem(stack)) {
                 QualityHelper.ensurePhysicalWeight(stack);
             }
         }
         for (ItemStack stack : player.getInventory().offhand) {
-            if (!stack.isEmpty() && isModItem(stack)) {
+            if (!stack.isEmpty() && ItemHelper.isModItem(stack)) {
                 QualityHelper.ensurePhysicalWeight(stack);
             }
         }

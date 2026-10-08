@@ -9,7 +9,7 @@ public class ChloriteRockSlabBlock extends SlabBlock {
     public ChloriteRockSlabBlock() {
         super(BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_GREEN)
-            .strength(2.0f, 2.0f)
+            .strength(2.0f, 6.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

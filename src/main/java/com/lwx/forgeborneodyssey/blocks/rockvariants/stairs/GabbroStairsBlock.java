@@ -10,7 +10,7 @@ public class GabbroStairsBlock extends StairBlock {
     public GabbroStairsBlock() {
         super(ModBlocks.GABBRO_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_BLACK)
-            .strength(3.0f, 3.0f)
+            .strength(3.0f, 9.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

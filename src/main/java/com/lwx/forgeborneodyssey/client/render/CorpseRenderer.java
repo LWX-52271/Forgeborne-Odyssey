@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.client.render;
 
+import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
 import com.lwx.forgeborneodyssey.entities.CorpseEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -88,6 +89,24 @@ public class CorpseRenderer extends EntityRenderer<CorpseEntity> {
 
         poseStack.pushPose();
 
+        float spawnY = corpse.getSpawnY();
+        float targetY = corpse.getTargetGroundY();
+        if (targetY < spawnY - 0.1f) {
+            float fallDistance = spawnY - targetY;
+            int fallTicksI = Math.max(CorpseEntity.FALL_DURATION_TICKS,
+                    (int)(fallDistance * CorpseEntity.FALL_TICKS_PER_BLOCK));
+            float fallProgress = Math.min(1.0F, (corpse.tickCount + partialTick) / (float) fallTicksI);
+            float fallT = easeInQuad(fallProgress);
+            poseStack.translate(0.0D, fallDistance * (1.0F - fallT), 0.0D);
+
+            float settleTime = corpse.tickCount + partialTick - fallTicksI;
+            if (settleTime >= 0 && settleTime < 6.0F) {
+                float s = settleTime / 6.0F;
+                double settle = -0.08 * Math.exp(-5.0 * s) * Math.cos(2.5 * s);
+                poseStack.translate(0.0D, settle, 0.0D);
+            }
+        }
+
         double settleDownY = (t >= 0.999F) ? 0.0D : 0.0D;
         poseStack.translate(0.0D, settleDownY, 0.0D);
 
@@ -106,6 +125,10 @@ public class CorpseRenderer extends EntityRenderer<CorpseEntity> {
     private static float easeOutCubic(float t) {
         float m = t - 1.0F;
         return m * m * m + 1.0F;
+    }
+
+    private static float easeInQuad(float t) {
+        return t * t;
     }
 
     private void syncDummyForCorpse(Entity dummy, CorpseEntity corpse) {
@@ -136,7 +159,8 @@ public class CorpseRenderer extends EntityRenderer<CorpseEntity> {
                 if (livingDummy instanceof net.minecraft.world.entity.Mob mob) {
                     mob.setNoAi(true);
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                ForgeborneOdyssey.LOGGER.warn("Failed to set NoAI on corpse dummy mob", e);
             }
         }
     }
@@ -149,7 +173,8 @@ public class CorpseRenderer extends EntityRenderer<CorpseEntity> {
         }
         try {
             dummy.load(cleanedNbt);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            ForgeborneOdyssey.LOGGER.warn("Failed to load NBT into corpse renderer dummy", e);
         }
     }
 

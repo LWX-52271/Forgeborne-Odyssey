@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
@@ -12,48 +13,45 @@ import java.util.function.Supplier;
  * 用于在多人游戏中同步方块的应力值，防止不同玩家挖掘时数据不一致
  */
 public class SyncStressPacket {
-    
+
     private final BlockPos pos;
     private final float stress;
-    
+
     public SyncStressPacket(BlockPos pos, float stress) {
         this.pos = pos;
         this.stress = stress;
     }
-    
+
     public SyncStressPacket(FriendlyByteBuf buffer) {
         this.pos = buffer.readBlockPos();
         this.stress = buffer.readFloat();
     }
-    
+
     public void toBytes(FriendlyByteBuf buffer) {
         buffer.writeBlockPos(pos);
         buffer.writeFloat(stress);
     }
-    
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
-        if (context.getDirection().getReceptionSide().isServer()) {
-            return false;
-        }
         context.enqueueWork(() -> {
-            Level level = net.minecraft.client.Minecraft.getInstance().level;
+            Level level = Minecraft.getInstance().level;
             if (level != null) {
                 var blockEntity = level.getBlockEntity(pos);
-                if (blockEntity instanceof com.lwx.forgeborneodyssey.blocks.StressBlock.StressBlockEntity stressBlockEntity) {
+                if (blockEntity instanceof com.lwx.forgeborneodyssey.blocks.StressBlockEntity stressBlockEntity) {
                     stressBlockEntity.setStress(stress);
                 } else {
                     com.lwx.forgeborneodyssey.util.VanillaBlockStressManager.setClientStress(pos, stress);
                 }
             }
         });
-        return true;
+        context.setPacketHandled(true);
     }
-    
+
     public BlockPos getPos() {
         return pos;
     }
-    
+
     public float getStress() {
         return stress;
     }

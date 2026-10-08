@@ -9,7 +9,7 @@ public class GabbroSlabBlock extends SlabBlock {
     public GabbroSlabBlock() {
         super(BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_BLACK)
-            .strength(3.0f, 3.0f)
+            .strength(3.0f, 9.0f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops());
     }

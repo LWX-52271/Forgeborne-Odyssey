@@ -12,38 +12,37 @@ import java.util.function.Supplier;
  * 当玩家在石砧 GUI 中点击确认按钮时，客户端发送此包到服务端
  */
 public class ConfirmMetalSelectionPacket {
-    
+
     private static final double MAX_DISTANCE_SQ = 64.0;
-    
+
     private final BlockPos pos;
-    
+
     public ConfirmMetalSelectionPacket(BlockPos pos) {
         this.pos = pos;
     }
-    
+
     public ConfirmMetalSelectionPacket(FriendlyByteBuf buffer) {
         this.pos = buffer.readBlockPos();
     }
-    
+
     public void toBytes(FriendlyByteBuf buffer) {
         buffer.writeBlockPos(pos);
     }
-    
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             var player = context.getSender();
             if (player != null) {
-                // 验证玩家是否在石砧的交互范围内
                 if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > MAX_DISTANCE_SQ) {
                     return;
                 }
                 var level = player.level();
-                if (level.getBlockEntity(pos) instanceof AnvilBlockEntity anvilBE) {
+                if (level.getBlockEntity(pos) instanceof AnvilBlockEntity) {
                     player.closeContainer();
                 }
             }
         });
-        return true;
+        context.setPacketHandled(true);
     }
 }

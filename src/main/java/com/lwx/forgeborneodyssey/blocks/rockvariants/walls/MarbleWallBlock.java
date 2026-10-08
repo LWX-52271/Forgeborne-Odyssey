@@ -9,7 +9,7 @@ public class MarbleWallBlock extends WallBlock {
     public MarbleWallBlock() {
         super(BlockBehaviour.Properties.of()
             .mapColor(MapColor.TERRACOTTA_WHITE)
-            .strength(2.5f, 2.5f)
+            .strength(2.5f, 7.5f)
             .sound(SoundType.STONE)
             .requiresCorrectToolForDrops()
             .forceSolidOn());

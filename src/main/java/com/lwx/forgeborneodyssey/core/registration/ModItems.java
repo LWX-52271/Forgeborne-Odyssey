@@ -516,20 +516,17 @@ public class ModItems {
     public static final RegistryObject<Item> GRASS_FIBER = ITEMS.register("grass_fiber", GrassFiberItem::new);
     public static final RegistryObject<Item> FIBER_ROPE = ITEMS.register("fiber_rope", FiberRopeItem::new);
     public static final RegistryObject<Item> WATERSKIN = ITEMS.register("waterskin", WaterskinItem::new);
-    public static final RegistryObject<Item> RICE_HUSK = ITEMS.register("rice_husk",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.rice_husk.tooltip"));
+    public static final RegistryObject<Item> RICE_HUSK = tooltipItem("rice_husk", "item.forgeborneodyssey.rice_husk.tooltip");
 
     // 第四类：加工半成品（陶器系统）
-    public static final RegistryObject<Item> MIXED_CLAY = ITEMS.register("mixed_clay",
-        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.mixed_clay.tooltip"));
+    public static final RegistryObject<Item> MIXED_CLAY = tooltipItem("mixed_clay", "item.forgeborneodyssey.mixed_clay.tooltip", 16);
     public static final RegistryObject<Item> GREENWARE_CRUCIBLE = ITEMS.register("greenware_crucible",
         () -> new GreenwareItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_crucible.tooltip"));
     public static final RegistryObject<Item> GREENWARE_MOLD = ITEMS.register("greenware_mold",
         () -> new GreenwareItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_mold.tooltip"));
     public static final RegistryObject<Item> GREENWARE_BRICK = ITEMS.register("greenware_brick",
         () -> new GreenwareItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_brick.tooltip"));
-    public static final RegistryObject<Item> GREENWARE_BLOWPIPE = ITEMS.register("greenware_blowpipe",
-        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_blowpipe.tooltip"));
+    public static final RegistryObject<Item> GREENWARE_BLOWPIPE = tooltipItem("greenware_blowpipe", "item.forgeborneodyssey.greenware_blowpipe.tooltip", 16);
     public static final RegistryObject<Item> GREENWARE_STORAGE_POT = ITEMS.register("greenware_storage_pot",
         () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_storage_pot.tooltip") {
             @Override
@@ -549,19 +546,14 @@ public class ModItems {
     public static final RegistryObject<Item> GREENWARE_SLING_BULLET = ITEMS.register("greenware_sling_bullet",
         () -> new GreenwareItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.greenware_sling_bullet.tooltip"));
     // 第五类：燃料与气氛控制物（陶器系统）
-    public static final RegistryObject<Item> FIREWOOD = ITEMS.register("firewood",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.firewood.tooltip"));
-    public static final RegistryObject<Item> STRAW_BALE = ITEMS.register("straw_bale",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.straw_bale.tooltip"));
-    public static final RegistryObject<Item> RICE_HUSK_CHAR = ITEMS.register("rice_husk_char",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.rice_husk_char.tooltip"));
+    public static final RegistryObject<Item> FIREWOOD = tooltipItem("firewood", "item.forgeborneodyssey.firewood.tooltip");
+    public static final RegistryObject<Item> STRAW_BALE = tooltipItem("straw_bale", "item.forgeborneodyssey.straw_bale.tooltip");
+    public static final RegistryObject<Item> RICE_HUSK_CHAR = tooltipItem("rice_husk_char", "item.forgeborneodyssey.rice_husk_char.tooltip");
 
     // 第六类：最终成品（陶器系统）
     public static final RegistryObject<Item> GRAY_CRUCIBLE = ITEMS.register("gray_crucible", GrayCrucibleItem::new);
-    public static final RegistryObject<Item> RED_MOLD = ITEMS.register("red_mold",
-        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.red_mold.tooltip"));
-    public static final RegistryObject<Item> FIRED_BRICK = ITEMS.register("fired_brick",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.fired_brick.tooltip"));
+    public static final RegistryObject<Item> RED_MOLD = tooltipItem("red_mold", "item.forgeborneodyssey.red_mold.tooltip", 16);
+    public static final RegistryObject<Item> FIRED_BRICK = tooltipItem("fired_brick", "item.forgeborneodyssey.fired_brick.tooltip");
     public static final RegistryObject<Item> CERAMIC_BLOWPIPE = ITEMS.register("ceramic_blowpipe",
         CeramicBlowpipeItem::new);
     public static final RegistryObject<Item> CERAMIC_WATER_JUG = ITEMS.register("ceramic_water_jug",
@@ -574,30 +566,22 @@ public class ModItems {
         () -> new StoragePotBlockItem(ModBlocks.STORAGE_POT_BLOCK.get(), new Item.Properties().stacksTo(1)));
 
     // 第七类：副产物与失败品（陶器系统）
-    public static final RegistryObject<Item> KILN_WASTE_SHARD = ITEMS.register("kiln_waste_shard",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.kiln_waste_shard.tooltip"));
-    public static final RegistryObject<Item> PLANT_ASH = ITEMS.register("plant_ash",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.plant_ash.tooltip"));
-    public static final RegistryObject<Item> CHARCOAL_CLUMP = ITEMS.register("charcoal_clump",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.charcoal_clump.tooltip"));
+    public static final RegistryObject<Item> KILN_WASTE_SHARD = tooltipItem("kiln_waste_shard", "item.forgeborneodyssey.kiln_waste_shard.tooltip");
+    public static final RegistryObject<Item> PLANT_ASH = tooltipItem("plant_ash", "item.forgeborneodyssey.plant_ash.tooltip");
+    public static final RegistryObject<Item> CHARCOAL_CLUMP = tooltipItem("charcoal_clump", "item.forgeborneodyssey.charcoal_clump.tooltip");
 
     // 第八类：石灰烧制产物
     public static final RegistryObject<Item> QUICKLIME = ITEMS.register("quicklime",
         () -> new QuicklimeItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.quicklime.tooltip"));
     public static final RegistryObject<Item> SLAKED_LIME = ITEMS.register("slaked_lime",
         () -> new PlasterItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.slaked_lime.tooltip"));
-    public static final RegistryObject<Item> LIME_MORTAR = ITEMS.register("lime_mortar",
-        () -> new TooltipItem(new Item.Properties().stacksTo(16), "item.forgeborneodyssey.lime_mortar.tooltip"));
+    public static final RegistryObject<Item> LIME_MORTAR = tooltipItem("lime_mortar", "item.forgeborneodyssey.lime_mortar.tooltip", 16);
 
     // 第九类：赭石颜料
-    public static final RegistryObject<Item> YELLOW_OCHRE = ITEMS.register("yellow_ochre",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.yellow_ochre.tooltip"));
-    public static final RegistryObject<Item> RED_OCHRE = ITEMS.register("red_ochre",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.red_ochre.tooltip"));
-    public static final RegistryObject<Item> BLACK_OCHRE = ITEMS.register("black_ochre",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.black_ochre.tooltip"));
-    public static final RegistryObject<Item> DARK_RED_OCHRE = ITEMS.register("dark_red_ochre",
-        () -> new TooltipItem(new Item.Properties().stacksTo(64), "item.forgeborneodyssey.dark_red_ochre.tooltip"));
+    public static final RegistryObject<Item> YELLOW_OCHRE = tooltipItem("yellow_ochre", "item.forgeborneodyssey.yellow_ochre.tooltip");
+    public static final RegistryObject<Item> RED_OCHRE = tooltipItem("red_ochre", "item.forgeborneodyssey.red_ochre.tooltip");
+    public static final RegistryObject<Item> BLACK_OCHRE = tooltipItem("black_ochre", "item.forgeborneodyssey.black_ochre.tooltip");
+    public static final RegistryObject<Item> DARK_RED_OCHRE = tooltipItem("dark_red_ochre", "item.forgeborneodyssey.dark_red_ochre.tooltip");
 
     // 彩色灰泥
     public static final RegistryObject<Item> RED_PLASTER = ITEMS.register("red_plaster",
@@ -682,5 +666,13 @@ public class ModItems {
 
     private static RegistryObject<Item> createBlockItem(String name, RegistryObject<Block> block) {
         return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+
+    private static RegistryObject<Item> tooltipItem(String name, String tooltipKey) {
+        return ITEMS.register(name, () -> new TooltipItem(new Item.Properties().stacksTo(64), tooltipKey));
+    }
+
+    private static RegistryObject<Item> tooltipItem(String name, String tooltipKey, int maxStack) {
+        return ITEMS.register(name, () -> new TooltipItem(new Item.Properties().stacksTo(maxStack), tooltipKey));
     }
 }

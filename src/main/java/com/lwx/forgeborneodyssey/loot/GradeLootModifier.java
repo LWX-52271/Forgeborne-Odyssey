@@ -1,6 +1,6 @@
 package com.lwx.forgeborneodyssey.loot;
 
-import com.lwx.forgeborneodyssey.blocks.StressBlock;
+import com.lwx.forgeborneodyssey.blocks.StressBlockEntity;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.world.OreDropCalculator;
 import com.mojang.serialization.Codec;
@@ -33,7 +33,7 @@ public class GradeLootModifier extends LootModifier {
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         if (context.hasParam(LootContextParams.BLOCK_ENTITY)) {
             BlockEntity blockEntity = context.getParam(LootContextParams.BLOCK_ENTITY);
-            if (blockEntity instanceof StressBlock.StressBlockEntity stressBE) {
+            if (blockEntity instanceof StressBlockEntity stressBE) {
                 float grade = stressBE.getGrade();
 
                 if (grade >= 0.0f) {

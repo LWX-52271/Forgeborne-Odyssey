@@ -43,16 +43,14 @@ public class ForgingHitPacket {
         buffer.writeBoolean(sneaking);
     }
     
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+    public void handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             var player = context.getSender();
             if (player != null) {
-                // 验证玩家是否在石砧的交互范围内
                 if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > MAX_DISTANCE_SQ) {
                     return;
                 }
-                // 验证玩家是否手持有效的锤子物品
                 var hammer = player.getMainHandItem();
                 if (!hammer.is(ModItems.HANDLE_STONE_HAMMER.get()) && !hammer.is(ModItems.SURFACE_COBBLESTONE_BLOCK_ITEM.get())) {
                     return;
@@ -64,7 +62,7 @@ public class ForgingHitPacket {
                 }
             }
         });
-        return true;
+        context.setPacketHandled(true);
     }
     
     public BlockPos getPos() {

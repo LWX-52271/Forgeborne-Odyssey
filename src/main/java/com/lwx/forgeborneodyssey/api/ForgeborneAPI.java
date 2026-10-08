@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.api;
 
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
+import com.lwx.forgeborneodyssey.blocks.StressBlockEntity;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
 import com.lwx.forgeborneodyssey.util.VanillaBlockStressManager;
@@ -126,7 +127,7 @@ public class ForgeborneAPI {
      */
     public static float getStress(Level level, BlockPos pos) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof StressBlock.StressBlockEntity stressBE) {
+        if (be instanceof StressBlockEntity stressBE) {
             return stressBE.getStress();
         }
         return VanillaBlockStressManager.getStress(level, pos);
@@ -141,7 +142,7 @@ public class ForgeborneAPI {
      */
     public static void setStress(Level level, BlockPos pos, float stress) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof StressBlock.StressBlockEntity stressBE) {
+        if (be instanceof StressBlockEntity stressBE) {
             stressBE.setStress(stress);
         } else {
             VanillaBlockStressManager.setStress(level, pos, stress);
@@ -157,7 +158,7 @@ public class ForgeborneAPI {
      */
     public static void addStress(Level level, BlockPos pos, float amount) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof StressBlock.StressBlockEntity stressBE) {
+        if (be instanceof StressBlockEntity stressBE) {
             stressBE.addStress(amount);
         } else {
             VanillaBlockStressManager.addStress(level, pos, amount);

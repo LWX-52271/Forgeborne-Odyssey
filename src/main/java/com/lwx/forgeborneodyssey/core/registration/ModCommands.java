@@ -217,7 +217,7 @@ public class ModCommands {
         ServerLevel level = player.serverLevel();
         net.minecraft.world.level.block.entity.BlockEntity blockEntity = level.getBlockEntity(targetPos);
 
-        if (blockEntity instanceof com.lwx.forgeborneodyssey.blocks.StressBlock.StressBlockEntity stressBlockEntity) {
+        if (blockEntity instanceof com.lwx.forgeborneodyssey.blocks.StressBlockEntity stressBlockEntity) {
             stressBlockEntity.setStress(stressValue);
 
             Block block = level.getBlockState(targetPos).getBlock();
