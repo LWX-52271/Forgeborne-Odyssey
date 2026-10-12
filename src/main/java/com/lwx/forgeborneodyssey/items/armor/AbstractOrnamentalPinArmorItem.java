@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 楗伴拡鑳哥敳鐗╁搧鍩虹被
- * 鍙互姝ｅ父瑁呭鍦ㄨ兏鐢叉Ы浣?
+ * 妤椾即鎷￠懗鍝ユ暢閻椻晛鎼ч崺铏硅
+ * 閸欘垯浜掑锝呯埗鐟佸懎顦崷銊ㄥ厪閻㈠弶蝎娴?
  */
 public abstract class AbstractOrnamentalPinArmorItem extends ArmorItem {
     
@@ -26,24 +26,24 @@ public abstract class AbstractOrnamentalPinArmorItem extends ArmorItem {
     }
     
     /**
-     * 鑾峰彇閲戝睘绫诲瀷鍚嶇О锛堢敤浜庢湰鍦板寲閿級
+     * 閼惧嘲褰囬柌鎴濈潣缁鐎烽崥宥囆為敍鍫㈡暏娴滃孩婀伴崷鏉垮闁款噯绱?
      */
     protected abstract String getMetalType();
     
     /**
-     * 鑾峰彇鎮仠鏂囨湰閿?
+     * 閼惧嘲褰囬幃顒€浠犻弬鍥ㄦ拱闁?
      */
     protected abstract String getTooltipKey();
     
     /**
-     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫯宸濋柌蹇曠搼缁?
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
         return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勭函搴?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫮鍑芥惔?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -74,10 +74,7 @@ public abstract class AbstractOrnamentalPinArmorItem extends ArmorItem {
                 }
             }
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
             
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
         } else {

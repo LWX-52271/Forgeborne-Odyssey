@@ -13,59 +13,59 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 杞寲閲戝睘鍧枡鐗╁搧鍩虹被
- * 鍙爢鍙狅紙姣忕粍16涓級锛屼綔涓洪敾閫犲師鏂欎娇鐢?
- * 缁忚繃鍔犵儹杞寲澶勭悊鐨勯噾灞炲澂鏂欙紝鏇村鏄撳褰?
- * 缁ф壙鑷櫘閫氶噾灞炲澂鏂欑殑閲嶉噺绛夌骇绯荤粺
+ * 鏉烆垰瀵查柌鎴濈潣閸ь垱鏋￠悧鈺佹惂閸╄櫣琚?
+ * 閸欘垰鐖㈤崣鐙呯礄濮ｅ繒绮?6娑擃亷绱氶敍灞肩稊娑撴椽鏁鹃柅鐘插斧閺傛瑤濞囬悽?
+ * 缂佸繗绻冮崝鐘靛劰鏉烆垰瀵叉径鍕倞閻ㄥ嫰鍣剧仦鐐叉緜閺傛瑱绱濋弴鏉戭啇閺勬挸顢栬ぐ?
+ * 缂佈勫閼奉亝娅橀柅姘跺櫨鐏炵偛婢傞弬娆戞畱闁插秹鍣虹粵澶岄獓缁崵绮?
  */
 public abstract class AbstractSoftMetalBilletItem extends Item {
     
     public AbstractSoftMetalBilletItem() {
         super(new Item.Properties()
-            .stacksTo(16)); // 姣忕粍鏈€澶?6涓?
+            .stacksTo(16)); // 濮ｅ繒绮嶉張鈧径?6娑?
     }
     
     /**
-     * 鑾峰彇閲戝睘绫诲瀷鍚嶇О锛堢敤浜庢湰鍦板寲閿級
+     * 閼惧嘲褰囬柌鎴濈潣缁鐎烽崥宥囆為敍鍫㈡暏娴滃孩婀伴崷鏉垮闁款噯绱?
      */
     protected abstract String getMetalType();
     
     /**
-     * 鑾峰彇鎮仠鏂囨湰閿?
+     * 閼惧嘲褰囬幃顒€浠犻弬鍥ㄦ拱闁?
      */
     protected abstract String getTooltipKey();
     
     /**
-     * 涓?ItemStack 璁剧疆鎸囧畾璐ㄩ噺绛夌骇
-     * @param stack 鐗╁搧鍫?
-     * @param quality 璐ㄩ噺绛夌骇
+     * 娑?ItemStack 鐠佸墽鐤嗛幐鍥х暰鐠愩劑鍣虹粵澶岄獓
+     * @param stack 閻椻晛鎼ч崼?
+     * @param quality 鐠愩劑鍣虹粵澶岄獓
      */
     public void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
         QualityHelper.ensurePhysicalWeight(stack);
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
-     * @param stack 鐗╁搧鍫?
-     * @return 璐ㄩ噺绛夌骇
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫯宸濋柌蹇曠搼缁?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 鐠愩劑鍣虹粵澶岄獓
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
         return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 涓?ItemStack 璁剧疆鎸囧畾绾害
-     * @param stack 鐗╁搧鍫?
-     * @param purity 绾害鍊硷紙0-100锛?
+     * 娑?ItemStack 鐠佸墽鐤嗛幐鍥х暰缁绢垰瀹?
+     * @param stack 閻椻晛鎼ч崼?
+     * @param purity 缁绢垰瀹抽崐纭风礄0-100閿?
      */
     public void setPurity(ItemStack stack, float purity) {
         QualityHelper.setPurity(stack, purity / 100.0f);
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勭函搴?
-     * @param stack 鐗╁搧鍫?
-     * @return 绾害鍊硷紙0-100锛夛紝濡傛灉娌℃湁鍒欒繑鍥為粯璁ゅ€?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫮鍑芥惔?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 缁绢垰瀹抽崐纭风礄0-100閿涘绱濇俊鍌涚亯濞屸剝婀侀崚娆掔箲閸ョ偤绮拋銈呪偓?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -78,7 +78,7 @@ public abstract class AbstractSoftMetalBilletItem extends Item {
         super.appendHoverText(stack, level, tooltip, flag);
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable(getTooltipKey()));
-            // 品级显示已随品级系统移除
+            // 鍝佺骇鏄剧ず宸查殢鍝佺骇绯荤粺绉婚櫎
             double weight = QualityHelper.getWeightGrams(stack);
             if (weight > 0.0) {
                 if (weight >= 1000.0) {
@@ -88,10 +88,7 @@ public abstract class AbstractSoftMetalBilletItem extends Item {
                 }
             }
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
         }

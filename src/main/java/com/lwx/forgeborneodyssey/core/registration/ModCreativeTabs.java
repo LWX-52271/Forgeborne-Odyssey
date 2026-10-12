@@ -19,7 +19,7 @@ public class ModCreativeTabs {
             .title(Component.translatable("itemGroup.forgeborneodyssey.blocks"))
             .displayItems((parameters, output) -> {
                 ModBlocks.BLOCKS.getEntries().forEach(blockRegistryObject -> {
-                    output.accept(new ItemStack(blockRegistryObject.get()));
+                    output.accept(new ItemStack(blockRegistryObject.get(), 1));
                 });
             })
             .icon(() -> new ItemStack(ModBlocks.CUPRITE_ORE.get()))  // 使用模组方块作为图标
@@ -117,7 +117,7 @@ public class ModCreativeTabs {
                 output.accept(ModItems.SPHALERITE_GRAIN.get());
                 output.accept(ModItems.MOLYBDENITE_GRAIN.get());
 
-                // 岩石碎片（9种）
+                // 岩石碎片（14种）
                 output.accept(ModItems.SHALE_RUBBLE.get());
                 output.accept(ModItems.SANDSTONE_RUBBLE.get());
                 output.accept(ModItems.LIMESTONE_RUBBLE.get());
@@ -127,6 +127,11 @@ public class ModCreativeTabs {
                 output.accept(ModItems.QUARTZ_VEIN_RUBBLE.get());
                 output.accept(ModItems.SERICITIZED_RUBBLE.get());
                 output.accept(ModItems.CHLORITE_RUBBLE.get());
+                output.accept(ModItems.CONGLOMERATE_RUBBLE.get());
+                output.accept(ModItems.SILTSTONE_RUBBLE.get());
+                output.accept(ModItems.MUDSTONE_RUBBLE.get());
+                output.accept(ModItems.DOLOMITE_RUBBLE.get());
+                output.accept(ModItems.SLATE_RUBBLE.get());
             })
             .icon(() -> new ItemStack(ModItems.RAW_CHALCOPYRITE.get()))  // 使用黄铜矿碎块作为图标
             .build()

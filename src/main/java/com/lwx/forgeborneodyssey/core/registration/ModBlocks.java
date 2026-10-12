@@ -12,6 +12,10 @@ import com.lwx.forgeborneodyssey.blocks.naturalmetals.NaturalSilverBlock;
 import com.lwx.forgeborneodyssey.blocks.ShaftFrameBlock;
 import com.lwx.forgeborneodyssey.blocks.TunnelSupportBlock;
 import com.lwx.forgeborneodyssey.blocks.BoulderBlock;
+import com.lwx.forgeborneodyssey.blocks.RegolithBlock;
+import com.lwx.forgeborneodyssey.blocks.ShatteredBedrockBlock;
+import com.lwx.forgeborneodyssey.blocks.SoilBlock;
+import com.lwx.forgeborneodyssey.blocks.SoilType;
 import com.lwx.forgeborneodyssey.blocks.SurfaceCobblestoneBlock;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlock;
 import com.lwx.forgeborneodyssey.blocks.FireMouthBlock;
@@ -37,6 +41,11 @@ import com.lwx.forgeborneodyssey.blocks.StoragePotBlockEntity;
 
 import com.lwx.forgeborneodyssey.blocks.StressBlock;
 import com.lwx.forgeborneodyssey.blocks.StressBlockEntity;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.ConglomerateStairsBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.SiltstoneStairsBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.MudstoneStairsBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.DolomiteStairsBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.SlateStairsBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.ChloriteRockStairsBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.GabbroStairsBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.LimeConcreteStairsBlock;
@@ -49,6 +58,11 @@ import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.QuartziteStairsBlock
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.SandstoneStairsBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.SericitizedRockStairsBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.stairs.ShaleStairsBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.ConglomerateSlabBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.SiltstoneSlabBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.MudstoneSlabBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.DolomiteSlabBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.SlateSlabBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.ChloriteRockSlabBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.GabbroSlabBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.LimeConcreteSlabBlock;
@@ -61,6 +75,11 @@ import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.QuartziteSlabBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.SandstoneSlabBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.SericitizedRockSlabBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.slabs.ShaleSlabBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.walls.ConglomerateWallBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.walls.SiltstoneWallBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.walls.MudstoneWallBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.walls.DolomiteWallBlock;
+import com.lwx.forgeborneodyssey.blocks.rockvariants.walls.SlateWallBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.walls.ChloriteRockWallBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.walls.GabbroWallBlock;
 import com.lwx.forgeborneodyssey.blocks.rockvariants.walls.LimeConcreteWallBlock;
@@ -133,6 +152,13 @@ public class ModBlocks {
     public static final RegistryObject<Block> SERICITIZED_ROCK_BLOCK = rock("sericitized_rock_block", MapColor.TERRACOTTA_LIGHT_GRAY, 2.0f);
     public static final RegistryObject<Block> CHLORITE_ROCK_BLOCK = rock("chlorite_rock_block", MapColor.COLOR_GREEN, 2.0f);
 
+    // 地表带新岩石
+    public static final RegistryObject<Block> CONGLOMERATE_BLOCK = rock("conglomerate_block", MapColor.TERRACOTTA_BROWN, 2.5f);
+    public static final RegistryObject<Block> SILTSTONE_BLOCK = rock("siltstone_block", MapColor.TERRACOTTA_LIGHT_GRAY, 1.5f);
+    public static final RegistryObject<Block> MUDSTONE_BLOCK = rock("mudstone_block", MapColor.TERRACOTTA_GRAY, 1.5f);
+    public static final RegistryObject<Block> DOLOMITE_BLOCK = rock("dolomite_block", MapColor.TERRACOTTA_LIGHT_BLUE, 3.0f);
+    public static final RegistryObject<Block> SLATE_BLOCK = rock("slate_block", MapColor.COLOR_GRAY, 3.0f);
+
     // 地表圆石方块
     public static final RegistryObject<Block> SURFACE_COBBLESTONE_BLOCK = BLOCKS.register("surface_cobblestone_block", SurfaceCobblestoneBlock::new);
 
@@ -148,6 +174,30 @@ public class ModBlocks {
             .mapColor(MapColor.TERRACOTTA_ORANGE)
             .strength(0.8f, 1.5f)
             .sound(SoundType.GRAVEL)));
+
+    // 风化壳 - 土壤与新鲜基岩之间的残积层
+    public static final RegistryObject<Block> REGOLITH = BLOCKS.register("regolith", RegolithBlock::new);
+
+    // 碎裂基岩 - 风化壳与新鲜基岩之间的过渡带
+    public static final RegistryObject<Block> SHATTERED_BEDROCK = BLOCKS.register("shattered_bedrock", ShatteredBedrockBlock::new);
+
+    // ── 土壤系列：8 种 USDA 土壤类型，每种有草皮和裸土两个变体（共 16 个方块）──
+    public static final RegistryObject<Block> MOLLISOL_GRASS_SOIL = BLOCKS.register("mollisol_grass_soil", () -> new SoilBlock(SoilType.MOLLISOL, true));
+    public static final RegistryObject<Block> MOLLISOL_SOIL      = BLOCKS.register("mollisol_soil",      () -> new SoilBlock(SoilType.MOLLISOL, false));
+    public static final RegistryObject<Block> ALFISOL_GRASS_SOIL  = BLOCKS.register("alfisol_grass_soil",  () -> new SoilBlock(SoilType.ALFISOL, true));
+    public static final RegistryObject<Block> ALFISOL_SOIL        = BLOCKS.register("alfisol_soil",        () -> new SoilBlock(SoilType.ALFISOL, false));
+    public static final RegistryObject<Block> SPODOSOL_GRASS_SOIL = BLOCKS.register("spodosol_grass_soil", () -> new SoilBlock(SoilType.SPODOSOL, true));
+    public static final RegistryObject<Block> SPODOSOL_SOIL       = BLOCKS.register("spodosol_soil",       () -> new SoilBlock(SoilType.SPODOSOL, false));
+    public static final RegistryObject<Block> OXISOL_GRASS_SOIL   = BLOCKS.register("oxisol_grass_soil",   () -> new SoilBlock(SoilType.OXISOL, true));
+    public static final RegistryObject<Block> OXISOL_SOIL         = BLOCKS.register("oxisol_soil",         () -> new SoilBlock(SoilType.OXISOL, false));
+    public static final RegistryObject<Block> VERTISOL_GRASS_SOIL = BLOCKS.register("vertisol_grass_soil", () -> new SoilBlock(SoilType.VERTISOL, true));
+    public static final RegistryObject<Block> VERTISOL_SOIL       = BLOCKS.register("vertisol_soil",       () -> new SoilBlock(SoilType.VERTISOL, false));
+    public static final RegistryObject<Block> HISTOSOL_GRASS_SOIL = BLOCKS.register("histosol_grass_soil", () -> new SoilBlock(SoilType.HISTOSOL, true));
+    public static final RegistryObject<Block> HISTOSOL_SOIL       = BLOCKS.register("histosol_soil",       () -> new SoilBlock(SoilType.HISTOSOL, false));
+    public static final RegistryObject<Block> ENTISOL_GRASS_SOIL  = BLOCKS.register("entisol_grass_soil",  () -> new SoilBlock(SoilType.ENTISOL, true));
+    public static final RegistryObject<Block> ENTISOL_SOIL        = BLOCKS.register("entisol_soil",        () -> new SoilBlock(SoilType.ENTISOL, false));
+    public static final RegistryObject<Block> GELISOL_GRASS_SOIL  = BLOCKS.register("gelisol_grass_soil",  () -> new SoilBlock(SoilType.GELISOL, true));
+    public static final RegistryObject<Block> GELISOL_SOIL        = BLOCKS.register("gelisol_soil",        () -> new SoilBlock(SoilType.GELISOL, false));
 
     public static final RegistryObject<Block> BORNITE_ORE = ore("bornite_ore", MapColor.STONE);
     public static final RegistryObject<Block> CHALCOCITE_ORE = ore("chalcocite_ore", MapColor.STONE);
@@ -201,6 +251,11 @@ public class ModBlocks {
     public static final RegistryObject<Block> QUARTZ_VEIN_STAIRS = stair("quartz_vein", QuartzVeinStairsBlock::new);
     public static final RegistryObject<Block> SERICITIZED_ROCK_STAIRS = stair("sericitized_rock", SericitizedRockStairsBlock::new);
     public static final RegistryObject<Block> CHLORITE_ROCK_STAIRS = stair("chlorite_rock", ChloriteRockStairsBlock::new);
+    public static final RegistryObject<Block> CONGLOMERATE_STAIRS = stair("conglomerate", ConglomerateStairsBlock::new);
+    public static final RegistryObject<Block> SILTSTONE_STAIRS = stair("siltstone", SiltstoneStairsBlock::new);
+    public static final RegistryObject<Block> MUDSTONE_STAIRS = stair("mudstone", MudstoneStairsBlock::new);
+    public static final RegistryObject<Block> DOLOMITE_STAIRS = stair("dolomite", DolomiteStairsBlock::new);
+    public static final RegistryObject<Block> SLATE_STAIRS = stair("slate", SlateStairsBlock::new);
 
     public static final RegistryObject<Block> SHALE_SLAB = slab("shale", ShaleSlabBlock::new);
     public static final RegistryObject<Block> SANDSTONE_SLAB = slab("sandstone", SandstoneSlabBlock::new);
@@ -211,6 +266,11 @@ public class ModBlocks {
     public static final RegistryObject<Block> QUARTZ_VEIN_SLAB = slab("quartz_vein", QuartzVeinSlabBlock::new);
     public static final RegistryObject<Block> SERICITIZED_ROCK_SLAB = slab("sericitized_rock", SericitizedRockSlabBlock::new);
     public static final RegistryObject<Block> CHLORITE_ROCK_SLAB = slab("chlorite_rock", ChloriteRockSlabBlock::new);
+    public static final RegistryObject<Block> CONGLOMERATE_SLAB = slab("conglomerate", ConglomerateSlabBlock::new);
+    public static final RegistryObject<Block> SILTSTONE_SLAB = slab("siltstone", SiltstoneSlabBlock::new);
+    public static final RegistryObject<Block> MUDSTONE_SLAB = slab("mudstone", MudstoneSlabBlock::new);
+    public static final RegistryObject<Block> DOLOMITE_SLAB = slab("dolomite", DolomiteSlabBlock::new);
+    public static final RegistryObject<Block> SLATE_SLAB = slab("slate", SlateSlabBlock::new);
 
     public static final RegistryObject<Block> SHALE_WALL = wall("shale", ShaleWallBlock::new);
     public static final RegistryObject<Block> SANDSTONE_WALL = wall("sandstone", SandstoneWallBlock::new);
@@ -221,6 +281,11 @@ public class ModBlocks {
     public static final RegistryObject<Block> QUARTZ_VEIN_WALL = wall("quartz_vein", QuartzVeinWallBlock::new);
     public static final RegistryObject<Block> SERICITIZED_ROCK_WALL = wall("sericitized_rock", SericitizedRockWallBlock::new);
     public static final RegistryObject<Block> CHLORITE_ROCK_WALL = wall("chlorite_rock", ChloriteRockWallBlock::new);
+    public static final RegistryObject<Block> CONGLOMERATE_WALL = wall("conglomerate", ConglomerateWallBlock::new);
+    public static final RegistryObject<Block> SILTSTONE_WALL = wall("siltstone", SiltstoneWallBlock::new);
+    public static final RegistryObject<Block> MUDSTONE_WALL = wall("mudstone", MudstoneWallBlock::new);
+    public static final RegistryObject<Block> DOLOMITE_WALL = wall("dolomite", DolomiteWallBlock::new);
+    public static final RegistryObject<Block> SLATE_WALL = wall("slate", SlateWallBlock::new);
     
     // 火塘方块
     public static final RegistryObject<Block> FIRE_PIT_BLOCK = BLOCKS.register("fire_pit_block", FirePitBlock::new);

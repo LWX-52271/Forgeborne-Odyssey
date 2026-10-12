@@ -20,8 +20,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 鍙姇鎺风殑閲戝睘鐝犵墿鍝佸熀绫?
- * 鏀寔閲嶉噺绛夌骇鍜岀函搴︾郴缁?
+ * 閸欘垱濮囬幒椋庢畱闁叉垵鐫橀悵鐘靛⒖閸濅礁鐔€缁?
+ * 閺€顖涘瘮闁插秹鍣虹粵澶岄獓閸滃瞼鍑芥惔锔鹃兇缂?
  */
 public class ThrowableBeadItem extends Item {
     
@@ -30,21 +30,21 @@ public class ThrowableBeadItem extends Item {
     }
     
     /**
-     * 鑾峰彇閲戝睘绫诲瀷鍚嶇О锛堢敤浜庨粯璁ょ函搴︼級
+     * 閼惧嘲褰囬柌鎴濈潣缁鐎烽崥宥囆為敍鍫㈡暏娴滃酣绮拋銈囧嚱鎼达讣绱?
      */
     protected String getMetalType() {
-        return "copper"; // 榛樿涓洪摐
+        return "copper"; // 姒涙顓绘稉娲憪
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫯宸濋柌蹇曠搼缁?
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
         return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勭函搴?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫮鍑芥惔?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -72,10 +72,7 @@ public class ThrowableBeadItem extends Item {
                 }
             }
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
             
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
         } else {
@@ -88,29 +85,29 @@ public class ThrowableBeadItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         
         if (!level.isClientSide) {
-            // 鍒涘缓鎶曟幏鐗╁疄浣?
+            // 閸掓稑缂撻幎鏇熷箯閻椻晛鐤勬担?
             ThrownMetalBead thrown = new ThrownMetalBead(level, player, stack);
             
-            // 璁剧疆鎶曟幏浣嶇疆鍜屽垵濮嬮€熷害
+            // 鐠佸墽鐤嗛幎鏇熷箯娴ｅ秶鐤嗛崪灞藉灥婵鈧喎瀹?
             thrown.setPos(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
             
-            // 鏍规嵁鐜╁鐨勮绾挎柟鍚戞姇鎺?
+            // 閺嶈宓侀悳鈺侇啀閻ㄥ嫯顫嬬痪鎸庢煙閸氭垶濮囬幒?
             var lookAngle = player.getLookAngle();
-            double speed = 1.5; // 鎶曟幏閫熷害
+            double speed = 1.5; // 閹舵洘骞忛柅鐔峰
             thrown.setDeltaMovement(
                 lookAngle.x * speed,
-                lookAngle.y * speed - 0.3, // 鍑忓皯鍚戜笂鍒嗛噺锛屽鍔犱笅鍧犳劅
+                lookAngle.y * speed - 0.3, // 閸戝繐鐨崥鎴滅瑐閸掑棝鍣洪敍灞筋杻閸旂姳绗呴崸鐘冲妳
                 lookAngle.z * speed
             );
             
-            // 娣诲姞鍒颁笘鐣?
+            // 濞ｈ濮為崚棰佺瑯閻?
             level.addFreshEntity(thrown);
             
-            // 鎾斁澹伴煶
+            // 閹绢厽鏂佹竟浼寸叾
             level.playSound(null, player.getX(), player.getY(), player.getZ(), 
                 SoundEvents.SNOWBALL_THROW, SoundSource.PLAYERS, 1.0f, 1.0f);
             
-            // 娑堣€楃墿鍝?
+            // 濞戝牐鈧澧块崫?
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }

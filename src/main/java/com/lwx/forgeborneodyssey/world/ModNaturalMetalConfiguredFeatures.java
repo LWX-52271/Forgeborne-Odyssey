@@ -1,11 +1,13 @@
 package com.lwx.forgeborneodyssey.world;
 
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
+import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 /**
  * 自然金属块配置特征注册
@@ -24,7 +26,16 @@ public class ModNaturalMetalConfiguredFeatures {
     }
     
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
-        // 空实现，实际配置由 JSON 文件提供
-        // 这些只是占位符，真正的配置在 JSON 文件中
+        context.register(NATURAL_COPPER, new ConfiguredFeature<>(
+            new NaturalMetalsGeneration.NaturalMetalSurfaceFeature(ModBlocks.NATURAL_COPPER_BLOCK),
+            NoneFeatureConfiguration.INSTANCE));
+
+        context.register(NATURAL_SILVER, new ConfiguredFeature<>(
+            new NaturalMetalsGeneration.NaturalMetalSurfaceFeature(ModBlocks.NATURAL_SILVER_BLOCK),
+            NoneFeatureConfiguration.INSTANCE));
+
+        context.register(NATURAL_GOLD, new ConfiguredFeature<>(
+            new NaturalMetalsGeneration.NaturalMetalSurfaceFeature(ModBlocks.NATURAL_GOLD_BLOCK),
+            NoneFeatureConfiguration.INSTANCE));
     }
 }

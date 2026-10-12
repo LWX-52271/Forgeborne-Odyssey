@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.*;
 
@@ -27,18 +28,28 @@ public class ModNaturalMetalPlacedFeatures {
         return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(ForgeborneOdyssey.MOD_ID, name));
     }
     
-    private static List<PlacementModifier> orePlacement(PlacementModifier countModifier, PlacementModifier heightModifier) {
-        return List.of(countModifier, InSquarePlacement.spread(), heightModifier, BiomeFilter.biome());
-    }
-    
-    private static List<PlacementModifier> commonOrePlacement(int count, PlacementModifier heightModifier) {
-        return orePlacement(CountPlacement.of(count), heightModifier);
+    private static List<PlacementModifier> surfacePlacement(int rarity) {
+        return List.of(
+            RarityFilter.onAverageOnceEvery(rarity),
+            InSquarePlacement.spread(),
+            HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG),
+            BiomeFilter.biome()
+        );
     }
     
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
         
-        // 注册放置特征（空配置，实际由 JSON 控制）
-        // 这些只是占位符，真正的配置在 JSON 文件中
+        context.register(NATURAL_COPPER_PLACED, new PlacedFeature(
+            configuredFeatures.getOrThrow(ModNaturalMetalConfiguredFeatures.NATURAL_COPPER),
+            surfacePlacement(5)));
+
+        context.register(NATURAL_SILVER_PLACED, new PlacedFeature(
+            configuredFeatures.getOrThrow(ModNaturalMetalConfiguredFeatures.NATURAL_SILVER),
+            surfacePlacement(8)));
+
+        context.register(NATURAL_GOLD_PLACED, new PlacedFeature(
+            configuredFeatures.getOrThrow(ModNaturalMetalConfiguredFeatures.NATURAL_GOLD),
+            surfacePlacement(10)));
     }
 }

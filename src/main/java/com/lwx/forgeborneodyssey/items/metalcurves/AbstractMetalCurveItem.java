@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 閲戝睘寮墖鐗╁搧鍩虹被
+ * 闁叉垵鐫樺顖滃閻椻晛鎼ч崺铏硅
  */
 public abstract class AbstractMetalCurveItem extends Item {
     
@@ -22,24 +22,24 @@ public abstract class AbstractMetalCurveItem extends Item {
     }
     
     /**
-     * 鑾峰彇閲戝睘绫诲瀷鍚嶇О锛堢敤浜庢湰鍦板寲閿級
+     * 閼惧嘲褰囬柌鎴濈潣缁鐎烽崥宥囆為敍鍫㈡暏娴滃孩婀伴崷鏉垮闁款噯绱?
      */
     protected abstract String getMetalType();
     
     /**
-     * 鑾峰彇鎮仠鏂囨湰閿?
+     * 閼惧嘲褰囬幃顒€浠犻弬鍥ㄦ拱闁?
      */
     protected abstract String getTooltipKey();
     
     /**
-     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫯宸濋柌蹇曠搼缁?
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
         return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勭函搴?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫮鍑芥惔?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -69,10 +69,7 @@ public abstract class AbstractMetalCurveItem extends Item {
                 }
             }
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
             
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
         } else {

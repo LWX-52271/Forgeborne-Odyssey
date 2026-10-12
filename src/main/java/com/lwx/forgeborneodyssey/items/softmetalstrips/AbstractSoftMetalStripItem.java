@@ -13,58 +13,58 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 杞寲閲戝睘鏉＄墿鍝佸熀绫?
- * 鍙爢鍙狅紙姣忕粍32涓級锛屼綔涓虹簿缁嗛敾閫犲師鏂欎娇鐢?
- * 缁忚繃杩涗竴姝ュ姞宸ョ殑杞寲閲戝睘鏉★紝鐢ㄤ簬鍒朵綔绮惧瘑宸ュ叿鍜岃楗板搧
+ * 鏉烆垰瀵查柌鎴濈潣閺夛紕澧块崫浣哥唨缁?
+ * 閸欘垰鐖㈤崣鐙呯礄濮ｅ繒绮?2娑擃亷绱氶敍灞肩稊娑撹櫣绨跨紒鍡涙暰闁姴甯弬娆庡▏閻?
+ * 缂佸繗绻冩潻娑楃濮濄儱濮炲銉ф畱鏉烆垰瀵查柌鎴濈潣閺夆槄绱濋悽銊ょ艾閸掓湹缍旂划鎯х槕瀹搞儱鍙块崪宀冾棅妤楁澘鎼?
  */
 public abstract class AbstractSoftMetalStripItem extends Item {
     
     public AbstractSoftMetalStripItem() {
         super(new Item.Properties()
-            .stacksTo(32)); // 姣忕粍鏈€澶?2涓?
+            .stacksTo(32)); // 濮ｅ繒绮嶉張鈧径?2娑?
     }
     
     /**
-     * 鑾峰彇閲戝睘绫诲瀷鍚嶇О锛堢敤浜庢湰鍦板寲閿級
+     * 閼惧嘲褰囬柌鎴濈潣缁鐎烽崥宥囆為敍鍫㈡暏娴滃孩婀伴崷鏉垮闁款噯绱?
      */
     protected abstract String getMetalType();
     
     /**
-     * 鑾峰彇鎮仠鏂囨湰閿?
+     * 閼惧嘲褰囬幃顒€浠犻弬鍥ㄦ拱闁?
      */
     protected abstract String getTooltipKey();
     
     /**
-     * 涓?ItemStack 璁剧疆鎸囧畾璐ㄩ噺绛夌骇
-     * @param stack 鐗╁搧鍫?
-     * @param quality 璐ㄩ噺绛夌骇
+     * 娑?ItemStack 鐠佸墽鐤嗛幐鍥х暰鐠愩劑鍣虹粵澶岄獓
+     * @param stack 閻椻晛鎼ч崼?
+     * @param quality 鐠愩劑鍣虹粵澶岄獓
      */
     public void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
         QualityHelper.ensurePhysicalWeight(stack);
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
-     * @param stack 鐗╁搧鍫?
-     * @return 璐ㄩ噺绛夌骇
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫯宸濋柌蹇曠搼缁?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 鐠愩劑鍣虹粵澶岄獓
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
         return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 涓?ItemStack 璁剧疆鎸囧畾绾害
-     * @param stack 鐗╁搧鍫?
-     * @param purity 绾害鍊硷紙0-100锛?
+     * 娑?ItemStack 鐠佸墽鐤嗛幐鍥х暰缁绢垰瀹?
+     * @param stack 閻椻晛鎼ч崼?
+     * @param purity 缁绢垰瀹抽崐纭风礄0-100閿?
      */
     public void setPurity(ItemStack stack, float purity) {
         QualityHelper.setPurity(stack, purity / 100.0f);
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勭函搴?
-     * @param stack 鐗╁搧鍫?
-     * @return 绾害鍊硷紙0-100锛夛紝濡傛灉娌℃湁鍒欒繑鍥為粯璁ゅ€?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫮鍑芥惔?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 缁绢垰瀹抽崐纭风礄0-100閿涘绱濇俊鍌涚亯濞屸剝婀侀崚娆掔箲閸ョ偤绮拋銈呪偓?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -89,10 +89,7 @@ public abstract class AbstractSoftMetalStripItem extends Item {
                 }
             }
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
         }

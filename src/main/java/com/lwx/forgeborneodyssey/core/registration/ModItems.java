@@ -136,9 +136,38 @@ public class ModItems {
     public static final RegistryObject<Item> QUARTZ_VEIN_BLOCK_ITEM = createBlockItem("quartz_vein_block", ModBlocks.QUARTZ_VEIN_BLOCK);
     public static final RegistryObject<Item> SERICITIZED_ROCK_BLOCK_ITEM = createBlockItem("sericitized_rock_block", ModBlocks.SERICITIZED_ROCK_BLOCK);
     public static final RegistryObject<Item> CHLORITE_ROCK_BLOCK_ITEM = createBlockItem("chlorite_rock_block", ModBlocks.CHLORITE_ROCK_BLOCK);
+    public static final RegistryObject<Item> CONGLOMERATE_BLOCK_ITEM = createBlockItem("conglomerate_block", ModBlocks.CONGLOMERATE_BLOCK);
+    public static final RegistryObject<Item> SILTSTONE_BLOCK_ITEM = createBlockItem("siltstone_block", ModBlocks.SILTSTONE_BLOCK);
+    public static final RegistryObject<Item> MUDSTONE_BLOCK_ITEM = createBlockItem("mudstone_block", ModBlocks.MUDSTONE_BLOCK);
+    public static final RegistryObject<Item> DOLOMITE_BLOCK_ITEM = createBlockItem("dolomite_block", ModBlocks.DOLOMITE_BLOCK);
+    public static final RegistryObject<Item> SLATE_BLOCK_ITEM = createBlockItem("slate_block", ModBlocks.SLATE_BLOCK);
 
     // 地表圆石物品
     public static final RegistryObject<Item> SURFACE_COBBLESTONE_BLOCK_ITEM = ITEMS.register("surface_cobblestone_block", () -> new ThrowableSurfaceCobblestoneItem(ModBlocks.SURFACE_COBBLESTONE_BLOCK.get()));
+
+    // 风化壳物品
+    public static final RegistryObject<Item> REGOLITH_ITEM = createBlockItem("regolith", ModBlocks.REGOLITH);
+
+    // 碎裂基岩物品
+    public static final RegistryObject<Item> SHATTERED_BEDROCK_ITEM = createBlockItem("shattered_bedrock", ModBlocks.SHATTERED_BEDROCK);
+
+    // ── 土壤系列物品（16 个）──
+    public static final RegistryObject<Item> MOLLISOL_GRASS_SOIL_ITEM = createBlockItem("mollisol_grass_soil", ModBlocks.MOLLISOL_GRASS_SOIL);
+    public static final RegistryObject<Item> MOLLISOL_SOIL_ITEM      = createBlockItem("mollisol_soil",      ModBlocks.MOLLISOL_SOIL);
+    public static final RegistryObject<Item> ALFISOL_GRASS_SOIL_ITEM  = createBlockItem("alfisol_grass_soil",  ModBlocks.ALFISOL_GRASS_SOIL);
+    public static final RegistryObject<Item> ALFISOL_SOIL_ITEM        = createBlockItem("alfisol_soil",        ModBlocks.ALFISOL_SOIL);
+    public static final RegistryObject<Item> SPODOSOL_GRASS_SOIL_ITEM = createBlockItem("spodosol_grass_soil", ModBlocks.SPODOSOL_GRASS_SOIL);
+    public static final RegistryObject<Item> SPODOSOL_SOIL_ITEM       = createBlockItem("spodosol_soil",       ModBlocks.SPODOSOL_SOIL);
+    public static final RegistryObject<Item> OXISOL_GRASS_SOIL_ITEM   = createBlockItem("oxisol_grass_soil",   ModBlocks.OXISOL_GRASS_SOIL);
+    public static final RegistryObject<Item> OXISOL_SOIL_ITEM         = createBlockItem("oxisol_soil",         ModBlocks.OXISOL_SOIL);
+    public static final RegistryObject<Item> VERTISOL_GRASS_SOIL_ITEM = createBlockItem("vertisol_grass_soil", ModBlocks.VERTISOL_GRASS_SOIL);
+    public static final RegistryObject<Item> VERTISOL_SOIL_ITEM       = createBlockItem("vertisol_soil",       ModBlocks.VERTISOL_SOIL);
+    public static final RegistryObject<Item> HISTOSOL_GRASS_SOIL_ITEM = createBlockItem("histosol_grass_soil", ModBlocks.HISTOSOL_GRASS_SOIL);
+    public static final RegistryObject<Item> HISTOSOL_SOIL_ITEM       = createBlockItem("histosol_soil",       ModBlocks.HISTOSOL_SOIL);
+    public static final RegistryObject<Item> ENTISOL_GRASS_SOIL_ITEM  = createBlockItem("entisol_grass_soil",  ModBlocks.ENTISOL_GRASS_SOIL);
+    public static final RegistryObject<Item> ENTISOL_SOIL_ITEM        = createBlockItem("entisol_soil",        ModBlocks.ENTISOL_SOIL);
+    public static final RegistryObject<Item> GELISOL_GRASS_SOIL_ITEM  = createBlockItem("gelisol_grass_soil",  ModBlocks.GELISOL_GRASS_SOIL);
+    public static final RegistryObject<Item> GELISOL_SOIL_ITEM        = createBlockItem("gelisol_soil",        ModBlocks.GELISOL_SOIL);
 
     // 竖井框架物品
     public static final RegistryObject<Item> SHAFT_FRAME_ITEM = createBlockItem("shaft_frame", ModBlocks.SHAFT_FRAME);
@@ -181,6 +210,11 @@ public class ModItems {
     public static final RegistryObject<Item> QUARTZ_VEIN_STAIRS_ITEM = createBlockItem("quartz_vein_stairs", ModBlocks.QUARTZ_VEIN_STAIRS);
     public static final RegistryObject<Item> SERICITIZED_ROCK_STAIRS_ITEM = createBlockItem("sericitized_rock_stairs", ModBlocks.SERICITIZED_ROCK_STAIRS);
     public static final RegistryObject<Item> CHLORITE_ROCK_STAIRS_ITEM = createBlockItem("chlorite_rock_stairs", ModBlocks.CHLORITE_ROCK_STAIRS);
+    public static final RegistryObject<Item> CONGLOMERATE_STAIRS_ITEM = createBlockItem("conglomerate_stairs", ModBlocks.CONGLOMERATE_STAIRS);
+    public static final RegistryObject<Item> SILTSTONE_STAIRS_ITEM = createBlockItem("siltstone_stairs", ModBlocks.SILTSTONE_STAIRS);
+    public static final RegistryObject<Item> MUDSTONE_STAIRS_ITEM = createBlockItem("mudstone_stairs", ModBlocks.MUDSTONE_STAIRS);
+    public static final RegistryObject<Item> DOLOMITE_STAIRS_ITEM = createBlockItem("dolomite_stairs", ModBlocks.DOLOMITE_STAIRS);
+    public static final RegistryObject<Item> SLATE_STAIRS_ITEM = createBlockItem("slate_stairs", ModBlocks.SLATE_STAIRS);
 
     // 岩石半砖物品
     public static final RegistryObject<Item> SHALE_SLAB_ITEM = createBlockItem("shale_slab", ModBlocks.SHALE_SLAB);
@@ -192,6 +226,11 @@ public class ModItems {
     public static final RegistryObject<Item> QUARTZ_VEIN_SLAB_ITEM = createBlockItem("quartz_vein_slab", ModBlocks.QUARTZ_VEIN_SLAB);
     public static final RegistryObject<Item> SERICITIZED_ROCK_SLAB_ITEM = createBlockItem("sericitized_rock_slab", ModBlocks.SERICITIZED_ROCK_SLAB);
     public static final RegistryObject<Item> CHLORITE_ROCK_SLAB_ITEM = createBlockItem("chlorite_rock_slab", ModBlocks.CHLORITE_ROCK_SLAB);
+    public static final RegistryObject<Item> CONGLOMERATE_SLAB_ITEM = createBlockItem("conglomerate_slab", ModBlocks.CONGLOMERATE_SLAB);
+    public static final RegistryObject<Item> SILTSTONE_SLAB_ITEM = createBlockItem("siltstone_slab", ModBlocks.SILTSTONE_SLAB);
+    public static final RegistryObject<Item> MUDSTONE_SLAB_ITEM = createBlockItem("mudstone_slab", ModBlocks.MUDSTONE_SLAB);
+    public static final RegistryObject<Item> DOLOMITE_SLAB_ITEM = createBlockItem("dolomite_slab", ModBlocks.DOLOMITE_SLAB);
+    public static final RegistryObject<Item> SLATE_SLAB_ITEM = createBlockItem("slate_slab", ModBlocks.SLATE_SLAB);
 
     // 岩石墙物品
     public static final RegistryObject<Item> SHALE_WALL_ITEM = createBlockItem("shale_wall", ModBlocks.SHALE_WALL);
@@ -203,6 +242,11 @@ public class ModItems {
     public static final RegistryObject<Item> QUARTZ_VEIN_WALL_ITEM = createBlockItem("quartz_vein_wall", ModBlocks.QUARTZ_VEIN_WALL);
     public static final RegistryObject<Item> SERICITIZED_ROCK_WALL_ITEM = createBlockItem("sericitized_rock_wall", ModBlocks.SERICITIZED_ROCK_WALL);
     public static final RegistryObject<Item> CHLORITE_ROCK_WALL_ITEM = createBlockItem("chlorite_rock_wall", ModBlocks.CHLORITE_ROCK_WALL);
+    public static final RegistryObject<Item> CONGLOMERATE_WALL_ITEM = createBlockItem("conglomerate_wall", ModBlocks.CONGLOMERATE_WALL);
+    public static final RegistryObject<Item> SILTSTONE_WALL_ITEM = createBlockItem("siltstone_wall", ModBlocks.SILTSTONE_WALL);
+    public static final RegistryObject<Item> MUDSTONE_WALL_ITEM = createBlockItem("mudstone_wall", ModBlocks.MUDSTONE_WALL);
+    public static final RegistryObject<Item> DOLOMITE_WALL_ITEM = createBlockItem("dolomite_wall", ModBlocks.DOLOMITE_WALL);
+    public static final RegistryObject<Item> SLATE_WALL_ITEM = createBlockItem("slate_wall", ModBlocks.SLATE_WALL);
     public static final RegistryObject<Item> GOLD_BILLET = ITEMS.register("gold_billet", GoldBilletItem::new);
     public static final RegistryObject<Item> SILVER_BILLET = ITEMS.register("silver_billet", SilverBilletItem::new);
     public static final RegistryObject<Item> COPPER_BILLET = ITEMS.register("copper_billet", CopperBilletItem::new);
@@ -467,6 +511,11 @@ public class ModItems {
     public static final RegistryObject<Item> QUARTZ_VEIN_RUBBLE = simpleItem("quartz_vein_rubble");
     public static final RegistryObject<Item> SERICITIZED_RUBBLE = simpleItem("sericitized_rubble");
     public static final RegistryObject<Item> CHLORITE_RUBBLE = simpleItem("chlorite_rubble");
+    public static final RegistryObject<Item> CONGLOMERATE_RUBBLE = simpleItem("conglomerate_rubble");
+    public static final RegistryObject<Item> SILTSTONE_RUBBLE = simpleItem("siltstone_rubble");
+    public static final RegistryObject<Item> MUDSTONE_RUBBLE = simpleItem("mudstone_rubble");
+    public static final RegistryObject<Item> DOLOMITE_RUBBLE = simpleItem("dolomite_rubble");
+    public static final RegistryObject<Item> SLATE_RUBBLE = simpleItem("slate_rubble");
     
 
     // 金属针物品

@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 閾滅幆鐗╁搧
+ * 闁炬粎骞嗛悧鈺佹惂
  */
 public class CopperRingItem extends Item {
     
@@ -22,14 +22,14 @@ public class CopperRingItem extends Item {
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫯宸濋柌蹇曠搼缁?
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
         return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勭函搴?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫮鍑芥惔?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -52,10 +52,7 @@ public class CopperRingItem extends Item {
                 }
             }
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
             
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
         } else {

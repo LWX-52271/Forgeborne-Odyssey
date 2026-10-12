@@ -51,6 +51,18 @@ public class SimpleWorldGen {
     public static final ResourceKey<BiomeModifier> ADD_OCHRE_DEPOSIT = 
         ResourceKey.create(net.minecraftforge.registries.ForgeRegistries.Keys.BIOME_MODIFIERS, 
             new ResourceLocation(ForgeborneOdyssey.MOD_ID, "add_ochre_deposit"));
+
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SURFACE_STRATA_KEY = 
+        ResourceKey.create(Registries.CONFIGURED_FEATURE, 
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "surface_strata"));
+
+    public static final ResourceKey<PlacedFeature> SURFACE_STRATA_PLACED_KEY = 
+        ResourceKey.create(Registries.PLACED_FEATURE, 
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "surface_strata_placed"));
+
+    public static final ResourceKey<BiomeModifier> ADD_SURFACE_STRATA = 
+        ResourceKey.create(net.minecraftforge.registries.ForgeRegistries.Keys.BIOME_MODIFIERS, 
+            new ResourceLocation(ForgeborneOdyssey.MOD_ID, "add_surface_strata"));
     
     public static void bootstrapConfigured(BootstapContext<ConfiguredFeature<?, ?>> context) {
         var stoneReplaceables = new TagMatchTest(net.minecraft.tags.BlockTags.STONE_ORE_REPLACEABLES);
@@ -93,6 +105,12 @@ public class SimpleWorldGen {
                 
         context.register(boulderKey, new ConfiguredFeature<>(
             new BoulderFeature(NoneFeatureConfiguration.CODEC),
+            NoneFeatureConfiguration.INSTANCE
+        ));
+
+        // 注册地表带配置特征（替换地表下 Y=48 至地表-3 的岩层）
+        context.register(SURFACE_STRATA_KEY, new ConfiguredFeature<>(
+            new SurfaceStrataFeature(NoneFeatureConfiguration.CODEC),
             NoneFeatureConfiguration.INSTANCE
         ));
 
@@ -195,6 +213,23 @@ public class SimpleWorldGen {
             )
         ));
 
+        // 注册地表带放置特征（每区块一次，覆盖整个 Y=48 至地表-3 范围）
+        var surfaceStrataFeature = context.lookup(Registries.CONFIGURED_FEATURE)
+            .getOrThrow(SURFACE_STRATA_KEY);
+
+        context.register(SURFACE_STRATA_PLACED_KEY, new PlacedFeature(
+            surfaceStrataFeature,
+            List.of(
+                CountPlacement.of(1),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(
+                    VerticalAnchor.absolute(48),
+                    VerticalAnchor.absolute(48)
+                ),
+                BiomeFilter.biome()
+            )
+        ));
+
         var ochreFeature = context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(OCHRE_DEPOSIT_KEY);
         
         context.register(OCHRE_DEPOSIT_PLACED_KEY, new PlacedFeature(
@@ -260,6 +295,13 @@ public class SimpleWorldGen {
                 ResourceKey.create(Registries.PLACED_FEATURE, 
                     new ResourceLocation(ForgeborneOdyssey.MOD_ID, "boulder_placed")))),
             GenerationStep.Decoration.UNDERGROUND_ORES
+        ));
+
+        // 注册地表带生物群系修饰符（用 biome-dependent rocks 替换地表下岩层）
+        context.register(ADD_SURFACE_STRATA, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+            overworldBiomes,
+            HolderSet.direct(placedFeatures.getOrThrow(SURFACE_STRATA_PLACED_KEY)),
+            GenerationStep.Decoration.RAW_GENERATION
         ));
 
         context.register(ADD_OCHRE_DEPOSIT, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(

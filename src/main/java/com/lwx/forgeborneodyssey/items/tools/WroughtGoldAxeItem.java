@@ -21,15 +21,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 鎵撳埗閲戞枾鐗╁搧
- * 鏀寔璐ㄩ噺绛夌骇绯荤粺锛氫綆绾с€佷腑绾с€侀珮绾э紝褰卞搷浼ゅ鍊?
+ * 閹垫挸鍩楅柌鎴炴灳閻椻晛鎼?
+ * 閺€顖涘瘮鐠愩劑鍣虹粵澶岄獓缁崵绮洪敍姘秵缁狙佲偓浣疯厬缁狙佲偓渚€鐝痪褝绱濊ぐ鍗炴惙娴笺倕顔婇崐?
  */
 public class WroughtGoldAxeItem extends AxeItem {
     
     public WroughtGoldAxeItem() {
         super(Tiers.STONE, 2.0F, -3.0F, new Item.Properties()
-            .stacksTo(1)  // 鍙兘鎸佹湁涓€涓?
-            .durability(32)); // 鑰愪箙搴﹁缃负32锛岄噾璐ㄩ潪甯告煍杞?
+            .stacksTo(1)  // 閸欘亣鍏橀幐浣规箒娑撯偓娑?
+            .durability(32)); // 閼版劒绠欐惔锕侇啎缂冾喕璐?2閿涘矂鍣剧拹銊╂姜鐢憡鐓嶆潪?
     }
     
     @Override
@@ -40,10 +40,7 @@ public class WroughtGoldAxeItem extends AxeItem {
             
             tooltip.add(AbstractMetalBilletItem.getTierDisplayComponent(stack));
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
             
             float modifier = getDamageModifierFromWeight(stack);
             float actualDamage = 4.0F + modifier;
@@ -75,34 +72,34 @@ public class WroughtGoldAxeItem extends AxeItem {
     }
     
     /**
-     * 鑾峰彇宸ュ叿绛夌骇
+     * 閼惧嘲褰囧銉ュ徔缁涘楠?
      */
     public Tier getTier() {
         return Tiers.STONE;
     }
     
     /**
-     * 涓?ItemStack 璁剧疆鎸囧畾閲嶉噺绛夌骇
-     * @param stack 鐗╁搧鍫?
-     * @param quality 閲嶉噺绛夌骇
+     * 娑?ItemStack 鐠佸墽鐤嗛幐鍥х暰闁插秹鍣虹粵澶岄獓
+     * @param stack 閻椻晛鎼ч崼?
+     * @param quality 闁插秹鍣虹粵澶岄獓
      */
     public void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
         QualityHelper.ensurePhysicalWeight(stack);
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勯噸閲忕瓑绾?
-     * @param stack 鐗╁搧鍫?
-     * @return 閲嶉噺绛夌骇
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫰鍣搁柌蹇曠搼缁?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 闁插秹鍣虹粵澶岄獓
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
         return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勭函搴?
-     * @param stack 鐗╁搧鍫?
-     * @return 绾害鍊硷紙0-100锛?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫮鍑芥惔?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 缁绢垰瀹抽崐纭风礄0-100閿?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -111,11 +108,11 @@ public class WroughtGoldAxeItem extends AxeItem {
     }
     
     /**
-     * 鏍规嵁绾害鑾峰彇鑰愪箙搴︿慨姝ｇ郴鏁?
-     * 绾害瓒婇珮锛岃€愪箙搴﹁秺浣庯紙绾挎€у叧绯伙級
-     * @param purity 绾害鍊硷紙0-100锛?
-     * @param baseDurability 鍩虹鑰愪箙搴?
-     * @return 淇鍚庣殑鑰愪箙搴?
+     * 閺嶈宓佺痪顖氬閼惧嘲褰囬懓鎰畽鎼达缚鎱ㄥ锝囬兇閺?
+     * 缁绢垰瀹崇搾濠囩彯閿涘矁鈧劒绠欐惔锕佺Ш娴ｅ函绱欑痪鎸庘偓褍鍙х化浼欑礆
+     * @param purity 缁绢垰瀹抽崐纭风礄0-100閿?
+     * @param baseDurability 閸╄櫣顢呴懓鎰畽鎼?
+     * @return 娣囶喗顒滈崥搴ｆ畱閼版劒绠欐惔?
      */
     public int getDurabilityFromPurity(float purity, int baseDurability) {
         return QualityHelper.getDurability(baseDurability,
@@ -123,10 +120,10 @@ public class WroughtGoldAxeItem extends AxeItem {
     }
     
     /**
-     * 鏍规嵁閲嶉噺鑾峰彇浼ゅ淇鍊?
-     * 閲嶉噺瓒婂ぇ锛屼激瀹宠秺楂?
-     * @param stack 鐗╁搧鍫?
-     * @return 浼ゅ淇鍊?
+     * 閺嶈宓侀柌宥夊櫤閼惧嘲褰囨导銈咁唺娣囶喗顒滈崐?
+     * 闁插秹鍣虹搾濠傘亣閿涘奔婵€鐎瑰疇绉烘?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 娴笺倕顔婃穱顔筋劀閸?
      */
     public float getDamageModifierFromWeight(ItemStack stack) {
         return QualityHelper.getDamageModifierFromWeight(QualityHelper.getWeightGrams(stack));
@@ -134,7 +131,7 @@ public class WroughtGoldAxeItem extends AxeItem {
     
     @Override
     public int getMaxDamage(ItemStack stack) {
-        // 鏍规嵁绾害涓庡伐鑹哄姩鎬佽绠楁渶澶ц€愪箙搴︼紙缁熶竴鍏紡锛?
+        // 閺嶈宓佺痪顖氬娑撳骸浼愰懝鍝勫З閹浇顓哥粻妤佹付婢堆嗏偓鎰畽鎼达讣绱欑紒鐔剁閸忣剙绱￠敍?
         float purity = getPurity(stack) / 100.0f;
         return QualityHelper.getDurability(64, purity, 0.5f);
     }
@@ -143,15 +140,15 @@ public class WroughtGoldAxeItem extends AxeItem {
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         Multimap<Attribute, AttributeModifier> modifiers = com.google.common.collect.HashMultimap.create();
         
-        // 鑾峰彇鐖剁被鐨勫睘鎬?
+        // 閼惧嘲褰囬悥鍓佽閻ㄥ嫬鐫橀幀?
         Multimap<Attribute, AttributeModifier> parentModifiers = super.getAttributeModifiers(slot, stack);
         modifiers.putAll(parentModifiers);
         
-        // 鍙湪涓绘墜鏃跺簲鐢ㄤ激瀹充慨姝?
+        // 閸欘亜婀稉缁樺閺冭泛绨查悽銊ゆ縺鐎瑰厖鎱ㄥ?
         if (slot == EquipmentSlot.MAINHAND) {
             float damageModifier = getDamageModifierFromWeight(stack);
             
-            // 濡傛灉鏈変激瀹充慨姝ｏ紝娣诲姞鍒板睘鎬т腑
+            // 婵″倹鐏夐張澶夋縺鐎瑰厖鎱ㄥ锝忕礉濞ｈ濮為崚鏉跨潣閹傝厬
             if (damageModifier != 0.0f) {
                 UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
                 modifiers.put(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE,

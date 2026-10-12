@@ -6,7 +6,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -134,6 +134,6 @@ public class CopperGrassFlowerFeature extends Feature<NoneFeatureConfiguration> 
     }
 
     private static boolean isValidGround(BlockState state) {
-        return state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.DIRT) || state.is(Blocks.COARSE_DIRT);
+        return state.is(BlockTags.DIRT);
     }
 }

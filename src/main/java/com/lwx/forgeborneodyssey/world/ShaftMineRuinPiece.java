@@ -6,6 +6,7 @@ import com.lwx.forgeborneodyssey.blocks.TunnelSupportBlock;
 import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.core.registration.ModStructures;
+import com.lwx.forgeborneodyssey.quality.PurityTier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -1317,7 +1318,7 @@ public class ShaftMineRuinPiece extends StructurePiece {
         CompoundTag tag = stack.getOrCreateTag();
         float purity = random.nextFloat();
         float quality = random.nextFloat();
-        tag.putFloat("ore_purity", purity);
+        tag.putString("purity_tier", PurityTier.fromFloat(purity).getName());
         tag.putFloat("ore_quality", quality);
         return stack;
     }

@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 閲戝睘鍒€鐗╁搧锛堝急姝﹀櫒锛?
- * 鏀寔璐ㄩ噺绛夌骇绯荤粺锛氫綆绾с€佷腑绾с€侀珮绾э紝褰卞搷浼ゅ鍊?
+ * 闁叉垵鐫橀崚鈧悧鈺佹惂閿涘牆鎬ュ锕€娅掗敍?
+ * 閺€顖涘瘮鐠愩劑鍣虹粵澶岄獓缁崵绮洪敍姘秵缁狙佲偓浣疯厬缁狙佲偓渚€鐝痪褝绱濊ぐ鍗炴惙娴笺倕顔婇崐?
  */
 public class MetalKnifeItem extends SwordItem {
     
@@ -33,7 +33,7 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 鍒涘缓閾滃垁
+     * 閸掓稑缂撻柧婊冨瀬
      */
     public static MetalKnifeItem createCopperKnife() {
         Tier copperTier = new ForgeTier(0, 59, 1.0F, 1.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
@@ -41,7 +41,7 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 鍒涘缓閾跺垁
+     * 閸掓稑缂撻柧璺哄瀬
      */
     public static MetalKnifeItem createSilverKnife() {
         Tier silverTier = new ForgeTier(0, 29, 0.5F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
@@ -49,7 +49,7 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 鍒涘缓閲戝垁
+     * 閸掓稑缂撻柌鎴濆瀬
      */
     public static MetalKnifeItem createGoldKnife() {
         Tier goldTier = new ForgeTier(0, 29, 0.5F, 0.0F, 0, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.EMPTY);
@@ -57,27 +57,27 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 涓?ItemStack 璁剧疆鎸囧畾璐ㄩ噺绛夌骇
-     * @param stack 鐗╁搧鍫?
-     * @param quality 璐ㄩ噺绛夌骇
+     * 娑?ItemStack 鐠佸墽鐤嗛幐鍥х暰鐠愩劑鍣虹粵澶岄獓
+     * @param stack 閻椻晛鎼ч崼?
+     * @param quality 鐠愩劑鍣虹粵澶岄獓
      */
     public void setQuality(ItemStack stack, AbstractMetalBilletItem.Quality quality) {
         QualityHelper.ensurePhysicalWeight(stack);
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
-     * @param stack 鐗╁搧鍫?
-     * @return 璐ㄩ噺绛夌骇
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫯宸濋柌蹇曠搼缁?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 鐠愩劑鍣虹粵澶岄獓
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
         return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勭函搴?
-     * @param stack 鐗╁搧鍫?
-     * @return 绾害鍊硷紙0-100锛?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫮鍑芥惔?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 缁绢垰瀹抽崐纭风礄0-100閿?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -86,11 +86,11 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 鏍规嵁绾害鑾峰彇鑰愪箙搴︿慨姝ｇ郴鏁帮紙缁熶竴鍏紡锛?
-     * 绾害涓庡伐鑹鸿秺楂橈紝鑰愪箙搴﹁秺楂橈紙濮旀墭 {@link QualityHelper}锛?
-     * @param purity 绾害鍊硷紙0-100锛?
-     * @param baseDurability 鍩虹鑰愪箙搴?
-     * @return 淇鍚庣殑鑰愪箙搴?
+     * 閺嶈宓佺痪顖氬閼惧嘲褰囬懓鎰畽鎼达缚鎱ㄥ锝囬兇閺佸府绱欑紒鐔剁閸忣剙绱￠敍?
+     * 缁绢垰瀹虫稉搴′紣閼归缚绉烘姗堢礉閼版劒绠欐惔锕佺Ш妤傛﹫绱欐慨鏃€澧?{@link QualityHelper}閿?
+     * @param purity 缁绢垰瀹抽崐纭风礄0-100閿?
+     * @param baseDurability 閸╄櫣顢呴懓鎰畽鎼?
+     * @return 娣囶喗顒滈崥搴ｆ畱閼版劒绠欐惔?
      */
     public int getDurabilityFromPurity(float purity, int baseDurability) {
         return QualityHelper.getDurability(baseDurability,
@@ -98,10 +98,10 @@ public class MetalKnifeItem extends SwordItem {
     }
     
     /**
-     * 鏍规嵁閲嶉噺鑾峰彇浼ゅ淇鍊?
-     * 閲嶉噺瓒婂ぇ锛屼激瀹宠秺楂橈紙缁熶竴鍏紡锛屽鎵?{@link QualityHelper}锛?
-     * @param stack 鐗╁搧鍫?
-     * @return 浼ゅ淇鍊?
+     * 閺嶈宓侀柌宥夊櫤閼惧嘲褰囨导銈咁唺娣囶喗顒滈崐?
+     * 闁插秹鍣虹搾濠傘亣閿涘奔婵€鐎瑰疇绉烘姗堢礄缂佺喍绔撮崗顒€绱￠敍灞筋潤閹?{@link QualityHelper}閿?
+     * @param stack 閻椻晛鎼ч崼?
+     * @return 娴笺倕顔婃穱顔筋劀閸?
      */
     public float getDamageModifierFromWeight(ItemStack stack) {
         return QualityHelper.getDamageModifierFromWeight(QualityHelper.getWeightGrams(stack));
@@ -122,10 +122,7 @@ public class MetalKnifeItem extends SwordItem {
                 }
             }
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
             
             float baseDamage = this.getDamage();
             float modifier = getDamageModifierFromWeight(stack);
@@ -143,7 +140,7 @@ public class MetalKnifeItem extends SwordItem {
     
     @Override
     public int getMaxDamage(ItemStack stack) {
-        // 鏍规嵁绾害涓庡伐鑹哄姩鎬佽绠楁渶澶ц€愪箙搴︼紙缁熶竴鍏紡锛?
+        // 閺嶈宓佺痪顖氬娑撳骸浼愰懝鍝勫З閹浇顓哥粻妤佹付婢堆嗏偓鎰畽鎼达讣绱欑紒鐔剁閸忣剙绱￠敍?
         float purity = getPurity(stack) / 100.0f;
         int baseDurability = super.getMaxDamage(stack);
         return QualityHelper.getDurability(baseDurability, purity, 0.5f);
@@ -153,15 +150,15 @@ public class MetalKnifeItem extends SwordItem {
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         Multimap<Attribute, AttributeModifier> modifiers = com.google.common.collect.HashMultimap.create();
         
-        // 鑾峰彇鐖剁被鐨勫睘鎬?
+        // 閼惧嘲褰囬悥鍓佽閻ㄥ嫬鐫橀幀?
         Multimap<Attribute, AttributeModifier> parentModifiers = super.getAttributeModifiers(slot, stack);
         modifiers.putAll(parentModifiers);
         
-        // 鍙湪涓绘墜鏃跺簲鐢ㄤ激瀹充慨姝?
+        // 閸欘亜婀稉缁樺閺冭泛绨查悽銊ゆ縺鐎瑰厖鎱ㄥ?
         if (slot == EquipmentSlot.MAINHAND) {
             float damageModifier = getDamageModifierFromWeight(stack);
             
-            // 濡傛灉鏈変激瀹充慨姝ｏ紝娣诲姞鍒板睘鎬т腑
+            // 婵″倹鐏夐張澶夋縺鐎瑰厖鎱ㄥ锝忕礉濞ｈ濮為崚鏉跨潣閹傝厬
             if (damageModifier != 0.0f) {
                 UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
                 modifiers.put(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE,

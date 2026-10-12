@@ -1,4 +1,4 @@
-﻿{
+﻿﻿{
   "type": "minecraft:ore",
   "config": {
     "size": 4,
@@ -6,8 +6,8 @@
     "targets": [
       {
         "target": {
-          "predicate_type": "minecraft:block_match",
-          "block": "minecraft:dirt"
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:dirt"
         },
         "state": {
           "Name": "forgeborneodyssey:ochre_deposit"
@@ -15,35 +15,8 @@
       },
       {
         "target": {
-          "predicate_type": "minecraft:block_match",
-          "block": "minecraft:grass_block"
-        },
-        "state": {
-          "Name": "forgeborneodyssey:ochre_deposit"
-        }
-      },
-      {
-        "target": {
-          "predicate_type": "minecraft:block_match",
-          "block": "minecraft:coarse_dirt"
-        },
-        "state": {
-          "Name": "forgeborneodyssey:ochre_deposit"
-        }
-      },
-      {
-        "target": {
-          "predicate_type": "minecraft:block_match",
-          "block": "minecraft:red_sand"
-        },
-        "state": {
-          "Name": "forgeborneodyssey:ochre_deposit"
-        }
-      },
-      {
-        "target": {
-          "predicate_type": "minecraft:block_match",
-          "block": "minecraft:sand"
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:sand"
         },
         "state": {
           "Name": "forgeborneodyssey:ochre_deposit"

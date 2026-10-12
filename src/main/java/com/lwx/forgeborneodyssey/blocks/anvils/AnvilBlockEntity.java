@@ -501,13 +501,9 @@ public class AnvilBlockEntity extends BlockEntity {
         
         CompoundTag tag = storedItem.getTag();
         float quality = 0.5f;
-        float purity = 0.5f;
         if (tag != null) {
             if (tag.contains("ore_quality")) {
                 quality = tag.getFloat("ore_quality");
-            }
-            if (tag.contains("ore_purity")) {
-                purity = tag.getFloat("ore_purity");
             }
         }
         
@@ -553,8 +549,7 @@ public class AnvilBlockEntity extends BlockEntity {
         // 生成矿物颗粒——继承原矿的纯度，质量按产出数量均分
         for (int i = 0; i < grainCount; i++) {
             ItemStack grainStack = new ItemStack(grainItem);
-            CompoundTag grainTag = grainStack.getOrCreateTag();
-            grainTag.putFloat("ore_purity", purity);
+            QualityHelper.setPurityTier(grainStack, QualityHelper.getPurityTier(storedItem));
             QualityHelper.setWeightGrams(grainStack, perGrainWeight);
 
             net.minecraft.world.entity.item.ItemEntity grainEntity = 

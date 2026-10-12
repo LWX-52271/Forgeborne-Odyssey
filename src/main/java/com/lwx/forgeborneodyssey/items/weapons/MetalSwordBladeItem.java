@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 閲戝睘鍓戝垉鐗╁搧锛堥潪姝﹀櫒锛屽埗浣滄潗鏂欙級
+ * 闁叉垵鐫橀崜鎴濆瀴閻椻晛鎼ч敍鍫ユ姜濮濓箑娅掗敍灞藉煑娴ｆ粍娼楅弬娆欑礆
  */
 public class MetalSwordBladeItem extends Item {
     
@@ -22,14 +22,14 @@ public class MetalSwordBladeItem extends Item {
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勮川閲忕瓑绾?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫯宸濋柌蹇曠搼缁?
      */
     public AbstractMetalBilletItem.Quality getQuality(ItemStack stack) {
         return AbstractMetalBilletItem.Quality.fromWeight(QualityHelper.getWeightGrams(stack));
     }
     
     /**
-     * 鑾峰彇 ItemStack 鐨勭函搴?
+     * 閼惧嘲褰?ItemStack 閻ㄥ嫮鍑芥惔?
      */
     public float getPurity(ItemStack stack) {
         float p = QualityHelper.getPurity(stack);
@@ -43,10 +43,7 @@ public class MetalSwordBladeItem extends Item {
         if (Screen.hasShiftDown()) {
             tooltip.add(AbstractMetalBilletItem.getTierDisplayComponent(stack));
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
             
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
         } else {

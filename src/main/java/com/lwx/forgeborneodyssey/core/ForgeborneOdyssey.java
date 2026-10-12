@@ -27,6 +27,7 @@ import com.lwx.forgeborneodyssey.world.NaturalMetalsGeneration;
 import com.lwx.forgeborneodyssey.world.SimpleWorldGen;
 import com.lwx.forgeborneodyssey.world.SurfaceCobblestoneFeature;
 import com.lwx.forgeborneodyssey.world.SurfaceRockFeature;
+import com.lwx.forgeborneodyssey.world.SurfaceStrataFeature;
 import com.lwx.forgeborneodyssey.world.TestOreGeneration;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.renderer.BiomeColors;
@@ -112,6 +113,10 @@ public class ForgeborneOdyssey {
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> SURFACE_ROCK_FEATURE = 
         FEATURES.register("surface_rock_feature", () -> new SurfaceRockFeature(NoneFeatureConfiguration.CODEC));
 
+    // 注册地表带特征（替换地表下柱状岩层）
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> SURFACE_STRATA_FEATURE = 
+        FEATURES.register("surface_strata_feature", () -> new SurfaceStrataFeature(NoneFeatureConfiguration.CODEC));
+
     // 注册砾石特征
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> BOULDER_FEATURE = 
         FEATURES.register("boulder_feature", () -> new BoulderFeature(NoneFeatureConfiguration.CODEC));
@@ -191,6 +196,42 @@ public class ForgeborneOdyssey {
         // 注册网络消息
         event.enqueueWork(() -> {
             com.lwx.forgeborneodyssey.network.ModMessages.register();
+        });
+
+        // 连线土壤草皮↔裸土配对
+        event.enqueueWork(() -> {
+            com.lwx.forgeborneodyssey.blocks.SoilBlock.registerPair(
+                com.lwx.forgeborneodyssey.blocks.SoilType.MOLLISOL,
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.MOLLISOL_GRASS_SOIL.get(),
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.MOLLISOL_SOIL.get());
+            com.lwx.forgeborneodyssey.blocks.SoilBlock.registerPair(
+                com.lwx.forgeborneodyssey.blocks.SoilType.ALFISOL,
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.ALFISOL_GRASS_SOIL.get(),
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.ALFISOL_SOIL.get());
+            com.lwx.forgeborneodyssey.blocks.SoilBlock.registerPair(
+                com.lwx.forgeborneodyssey.blocks.SoilType.SPODOSOL,
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.SPODOSOL_GRASS_SOIL.get(),
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.SPODOSOL_SOIL.get());
+            com.lwx.forgeborneodyssey.blocks.SoilBlock.registerPair(
+                com.lwx.forgeborneodyssey.blocks.SoilType.OXISOL,
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.OXISOL_GRASS_SOIL.get(),
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.OXISOL_SOIL.get());
+            com.lwx.forgeborneodyssey.blocks.SoilBlock.registerPair(
+                com.lwx.forgeborneodyssey.blocks.SoilType.VERTISOL,
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.VERTISOL_GRASS_SOIL.get(),
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.VERTISOL_SOIL.get());
+            com.lwx.forgeborneodyssey.blocks.SoilBlock.registerPair(
+                com.lwx.forgeborneodyssey.blocks.SoilType.HISTOSOL,
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.HISTOSOL_GRASS_SOIL.get(),
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.HISTOSOL_SOIL.get());
+            com.lwx.forgeborneodyssey.blocks.SoilBlock.registerPair(
+                com.lwx.forgeborneodyssey.blocks.SoilType.ENTISOL,
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.ENTISOL_GRASS_SOIL.get(),
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.ENTISOL_SOIL.get());
+            com.lwx.forgeborneodyssey.blocks.SoilBlock.registerPair(
+                com.lwx.forgeborneodyssey.blocks.SoilType.GELISOL,
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.GELISOL_GRASS_SOIL.get(),
+                (com.lwx.forgeborneodyssey.blocks.SoilBlock) ModBlocks.GELISOL_SOIL.get());
         });
 
         // 铜草花酿造配方：粗制药水 + 铜草花 → 矿工药剂

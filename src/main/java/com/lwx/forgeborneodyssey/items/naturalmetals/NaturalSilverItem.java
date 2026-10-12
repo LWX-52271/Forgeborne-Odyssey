@@ -13,9 +13,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 鑷劧閾剁墿鍝?
- * 鍙互閫氳繃寰掓墜閲囬泦鑷劧閾跺潡鑾峰緱
- * 鏀寔閲嶉噺绛夌骇鍜岀函搴︾郴缁?
+ * 閼奉亞鍔ч柧鍓佸⒖閸?
+ * 閸欘垯浜掗柅姘崇箖瀵版帗澧滈柌鍥肠閼奉亞鍔ч柧璺烘健閼惧嘲绶?
+ * 閺€顖涘瘮闁插秹鍣虹粵澶岄獓閸滃瞼鍑芥惔锔鹃兇缂?
  */
 public class NaturalSilverItem extends Item {
     
@@ -49,10 +49,7 @@ public class NaturalSilverItem extends Item {
                 }
             }
             
-            float purity = getPurity(stack);
-            if (purity > 0.0f) {
-                tooltip.add(Component.translatable("tooltip.forgeborneodyssey.purity", String.format("%.2f", purity)));
-            }
+            QualityHelper.appendPurityTooltip(stack, tooltip);
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
         }
