@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/dolomite_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/dolomite_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/dolomite_block"
+    }
+  }
+}

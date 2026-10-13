@@ -1,0 +1,6 @@
+{
+  "name": "Kiln Firing",
+  "description": "Build pit kilns, charcoal kilns, and tar kilns",
+  "icon": "forgeborneodyssey:pit_kiln",
+  "sortnum": 3
+}

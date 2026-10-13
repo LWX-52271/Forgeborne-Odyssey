@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "forgeborneodyssey:mollisol_grass_soil",
+    "forgeborneodyssey:mollisol_soil",
+    "forgeborneodyssey:alfisol_grass_soil",
+    "forgeborneodyssey:alfisol_soil",
+    "forgeborneodyssey:spodosol_grass_soil",
+    "forgeborneodyssey:spodosol_soil",
+    "forgeborneodyssey:oxisol_grass_soil",
+    "forgeborneodyssey:oxisol_soil",
+    "forgeborneodyssey:vertisol_grass_soil",
+    "forgeborneodyssey:vertisol_soil",
+    "forgeborneodyssey:histosol_grass_soil",
+    "forgeborneodyssey:histosol_soil",
+    "forgeborneodyssey:entisol_grass_soil",
+    "forgeborneodyssey:entisol_soil",
+    "forgeborneodyssey:gelisol_grass_soil",
+    "forgeborneodyssey:gelisol_soil"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:gold_sheet"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:gold_bar",
+    "count": 1
+  }
+}

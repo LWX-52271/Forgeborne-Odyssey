@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:silver_sheet"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:silver_bead",
+    "count": 4
+  }
+}

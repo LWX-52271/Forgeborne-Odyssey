@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:quartzite_boulder"
+    },
+    "C": {
+      "item": "forgeborneodyssey:surface_cobblestone_block"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:quartzite_anvil",
+    "count": 1
+  }
+}

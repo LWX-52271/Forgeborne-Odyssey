@@ -1,0 +1,15 @@
+{
+  "type": "armor",
+  "item": {
+    "items": ["forgeborneodyssey:hide_boots"]
+  },
+  "attributes": {
+    "cold_sweat:cold_dampening": [
+      {
+        "name": "cs:hide_boots_cold",
+        "amount": 0.2,
+        "operation": "addition"
+      }
+    ]
+  }
+}

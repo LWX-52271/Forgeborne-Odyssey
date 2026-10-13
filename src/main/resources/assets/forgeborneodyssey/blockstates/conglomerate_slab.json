@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/conglomerate_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/conglomerate_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/conglomerate_block"
+    }
+  }
+}

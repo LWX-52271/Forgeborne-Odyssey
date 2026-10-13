@@ -1,0 +1,6 @@
+{
+  "name": "Fire Crack Mining",
+  "description": "Use thermal stress from fire and water to extract ores",
+  "icon": "forgeborneodyssey:fire_pit_block",
+  "sortnum": 2
+}

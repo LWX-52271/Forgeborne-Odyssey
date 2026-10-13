@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:silver_fragment"
+    },
+    {
+      "item": "forgeborneodyssey:silver_fragment"
+    },
+    {
+      "item": "forgeborneodyssey:silver_fragment"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:silver_billet",
+    "count": 1
+  }
+}

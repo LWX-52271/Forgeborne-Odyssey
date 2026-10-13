@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:gold_fragment"
+    },
+    {
+      "item": "forgeborneodyssey:gold_fragment"
+    },
+    {
+      "item": "forgeborneodyssey:gold_fragment"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:gold_billet",
+    "count": 1
+  }
+}

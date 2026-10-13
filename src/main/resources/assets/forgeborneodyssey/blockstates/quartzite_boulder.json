@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "forgeborneodyssey:block/quartzite_boulder"
+    },
+    "facing=south": {
+      "model": "forgeborneodyssey:block/quartzite_boulder",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "forgeborneodyssey:block/quartzite_boulder",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "forgeborneodyssey:block/quartzite_boulder",
+      "y": 90
+    }
+  }
+}

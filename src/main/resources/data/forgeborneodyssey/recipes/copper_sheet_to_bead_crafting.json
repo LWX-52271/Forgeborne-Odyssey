@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:copper_sheet"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:copper_bead",
+    "count": 4
+  }
+}

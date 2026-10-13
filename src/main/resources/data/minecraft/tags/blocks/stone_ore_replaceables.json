@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "forgeborneodyssey:slate_block",
+    "forgeborneodyssey:shale_block",
+    "forgeborneodyssey:siltstone_block",
+    "forgeborneodyssey:limestone_block",
+    "forgeborneodyssey:dolomite_block",
+    "forgeborneodyssey:mudstone_block",
+    "forgeborneodyssey:sandstone_block",
+    "forgeborneodyssey:conglomerate_block",
+    "forgeborneodyssey:marble_block",
+    "forgeborneodyssey:gabbro_block",
+    "forgeborneodyssey:quartzite_block",
+    "forgeborneodyssey:sericitized_rock_block",
+    "forgeborneodyssey:chlorite_rock_block",
+    "forgeborneodyssey:quartz_vein_block",
+    "forgeborneodyssey:regolith",
+    "forgeborneodyssey:shattered_bedrock"
+  ]
+}

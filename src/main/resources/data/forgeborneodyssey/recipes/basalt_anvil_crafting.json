@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "item": "forgeborneodyssey:basalt_boulder"
+    },
+    "C": {
+      "item": "forgeborneodyssey:surface_cobblestone_block"
+    }
+  },
+  "result": {
+    "item": "forgeborneodyssey:basalt_anvil",
+    "count": 1
+  }
+}

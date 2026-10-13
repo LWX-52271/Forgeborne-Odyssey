@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "forgeborneodyssey:copper_fragment"
+    },
+    {
+      "item": "forgeborneodyssey:copper_fragment"
+    },
+    {
+      "item": "forgeborneodyssey:copper_fragment"
+    }
+  ],
+  "result": {
+    "item": "forgeborneodyssey:copper_billet",
+    "count": 1
+  }
+}

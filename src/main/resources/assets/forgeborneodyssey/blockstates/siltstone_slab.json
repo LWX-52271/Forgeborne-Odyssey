@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "forgeborneodyssey:block/siltstone_slab"
+    },
+    "type=top": {
+      "model": "forgeborneodyssey:block/siltstone_slab_top"
+    },
+    "type=double": {
+      "model": "forgeborneodyssey:block/siltstone_block"
+    }
+  }
+}
