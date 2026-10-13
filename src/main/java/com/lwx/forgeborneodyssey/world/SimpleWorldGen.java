@@ -137,7 +137,7 @@ public class SimpleWorldGen {
         context.register(SIMPLE_ORE_PLACED_KEY, new PlacedFeature(
             configuredFeature,
             List.of(
-                CountPlacement.of(25),
+                CountPlacement.of(8),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(
                     VerticalAnchor.absolute(40), 
@@ -203,7 +203,7 @@ public class SimpleWorldGen {
         context.register(boulderPlacedKey, new PlacedFeature(
             boulderFeature,
             List.of(
-                CountPlacement.of(16),
+                CountPlacement.of(8),
                 InSquarePlacement.spread(),
                 HeightRangePlacement.uniform(
                     VerticalAnchor.absolute(60),

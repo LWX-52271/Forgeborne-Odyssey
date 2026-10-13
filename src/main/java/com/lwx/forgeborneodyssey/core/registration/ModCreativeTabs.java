@@ -19,7 +19,13 @@ public class ModCreativeTabs {
             .title(Component.translatable("itemGroup.forgeborneodyssey.blocks"))
             .displayItems((parameters, output) -> {
                 ModBlocks.BLOCKS.getEntries().forEach(blockRegistryObject -> {
-                    output.accept(new ItemStack(blockRegistryObject.get(), 1));
+                    var block = blockRegistryObject.get();
+                    try {
+                        output.accept(block);
+                    } catch (Exception e) {
+                        ForgeborneOdyssey.LOGGER.error("Failed to add block to creative tab: {}",
+                            net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(block), e);
+                    }
                 });
             })
             .icon(() -> new ItemStack(ModBlocks.CUPRITE_ORE.get()))  // 使用模组方块作为图标
