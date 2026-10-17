@@ -39,9 +39,7 @@ public class WroughtCopperAxeItem extends AxeItem {
             tooltip.add(Component.translatable("item.forgeborneodyssey.wrought_copper_axe.tooltip"));
             
             tooltip.add(AbstractMetalBilletItem.getTierDisplayComponent(stack));
-            
-            QualityHelper.appendPurityTooltip(stack, tooltip);
-            
+
             float modifier = getDamageModifierFromWeight(stack);
             float actualDamage = 5.0F + modifier;
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.base_damage", String.format("%.1f", actualDamage)));

@@ -4,7 +4,6 @@ import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import com.lwx.forgeborneodyssey.items.GrassFiberItem;
 import com.lwx.forgeborneodyssey.items.RawClayItem;
 import com.lwx.forgeborneodyssey.items.TemperGrogItem;
-import com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem;
 import com.lwx.forgeborneodyssey.quality.QualityHelper;
 import com.lwx.forgeborneodyssey.util.ItemHelper;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -45,13 +44,6 @@ public class CraftingEventListener {
 
         if (ItemHelper.isModItem(stack)) {
             QualityHelper.ensurePhysicalWeight(stack);
-
-            if (stack.getItem() instanceof AbstractMetalBilletItem) {
-                AbstractMetalBilletItem billet = (AbstractMetalBilletItem) stack.getItem();
-                if (!com.lwx.forgeborneodyssey.quality.QualityHelper.hasPurity(stack)) {
-                    billet.setRandomPurity(stack, net.minecraft.util.RandomSource.create());
-                }
-            }
 
         }
 

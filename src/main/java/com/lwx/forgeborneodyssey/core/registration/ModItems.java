@@ -391,6 +391,24 @@ public class ModItems {
     // 铜草花物品
     public static final RegistryObject<Item> COPPER_GRASS_FLOWER_ITEM = createBlockItem("copper_grass_flower", ModBlocks.COPPER_GRASS_FLOWER);
 
+    // 地被植物物品（土壤限定）
+    public static final RegistryObject<Item> STEPPE_GRASS_ITEM = createBlockItem("steppe_grass", ModBlocks.STEPPE_GRASS);
+    public static final RegistryObject<Item> TAIGA_MOSS_ITEM = createBlockItem("taiga_moss", ModBlocks.TAIGA_MOSS);
+    public static final RegistryObject<Item> PEAT_FERN_ITEM = createBlockItem("peat_fern", ModBlocks.PEAT_FERN);
+    public static final RegistryObject<Item> DESERT_SCRUB_ITEM = createBlockItem("desert_scrub", ModBlocks.DESERT_SCRUB);
+    public static final RegistryObject<Item> JUNGLE_FERN_ITEM = createBlockItem("jungle_fern", ModBlocks.JUNGLE_FERN);
+    public static final RegistryObject<Item> FOREST_CLOVER_ITEM = createBlockItem("forest_clover", ModBlocks.FOREST_CLOVER);
+    public static final RegistryObject<Item> SAVANNA_GRASS_ITEM = createBlockItem("savanna_grass", ModBlocks.SAVANNA_GRASS);
+    public static final RegistryObject<Item> TUNDRA_LICHEN_ITEM = createBlockItem("tundra_lichen", ModBlocks.TUNDRA_LICHEN);
+    public static final RegistryObject<Item> ALPINE_BLOOM_ITEM = createBlockItem("alpine_bloom", ModBlocks.ALPINE_BLOOM);
+    public static final RegistryObject<Item> PRAIRIE_WILDFLOWER_ITEM = createBlockItem("prairie_wildflower", ModBlocks.PRAIRIE_WILDFLOWER);
+    public static final RegistryObject<Item> TROPICAL_BROMELIAD_ITEM = createBlockItem("tropical_bromeliad", ModBlocks.TROPICAL_BROMELIAD);
+    public static final RegistryObject<Item> CATTAIL_REED_ITEM = createBlockItem("cattail_reed", ModBlocks.CATTAIL_REED);
+    public static final RegistryObject<Item> TUMBLEWEED_ITEM = createBlockItem("tumbleweed", ModBlocks.TUMBLEWEED);
+    public static final RegistryObject<Item> TALL_JUNGLE_FERN_ITEM = createBlockItem("tall_jungle_fern", ModBlocks.TALL_JUNGLE_FERN);
+    public static final RegistryObject<Item> TALL_SAVANNA_GRASS_ITEM = createBlockItem("tall_savanna_grass", ModBlocks.TALL_SAVANNA_GRASS);
+    public static final RegistryObject<Item> TALL_CATTAIL_REED_ITEM = createBlockItem("tall_cattail_reed", ModBlocks.TALL_CATTAIL_REED);
+
     // 灰烬堆物品
     public static final RegistryObject<Item> KILN_ASH_PILE_ITEM = ITEMS.register("kiln_ash_pile", () -> new BlockItem(ModBlocks.KILN_ASH_PILE.get(), new Item.Properties()));
 

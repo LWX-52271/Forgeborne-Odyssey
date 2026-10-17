@@ -1,6 +1,7 @@
 package com.lwx.forgeborneodyssey.core;
 
 import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
+import com.lwx.forgeborneodyssey.blocks.GroundCoverType;
 import com.lwx.forgeborneodyssey.entities.BisonEntity;
 import com.lwx.forgeborneodyssey.world.ModBiomeModifiers;
 import com.lwx.forgeborneodyssey.core.registration.ModBiomeModifiersRegistry;
@@ -20,6 +21,8 @@ import com.lwx.forgeborneodyssey.world.BoulderFeature;
 import com.lwx.forgeborneodyssey.world.CopperGrassFlowerFeature;
 import com.lwx.forgeborneodyssey.world.CopperGrassFlowerGeneration;
 import com.lwx.forgeborneodyssey.world.CopperOrePlacedFeatures;
+import com.lwx.forgeborneodyssey.world.GroundCoverFeature;
+import com.lwx.forgeborneodyssey.world.GroundCoverGeneration;
 import com.lwx.forgeborneodyssey.world.ModNaturalMetalConfiguredFeatures;
 import com.lwx.forgeborneodyssey.world.ModNaturalMetalPlacedFeatures;
 import com.lwx.forgeborneodyssey.world.ModPlacedFeatures;
@@ -133,6 +136,74 @@ public class ForgeborneOdyssey {
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> COPPER_GRASS_FLOWER_FEATURE = 
         FEATURES.register("copper_grass_flower_feature", () -> new CopperGrassFlowerFeature(NoneFeatureConfiguration.CODEC));
+
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> STEPPE_GRASS_FEATURE =
+            FEATURES.register("steppe_grass_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.STEPPE_GRASS, ModBlocks.STEPPE_GRASS, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TAIGA_MOSS_FEATURE =
+            FEATURES.register("taiga_moss_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.TAIGA_MOSS, ModBlocks.TAIGA_MOSS, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> PEAT_FERN_FEATURE =
+            FEATURES.register("peat_fern_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.PEAT_FERN, ModBlocks.PEAT_FERN, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> DESERT_SCRUB_FEATURE =
+            FEATURES.register("desert_scrub_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.DESERT_SCRUB, ModBlocks.DESERT_SCRUB, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> JUNGLE_FERN_FEATURE =
+            FEATURES.register("jungle_fern_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.JUNGLE_FERN, ModBlocks.JUNGLE_FERN, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> FOREST_CLOVER_FEATURE =
+            FEATURES.register("forest_clover_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.FOREST_CLOVER, ModBlocks.FOREST_CLOVER, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> SAVANNA_GRASS_FEATURE =
+            FEATURES.register("savanna_grass_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.SAVANNA_GRASS, ModBlocks.SAVANNA_GRASS, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TUNDRA_LICHEN_FEATURE =
+            FEATURES.register("tundra_lichen_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.TUNDRA_LICHEN, ModBlocks.TUNDRA_LICHEN, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> ALPINE_BLOOM_FEATURE =
+            FEATURES.register("alpine_bloom_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.ALPINE_BLOOM, ModBlocks.ALPINE_BLOOM, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> PRAIRIE_WILDFLOWER_FEATURE =
+            FEATURES.register("prairie_wildflower_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.PRAIRIE_WILDFLOWER, ModBlocks.PRAIRIE_WILDFLOWER, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TROPICAL_BROMELIAD_FEATURE =
+            FEATURES.register("tropical_bromeliad_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.TROPICAL_BROMELIAD, ModBlocks.TROPICAL_BROMELIAD, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> CATTAIL_REED_FEATURE =
+            FEATURES.register("cattail_reed_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.CATTAIL_REED, ModBlocks.CATTAIL_REED, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TUMBLEWEED_FEATURE =
+            FEATURES.register("tumbleweed_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.TUMBLEWEED, ModBlocks.TUMBLEWEED, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TALL_JUNGLE_FERN_FEATURE =
+            FEATURES.register("tall_jungle_fern_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.TALL_JUNGLE_FERN, ModBlocks.TALL_JUNGLE_FERN, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TALL_SAVANNA_GRASS_FEATURE =
+            FEATURES.register("tall_savanna_grass_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.TALL_SAVANNA_GRASS, ModBlocks.TALL_SAVANNA_GRASS, NoneFeatureConfiguration.CODEC));
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TALL_CATTAIL_REED_FEATURE =
+            FEATURES.register("tall_cattail_reed_feature", () -> new GroundCoverFeature(
+                    GroundCoverType.TALL_CATTAIL_REED, ModBlocks.TALL_CATTAIL_REED, NoneFeatureConfiguration.CODEC));
+
+    public static final java.util.Map<GroundCoverType, RegistryObject<Feature<NoneFeatureConfiguration>>> GROUND_COVER_FEATURES =
+            java.util.Map.ofEntries(
+                    java.util.Map.entry(GroundCoverType.STEPPE_GRASS, STEPPE_GRASS_FEATURE),
+                    java.util.Map.entry(GroundCoverType.TAIGA_MOSS, TAIGA_MOSS_FEATURE),
+                    java.util.Map.entry(GroundCoverType.PEAT_FERN, PEAT_FERN_FEATURE),
+                    java.util.Map.entry(GroundCoverType.DESERT_SCRUB, DESERT_SCRUB_FEATURE),
+                    java.util.Map.entry(GroundCoverType.JUNGLE_FERN, JUNGLE_FERN_FEATURE),
+                    java.util.Map.entry(GroundCoverType.FOREST_CLOVER, FOREST_CLOVER_FEATURE),
+                    java.util.Map.entry(GroundCoverType.SAVANNA_GRASS, SAVANNA_GRASS_FEATURE),
+                    java.util.Map.entry(GroundCoverType.TUNDRA_LICHEN, TUNDRA_LICHEN_FEATURE),
+                    java.util.Map.entry(GroundCoverType.ALPINE_BLOOM, ALPINE_BLOOM_FEATURE),
+                    java.util.Map.entry(GroundCoverType.PRAIRIE_WILDFLOWER, PRAIRIE_WILDFLOWER_FEATURE),
+                    java.util.Map.entry(GroundCoverType.TROPICAL_BROMELIAD, TROPICAL_BROMELIAD_FEATURE),
+                    java.util.Map.entry(GroundCoverType.CATTAIL_REED, CATTAIL_REED_FEATURE),
+                    java.util.Map.entry(GroundCoverType.TUMBLEWEED, TUMBLEWEED_FEATURE),
+                    java.util.Map.entry(GroundCoverType.TALL_JUNGLE_FERN, TALL_JUNGLE_FERN_FEATURE),
+                    java.util.Map.entry(GroundCoverType.TALL_SAVANNA_GRASS, TALL_SAVANNA_GRASS_FEATURE),
+                    java.util.Map.entry(GroundCoverType.TALL_CATTAIL_REED, TALL_CATTAIL_REED_FEATURE));
 
     public static ResourceLocation loc(String path) {
         return new ResourceLocation(MOD_ID, path);
@@ -296,6 +367,7 @@ public class ForgeborneOdyssey {
                         com.lwx.forgeborneodyssey.world.ModNaturalMetalConfiguredFeatures.bootstrap(context);
                         com.lwx.forgeborneodyssey.world.SimpleWorldGen.bootstrapConfigured(context);
                         com.lwx.forgeborneodyssey.world.CopperGrassFlowerGeneration.bootstrapConfigured(context);
+                        com.lwx.forgeborneodyssey.world.GroundCoverGeneration.bootstrapConfigured(context);
                     })
                     .add(Registries.PLACED_FEATURE, context -> {
                         com.lwx.forgeborneodyssey.world.ModPlacedFeatures.bootstrap(context);
@@ -304,6 +376,7 @@ public class ForgeborneOdyssey {
                         com.lwx.forgeborneodyssey.world.ModNaturalMetalPlacedFeatures.bootstrap(context);
                         com.lwx.forgeborneodyssey.world.SimpleWorldGen.bootstrapPlaced(context);
                         com.lwx.forgeborneodyssey.world.CopperGrassFlowerGeneration.bootstrapPlaced(context);
+                        com.lwx.forgeborneodyssey.world.GroundCoverGeneration.bootstrapPlaced(context);
                     })
                     .add(ForgeRegistries.Keys.BIOME_MODIFIERS, context -> {
                         com.lwx.forgeborneodyssey.world.ModBiomeModifiers.bootstrap(context);
@@ -312,6 +385,7 @@ public class ForgeborneOdyssey {
                         com.lwx.forgeborneodyssey.world.NaturalMetalBiomeModifiers.bootstrap(context);
                         com.lwx.forgeborneodyssey.world.SimpleWorldGen.bootstrapBiomeModifier(context);
                         com.lwx.forgeborneodyssey.world.CopperGrassFlowerGeneration.bootstrapBiomeModifier(context);
+                        com.lwx.forgeborneodyssey.world.GroundCoverGeneration.bootstrapBiomeModifier(context);
                     })
                     .add(Registries.STRUCTURE, context -> {
                         com.lwx.forgeborneodyssey.world.OpenPitMineRuinGeneration.bootstrapStructure(context);

@@ -1,7 +1,6 @@
 package com.lwx.forgeborneodyssey.world;
 
 import com.lwx.forgeborneodyssey.core.ForgeborneOdyssey;
-import com.lwx.forgeborneodyssey.core.registration.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -27,15 +26,15 @@ public class ModNaturalMetalConfiguredFeatures {
     
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
         context.register(NATURAL_COPPER, new ConfiguredFeature<>(
-            new NaturalMetalsGeneration.NaturalMetalSurfaceFeature(ModBlocks.NATURAL_COPPER_BLOCK),
+            ForgeborneOdyssey.NATURAL_COPPER_FEATURE.get(),
             NoneFeatureConfiguration.INSTANCE));
 
         context.register(NATURAL_SILVER, new ConfiguredFeature<>(
-            new NaturalMetalsGeneration.NaturalMetalSurfaceFeature(ModBlocks.NATURAL_SILVER_BLOCK),
+            ForgeborneOdyssey.NATURAL_SILVER_FEATURE.get(),
             NoneFeatureConfiguration.INSTANCE));
 
         context.register(NATURAL_GOLD, new ConfiguredFeature<>(
-            new NaturalMetalsGeneration.NaturalMetalSurfaceFeature(ModBlocks.NATURAL_GOLD_BLOCK),
+            ForgeborneOdyssey.NATURAL_GOLD_FEATURE.get(),
             NoneFeatureConfiguration.INSTANCE));
     }
 }

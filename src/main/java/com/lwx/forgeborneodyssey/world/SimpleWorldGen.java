@@ -78,39 +78,39 @@ public class SimpleWorldGen {
             new OreConfiguration(targets, 15)
         ));
         
-        // 注册地表圆石配置特征 - 使用自定义特征而非 ORE 特征
-        ResourceKey<ConfiguredFeature<?, ?>> surfaceCobblestoneKey = 
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, 
+        // 注册地表圆石配置特征 - 使用已注册的 Feature 实例
+        ResourceKey<ConfiguredFeature<?, ?>> surfaceCobblestoneKey =
+            ResourceKey.create(Registries.CONFIGURED_FEATURE,
                 new ResourceLocation(ForgeborneOdyssey.MOD_ID, "surface_cobblestone"));
-                
+
         context.register(surfaceCobblestoneKey, new ConfiguredFeature<>(
-            new SurfaceCobblestoneFeature(NoneFeatureConfiguration.CODEC),
+            ForgeborneOdyssey.SURFACE_COBBLESTONE_FEATURE.get(),
             NoneFeatureConfiguration.INSTANCE
         ));
-                
+
         // 注册地表岩石配置特征（花岗岩和石灰岩）
-        ResourceKey<ConfiguredFeature<?, ?>> surfaceRockKey = 
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, 
+        ResourceKey<ConfiguredFeature<?, ?>> surfaceRockKey =
+            ResourceKey.create(Registries.CONFIGURED_FEATURE,
                 new ResourceLocation(ForgeborneOdyssey.MOD_ID, "surface_rock"));
-                
+
         context.register(surfaceRockKey, new ConfiguredFeature<>(
-            new SurfaceRockFeature(NoneFeatureConfiguration.CODEC),
+            ForgeborneOdyssey.SURFACE_ROCK_FEATURE.get(),
             NoneFeatureConfiguration.INSTANCE
         ));
 
         // 注册砾石配置特征
-        ResourceKey<ConfiguredFeature<?, ?>> boulderKey = 
-            ResourceKey.create(Registries.CONFIGURED_FEATURE, 
+        ResourceKey<ConfiguredFeature<?, ?>> boulderKey =
+            ResourceKey.create(Registries.CONFIGURED_FEATURE,
                 new ResourceLocation(ForgeborneOdyssey.MOD_ID, "boulder"));
-                
+
         context.register(boulderKey, new ConfiguredFeature<>(
-            new BoulderFeature(NoneFeatureConfiguration.CODEC),
+            ForgeborneOdyssey.BOULDER_FEATURE.get(),
             NoneFeatureConfiguration.INSTANCE
         ));
 
-        // 注册地表带配置特征（替换地表下 Y=48 至地表-3 的岩层）
+        // 注册地表带配置特征（替换地表下岩层）
         context.register(SURFACE_STRATA_KEY, new ConfiguredFeature<>(
-            new SurfaceStrataFeature(NoneFeatureConfiguration.CODEC),
+            ForgeborneOdyssey.SURFACE_STRATA_FEATURE.get(),
             NoneFeatureConfiguration.INSTANCE
         ));
 

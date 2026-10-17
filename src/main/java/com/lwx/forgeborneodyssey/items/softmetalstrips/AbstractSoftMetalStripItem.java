@@ -88,8 +88,7 @@ public abstract class AbstractSoftMetalStripItem extends Item {
                     tooltip.add(Component.translatable("tooltip.forgeborneodyssey.weight_g", String.format("%.2f", weight)));
                 }
             }
-            
-            QualityHelper.appendPurityTooltip(stack, tooltip);
+
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
         }

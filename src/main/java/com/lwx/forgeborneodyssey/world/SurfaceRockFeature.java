@@ -55,6 +55,7 @@ public class SurfaceRockFeature extends Feature<NoneFeatureConfiguration> {
         
         // 检查下方方块是否是合理的石头基底（避免在泥土、沙子等非岩石地表生成）
         if (!belowState.is(net.minecraft.tags.BlockTags.BASE_STONE_OVERWORLD) &&
+            !belowState.is(net.minecraft.tags.BlockTags.DIRT) &&
             !belowState.is(com.lwx.forgeborneodyssey.core.registration.ModBlocks.LIMESTONE_BLOCK.get())) {
             return false;
         }

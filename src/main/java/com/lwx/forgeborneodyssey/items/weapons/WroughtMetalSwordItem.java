@@ -112,8 +112,6 @@ public class WroughtMetalSwordItem extends SwordItem {
                 }
             }
             
-            QualityHelper.appendPurityTooltip(stack, tooltip);
-            
             float baseDamage = this.getDamage();
             float modifier = getDamageModifierFromWeight(stack);
             float actualDamage = baseDamage + modifier;

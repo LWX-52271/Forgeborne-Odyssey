@@ -196,7 +196,7 @@ public class QualityHelper {
         var key = BuiltInRegistries.ITEM.getKey(stack.getItem());
         if (key == null) return false;
         String path = key.getPath();
-        if (path.startsWith("native_") || path.endsWith("_boulder")) return false;
+        if (path.startsWith("native_") || path.startsWith("natural_") || path.endsWith("_boulder")) return false;
         return true;
     }
 

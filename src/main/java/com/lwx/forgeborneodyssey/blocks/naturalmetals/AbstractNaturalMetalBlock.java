@@ -269,7 +269,6 @@ public abstract class AbstractNaturalMetalBlock extends FallingBlock {
         ItemStack billetItem = this.getBilletItem();
         
         if (!billetItem.isEmpty()) {
-            QualityHelper.setPurity(billetItem, 0.5f + level.random.nextFloat() * 0.4f);
             MetalMaterial material = MetalMaterial.fromItem(billetItem);
             double billetVolume = ItemMassRegistry.getVolumeCm3(billetItem);
             QualityHelper.setWeightGrams(billetItem, material.weightForVolume(billetVolume));

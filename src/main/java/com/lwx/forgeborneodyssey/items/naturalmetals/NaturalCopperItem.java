@@ -47,7 +47,6 @@ public class NaturalCopperItem extends Item {
                 }
             }
             
-            QualityHelper.appendPurityTooltip(stack, tooltip);
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));
         }

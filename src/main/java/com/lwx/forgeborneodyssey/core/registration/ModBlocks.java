@@ -31,6 +31,8 @@ import com.lwx.forgeborneodyssey.blocks.CharcoalRingBlock;
 
 import com.lwx.forgeborneodyssey.blocks.GreaseTorchBlock;
 import com.lwx.forgeborneodyssey.blocks.CopperGrassFlowerBlock;
+import com.lwx.forgeborneodyssey.blocks.GroundCoverBlock;
+import com.lwx.forgeborneodyssey.blocks.GroundCoverType;
 import com.lwx.forgeborneodyssey.blocks.DryingRackBlock;
 import com.lwx.forgeborneodyssey.blocks.DryingRackBlockEntity;
 import com.lwx.forgeborneodyssey.blocks.FirePitBlockEntity;
@@ -320,6 +322,40 @@ public class ModBlocks {
 
     // 铜草花
     public static final RegistryObject<Block> COPPER_GRASS_FLOWER = BLOCKS.register("copper_grass_flower", CopperGrassFlowerBlock::new);
+
+    // 地被植物（土壤限定）
+    public static final RegistryObject<Block> STEPPE_GRASS = BLOCKS.register("steppe_grass",
+            () -> new GroundCoverBlock(GroundCoverType.STEPPE_GRASS));
+    public static final RegistryObject<Block> TAIGA_MOSS = BLOCKS.register("taiga_moss",
+            () -> new GroundCoverBlock(GroundCoverType.TAIGA_MOSS));
+    public static final RegistryObject<Block> PEAT_FERN = BLOCKS.register("peat_fern",
+            () -> new GroundCoverBlock(GroundCoverType.PEAT_FERN));
+    public static final RegistryObject<Block> DESERT_SCRUB = BLOCKS.register("desert_scrub",
+            () -> new GroundCoverBlock(GroundCoverType.DESERT_SCRUB));
+    public static final RegistryObject<Block> JUNGLE_FERN = BLOCKS.register("jungle_fern",
+            () -> new GroundCoverBlock(GroundCoverType.JUNGLE_FERN));
+    public static final RegistryObject<Block> FOREST_CLOVER = BLOCKS.register("forest_clover",
+            () -> new GroundCoverBlock(GroundCoverType.FOREST_CLOVER));
+    public static final RegistryObject<Block> SAVANNA_GRASS = BLOCKS.register("savanna_grass",
+            () -> new GroundCoverBlock(GroundCoverType.SAVANNA_GRASS));
+    public static final RegistryObject<Block> TUNDRA_LICHEN = BLOCKS.register("tundra_lichen",
+            () -> new GroundCoverBlock(GroundCoverType.TUNDRA_LICHEN));
+    public static final RegistryObject<Block> ALPINE_BLOOM = BLOCKS.register("alpine_bloom",
+            () -> new GroundCoverBlock(GroundCoverType.ALPINE_BLOOM));
+    public static final RegistryObject<Block> PRAIRIE_WILDFLOWER = BLOCKS.register("prairie_wildflower",
+            () -> new GroundCoverBlock(GroundCoverType.PRAIRIE_WILDFLOWER));
+    public static final RegistryObject<Block> TROPICAL_BROMELIAD = BLOCKS.register("tropical_bromeliad",
+            () -> new GroundCoverBlock(GroundCoverType.TROPICAL_BROMELIAD));
+    public static final RegistryObject<Block> CATTAIL_REED = BLOCKS.register("cattail_reed",
+            () -> new GroundCoverBlock(GroundCoverType.CATTAIL_REED));
+    public static final RegistryObject<Block> TUMBLEWEED = BLOCKS.register("tumbleweed",
+            () -> new GroundCoverBlock(GroundCoverType.TUMBLEWEED));
+    public static final RegistryObject<Block> TALL_JUNGLE_FERN = BLOCKS.register("tall_jungle_fern",
+            () -> new GroundCoverBlock(GroundCoverType.TALL_JUNGLE_FERN));
+    public static final RegistryObject<Block> TALL_SAVANNA_GRASS = BLOCKS.register("tall_savanna_grass",
+            () -> new GroundCoverBlock(GroundCoverType.TALL_SAVANNA_GRASS));
+    public static final RegistryObject<Block> TALL_CATTAIL_REED = BLOCKS.register("tall_cattail_reed",
+            () -> new GroundCoverBlock(GroundCoverType.TALL_CATTAIL_REED));
 
     // 竖穴窑方块实体类型
     public static final RegistryObject<BlockEntityType<PitKilnBlockEntity>> PIT_KILN_BLOCK_ENTITY = BLOCK_ENTITIES.register("pit_kiln_block_entity",

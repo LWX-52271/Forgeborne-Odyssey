@@ -52,8 +52,6 @@ public class CopperRingItem extends Item {
                 }
             }
             
-            QualityHelper.appendPurityTooltip(stack, tooltip);
-            
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.inherited_properties"));
         } else {
             tooltip.add(Component.translatable("tooltip.forgeborneodyssey.shift_for_details"));

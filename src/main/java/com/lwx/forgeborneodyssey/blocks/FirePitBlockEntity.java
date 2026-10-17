@@ -308,10 +308,6 @@ public class FirePitBlockEntity extends BlockEntity {
                         com.lwx.forgeborneodyssey.items.softmetalbillets.AbstractSoftMetalBilletItem softBilletItemInstance = 
                             (com.lwx.forgeborneodyssey.items.softmetalbillets.AbstractSoftMetalBilletItem) softBilletItem;
                         softBilletItemInstance.setQuality(softBillet, quality);
-                        
-                        // 复制纯度
-                        float purity = ((com.lwx.forgeborneodyssey.items.metalbillets.AbstractMetalBilletItem) metalBillet).getPurity(storedItem);
-                        softBilletItemInstance.setPurity(softBillet, purity);
                     }
                 }
 

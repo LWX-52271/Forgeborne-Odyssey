@@ -1,5 +1,6 @@
 package com.lwx.forgeborneodyssey.items.tools;
 
+import com.lwx.forgeborneodyssey.blocks.GroundCoverBlock;
 import com.lwx.forgeborneodyssey.core.registration.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -98,6 +99,7 @@ public class FlintSickleItem extends SwordItem {
         return state.is(Blocks.GRASS)
                 || state.is(Blocks.TALL_GRASS)
                 || state.is(Blocks.FERN)
-                || state.is(Blocks.LARGE_FERN);
+                || state.is(Blocks.LARGE_FERN)
+                || state.getBlock() instanceof GroundCoverBlock;
     }
 }

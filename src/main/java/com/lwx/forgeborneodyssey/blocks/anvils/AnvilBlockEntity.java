@@ -1692,16 +1692,10 @@ public class AnvilBlockEntity extends BlockEntity {
         if (!fragmentItem.isEmpty()) {
             double totalFragWeight = minFragmentWeight + level.random.nextDouble() * (maxFragmentWeight - minFragmentWeight);
             double perFragWeight = totalFragWeight / fragmentCount;
-            float originalPurity = QualityHelper.getPurity(storedItem);
 
             for (int i = 0; i < fragmentCount; i++) {
                 ItemStack fragment = fragmentItem.copy();
                 QualityHelper.setWeightGrams(fragment, perFragWeight);
-
-                if (originalPurity > 0.0f) {
-                    float fragmentPurity = Math.max(0.50f, originalPurity - level.random.nextFloat() * 0.10f);
-                    QualityHelper.setPurity(fragment, fragmentPurity);
-                }
 
                 // 在石砧位置生成物品实体
                 net.minecraft.world.entity.item.ItemEntity itemEntity = 
